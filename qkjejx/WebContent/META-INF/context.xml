@@ -6,7 +6,7 @@
 	auth="Container"
 	type="javax.sql.DataSource"
 	driverClassName="com.mysql.jdbc.Driver"
-	url="jdbc:mysql://localhost:3306/huzhu?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"
+	url="jdbc:mysql://localhost:3306/huzhujx?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8"
 	username="root"
 	password="sasa"
 	initialSize="1"
