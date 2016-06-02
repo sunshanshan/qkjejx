@@ -137,7 +137,7 @@
 	driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 	url="jdbc:sqlserver://rdsjqyjmzjrjr3q.sqlserver.rds.aliyuncs.com:3433;database=huzhu"
 	username="huzhu"
-	password="iloveqkj2646huzhums01"
+	password="iloveqkj2646huzhums02"
 	initialSize="1"
 	minIdle="10"
 	maxActive="300"
