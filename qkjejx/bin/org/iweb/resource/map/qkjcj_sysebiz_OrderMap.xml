@@ -16,12 +16,12 @@
 			       LEFT JOIN s_sys_user mu 
 			              ON ( m.manager = mu.uuid )
 			WHERE  o.user_id = m.uuid
-			       AND o.`status` > 0
+			       AND o.status > 0
 		]]>
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ o.uuid=#uuid# ]]></isNotNull>
 		<isNotNull prepend="AND" property="user_id"><![CDATA[ o.user_id=#user_id# ]]></isNotNull>
 		<isNotNull prepend="AND" property="pay_status"><![CDATA[ o.pay_status=#pay_status# ]]></isNotNull>
-		<isNotNull prepend="AND" property="status"><![CDATA[ o.`status`=#status# ]]></isNotNull>
+		<isNotNull prepend="AND" property="status"><![CDATA[ o.status=#status# ]]></isNotNull>
 		<isNotEmpty prepend="AND" property="add_time">
 			<![CDATA[	to_days(o.add_time) = to_days(#add_time#)]]>
 		</isNotEmpty>
@@ -59,12 +59,12 @@
 			       LEFT JOIN s_sys_user mu 
 			              ON ( m.manager = mu.uuid ) 
 			WHERE  o.user_id = m.uuid 
-			       AND o.`status` > 0 
+			       AND o.status > 0 
 		]]>
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ o.uuid=#uuid# ]]></isNotNull>
 		<isNotNull prepend="AND" property="user_id"><![CDATA[ o.user_id=#user_id# ]]></isNotNull>
 		<isNotNull prepend="AND" property="pay_status"><![CDATA[ o.pay_status=#pay_status# ]]></isNotNull>
-		<isNotNull prepend="AND" property="status"><![CDATA[ o.`status`=#status# ]]></isNotNull>
+		<isNotNull prepend="AND" property="status"><![CDATA[ o.status=#status# ]]></isNotNull>
 		<isNotEmpty prepend="AND" property="add_time">
 			<![CDATA[	to_days(o.add_time) = to_days(#add_time#)]]>
 		</isNotEmpty>
@@ -127,7 +127,7 @@
 	<update id="sysebiz_mdyStatus" parameterClass="order">
 		<![CDATA[
 			UPDATE qkj_r_order r
-			SET `status` = #status#,
+			SET status = #status#,
 				lm_user=#lm_user#,
 				lm_time=#lm_time#
 			Where uuid = #uuid#

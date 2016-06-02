@@ -115,7 +115,7 @@
 
 	<select id="sys_SysRolePrvg_All" resultClass="role_prvg" parameterClass="java.util.Map">
 		<![CDATA[ 
-			SELECT	p.privilege_name,p.parent_privilege,a.uuid,a.role_id,p.privilege_id,a.type,a.function
+			SELECT	p.privilege_name,p.parent_privilege,a.uuid,a.role_id,p.privilege_id,a.type,a.function1
 			FROM (SELECT * FROM s_sys_privilege WHERE PRIVILEGE_TYPE = 1) p
 			LEFT JOIN (SELECT * FROM s_sys_roleprvg
 		]]>
@@ -136,7 +136,7 @@
 
 	<select id="sys_UserRolePrvg_All" resultClass="role_prvg" parameterClass="java.util.Map">
 		<![CDATA[ 
-			SELECT	p.privilege_name,p.parent_privilege,a.uuid,a.role_id,p.privilege_id,a.type,a.function
+			SELECT	p.privilege_name,p.parent_privilege,a.uuid,a.role_id,p.privilege_id,a.type,a.function1
 			FROM (SELECT * FROM s_sys_privilege WHERE PRIVILEGE_TYPE = 0) p
 			LEFT JOIN (SELECT * FROM s_sys_roleprvg
 		]]>
@@ -150,7 +150,7 @@
 	<select id="sys_getRolePrvg" resultClass="role_prvg" parameterClass="java.util.Map">
 		<![CDATA[ 
 			SELECT r.uuid, p.privilege_name, p.parent_privilege, r.role_id, 
-						p.privilege_id, r.type, r.function, l.role_name
+						p.privilege_id, r.type, r.function1, l.role_name
 			FROM s_sys_role l, s_sys_roleprvg r
 			LEFT JOIN s_sys_privilege p ON p.privilege_id = r.privilege_id
 			WHERE	r.role_id = l.uuid
@@ -165,7 +165,7 @@
 	</select>
 	<insert id="sys_addRolePrvg" parameterClass="role_prvg">
 		<![CDATA[ 
-			insert into s_sys_roleprvg(uuid,role_id,privilege_id,type,function)
+			insert into s_sys_roleprvg(uuid,role_id,privilege_id,type,function1)
 			values(#uuid#,#role_id#,#privilege_id#,#type#,#function#)
 		]]>
 	</insert>
@@ -173,7 +173,7 @@
 		<![CDATA[
 			Update s_sys_roleprvg r
 			Set r.type = #type#,
-				r.function = #function#
+				r.function1 = #function#
 			Where r.role_id = #role_id#
 			And r.privilege_id = #privilege_id#
 		]]>
@@ -251,7 +251,7 @@
 			LEFT JOIN s_sys_user u2 ON (u.SENIOR = u2.UUID)
 			LEFT JOIN s_sys_role r ON (u.USER_TYPE = r.UUID)
 			LEFT JOIN s_cfg_position p ON (u.POSITION = p.UUID)
-			LEFT JOIN s_sys_userdept ud ON(ud.`user_id`=u.`UUID`)
+			LEFT JOIN s_sys_userdept ud ON(ud.user_id=u.UUID)
 			Where 1=1
 		]]>
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ u.uuid=#uuid# ]]></isNotNull>
@@ -262,8 +262,8 @@
 		<isNotNull prepend="AND" property="status"><![CDATA[ u.status=#status# ]]></isNotNull>
 		
 		<isNotEmpty prepend="AND" property="dept_code">
-			<isNotEqual property="is_sub_dept" compareValue="true"><![CDATA[ ud.`dept_code`=#dept_code#]]></isNotEqual>
-			<isEqual property="is_sub_dept" compareValue="true"><![CDATA[ ud.`dept_code` LIKE CONCAT(#dept_code#,'%') ]]></isEqual>
+			<isNotEqual property="is_sub_dept" compareValue="true"><![CDATA[ ud.dept_code=#dept_code#]]></isNotEqual>
+			<isEqual property="is_sub_dept" compareValue="true"><![CDATA[ ud.dept_code LIKE CONCAT(#dept_code#,'%') ]]></isEqual>
 		</isNotEmpty>
 		
 		<!-- <isNotEmpty prepend="AND" property="dept_codes" open="(" close=")">
@@ -277,12 +277,12 @@
 		</isNotEmpty> -->
 		
 		<isNotEmpty prepend="AND" property="dept_codeds">  
-               <![CDATA[ ud.`dept_code` in ($dept_codeds$)   ]]>
+               <![CDATA[ ud.dept_code in ($dept_codeds$)   ]]>
             </isNotEmpty>  
 		
 		<isEmpty  property="dept_codes">
 			<isNotEmpty prepend="AND" property="apply_perdepts">
-				<![CDATA[ ud.`dept_code` In ]]>
+				<![CDATA[ ud.dept_code In ]]>
 				<iterate property="apply_perdepts" open="(" close=")" conjunction=" , "> #apply_perdepts[]#</iterate>
 				<isNotEmpty prepend="AND" property="apply_userDouble"><![CDATA[ u.uuid=#apply_userDouble# ]]></isNotEmpty>
 			</isNotEmpty>
@@ -383,7 +383,7 @@
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="title"><![CDATA[ (u.TITLE = #title# OR u.MOBILE = #title#) ]]></isNotNull>
-			<isNotNull prepend="AND" property="status"><![CDATA[ u.`STATUS` =  #status# ]]></isNotNull>
+			<isNotNull prepend="AND" property="status"><![CDATA[ u.STATUS =  #status# ]]></isNotNull>
 		</dynamic>
 	</select>
 
@@ -469,9 +469,9 @@
 	
 	<select id="sys_getUsesrDept" resultClass="userDept" parameterClass="java.util.Map">
 		<![CDATA[ 
-			SELECT ud.*,d.`dept_cname` dept_cname,p.`POSITION_NAME` position_name FROM s_sys_userdept ud 
-			LEFT JOIN s_sys_department d ON (ud.`dept_code`=d.`dept_code`)
-			LEFT JOIN s_cfg_position p ON (ud.`position` = p.UUID)
+			SELECT ud.*,d.dept_cname dept_cname,p.POSITION_NAME position_name FROM s_sys_userdept ud 
+			LEFT JOIN s_sys_department d ON (ud.dept_code=d.dept_code)
+			LEFT JOIN s_cfg_position p ON (ud.position = p.UUID)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ ud.uuid=#uuid# ]]></isNotNull>

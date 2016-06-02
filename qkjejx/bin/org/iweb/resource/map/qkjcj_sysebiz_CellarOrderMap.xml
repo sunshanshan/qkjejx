@@ -15,7 +15,7 @@
 					c.uuid member_cellar_id,t.goods_spec_unit cellar_unit,c.ware_id,c.cellar_no ,c.cellar_position
 			        FROM   qkj_r_member_cellar c,qkj_t_goods t
 			        WHERE  t.uuid = c.goods_id) x 
-			WHERE  o.`status` > 0 
+			WHERE  o.status > 0 
 			       AND x.member_cellar_id = o.member_cellar_id 
 		]]>
 		<isNotEmpty prepend="AND" property="uuid"><![CDATA[ o.uuid=#uuid# ]]></isNotEmpty>
@@ -24,7 +24,7 @@
 		<isNotEmpty prepend="AND" property="con_name"><![CDATA[ o.con_name LIKE CONCAT('%',#con_name#,'%') ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="ware_id"><![CDATA[ x.ware_id=#ware_id# ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="cellar_no"><![CDATA[ x.cellar_no=#cellar_no# ]]></isNotEmpty>
-		<isNotEmpty prepend="AND" property="status"><![CDATA[ o.`status`=#status# ]]></isNotEmpty>
+		<isNotEmpty prepend="AND" property="status"><![CDATA[ o.status=#status# ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="cellar_position"><![CDATA[	x.cellar_position = #cellar_position# ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="add_time"><![CDATA[	to_days(o.add_time) = to_days(#add_time#)]]></isNotEmpty>
 		<![CDATA[ ORDER BY o.uuid Desc ]]>
@@ -40,7 +40,7 @@
 					c.uuid member_cellar_id,t.goods_spec_unit cellar_unit,c.ware_id,c.cellar_no ,c.cellar_position
 			        FROM   qkj_r_member_cellar c,qkj_t_goods t
 			        WHERE  t.uuid = c.goods_id) x 
-			WHERE  o.`status` > 0 
+			WHERE  o.status > 0 
 			       AND x.member_cellar_id = o.member_cellar_id 
 		]]>
 		<isNotEmpty prepend="AND" property="uuid"><![CDATA[ o.uuid=#uuid# ]]></isNotEmpty>
@@ -49,7 +49,7 @@
 		<isNotEmpty prepend="AND" property="con_name"><![CDATA[ o.con_name LIKE CONCAT('%',#con_name#,'%') ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="ware_id"><![CDATA[ x.ware_id=#ware_id# ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="cellar_position"><![CDATA[ x.cellar_position LIKE CONCAT('%',#cellar_no#,'%') ]]></isNotEmpty>
-		<isNotEmpty prepend="AND" property="status"><![CDATA[ o.`status`=#status# ]]></isNotEmpty>
+		<isNotEmpty prepend="AND" property="status"><![CDATA[ o.status=#status# ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="cellar_position"><![CDATA[	x.cellar_position = #cellar_position# ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="add_time"><![CDATA[	to_days(o.add_time) = to_days(#add_time#)]]></isNotEmpty>
 	</select>
@@ -87,7 +87,7 @@
 	<update id="sysebiz_mdyCellarOrderStatus" parameterClass="cellarOrder">
 		<![CDATA[
 			Update qkj_r_cellar_order
-			Set `status` = #status#,
+			Set status = #status#,
 				lm_user=#lm_user#,
 				lm_time=#lm_time#
 			Where uuid = #uuid#
@@ -130,7 +130,7 @@
 			              ON( o.add_user = u.uuid ), 
 			       s_vip_member m 
 			WHERE  o.user_id = m.uuid 
-			       AND o.`status` > 0 
+			       AND o.status > 0 
 			       AND o.uuid = (SELECT g.order_id 
 			                     FROM   qkj_r_member_cellar c, 
 			                            qkj_r_order_goods g 

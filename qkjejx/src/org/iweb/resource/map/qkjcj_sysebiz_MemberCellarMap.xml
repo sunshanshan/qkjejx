@@ -10,16 +10,16 @@
 						g.small_img,g.big_img
 			FROM   qkj_r_member_cellar c,(SELECT 
 			       r.uuid,r.order_id,r.goods_id,r.order_num,o.user_id, 
-			              o.`status` order_status 
+			              o.status order_status 
 			        FROM   qkj_r_order_goods r,qkj_r_order o 
 			        WHERE  r.order_id = o.uuid 
-			               AND o.`status` > 0) x,qkj_t_warehouse w,qkj_t_goods g, 
+			               AND o.status > 0) x,qkj_t_warehouse w,qkj_t_goods g, 
 			       qkj_t_goods_info i 
 			WHERE  c.order_goods_id = x.uuid 
 			       AND c.ware_id = w.uuid 
 			       AND c.goods_id = g.uuid 
 			       AND c.goods_id = i.goods_id 
-			       AND c.`status` = 0
+			       AND c.status = 0
 		]]>
 		<isNotEmpty prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="member_id"><![CDATA[ c.member_id=#member_id# ]]></isNotEmpty>
@@ -43,16 +43,16 @@
 			SELECT Count(*)
 			FROM   qkj_r_member_cellar c,(SELECT 
 			       r.uuid,r.order_id,r.goods_id,r.order_num,o.user_id, 
-			              o.`status` order_status 
+			              o.status order_status 
 			        FROM   qkj_r_order_goods r,qkj_r_order o 
 			        WHERE  r.order_id = o.uuid 
-			               AND o.`status` > 0) x,qkj_t_warehouse w,qkj_t_goods g, 
+			               AND o.status > 0) x,qkj_t_warehouse w,qkj_t_goods g, 
 			       qkj_t_goods_info i 
 			WHERE  c.order_goods_id = x.uuid 
 			       AND c.ware_id = w.uuid 
 			       AND c.goods_id = g.uuid 
 			       AND c.goods_id = i.goods_id 
-			       AND c.`status` = 0
+			       AND c.status = 0
 		]]>
 		<isNotEmpty prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="member_id"><![CDATA[ c.member_id=#member_id# ]]></isNotEmpty>
@@ -67,7 +67,7 @@
 			SELECT COUNT(*)
 			FROM qkj_r_member_cellar c
 			WHERE (c.ware_id,c.cellar_position) = (#ware_id#,#cellar_position#)
-			AND c.`status` = 0
+			AND c.status = 0
 		]]>
 	</select>
 	<insert id="sysebiz_addMemberCellar" parameterClass="memberCellar">
@@ -88,7 +88,7 @@
 			       AND g.order_id = o.uuid
 			       AND g.goods_id = t.uuid
 			       AND t.uuid = i.goods_id
-			       AND o.`status` = 70
+			       AND o.status = 70
 			       AND o.uuid = #value#
 		]]>
 	</insert>
@@ -132,7 +132,7 @@
 	<delete id="sysebiz_delCellarByCellarOrderID" parameterClass="string">
 		<![CDATA[
 			Update qkj_r_member_cellar
-			Set `status`=1,
+			Set status=1,
 				lm_user='SYSTEM'
 			Where uuid = (SELECT member_cellar_id 
 				FROM qkj_r_cellar_order WHERE uuid = #value#)
@@ -146,11 +146,11 @@
 		<![CDATA[ 
 			SELECT c.uuid,c.member_id,c.num,c.stock,c.cellar_position,c.order_id,c.goods_id,c.order_goods_id
 			FROM qkj_r_member_cellar c
-			WHERE c.`status` = 0
+			WHERE c.status = 0
 		]]>
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
 		<isNotNull prepend="AND" property="goods_id"><![CDATA[ c.goods_id=#goods_id# ]]></isNotNull>
-		<isNotNull prepend="AND" property="status"><![CDATA[ c.`status`=#status# ]]></isNotNull>
+		<isNotNull prepend="AND" property="status"><![CDATA[ c.status=#status# ]]></isNotNull>
 		<isNotNull prepend="AND" property="order_id"><![CDATA[ c.order_id=#order_id# ]]></isNotNull>
 	</select>
 
@@ -162,7 +162,7 @@
 				order_goods_id=#order_goods_id#,
 				storage_date=#storage_date#
 			Where cellar_position = #cellar_position#
-			AND `status` = 0
+			AND status = 0
 			AND goods_id = #goods_id#
 			AND member_id IS NULL
 		]]>
@@ -177,7 +177,7 @@
 				storage_date=NULL
 			Where uuid=#value#
 			AND order_id IS NOT NULL
-			AND 30 = (SELECT o.`status` FROM qkj_r_order o WHERE o.uuid=c.order_id)
+			AND 30 = (SELECT o.status FROM qkj_r_order o WHERE o.uuid=c.order_id)
 		]]>
 	</update>
 	<!-- MemberCellar End -->
