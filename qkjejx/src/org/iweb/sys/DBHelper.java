@@ -17,8 +17,9 @@ import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 
 public class DBHelper {
 	private static Log log = LogFactory.getLog(DBHelper.class);
-
-	private final static String[] configs = { "WEB-INF/classes/sql-map-config.xml", "WEB-INF/classes/sql-map-config02.xml" };
+    //双数据源
+/*	private final static String[] configs = { "WEB-INF/classes/sql-map-config.xml", "WEB-INF/classes/sql-map-config02.xml" };*/
+	private final static String[] configs = { "WEB-INF/classes/sql-map-config.xml"};
 	private static SqlMapClient[] sqlMaps;
 	private static int targetDB = 0;
 

@@ -6,8 +6,8 @@
 	<typeAlias alias="user" type="org.iweb.sys.domain.User" />
 	<select id="warepower_getWarepowers" resultClass="warepower" parameterClass="java.util.Map">
 		<![CDATA[ 
-		SELECT s.*,w.`ware_name` ware_name,w.`address` address, u.`USER_NAME` user_name FROM qkj_t_stockpower s LEFT JOIN qkj_t_warehouse w ON (s.`ware_id`=w.`uuid`)
-			LEFT JOIN s_sys_user u ON (s.`username`=u.`UUID`)
+		SELECT s.*,w.ware_name ware_name,w.address address, u.USER_NAME user_name FROM qkj_t_stockpower s LEFT JOIN qkj_t_warehouse w ON (s.ware_id=w.uuid)
+			LEFT JOIN s_sys_user u ON (s.username=u.UUID)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="uuid"><![CDATA[ s.uuid=#uuid# ]]></isNotEmpty>

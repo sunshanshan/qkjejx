@@ -10,14 +10,14 @@
 			FROM   qkj_r_order_cellar c,(SELECT 
 			       r.uuid,r.order_id,r.goods_id,g.goods_name,g.goods_unit,r.order_num, 
 			              g.goods_spec,g.goods_spec_unit,i.column_1 AS 
-			              ware_id,w.ware_name,o.user_id, o.`status` order_status 
+			              ware_id,w.ware_name,o.user_id, o.status order_status 
 			        FROM   qkj_r_order_goods r,qkj_r_order o,qkj_t_goods g,
 			        			qkj_t_goods_info i LEFT JOIN qkj_t_warehouse w 
 			                      ON ( i.column_1 = w.uuid ) 
 			        WHERE  r.order_id = o.uuid 
 			               AND r.goods_id = g.uuid 
 			               AND g.uuid = i.goods_id 
-			               AND o.`status` > 0) x 
+			               AND o.status > 0) x 
 			WHERE  c.order_goods_id = x.uuid 
 		]]>
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
@@ -45,14 +45,14 @@
 			FROM   qkj_r_order_cellar c,(SELECT 
 			       r.uuid,r.order_id,r.goods_id,g.goods_name,g.goods_unit,r.order_num, 
 			              g.goods_spec,g.goods_spec_unit,i.column_1 AS 
-			              ware_id,w.ware_name,o.user_id, o.`status` order_status 
+			              ware_id,w.ware_name,o.user_id, o.status order_status 
 			        FROM   qkj_r_order_goods r,qkj_r_order o,qkj_t_goods g,
 			        			qkj_t_goods_info i LEFT JOIN qkj_t_warehouse w 
 			                      ON ( i.column_1 = w.uuid ) 
 			        WHERE  r.order_id = o.uuid 
 			               AND r.goods_id = g.uuid 
 			               AND g.uuid = i.goods_id 
-			               AND o.`status` > 0) x 
+			               AND o.status > 0) x 
 			WHERE  c.order_goods_id = x.uuid 
 		]]>
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
@@ -112,26 +112,26 @@
 
 	<select id="sysebiz_getOrderGoods4Cellars" resultClass="orderCellar" parameterClass="java.util.Map">
 		<![CDATA[ 
-			SELECT r.uuid AS order_goods_id,r.order_id,r.goods_id,g.goods_name,r.order_num,i.column_1 AS ware_id,w.ware_name,o.user_id,o.`status` order_status
+			SELECT r.uuid AS order_goods_id,r.order_id,r.goods_id,g.goods_name,r.order_num,i.column_1 AS ware_id,w.ware_name,o.user_id,o.status order_status
 			FROM qkj_r_order_goods r,qkj_r_order o,qkj_t_goods g,
 			qkj_t_goods_info i LEFT JOIN qkj_t_warehouse w ON (i.column_1 = w.uuid)
 			WHERE r.order_id = o.uuid
 			AND r.goods_id = g.uuid
 			AND g.uuid = i.goods_id
-			AND o.`status` > 0
+			AND o.status > 0
 		]]>
 		<isNotNull prepend="AND" property="order_goods_id"><![CDATA[ r.uuid=#order_goods_id# ]]></isNotNull>
 		<isNotNull prepend="AND" property="ware_id"><![CDATA[ i.column_1=#ware_id# ]]></isNotNull>
 		<isNotNull prepend="AND" property="order_id"><![CDATA[ r.order_id=#order_id# ]]></isNotNull>
 		<isNotNull prepend="AND" property="user_id"><![CDATA[ o.user_id=#user_id# ]]></isNotNull>
 		<isNotNull prepend="AND" property="order_status">
-			<isEmpty property="status_search_type"><![CDATA[ o.`status`=#order_status# ]]></isEmpty>
+			<isEmpty property="status_search_type"><![CDATA[ o.status=#order_status# ]]></isEmpty>
 			<isNotEmpty>
-				<isEqual property="status_search_type" compareValue="0"><![CDATA[ o.`status`=#order_status# ]]></isEqual>
-				<isEqual property="status_search_type" compareValue="1"><![CDATA[ o.`status`>=#order_status# ]]></isEqual>
-				<isEqual property="status_search_type" compareValue="2"><![CDATA[ o.`status`<=#order_status# ]]></isEqual>
-				<isEqual property="status_search_type" compareValue="3"><![CDATA[ o.`status`>#order_status# ]]></isEqual>
-				<isEqual property="status_search_type" compareValue="4"><![CDATA[ o.`status`<#order_status# ]]></isEqual>
+				<isEqual property="status_search_type" compareValue="0"><![CDATA[ o.status=#order_status# ]]></isEqual>
+				<isEqual property="status_search_type" compareValue="1"><![CDATA[ o.status>=#order_status# ]]></isEqual>
+				<isEqual property="status_search_type" compareValue="2"><![CDATA[ o.status<=#order_status# ]]></isEqual>
+				<isEqual property="status_search_type" compareValue="3"><![CDATA[ o.status>#order_status# ]]></isEqual>
+				<isEqual property="status_search_type" compareValue="4"><![CDATA[ o.status<#order_status# ]]></isEqual>
 			</isNotEmpty>
 		</isNotNull>
 		<![CDATA[ ORDER BY r.uuid ]]>

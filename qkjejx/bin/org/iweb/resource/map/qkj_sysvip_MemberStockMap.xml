@@ -6,19 +6,19 @@
 	<typeAlias alias="memberStockHistory" type="org.iweb.sysvip.domain.MemberStockHistory" />
 	<select id="sysvip_getMemberStocks" resultClass="memberStock" parameterClass="java.util.Map">
 		<![CDATA[ 
-			SELECT m.*,ad.`USER_NAME` add_user_name,lm.`USER_NAME` lm_user_name,p.`title` product_name,
-			ROUND(m.`stock`/(p.`case_spec`*1.0)) case_spec,vm.member_name member_name,d.`dept_cname` add_dept_name
+			SELECT m.*,ad.USER_NAME add_user_name,lm.USER_NAME lm_user_name,p.title product_name,
+			ROUND(m.stock/(p.case_spec*1.0)) case_spec,vm.member_name member_name,d.dept_cname add_dept_name
 			FROM qkjm_t_member m 
-			LEFT JOIN s_sys_user ad ON(m.`add_user`=ad.`UUID`)
-			LEFT JOIN s_sys_user lm ON(m.`lm_user`=lm.`UUID`)
-			LEFT JOIN qkj_t_product p ON(p.`uuid`=m.`product`)
+			LEFT JOIN s_sys_user ad ON(m.add_user=ad.UUID)
+			LEFT JOIN s_sys_user lm ON(m.lm_user=lm.UUID)
+			LEFT JOIN qkj_t_product p ON(p.uuid=m.product)
 			LEFT JOIN s_vip_member vm ON(vm.uuid=m.dealer)
-			LEFT JOIN s_sys_department d ON(d.`dept_code`=m.`add_dept`)
+			LEFT JOIN s_sys_department d ON(d.dept_code=m.add_dept)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="uuid"><![CDATA[ m.uuid=#uuid# ]]></isNotEmpty>
 			<isNotEmpty prepend="AND" property="dealer"><![CDATA[ m.dealer=#dealer# ]]></isNotEmpty>
-			<isNotEmpty prepend="AND" property="product_name"><![CDATA[ p.`title` LIKE CONCAT('%',#product_name#,'%') ]]></isNotEmpty>
+			<isNotEmpty prepend="AND" property="product_name"><![CDATA[ p.title LIKE CONCAT('%',#product_name#,'%') ]]></isNotEmpty>
 			<isNotEmpty prepend="AND" property="stock"><![CDATA[ m.stock=#stock# ]]></isNotEmpty>
 			<isNotEmpty prepend="AND" property="check_date"><![CDATA[ m.check_date=#check_date# ]]></isNotEmpty>
 			<isNotEmpty prepend="AND" property="add_time"><![CDATA[ m.add_time=#add_time# ]]></isNotEmpty>
@@ -44,7 +44,7 @@
 			</isEmpty>
 
 		</dynamic>
-		<![CDATA[ORDER BY m.`check_date` DESC ]]>
+		<![CDATA[ORDER BY m.check_date DESC ]]>
 	</select>
 	<select id="sysvip_getMemberStocksCounts" resultClass="int" parameterClass="java.util.Map">
 		<![CDATA[ 
@@ -53,7 +53,7 @@
 		<dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="uuid"><![CDATA[ m.uuid=#uuid# ]]></isNotEmpty>
 			<isNotEmpty prepend="AND" property="dealer"><![CDATA[ m.dealer=#dealer# ]]></isNotEmpty>
-			<isNotEmpty prepend="AND" property="product_name"><![CDATA[ p.`title` LIKE CONCAT('%',#product_name#,'%') ]]></isNotEmpty>
+			<isNotEmpty prepend="AND" property="product_name"><![CDATA[ p.title LIKE CONCAT('%',#product_name#,'%') ]]></isNotEmpty>
 			<isNotEmpty prepend="AND" property="stock"><![CDATA[ m.stock=#stock# ]]></isNotEmpty>
 			<isNotEmpty prepend="AND" property="check_date"><![CDATA[ m.check_date=#check_date# ]]></isNotEmpty>
 			<isNotEmpty prepend="AND" property="add_time"><![CDATA[ m.add_time=#add_time# ]]></isNotEmpty>

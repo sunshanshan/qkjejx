@@ -9,12 +9,12 @@
 			       t.goods_unit,d.og_num,t.goods_spec_unit,t.small_img goods_small_img,o.add_time,o.total_price
 			       order_total_price,o.pay_status order_pay_status 
 			FROM   qkj_r_order_goods g,(SELECT x.*,CASE 
-			                     WHEN x.`status` = 10 THEN 10 
-			                     WHEN x.`status` > 10 AND x.`status` < 70 THEN 20 
-			                     WHEN x.`status` >= 70 THEN 70 
+			                     WHEN x.status = 10 THEN 10 
+			                     WHEN x.status > 10 AND x.status < 70 THEN 20 
+			                     WHEN x.status >= 70 THEN 70 
 			                   end order_status 
 			        FROM   qkj_r_order x 
-			        WHERE  x.`status` >= 10) o,qkj_t_goods t 
+			        WHERE  x.status >= 10) o,qkj_t_goods t 
 			       LEFT JOIN qkj_t_goods_type p 
 			              ON( t.goods_type = p.uuid ),(SELECT order_id,Count(uuid) og_num 
 			        FROM   qkj_r_order_goods 
@@ -37,12 +37,12 @@
 		<![CDATA[ 
 		SELECT COUNT(*) 
 		FROM (SELECT x.*,CASE 
-			                     WHEN x.`status` = 10 THEN 10 
-			                     WHEN x.`status` > 10 AND x.`status` < 70 THEN 20 
-			                     WHEN x.`status` >= 70 THEN 70 
+			                     WHEN x.status = 10 THEN 10 
+			                     WHEN x.status > 10 AND x.status < 70 THEN 20 
+			                     WHEN x.status >= 70 THEN 70 
 			                   end order_status 
 			        FROM   qkj_r_order x 
-			        WHERE  x.`status` >= 10) o
+			        WHERE  x.status >= 10) o
 		WHERE 1=1
 		]]>
 		<isNotEmpty prepend="AND" property="order_id"><![CDATA[ o.uuid =#order_id# ]]></isNotEmpty>
@@ -102,7 +102,7 @@
 	<!-- 得到用户藏酒的总数量 -->
 	<select id="sysebiz_getMemberCellarSum" resultClass="int" parameterClass="java.lang.String">
 		<![CDATA[ 
-		SELECT IFNULL(SUM(m.stock),0) FROM qkj_r_member_cellar m WHERE m.`status` = 0 AND m.member_id = #value#
+		SELECT IFNULL(SUM(m.stock),0) FROM qkj_r_member_cellar m WHERE m.status = 0 AND m.member_id = #value#
 		]]>
 	</select>
 </sqlMap>
