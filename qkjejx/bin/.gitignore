@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-/org
-=======
 /log4j.xml
 /org/
 /sql-map-config.xml
@@ -8,7 +5,3 @@
 /struts.properties
 /struts.xml
 /xwork-conversion.properties
-/org/
->>>>>>> xuwang
-/org/
-/org/

@@ -186,14 +186,17 @@ function getInfo(obj) {
 		$("#dept\\.type").val(json.type);
 		setControl("save");
 		$("#message").text("获取数据成功!");
+		var dept_code=$("#dept\\.dept_code").val();
+		getIndexDetail(dept_code);
 	};
 	ajax.addParameter("privilege_id","SYS_MANAGER_DEPT_AJAX_LOAD");
 	ajax.addParameter("parameters","uuid="+obj);
 	ajax.sendAjax();
-	getIndexDetail(obj);
+
 }
 
 function getIndexDetail(obj) {
+	
 	var ajax = new Common_Ajax('message');
 	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
 	ajax.config._success = function(data, textStatus) {
@@ -307,10 +310,48 @@ function updatetab(obj) {
 }
 
 function setkpi() {
+	var dept_name=$("#dept\\.dept_cname").val();
+	var show = new Array(); 
+	 show.push('<tr name="deletetd" ·>');
+	 show.push('<td class="td1"  >'+dept_name+'</td  >' ) ;
+	 show.push('<td class="td2" ><input type="text" value="" id="newkpiip" /></td  >' ) ;
+	 show.push('<td class="td5">1</td  >' ) ;
+	 show.push('<td class="td3" ><input type="text" value="" id="newweightip" /></td  >' ) ;
+	 show.push('<td class="td4" ><input type="text" style="width:80px" value="" id="newcount_wayip" /></td  >' ) ;
+	 show.push('<td class="td6"  ><input type="text" style="width:80px" value="" id="newdefinitionip" /></td  >' ) ;
+	 show.push('<td class="td7"><input type="text" style="width:80px" value="" id="newcorrectlyip" /></td  >' ) ;
+	 show.push('<td class="td5"><input type="text" style="width:80px" value="" id="newcheck_deptcodeip" /></td  >' ) ;
+	 show.push('<td class="td6" ><input type="text" style="width:80px" value="" id="newcheck_postip" /></td  >' ) ;
+	 show.push('<td class="td7" ><input type="text" style="width:80px" value="" id="newisdeptip" /></td  >' ) ;
+	 show.push(' <td class="td1 op-area"><a   onclick="javascript:addtab()" href="javascript:void(0)" class="input-greed">添加</a></td>') ;
+	 show.push('</tr>');
+	 $("#intop").append(show.join(""));
 	
-	alert("123213")
 }
-
+function addtab(ct) {
+	var ajax = new Common_Ajax('message');
+	var kpi=$("#newkpiip").val();
+	var weight=$("#newweightip").val();
+	var count_way=$("#newcount_wayip").val();
+	var definition=$("#newdefinitionip").val();
+	var correctly=$("#newcorrectlyip").val();
+	var check_deptcode=$("#newcheck_deptcodeip").val();
+	var check_post=$("#newcheck_postip").val();
+	var isdept=$("#newisdeptip").val();
+	var dept_code=$("#dept\\.dept_code").val();
+	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
+	ajax.config._success = function(data, textStatus) {
+		  window.location.reload();//刷新当前页面.
+	};
+	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_ADDKPI");
+	ajax.addParameter("work","update");
+	ajax.addParameter("parameters", "dept_code=" + dept_code+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
+			+"&definition="+definition+"&correctly="+correctly+"&check_deptcode="+check_deptcode+"&check_post="+check_post
+			+"&isdept="+isdept);
+	ajax.sendAjax();
+	 
+	
+}
 function setControl(ct) {
 	if("save"==ct) {
 		if(cflag == 0) {

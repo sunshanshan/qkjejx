@@ -4,7 +4,7 @@ public class IndexDetail {
 	private int uuid;
 	private String dept_code;//部门code
 	private String kpi;
-	private int cyc;//周期
+	private String cyc;//周期
 	private double weight;//权重
 	private int count_way;//计分方式
 	private String definition;//定义
@@ -32,10 +32,11 @@ public class IndexDetail {
 	public void setKpi(String kpi) {
 		this.kpi = kpi;
 	}
-	public int getCyc() {
+
+	public String getCyc() {
 		return cyc;
 	}
-	public void setCyc(int cyc) {
+	public void setCyc(String cyc) {
 		this.cyc = cyc;
 	}
 	public double getWeight() {
