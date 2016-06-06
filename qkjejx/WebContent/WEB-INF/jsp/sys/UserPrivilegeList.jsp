@@ -200,49 +200,49 @@ function getInfo(obj) {
 	ajax.addParameter("privilege_id","SYS_MANAGER_PRIVILEGE_AJAX_LOAD");
 	ajax.addParameter("parameters","uuid="+obj);
 	ajax.sendAjax();
-}
+	
+	}
 
+	function setControl(ct) {
+		if ("save" == ct) {
+			if (cflag == 0) {
+				$('#label_add').hide();
+				$('#label_save').show();
+				$('#label_del').show();
+				$('#privilege\\.privilege_id').attr("readonly", "true");
+				cflag = 1;
+			}
+		} else if ("add" == ct) {
+			if (cflag == 1) {
+				$('#label_add').show();
+				$('#label_save').hide();
+				$('#label_del').hide();
 
-function setControl(ct) {
-	if("save"==ct) {
-		if(cflag == 0) {
-			$('#label_add').hide();
-			$('#label_save').show();
-			$('#label_del').show();
-			$('#privilege\\.privilege_id').attr("readonly","true");
-			cflag = 1;
-		}		
-	} else if("add"==ct) {
-		if(cflag == 1) {
-			$('#label_add').show();
-			$('#label_save').hide();
-			$('#label_del').hide();
-			
-			$('#message').empty();
-			
-			var new_parent_id = $('#privilege\\.privilege_id').val();
-			
-			form1.reset();
-			$("#privilege\\.lm_user").empty();
-			$("#privilege\\.lm_time").empty();
-			
-			$('#privilege\\.parent_privilege').val(new_parent_id);
-			$('#privilege\\.privilege_id').val(new_parent_id + "_");
-			$('#privilege\\.menu_target').val("mainFrame");
-			$('#privilege\\.menu_url').val("javascript:void(0);");
-			$('#privilege\\.menu_priority').val('0');
-			$('#privilege\\.privilege_id').removeAttr("readonly");
-			cflag = 0;
+				$('#message').empty();
+
+				var new_parent_id = $('#privilege\\.privilege_id').val();
+
+				form1.reset();
+				$("#privilege\\.lm_user").empty();
+				$("#privilege\\.lm_time").empty();
+
+				$('#privilege\\.parent_privilege').val(new_parent_id);
+				$('#privilege\\.privilege_id').val(new_parent_id + "_");
+				$('#privilege\\.menu_target').val("mainFrame");
+				$('#privilege\\.menu_url').val("javascript:void(0);");
+				$('#privilege\\.menu_priority').val('0');
+				$('#privilege\\.privilege_id').removeAttr("readonly");
+				cflag = 0;
+			}
 		}
 	}
-}
-function view(obj) {
-	var str = "";
-	for(var i in obj) {
-		str += i+"\t";
+	function view(obj) {
+		var str = "";
+		for ( var i in obj) {
+			str += i + "\t";
+		}
+		$('message').innerHTML = str;
 	}
-	$('message').innerHTML = str;
-}
 </script>
 </body>
 </html>

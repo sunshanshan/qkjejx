@@ -3,6 +3,7 @@
 <sqlMap>
 	<!-- UserPrivilege Start -->
 	<typeAlias alias="privilege" type="org.iweb.sys.domain.UserPrivilege" />
+	<typeAlias alias="kpi" type="org.iweb.sys.domain.IndexDetail" />
 	<select id="sys_getPrivileges" resultClass="privilege" parameterClass="java.util.Map">
 		<![CDATA[ 
 			Select * From s_sys_privilege
@@ -76,6 +77,25 @@
 		</isNotNull>
 		<![CDATA[ ORDER BY role_rank ]]>
 	</select>
+
+
+				<update id="sys_updateKpi" parameterClass="java.util.Map">
+		<![CDATA[
+			Update qkj_t_indexdetail
+			Set kpi=#kpi#,
+				weight=#weight#,
+				count_way=#count_way#,
+				definition=#definition#,
+				correctly=#correctly#,
+				check_deptcode=#check_deptcode#,
+					check_post=#check_post#,
+						isdept=#isdept#
+			Where uuid=#dept_code#
+		]]>
+	</update>		
+
+
+
 
 	<insert id="sys_addRoles" parameterClass="role">
 		<![CDATA[ 
@@ -203,6 +223,18 @@
 		<isNotNull prepend="AND" property="check_code"><![CDATA[ dept_code Like CONCAT(#check_code#,'%') ]]></isNotNull>
 		<![CDATA[ ORDER BY DEPT_CODE ]]>
 	</select>
+	
+	<select id="sys_getDeptsKpi" resultClass="kpi" parameterClass="java.util.Map">
+		<![CDATA[ 
+			Select * From qkj_t_indexdetail
+			Where 1=1
+		]]>
+		<isNotNull prepend="AND" property="dept_code"><![CDATA[ dept_code=#dept_code# ]]></isNotNull>
+	</select>
+	
+	
+	
+	
 	<select id="sys_getPermitDepts" resultClass="java.lang.String" parameterClass="java.util.Map">
 		<![CDATA[ 
 			Select dept_code From s_sys_department
