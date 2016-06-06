@@ -1,15 +1,21 @@
 package com.qkj.qkjmanager.action;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
+import org.iweb.sys.dao.UserDeptDAO;
+import org.iweb.sys.domain.User;
+import org.iweb.sys.domain.UserDept;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.basics.domain.Check;
@@ -214,6 +220,23 @@ public class VardicAction extends ActionSupport {
 	        String d = sdf.format(vardic.getCheck_ym());
 	        map.remove("check_ym");
 	        map.put("check_ym", d);
+	        List<UserDept> u=new ArrayList<>();
+	        String us=ContextHelper.getUserLoginUuid();
+	        UserDeptDAO udd=new UserDeptDAO();
+	        Map<String, Object> map2 = new HashMap<String, Object>();
+	        map2.clear();
+	        map2.put("user_id", us);
+	        u=udd.list(map2);
+	        List<String> dlist = new ArrayList<>();
+	        if(u.size()>0){
+	        	Set<String> dset = new HashSet<>();
+	        	for(int i=0;i<u.size();i++){
+	        		String t1=u.get(i).getPosition();
+	        		dset.add(t1);
+	        	}
+	        	dlist.addAll(dset);
+	        }
+	        map.put("p", dlist);
 			this.setCvardics(dao.Checklist(map));
 			System.out.println(cvardics.size());
 			this.setRecCount(dao.getResultCount());

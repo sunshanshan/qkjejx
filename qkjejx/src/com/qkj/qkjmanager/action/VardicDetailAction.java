@@ -1,6 +1,5 @@
 package com.qkj.qkjmanager.action;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +8,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iweb.sys.ContextHelper;
-import org.iweb.sys.Parameters;
+import org.iweb.sys.dao.KpiDAO;
+import org.iweb.sys.domain.IndexDetail;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.qkjmanager.dao.VardicDetailDao;
@@ -25,6 +25,7 @@ public class VardicDetailAction extends ActionSupport {
 	private List<VarticDetail> vds;
 	
 	private Vartic vardic;
+	private List<IndexDetail> ids;
 	private String message;
 	private String viewFlag;
 	private int recCount;
@@ -32,6 +33,14 @@ public class VardicDetailAction extends ActionSupport {
 	private int currPage;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核管理";
 
+
+	public List<IndexDetail> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<IndexDetail> ids) {
+		this.ids = ids;
+	}
 
 	public String getPath() {
 		return path;
@@ -114,13 +123,14 @@ public class VardicDetailAction extends ActionSupport {
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
+			}else{
+				map.clear();
+				map.put("dept_code", vardic.getU_code());
+				IndexDetail id=new IndexDetail();
+				KpiDAO kpid=new KpiDAO();
+				this.setIds(kpid.list(map));
 			}
 			
-			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_BASIS_ASSETLIST", map, "apply_depts", "apply_user");
-			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_BASIS_ASSETLIST", map, vardic, viewFlag);
-			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
-			this.setVds(dao.list(map));
-			this.setRecCount(dao.getResultCount());
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!list 读取数据错误:", e);

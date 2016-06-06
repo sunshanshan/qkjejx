@@ -25,81 +25,39 @@ cursor: pointer;
 				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="vartic_load"><s:param name="viewFlag">add</s:param></s:url>">添加考核</a></span>
 			</c:if>
 		</div>
-		<s:form id="serachForm" name="serachForm" action="vartic_list" method="get" namespace="/qkjmanager" theme="simple">
-			<div class="label_con">
-				<div class="label_main">
-					<div class='label_hang'>
-						<div class='label_ltit'>主键:</div>
-						<div class='label_rwben'>
-							<s:textfield name='vardic.uuid' cssClass=' validate[maxSize[10],custom[integer],]' />
-						</div>
-					</div>
-					<%-- <div class='label_hang'>
-						<div class='label_ltit'>结案时间:</div>
-						<div class='label_rwben'>
-							<s:textfield name='closeOrder.close_time' cssClass=' datepicker validate[custom[date],]' />
-						</div>
-					</div> --%>
-					
-					<div class="label_hang">
-						<div class="label_ltit">考核年月:</div>
-						<div class="label_rwben">
-							<input id="begintime" name="vardic.check_ym" type="text" onclick="setmonth(this)" readonly="readonly"/>
-						</div>
-					</div>
-							
-					<div class="label_hang tac">
-						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
-						<label for="search_mcondition"></label>更多条件
-						<s:submit value="搜索" />
-						<s:reset value="重置" />
-					</div>
-				</div>
+		
+		<div class="label_main">
+			<fieldset class="clear">
+				<legend>指标</legend>
+					<table width="100%" cellpadding="0" cellspacing="0" border="0" class="lb_jpin">
+						<tr>
+							<th>kpi</th>
+							<th>权重</th>
+							<th>评分</th>
+							<th>得分</th>
+							<th>周期</th>
+							<th>定义</th>
+							<th>标准</th>
+						</tr>
+										<!-- lading.promotions -->
+						<s:iterator value="ids" status="sta">
+							<tr>
+								<td class="nw">kpi</td>
+								<td class="nw">weight</td>
+								<td class="nw"><input name="vd.check_score" type="text"/></td>
+								<td class="nw"><input name="vd.check_goal" type="text" readonly="readonly"/></td>
+								<td class="nw">cyc</td>
+								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
+								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>			
+							</tr>
+						</s:iterator>
+					</table>
+				</fieldset>
 			</div>
-		</s:form>
-		<div class="tab_warp">
-			<table>
-				<tr id="coltr">
-					<th class="td1">主键</th>
-					<th class="td1">考核年月</th>
-					<th class="td1">被考核人</th>
-					<th class="td1">被考核人部门</th>
-					<th class="td2">考核完成时间</th>
-					<th class="td2">分数</th>
-					<th class="td4">操作</th>
-					<th class="td0">查看</th>
-				</tr>
-				<s:iterator value="vardics" status="sta">
-					<tr id="showtr${uuid}">
-						<td class="td1 nw">${uuid}</td>
-						<td class="td1 nw">${it:formatDate(check_ym,'yyyy-MM')}</td>
-						<td class="td1 nw">${acheck_username}</td>
-						<td class="td1 nw">${acheck_deptname}</td>
-						<td class="td1 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
-						<td class="td2 nw">${check_score}</td>
-						<td class="td4 op-area">
-							<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="vartic_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
-							</c:if> 
-					    	<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_DEL',null)==true}">
-								<a class="input-red" href="<s:url namespace="/qkjmanager" action="vartic_del"><s:param name="vardic.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
-							</c:if></td>
-						<td class="td0 op-area"><a href="javascript:;" onClick="showDetail('showtr${uuid}');" class="input-nostyle">查看</a></td>
-					</tr>
-				</s:iterator>
-			</table>
-		</div>
-		<div id="listpage" class="pagination"></div>
 	</div>
 </div>
 
 <s:action name="ref_foot" namespace="/manager" executeResult="true" />
 <script type="text/javascript" src="<s:url value="/js/DatePicker.js" />"></script>
-<script type="text/javascript">
-$(function(){
-	printPagination("listpage",'${currPage}','${recCount}','${pageSize}');
- });
- 
-</script>
 </body>
 </html>
