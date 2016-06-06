@@ -48,6 +48,7 @@
 					<s:form name="form1" cssClass="validForm" action="dept_add" namespace="/sys" onsubmit="return validator(this);" method="post" theme="simple">
 						<div class="label_main">
 							<input type="button" value="新增部门" onClick="setControl('add');" />
+							<input type="button" value="新增kpi" onClick="setkpi();" />
 						</div>	
 						<div class="label_main">
 							<div class="label_hang">
@@ -80,6 +81,26 @@
 								<div class="label_ltit">描述:</div>
 								<div class="label_rwbenx"><s:textfield id="dept.descriptions" name="dept.descriptions" cssClass="label_hang_linput"/></div>
 							</div>
+					
+							<div class="tab_warp">
+				       <table  id="intop">
+		<tr>
+		<th class="td1" >部门名称</th  >
+		<th class="td3" >kpi</th  >
+		 <th class="td3" >周期</th  >
+		<th class="td4" >权重</th  >
+		<th class="td5" >计分方式</th  >
+		<th class="td6" >指标定义</th >
+		<th class="td7" >指标标准</th >
+		 <th class="td5" >横向考核部门 </th  >
+		 <th class="td6" >横向考核岗位</th  >
+		 <th class="td7" >取部门得分</th  >
+		  <th class="td8" >操作</th  >
+		</tr>
+		</table>
+							
+									</div>
+									
 							<div class="label_hang clear">
 								<div class="label_ltit">修改人:</div>
 								<div class="label_rwbenx"><span id="dept.lm_user"></span></div>
@@ -169,7 +190,127 @@ function getInfo(obj) {
 	ajax.addParameter("privilege_id","SYS_MANAGER_DEPT_AJAX_LOAD");
 	ajax.addParameter("parameters","uuid="+obj);
 	ajax.sendAjax();
+	getIndexDetail(obj);
 }
+
+function getIndexDetail(obj) {
+	var ajax = new Common_Ajax('message');
+	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
+	ajax.config._success = function(data, textStatus) {
+		var arr=data;
+		var show = new Array(); 
+		var dept_name=$("#dept\\.dept_cname").val();
+		$("[name='deletetd']").remove();
+		for (var i in arr) {  
+			 show.push('<tr name="deletetd" id="'+arr[i].uuid+'tr">');
+			 show.push('<td class="td1"  >'+dept_name+'</td  >' ) ;
+			 show.push('<td class="td2"  id="'+arr[i].uuid+'kpi">'+ arr[i].kpi+'</td  >' ) ;
+			 show.push('<td class="td3"  id="'+arr[i].uuid+'cyc">'+ arr[i].cyc+'</td  >' ) ;
+			 show.push('<td class="td4"  id="'+arr[i].uuid+'weight">'+ arr[i].weight+'</td  >' ) ;
+			 show.push('<td class="td5" id="'+arr[i].uuid+'count_way">'+ arr[i].count_way+'</td  >' ) ;
+			 show.push('<td class="td6"  id="'+arr[i].uuid+'definition">'+ arr[i].definition+'</td  >' ) ;
+			 show.push('<td class="td7" id="'+arr[i].uuid+'correctly">'+ arr[i].correctly+'</td  >' ) ;
+			 show.push('<td class="td5" id="'+arr[i].uuid+'check_deptcode">'+ arr[i].check_deptcode+'</td  >' ) ;
+			 show.push('<td class="td6" id="'+arr[i].uuid+'check_post">'+ arr[i].check_post+'</td  >' ) ;
+			 show.push('<td class="td7" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
+			 show.push(' <td class="td1 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a></td>') ;
+			 show.push('</tr>');
+			}  
+		 $("#intop").append(show.join(""));
+	};
+	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_LOADKPI");
+	ajax.addParameter("parameters", "dept_code=" + obj);
+	ajax.sendAjax();
+}
+function updatedetermine(obj){
+	var ajax = new Common_Ajax('message');
+	var kpi=$("#"+obj+"kpiip").val();
+	 var weight=$("#"+obj+"weightip").val();
+	 var cyc=$("#"+obj+"cyc").val();
+	 var count_way=$("#"+obj+"count_wayip").val();
+	 var definition=$("#"+obj+"definitionip").val();
+	 var correctly=$("#"+obj+"correctlyip").val();
+	 var check_deptcode=$("#"+obj+"check_deptcodeip").val();
+	 var check_post=$("#"+obj+"check_postip").val();
+	 var isdept=$("#"+obj+"isdeptip").val();
+	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
+	ajax.config._success = function(data, textStatus) {
+		var show = new Array(); 
+		var dept_name=$("#dept\\.dept_cname").val();
+		 show.push('<td class="td1">'+dept_name+'</td  >' ) ;
+		 show.push('<td class="td2"  id="'+obj+'kpi">'+kpi+'</td  >' ) ;
+		 show.push('<td class="td3"  id="'+obj+'cyc">'+ cyc+'</td  >' ) ;
+		 show.push('<td class="td4"  id="'+obj+'weight">'+weight+'</td  >' ) ;
+		 show.push('<td class="td5" id="'+obj+'count_way">'+count_way+'</td  >' ) ;
+		 show.push('<td class="td6"  id="'+obj+'definition">'+ definition+'</td  >' ) ;
+		 show.push('<td class="td7" id="'+obj+'correctly">'+correctly+'</td  >' ) ;
+		 show.push('<td class="td5" id="'+obj+'check_deptcode">'+check_deptcode+'</td  >' ) ;
+		 show.push('<td class="td6" id="'+obj+'check_post">'+ check_post+'</td  >' ) ;
+		 show.push('<td class="td7" id="'+obj+'isdept">'+isdept+'</td  >' ) ;
+		 show.push(' <td class="td1 op-area"><a  id="'+obj+'buttb" onclick="javascript:updatetab('+obj+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+obj+'buttd" onclick="javascript:updatedetermine('+obj+')" href="javascript:void(0)" class="input-greed">保存</a></td>') ;
+		 $("#"+obj+"tr").empty();	
+		 $("#"+obj+"tr").append(show.join(""));
+	};
+	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_UPDATEKPI");
+	ajax.addParameter("work","update");
+	ajax.addParameter("parameters", "dept_code=" + obj+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
+			+"&definition="+definition+"&correctly="+correctly+"&check_deptcode="+check_deptcode+"&check_post="+check_post
+			+"&isdept="+isdept);
+	ajax.sendAjax();
+}
+
+
+function updatetab(obj) {
+	var show = new Array(); 
+	var kpi=$("#"+obj+"kpi").text();
+	 show.push('<input type="text" value="'+kpi+'" id="'+obj+'kpiip" />');
+	 $("#"+obj+"kpi").text("");
+	 $("#"+obj+"kpi").append(show.join(""));
+	 show=[];
+	 var weight=$("#"+obj+"weight").text();
+	 show.push('<input type="text" value="'+weight+'" id="'+obj+'weightip" />');
+	 $("#"+obj+"weight").text("");
+	 $("#"+obj+"weight").append(show.join(""));
+	 show=[];
+	 var count_way=$("#"+obj+"count_way").text();
+	 show.push('<input type="text" style="width:80px" value="'+count_way+'" id="'+obj+'count_wayip" />');
+	 $("#"+obj+"count_way").text("");
+	 $("#"+obj+"count_way").append(show.join(""));
+	 show=[];
+	 var definition=$("#"+obj+"definition").text();
+	 show.push('<input type="text" style="width:80px" value="'+definition+'" id="'+obj+'definitionip" />');
+	 $("#"+obj+"definition").text("");
+	 $("#"+obj+"definition").append(show.join(""));
+	 show=[];
+	 var correctly=$("#"+obj+"correctly").text();
+	 show.push('<input type="text" style="width:80px" value="'+correctly+'" id="'+obj+'correctlyip" />');
+	 $("#"+obj+"correctly").text("");
+	 $("#"+obj+"correctly").append(show.join(""));
+	 show=[];
+	 var check_deptcode=$("#"+obj+"check_deptcode").text();
+	 show.push('<input type="text" style="width:80px" value="'+check_deptcode+'" id="'+obj+'check_deptcodeip" />');
+	 $("#"+obj+"check_deptcode").text("");
+	 $("#"+obj+"check_deptcode").append(show.join(""));
+	 show=[];
+	 var check_post=$("#"+obj+"check_post").text();
+	 show.push('<input type="text" style="width:80px" value="'+check_post+'" id="'+obj+'check_postip" />');
+	 $("#"+obj+"check_post").text("");
+	 $("#"+obj+"check_post").append(show.join(""));
+	 show=[];
+	 var isdept=$("#"+obj+"isdept").text();
+	 show.push('<input type="text" style="width:80px" value="'+isdept+'" id="'+obj+'isdeptip" />');
+	 $("#"+obj+"isdept").text("");
+	 $("#"+obj+"isdept").append(show.join(""));
+	 show=[];
+	 $("#"+obj+"buttd").show()
+	  $("#"+obj+"buttb").hide()
+}
+
+function setkpi() {
+	
+	alert("123213")
+}
+
 function setControl(ct) {
 	if("save"==ct) {
 		if(cflag == 0) {
