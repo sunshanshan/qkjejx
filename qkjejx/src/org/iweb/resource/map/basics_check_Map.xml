@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "sql-map-2.dtd">
+<sqlMap>
+	<typeAlias alias="check" type="com.qkj.basics.domain.Check" />
+	<select id="basics_getChecks" resultClass="check" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select c.*,addu.USER_NAME add_username,mdyu.USER_NAME lm_username from qkj_r_check c 
+			left join s_sys_user addu on(c.add_user=addu.uuid)
+			left join s_sys_user mdyu on(c.lm_user=mdyu.uuid)
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="ym"><![CDATA[ c.ym=#ym# ]]></isNotNull>
+			<isNotNull prepend="AND" property="state"><![CDATA[ c.state=#state# ]]></isNotNull>
+		</dynamic>
+	</select>
+
+	<insert id="basics_addCheck" parameterClass="check">
+		<![CDATA[ 
+			insert into qkj_r_check(ym,state,acheck_startdate,acheck_closedate,dcheck_startdate,dcheck_closedate,echeck_startdate,echeck_closedate,add_user,add_time,lm_user,lm_time)
+			VALUES(#ym#,#state#,#acheck_startdate#,#acheck_closedate#,#dcheck_startdate#,#dcheck_closedate#,#echeck_startdate#,#echeck_closedate#,#add_user#,#add_time#,#lm_user#,#lm_time#);
+		]]>
+		
+		
+		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
+       	 	select @@IDENTITY as value     
+    	 </selectKey>   
+	</insert>
+	
+	<update id="basics_mdyCheck" parameterClass="check">
+		<![CDATA[
+			Update qkj_r_check
+			Set ym=#ym#,
+				state=#state#,
+				acheck_startdate=#acheck_startdate#,
+				acheck_closedate=#acheck_closedate#,
+				dcheck_startdate=#dcheck_startdate#,	
+				dcheck_closedate=#dcheck_closedate#,
+				echeck_startdate=#echeck_startdate#,	
+				echeck_closedate=#echeck_closedate#,
+				lm_time=#lm_time#,
+				lm_user=#lm_user#
+			Where uuid=#uuid#
+		]]>
+	</update>
+	
+	<delete id="basics_delCheck" parameterClass="check">
+		<![CDATA[
+			Delete From qkj_r_check where uuid=#uuid#
+		]]>
+	</delete>
+
+	<delete id="basics_delChecks" parameterClass="check">
+		<![CDATA[
+			Delete From qkj_r_check
+		]]>
+		<![CDATA[ Where uuid In ]]>
+		<iterate property="uuid" open="(" close=")" conjunction=" , "> #uuid[]#</iterate>
+	</delete>
+
+	
+</sqlMap>

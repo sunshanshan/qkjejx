@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="qkjmanager" extends="default" namespace="/qkjmanager">
+	<!-- qkj_r_score Start -->
+		<action name="vartic_list" class="com.qkj.qkjmanager.action.VardicAction" method="list">
+			<result>/WEB-INF/jsp/qkjmanager/varticList.jsp</result>
+		</action>
+		
+		<action name="vartic_load" class="com.qkj.qkjmanager.action.VardicAction" method="load">
+			<result>/WEB-INF/jsp/qkjmanager/varticEdit.jsp</result>
+		</action>
+		
+		<action name="vartic_save" class="com.qkj.qkjmanager.action.VardicAction" method="save">
+			<result type="redirectAction">
+				<param name="actionName">vartic_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="vartic_add" class="com.qkj.qkjmanager.action.VardicAction" method="add">
+			<result type="redirectAction">
+				<param name="actionName">vartic_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="vartic_del" class="com.qkj.qkjmanager.action.VardicAction" method="del">
+			<result type="redirectAction">
+				<param name="actionName">vartic_list</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="vartic_checklist" class="com.qkj.qkjmanager.action.VardicAction" method="checklist">
+			<result>/WEB-INF/jsp/qkjmanager/varticEdit.jsp</result>
+		</action>
+		
+	<!-- qkj_r_score end -->
+	<!-- qkj_r_sonscore Start -->
+		<action name="varticDetail_list" class="com.qkj.qkjmanager.action.VardicDetailAction" method="list">
+			<result>/WEB-INF/jsp/qkjmanager/varticDetailList.jsp</result>
+		</action>
+		
+		<action name="varticDetail_load" class="com.qkj.qkjmanager.action.VardicDetailAction" method="load">
+			<result>/WEB-INF/jsp/qkjmanager/varticEdit.jsp</result>
+		</action>
+		
+		<action name="varticDetail_save" class="com.qkj.qkjmanager.action.VardicDetailAction" method="save">
+			<result type="redirectAction">
+				<param name="actionName">vartic_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="varticDeail_add" class="com.qkj.qkjmanager.action.VardicDetailAction" method="add">
+			<result type="redirectAction">
+				<param name="actionName">vartic_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="varticDetail_del" class="com.qkj.qkjmanager.action.VardicDetailAction" method="del">
+			<result type="redirectAction">
+				<param name="actionName">vartic_list</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		
+	<!-- qkj_r_sonscore end -->
+	
+	
+	</package>
+</struts>
