@@ -17,6 +17,7 @@ import org.iweb.sys.JSONUtil;
 import org.iweb.sys.ToolsUtil;
 import org.iweb.sys.dao.DepartmentDAO;
 import org.iweb.sys.domain.Department;
+import org.iweb.sys.domain.IndexDetail;
 import org.iweb.sys.domain.UserLoginInfo;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -31,7 +32,16 @@ public class DepartmentAction extends ActionSupport implements ServletRequestAwa
 
 	private Department dept;
 	private List<Department> depts;
+	private List<IndexDetail>indexdetail;
 	private String message;
+
+	public List<IndexDetail> getIndexdetail() {
+		return indexdetail;
+	}
+
+	public void setIndexdetail(List<IndexDetail> indexdetail) {
+		this.indexdetail = indexdetail;
+	}
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
