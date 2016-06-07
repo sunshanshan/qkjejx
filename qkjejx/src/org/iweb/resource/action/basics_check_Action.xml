@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="Basics" extends="default" namespace="/basics">
+	<!-- qkj_r_check Start -->
+		<action name="check_list" class="com.qkj.basics.action.CheckAction" method="list">
+			<result>/WEB-INF/jsp/basics/checkList.jsp</result>
+		</action>
+		
+		<action name="check_load" class="com.qkj.basics.action.CheckAction" method="load">
+			<result>/WEB-INF/jsp/basics/checkEdit.jsp</result>
+		</action>
+		
+		<action name="check_save" class="com.qkj.basics.action.CheckAction" method="save">
+			<result type="redirectAction">
+				<param name="actionName">check_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="check.uuid">${check.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_add" class="com.qkj.basics.action.CheckAction" method="add">
+			<result type="redirectAction">
+				<param name="actionName">check_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="check.uuid">${check.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="check_del" class="com.qkj.basics.action.CheckAction" method="del">
+			<result type="redirectAction">
+				<param name="actionName">check_list</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+	<!-- qkj_r_check end -->
+	</package>
+</struts>

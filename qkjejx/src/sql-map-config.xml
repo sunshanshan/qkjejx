@@ -20,4 +20,8 @@
 	<!-- 以下为自定义的MAP文件 -->
 	<sqlMap resource="org/iweb/resource/map/sys_Map.xml" />
 	
+	<!--基本管理-->
+	<sqlMap resource="org/iweb/resource/map/basics_check_Map.xml" />
+	<!--业务管理-->
+	<sqlMap resource="org/iweb/resource/map/qkjmanager_vartic_Map.xml" />
 </sqlMapConfig>

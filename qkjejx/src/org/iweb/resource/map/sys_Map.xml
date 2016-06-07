@@ -527,7 +527,7 @@ VALUES ( #dept_code#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #che
 	
 	<update id="sys_mdyUserDept" parameterClass="userDept">
 		<![CDATA[
-			Update s_sys_userdept p
+			Update s_sys_userdept
 			Set dept_code = #dept_code#,
 				position=#position#,
 				depsubover=#depsubover#,
