@@ -79,7 +79,7 @@ s
 							<td class="td1 nw">${check_score }</td>
 							<td class="td4 op-area">
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-									<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_list"><s:param name="vardic.u_id" value="u_id"></s:param><s:param name="vardic.u_code" value="u_code"></s:param><s:param name="vardic.check_ym" value="vardic.check_ym"></s:param></s:url>">考核</a>
+									<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_list"><s:param name="vardic.u_id" value="u_id"></s:param><s:param name="vardic.check_ym" value="vardic.check_ym"></s:param></s:url>">考核</a>
 								</c:if> 
 						    </td>
 						</tr>

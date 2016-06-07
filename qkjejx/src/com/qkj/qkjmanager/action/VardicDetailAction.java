@@ -9,7 +9,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.dao.KpiDAO;
+import org.iweb.sys.dao.UserDAO;
 import org.iweb.sys.domain.IndexDetail;
+import org.iweb.sys.domain.User;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.qkjmanager.dao.VardicDetailDao;
@@ -26,6 +28,7 @@ public class VardicDetailAction extends ActionSupport {
 	
 	private Vartic vardic;
 	private List<IndexDetail> ids;
+	private User user;
 	private String message;
 	private String viewFlag;
 	private int recCount;
@@ -117,6 +120,14 @@ public class VardicDetailAction extends ActionSupport {
 		this.vds = vds;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public String list() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST");
 		try {
@@ -129,6 +140,10 @@ public class VardicDetailAction extends ActionSupport {
 				IndexDetail id=new IndexDetail();
 				KpiDAO kpid=new KpiDAO();
 				this.setIds(kpid.list(map));
+				String userid=vardic.getU_id();
+				Date km=vardic.getCheck_ym();
+				UserDAO ud=new UserDAO();
+				this.setUser((User)ud.get(userid));
 			}
 			
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";

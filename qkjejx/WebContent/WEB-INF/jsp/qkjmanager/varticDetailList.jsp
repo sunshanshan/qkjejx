@@ -27,6 +27,21 @@ cursor: pointer;
 		</div>
 		
 		<div class="label_main">
+			<div class="label_hang">
+				<div class="label_ltit">考核年月:</div>
+					<div class="label_rwben">
+						<input id="begintime" name="vardic.check_ym" type="text" onclick="setmonth(this)" readonly="readonly" value="${it:formatDate(vardic.check_ym,'yyyy-MM')}"/>
+					</div>
+			</div>
+			<div class="label_hang">
+				<div class="label_ltit">姓名:</div>
+					<div class="label_rwben">
+						<input id="begintime" name="vardic.check_ym" type="text" onclick="setmonth(this)" readonly="readonly" value="${it:formatDate(vardic.check_ym,'yyyy-MM')}"/>
+					</div>
+			</div>				
+		</div>
+					
+		<div class="label_main">
 			<fieldset class="clear">
 				<legend>指标</legend>
 					<table width="100%" cellpadding="0" cellspacing="0" border="0" class="lb_jpin">
@@ -42,11 +57,11 @@ cursor: pointer;
 										<!-- lading.promotions -->
 						<s:iterator value="ids" status="sta">
 							<tr>
-								<td class="nw">kpi</td>
-								<td class="nw">weight</td>
+								<td class="nw">${kpi }</td>
+								<td class="nw">${weight }</td>
 								<td class="nw"><input name="vd.check_score" type="text"/></td>
 								<td class="nw"><input name="vd.check_goal" type="text" readonly="readonly"/></td>
-								<td class="nw">cyc</td>
+								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>			
 							</tr>
