@@ -14,13 +14,13 @@ import org.apache.commons.logging.LogFactory;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
 import org.iweb.sys.dao.UserDeptDAO;
-import org.iweb.sys.domain.User;
 import org.iweb.sys.domain.UserDept;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.qkj.basics.domain.Check;
 import com.qkj.qkjmanager.dao.VardicDao;
+import com.qkj.qkjmanager.dao.VardicDetailDao;
 import com.qkj.qkjmanager.domain.Vartic;
+import com.qkj.qkjmanager.domain.VarticDetail;
 
 public class VardicAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
@@ -163,6 +163,7 @@ public class VardicAction extends ActionSupport {
 	public String add() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_ADD");
 		try {
+			vardic.setTypea(1);//纵向考核
 			vardic.setCheck_user(ContextHelper.getUserLoginUuid());
 			vardic.setCheck_date(new Date());
 			vardic.setLm_user(ContextHelper.getUserLoginUuid());
@@ -192,11 +193,19 @@ public class VardicAction extends ActionSupport {
 	public String del() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_DEL");
 		try {
+			dao.startTransaction();
 			dao.del(vardic);
+			VardicDetailDao vd=new VardicDetailDao();
+			VarticDetail vdc=new VarticDetail();
+			vdc.setScore_id(vardic.getUuid());
+			vd.delformV(vdc);
 			setMessage("删除成功!ID=" + vardic.getUuid());
+			dao.commitTransaction();
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!del 数据删除失败:", e);
 			throw new Exception(this.getClass().getName() + "!del 数据删除失败:", e);
+		}finally {
+			dao.endTransaction();
 		}
 		return SUCCESS;
 	}

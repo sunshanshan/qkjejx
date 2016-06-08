@@ -40,7 +40,7 @@ s
 		<div class="tab_warp main">
 			<div class="dq_step">${path}
 				<span class="opb lb op-area">
-						<a href="<s:url action="check_list" namespace="/basics"><s:param name="viewFlag">relist</s:param></s:url>">返回列表</a>
+						<a href="<s:url action="vartic_list" namespace="/qkjmanager"></s:url>">返回列表</a>
 				</span>
 			</div>
 			
@@ -79,7 +79,7 @@ s
 							<td class="td1 nw">${check_score }</td>
 							<td class="td4 op-area">
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-									<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_list"><s:param name="vardic.u_id" value="u_id"></s:param><s:param name="vardic.check_ym" value="vardic.check_ym"></s:param></s:url>">考核</a>
+									<a class="input-blue" href="/qkjmanager/varticDetail_list?vardic.u_id=${u_id }&vardic.u_code=${u_code}&vardic.check_ym=${it:formatDate(vardic.check_ym,'yyyy-MM')}&viewFlag=add">考核</a>
 								</c:if> 
 						    </td>
 						</tr>

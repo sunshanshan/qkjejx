@@ -48,12 +48,12 @@
 		</action>
 		
 		<action name="varticDetail_load" class="com.qkj.qkjmanager.action.VardicDetailAction" method="load">
-			<result>/WEB-INF/jsp/qkjmanager/varticEdit.jsp</result>
+			<result>/WEB-INF/jsp/qkjmanager/varticDetailList.jsp</result>
 		</action>
 		
 		<action name="varticDetail_save" class="com.qkj.qkjmanager.action.VardicDetailAction" method="save">
 			<result type="redirectAction">
-				<param name="actionName">vartic_load</param>
+				<param name="actionName">varticDetail_load</param>
 				<param name="viewFlag">mdy</param>
 				<param name="vardic.uuid">${vardic.uuid}</param>
 				<param name="message">${message}</param>
@@ -62,7 +62,7 @@
 		
 		<action name="varticDeail_add" class="com.qkj.qkjmanager.action.VardicDetailAction" method="add">
 			<result type="redirectAction">
-				<param name="actionName">vartic_load</param>
+				<param name="actionName">varticDetail_load</param>
 				<param name="viewFlag">mdy</param>
 				<param name="vardic.uuid">${vardic.uuid}</param>
 				<param name="message">${message}</param>

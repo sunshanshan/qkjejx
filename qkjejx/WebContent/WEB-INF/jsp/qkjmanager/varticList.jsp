@@ -79,7 +79,7 @@ cursor: pointer;
 						<td class="td2 nw">${check_score}</td>
 						<td class="td4 op-area">
 							<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="vartic_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
+								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
 							</c:if> 
 					    	<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_DEL',null)==true}">
 								<a class="input-red" href="<s:url namespace="/qkjmanager" action="vartic_del"><s:param name="vardic.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>

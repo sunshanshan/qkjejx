@@ -37,6 +37,18 @@ public class VardicDao extends AbstractDAO {
 	public void save(Object parameters) {
 		super.save("qkjmanager_mdyVartics", parameters);
 	}
+	
+	public void saveScore(Object parameters) {
+		super.save("qkjmanager_mdyVarticsCore", parameters);
+	}
+	
+	public void saveBycheck(String uuid) {
+		super.save("qkjmanager_mdyCheckCord", uuid);
+	}
+	
+	public void saveByay(Object parameters) {
+		super.save("qkjmanager_mdyayCord", parameters);
+	}
 
 	/**
 	 * 删除客户信息

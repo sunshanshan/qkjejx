@@ -51,6 +51,10 @@ public class VardicDetailDao extends AbstractDAO {
 	public void del(Object parameters) {
 		super.save("qkjmanager_delVarticDetail", parameters);
 	}
+	
+	public void delformV(Object parameters) {
+		super.save("qkjmanager_delVarticDetailfromV", parameters);
+	}
 
 
 	public int getResultCount() {

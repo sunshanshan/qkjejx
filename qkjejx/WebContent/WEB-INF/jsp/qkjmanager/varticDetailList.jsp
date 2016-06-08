@@ -22,30 +22,61 @@ cursor: pointer;
 		<div class="dq_step">
 			${path}
 			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="vartic_load"><s:param name="viewFlag">add</s:param></s:url>">添加考核</a></span>
+				<span class="opb lb op-area"><a href="JavaScript:history.go(-1)">返回</a></span>
 			</c:if>
 		</div>
-		
+	<s:form id="editForm" name="editForm" cssClass="validForm" action="varticDeail_add" namespace="/qkjmanager" method="post" theme="simple">
 		<div class="label_main">
 			<div class="label_hang">
 				<div class="label_ltit">考核年月:</div>
 					<div class="label_rwben">
-						<input id="begintime" name="vardic.check_ym" type="text" onclick="setmonth(this)" readonly="readonly" value="${it:formatDate(vardic.check_ym,'yyyy-MM')}"/>
+					${it:formatDate(vardic.check_ym,'yyyy-MM')}
+						<input type="hidden" name="vardic.check_ym" value="${it:formatDate(vardic.check_ym,'yyyy-MM')}">
 					</div>
 			</div>
+			
+			<s:if test="'mdy' == viewFlag">	
 			<div class="label_hang">
 				<div class="label_ltit">姓名:</div>
 					<div class="label_rwben">
-						<input id="begintime" name="vardic.check_ym" type="text" onclick="setmonth(this)" readonly="readonly" value="${it:formatDate(vardic.check_ym,'yyyy-MM')}"/>
+						${vardic.acheck_username }
 					</div>
-			</div>				
+			</div>	
+			
+			<div class="label_hang">
+				<div class="label_ltit">部门:</div>
+					<div class="label_rwben">
+						${vardic.acheck_deptname }
+					</div>
+			</div>	
+			</s:if>
+			<s:else>
+			<div class="label_hang">
+				<div class="label_ltit">姓名:</div>
+					<div class="label_rwben">
+						${user.user_name }
+						<input type="hidden" name="vardic.acheck_user" value="${user.uuid}">
+					</div>
+			</div>	
+			
+			<div class="label_hang">
+				<div class="label_ltit">部门:</div>
+					<div class="label_rwben">
+						${user.dept_cname }
+						<input type="hidden" name="vardic.acheck_usercode" value="${user.dept_code}">
+					</div>
+			</div>	
+			</s:else>
+						
 		</div>
-					
+		<s:if test="'add' == viewFlag">			
 		<div class="label_main">
 			<fieldset class="clear">
 				<legend>指标</legend>
-					<table width="100%" cellpadding="0" cellspacing="0" border="0" class="lb_jpin">
+				
+					<table id="t" width="100%" cellpadding="0" cellspacing="0" border="0" class="lb_jpin">
 						<tr>
+							<th>编号</th>
 							<th>kpi</th>
 							<th>权重</th>
 							<th>评分</th>
@@ -55,24 +86,153 @@ cursor: pointer;
 							<th>标准</th>
 						</tr>
 										<!-- lading.promotions -->
+						
 						<s:iterator value="ids" status="sta">
-							<tr>
+							<tr id="showtr${uuid}">
+								<td class="nw">${uuid }</td>
 								<td class="nw">${kpi }</td>
-								<td class="nw">${weight }</td>
-								<td class="nw"><input name="vd.check_score" type="text"/></td>
-								<td class="nw"><input name="vd.check_goal" type="text" readonly="readonly"/></td>
+								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
+								<td class="nw" width="100px;"><input id="s${uuid }" type="text" onblur="kpi('${uuid}');" class="validate[required]" /></td>
+								<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]"/></td>
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>			
 							</tr>
 						</s:iterator>
+						
 					</table>
 				</fieldset>
 			</div>
+			
+			<div class="label_main">
+						<div class="label_hang">
+							<div class="label_ltit">相关操作:</div>
+							<div class="label_rwbenx">
+								<font color="red"><span id="messages"></span></font>
+								
+									<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
+										<button class="input-blue" onclick="add();">添加</button>
+									</c:if>
+							</div>
+						</div>
+			</div>
+			</s:if>
+		</s:form>
+		<s:if test="'mdy' == viewFlag">	
+		<div class="label_main">
+			<fieldset class="clear">
+				<legend>指标</legend>
+					<table id="t" width="100%" cellpadding="0" cellspacing="0" border="0" class="lb_jpin">
+						<tr>
+							<th>编号</th>
+							<th>kpi</th>
+							<th>权重</th>
+							<th>评分</th>
+							<th>得分</th>
+							<th>周期</th>
+							<th>定义</th>
+							<th>标准</th>
+							<th>操作</th>
+						</tr>
+										<!-- lading.promotions -->
+						<s:iterator value="vds" status="sta">
+							<tr id="showtr${uuid}">
+								<td class="nw">${uuid }</td>
+								<td class="nw">${kpi }</td>
+								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
+								<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
+								<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
+								<td class="nw">${cyc }</td>
+								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
+								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
+								<td class="longnote" title="${correctly}">
+								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
+								</td>			
+							</tr>
+						</s:iterator>
+					</table>
+				</fieldset>
+			</div>
+		</s:if>
 	</div>
 </div>
 
 <s:action name="ref_foot" namespace="/manager" executeResult="true" />
 <script type="text/javascript" src="<s:url value="/js/DatePicker.js" />"></script>
+<script type="text/javascript">
+var checkSubmitFlg = false;
+
+function kpi(uuid){
+	var sid="s"+uuid;
+	var gid="g"+uuid;
+	var wid="w"+uuid;
+	var sp=document.getElementById(sid).value;
+	var wp=document.getElementById(wid).value;
+	document.getElementById(gid).value=sp*wp;
+}
+
+function add(){
+	var obj=new Array();
+	 var flag=true;
+	  var tableObj = document.getElementById("t");
+	  for (var i = 1; i < tableObj.rows.length; i++) {  //遍历Table的所有Row
+		  var tableInfo = "";
+	    for (var j = 0; j < tableObj.rows[i].cells.length; j++) {  //遍历Row中的每一列
+	    	if(j==1||j==2||j==5||j==6||j==7){
+	    		continue;
+	    	}else{
+	    		if(j==3){
+	    			var sid="s"+tableObj.rows[i].cells[0].innerText;//分数
+	    			var sp=document.getElementById(sid).value;
+	    			if(sp==null||sp==""){
+	    				flag=false;
+	    				break;
+	    			}
+	    			tableInfo += sp+",";
+	    		}else if(j==4){
+	    			var gid="g"+tableObj.rows[i].cells[0].innerText;
+	    			var gp=document.getElementById(gid).value;
+	    			tableInfo += gp+",";
+	    			if(gp==null||gp==""){
+	    				flag=false;
+	    				break;
+	    			}
+	    		}else{
+	    			tableInfo = tableObj.rows[i].cells[j].innerText;  //uuid
+	    			tableInfo = tableInfo+",";
+	    		}
+	    	}
+	    	 
+	    }
+	    tableInfo+=";";
+	   obj[i]=tableInfo;
+	   
+	  }
+	  
+	   if (!checkSubmitFlg) {
+		// 第一次提交
+		  checkSubmitFlg = true;
+		  if(flag==true){
+			  document.getElementById("editForm").action="/qkjmanager/varticDeail_add?aArray="+obj;
+		  }else{
+			  alert("所评分数不能为空！");
+		  }
+		 } else {
+		//重复提交
+		  return false;
+		 }
+}
+
+
+function mdy(uuid,so){
+	var sid="s"+uuid;
+	var gid="g"+uuid;
+	var sp=document.getElementById(sid).value;
+	var gp=document.getElementById(gid).value;
+	alert(gp);
+	window.location.href="/qkjmanager/varticDetail_save?vd.uuid="+uuid+"&vd.check_score="+sp+"&vd.check_goal="+gp+"&vd.score_id="+so;
+}
+
+</script>
 </body>
 </html>
