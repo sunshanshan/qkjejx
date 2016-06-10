@@ -11,18 +11,19 @@ public class Vartic {
 	private String acheck_usercode;// 被考核人部门
 	private String lm_user;// (varchar)最后修改人
 	private Date lm_time;// (datetime)最后修改时间
-	private Integer check_id;// 考核管理表考核打开的年月
-	private Double check_score;// 总得分 （横向+纵）
-	private Integer check_index;//考核指标
+	private Date check_ym;// 考核管理表考核打开的年月
+	private Double check_score;// 总得分 （横向/纵）
+	
+	private Double ay_totelScore;//总得分 （横向+纵）
 	
 	private String check_username;
 	private String acheck_username;
 	private String lm_username;
 	private String check_deptname;
 	private String acheck_deptname;
-	private Date check_ym;
-	private String u_id; 
+	private String u_id;  
 	private String u_code;
+	private Integer typea;//0横向1纵向
 	
 	private Date acheck_startdate;// 横向考核开始时间
 	private Date acheck_closedate;// 横向考核结束时间
@@ -32,6 +33,22 @@ public class Vartic {
 	private Date echeck_closedate;// 员工考核结束时间
 	
 	
+
+	public Double getAy_totelScore() {
+		return ay_totelScore;
+	}
+
+	public void setAy_totelScore(Double ay_totelScore) {
+		this.ay_totelScore = ay_totelScore;
+	}
+
+	public Integer getTypea() {
+		return typea;
+	}
+
+	public void setTypea(Integer typea) {
+		this.typea = typea;
+	}
 
 	public Integer getUuid() {
 		return uuid;
@@ -81,13 +98,6 @@ public class Vartic {
 		this.acheck_usercode = acheck_usercode;
 	}
 
-	public Integer getCheck_id() {
-		return check_id;
-	}
-
-	public void setCheck_id(Integer check_id) {
-		this.check_id = check_id;
-	}
 
 	public Double getCheck_score() {
 		return check_score;
@@ -161,13 +171,6 @@ public class Vartic {
 		this.check_ym = check_ym;
 	}
 
-	public Integer getCheck_index() {
-		return check_index;
-	}
-
-	public void setCheck_index(Integer check_index) {
-		this.check_index = check_index;
-	}
 
 	public Date getAcheck_startdate() {
 		return acheck_startdate;

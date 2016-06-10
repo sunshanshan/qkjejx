@@ -1,5 +1,6 @@
 package com.qkj.qkjmanager.action;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.iweb.sys.domain.IndexDetail;
 import org.iweb.sys.domain.User;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.qkj.qkjmanager.dao.VardicDao;
 import com.qkj.qkjmanager.dao.VardicDetailDao;
 import com.qkj.qkjmanager.domain.Vartic;
 import com.qkj.qkjmanager.domain.VarticDetail;
@@ -23,6 +25,7 @@ public class VardicDetailAction extends ActionSupport {
 	private static Log log = LogFactory.getLog(VardicDetailAction.class);
 	private Map<String, Object> map = new HashMap<String, Object>();
 	private VardicDetailDao dao = new VardicDetailDao();
+	private VardicDao zdao=new VardicDao();
 	private VarticDetail vd;
 	private List<VarticDetail> vds;
 	
@@ -34,6 +37,7 @@ public class VardicDetailAction extends ActionSupport {
 	private int recCount;
 	private int pageSize;
 	private int currPage;
+	private String aArray;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核管理";
 
 
@@ -128,6 +132,15 @@ public class VardicDetailAction extends ActionSupport {
 		this.user = user;
 	}
 
+
+	public String getaArray() {
+		return aArray;
+	}
+
+	public void setaArray(String aArray) {
+		this.aArray = aArray;
+	}
+
 	public String list() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST");
 		try {
@@ -142,6 +155,7 @@ public class VardicDetailAction extends ActionSupport {
 				this.setIds(kpid.list(map));
 				String userid=vardic.getU_id();
 				Date km=vardic.getCheck_ym();
+				vardic.setCheck_ym(km);
 				UserDAO ud=new UserDAO();
 				this.setUser((User)ud.get(userid));
 			}
@@ -167,7 +181,11 @@ public class VardicDetailAction extends ActionSupport {
 				this.setVardic(null);
 			} else if ("mdy".equals(viewFlag)) {
 				if (!(vardic == null || vardic.getUuid() == null)) {
-					this.setVardic((Vartic) dao.get(vardic.getUuid()));
+					this.setVardic((Vartic) zdao.get(vardic.getUuid()));
+					map.clear();
+					map.put("score_id", vardic.getUuid());
+					this.setVds(dao.list(map));
+					
 				} else {
 					this.setVardic(null);
 				}
@@ -185,15 +203,71 @@ public class VardicDetailAction extends ActionSupport {
 	public String add() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_ADD");
 		try {
+			dao.startTransaction();
+			/**
+			 * 填加主表
+			 */
 			vardic.setCheck_user(ContextHelper.getUserLoginUuid());
 			vardic.setCheck_date(new Date());
 			vardic.setLm_user(ContextHelper.getUserLoginUuid());
 			vardic.setLm_time(new Date());
-			dao.add(vardic);
+			vardic.setTypea(1);
+			vardic.setCheck_score(0.00);
+			vardic.setCheck_date(new Date());
+			zdao.add(vardic);
+			
+			/**
+			 * 填加子表
+			 */
+			Double sum=0.00;
+			if(aArray!=null){
+				aArray=aArray.replace(" ", "");
+				String aa[]=aArray.split(";");
+				for(int i=0;i<aa.length;i++){
+					vd=new VarticDetail();
+					vd.setScore_id(vardic.getUuid());
+					String index=aa[i];
+					String arr[] = index.split(",");
+					if(arr[1]!=null && arr[1]!="")vd.setCheck_index(Integer.parseInt(arr[1]));
+					if(arr[2]!=null && arr[2]!="")vd.setCheck_score(Double.parseDouble(arr[2]));
+					if(arr[3]!=null && arr[3]!="")vd.setCheck_goal(Double.parseDouble(arr[3]));
+					vd.setCheck_date(new Date());
+					sum=sum+Double.parseDouble(arr[2]);
+					//vd.setCheck_index(Double.parseDouble(arr[0]));
+					dao.add(vd);
+				}
+			}
+			
+			/**
+			 * 修改主表分数横加纵
+			 */
+			//修改纵向总分
+			vardic.setCheck_score(sum);
+			zdao.saveScore(vardic);
+			//查询部门横向考核分数 修改横+纵总分
+			vardic.setCheck_score(sum);
+			zdao.saveByay(vardic);
+			/*map.clear();
+			map.put("typea", 0);
+			map.put("acheck_usercode", vardic.getAcheck_usercode());
+			map.put("check_ym", vardic.getCheck_ym());
+			List<Vartic> v=new ArrayList<>();
+			v=zdao.list(map);
+			if(v.size()>0){
+				for(int i=0;i<v.size();i++){
+					sum=sum+v.get(i).getCheck_score();
+				}
+				
+			}*/
+			
+			dao.commitTransaction();
 			//addProcess("CLOSEORDER_ADD", "新增结案提货单", ContextHelper.getUserLoginUuid());
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!add 数据添加失败:", e);
 			throw new Exception(this.getClass().getName() + "!add 数据添加失败:", e);
+		}
+		finally {
+			dao.endTransaction();
 		}
 		return SUCCESS;
 	}
@@ -201,12 +275,24 @@ public class VardicDetailAction extends ActionSupport {
 	public String save() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_MDY");
 		try {
-			vardic.setLm_user(ContextHelper.getUserLoginUuid());
-			vardic.setLm_time(new Date());
-			dao.save(vardic);
+			dao.startTransaction();
+			this.setVardic((Vartic) zdao.get(vd.getScore_id()));
+			dao.save(vd);
+			
+			/**
+			 * 修改主表分数横加纵
+			 */
+			//修改纵向总分
+			zdao.saveBycheck(vardic.getUuid().toString());
+			//查询部门横向考核分数 修改横+纵总分
+			zdao.saveByay(vardic);
+			dao.commitTransaction();
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!save 数据更新失败:", e);
 			throw new Exception(this.getClass().getName() + "!save 数据更新失败:", e);
+		}
+		finally {
+			dao.endTransaction();
 		}
 		return SUCCESS;
 	}
