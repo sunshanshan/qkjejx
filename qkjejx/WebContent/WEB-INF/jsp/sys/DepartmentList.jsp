@@ -196,7 +196,6 @@ function getInfo(obj) {
 }
 
 function getIndexDetail(obj) {
-	
 	var ajax = new Common_Ajax('message');
 	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
 	ajax.config._success = function(data, textStatus) {
@@ -261,9 +260,8 @@ function updatedetermine(obj){
 			+"&isdept="+isdept);
 	ajax.sendAjax();
 }
-
-
 function updatetab(obj) {
+
 	var show = new Array(); 
 	var kpi=$("#"+obj+"kpi").text();
 	 show.push('<input type="text" value="'+kpi+'" id="'+obj+'kpiip" />');

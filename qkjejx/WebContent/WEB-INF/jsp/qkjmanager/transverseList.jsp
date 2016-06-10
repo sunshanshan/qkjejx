@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>横向考核--<s:text name="APP_NAME" /></title>
+<title>考核管理--<s:text name="APP_NAME" /></title>
 <s:action name="ref_head" namespace="/manager" executeResult="true" />
 </head>
 <style type="text/css">

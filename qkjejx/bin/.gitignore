@@ -1,13 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-/com
-=======
-<<<<<<< HEAD
->>>>>>> master
-/org
-=======
-=======
->>>>>>> master
+/com/
 /log4j.xml
 /org/
 /sql-map-config.xml
@@ -15,6 +6,5 @@
 /struts.properties
 /struts.xml
 /xwork-conversion.properties
-/org/
-/org/
-/org/
+/com/
+/com/
