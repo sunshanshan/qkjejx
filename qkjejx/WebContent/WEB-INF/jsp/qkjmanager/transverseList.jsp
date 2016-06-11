@@ -22,10 +22,10 @@ cursor: pointer;
 		<div class="dq_step">
 			${path}
 			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="vartic_load"><s:param name="viewFlag">add</s:param></s:url>">添加考核</a></span>
+				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="transverse_load"><s:param name="viewFlag">add</s:param></s:url>">添加考核</a></span>
 			</c:if>
 		</div>
-		<s:form id="serachForm" name="serachForm" action="vartic_list" method="get" namespace="/qkjmanager" theme="simple">
+		<s:form id="serachForm" name="serachForm" action="transverse_list" method="get" namespace="/qkjmanager" theme="simple">
 			<div class="label_con">
 				<div class="label_main">
 					<div class='label_hang'>
@@ -79,10 +79,10 @@ cursor: pointer;
 						<td class="td2 nw">${check_score}</td>
 						<td class="td4 op-area">
 							<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="vartic_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
+								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="transverseDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
 							</c:if> 
 					    	<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_DEL',null)==true}">
-								<a class="input-red" href="<s:url namespace="/qkjmanager" action="vartic_del"><s:param name="vardic.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
+								<a class="input-red" href="<s:url namespace="/qkjmanager" action="transverse_del"><s:param name="vardic.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
 							</c:if></td>
 						<td class="td0 op-area"><a href="javascript:;" onClick="showDetail('showtr${uuid}');" class="input-nostyle">查看</a></td>
 					</tr>

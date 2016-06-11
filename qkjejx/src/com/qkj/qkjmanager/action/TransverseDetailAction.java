@@ -1,20 +1,17 @@
 package com.qkj.qkjmanager.action;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iweb.sys.ContextHelper;
-import org.iweb.sys.Parameters;
-import org.iweb.sys.dao.UserDeptDAO;
-import org.iweb.sys.domain.UserDept;
+import org.iweb.sys.dao.KpiDAO;
+import org.iweb.sys.dao.UserDAO;
+import org.iweb.sys.domain.IndexDetail;
+import org.iweb.sys.domain.User;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.qkjmanager.dao.VardicDao;
@@ -22,21 +19,34 @@ import com.qkj.qkjmanager.dao.VardicDetailDao;
 import com.qkj.qkjmanager.domain.Vartic;
 import com.qkj.qkjmanager.domain.VarticDetail;
 
-public class TransverseAction extends ActionSupport{
+public class TransverseDetailAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
-	private static Log log = LogFactory.getLog(VardicAction.class);
+	private static Log log = LogFactory.getLog(VardicDetailAction.class);
 	private Map<String, Object> map = new HashMap<String, Object>();
-	private VardicDao dao = new VardicDao();
+	private VardicDetailDao dao = new VardicDetailDao();
+	private VardicDao zdao=new VardicDao();
+	private VarticDetail vd;
+	private List<VarticDetail> vds;
+	
 	private Vartic vardic;
-	private List<Vartic> vardics;
-	private List<Vartic> cvardics;
+	private List<IndexDetail> ids;
+	private User user;
 	private String message;
 	private String viewFlag;
 	private int recCount;
 	private int pageSize;
 	private int currPage;
+	private String aArray;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核管理";
 
+
+	public List<IndexDetail> getIds() {
+		return ids;
+	}
+
+	public void setIds(List<IndexDetail> ids) {
+		this.ids = ids;
+	}
 
 	public String getPath() {
 		return path;
@@ -55,13 +65,6 @@ public class TransverseAction extends ActionSupport{
 		this.vardic = vardic;
 	}
 
-	public List<Vartic> getVardics() {
-		return vardics;
-	}
-
-	public void setVardics(List<Vartic> vardics) {
-		this.vardics = vardics;
-	}
 
 	public String getMessage() {
 		return message;
@@ -103,12 +106,38 @@ public class TransverseAction extends ActionSupport{
 		this.currPage = currPage;
 	}
 
-	public List<Vartic> getCvardics() {
-		return cvardics;
+	
+	public VarticDetail getVd() {
+		return vd;
 	}
 
-	public void setCvardics(List<Vartic> cvardics) {
-		this.cvardics = cvardics;
+	public void setVd(VarticDetail vd) {
+		this.vd = vd;
+	}
+
+	public List<VarticDetail> getVds() {
+		return vds;
+	}
+
+	public void setVds(List<VarticDetail> vds) {
+		this.vds = vds;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	public String getaArray() {
+		return aArray;
+	}
+
+	public void setaArray(String aArray) {
+		this.aArray = aArray;
 	}
 
 	public String list() throws Exception {
@@ -117,15 +146,20 @@ public class TransverseAction extends ActionSupport{
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
+			}else{
+				map.clear();
+				map.put("dept_code", vardic.getU_code());
+				IndexDetail id=new IndexDetail();
+				KpiDAO kpid=new KpiDAO();
+				this.setIds(kpid.list(map));
+				String userid=vardic.getU_id();
+				Date km=vardic.getCheck_ym();
+				vardic.setCheck_ym(km);
+				UserDAO ud=new UserDAO();
+				this.setUser((User)ud.get(userid));
 			}
 			
-			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_BASIS_ASSETLIST", map, "apply_depts", "apply_user");
-			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_BASIS_ASSETLIST", map, vardic, viewFlag);
-			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
-			map.put("typea", "0");
-			this.setVardics(dao.list(map));
-			this.setRecCount(dao.getResultCount());
-			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;横向考核列表";
+			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!list 读取数据错误:", e);
 			throw new Exception(this.getClass().getName() + "!list 读取数据错误:", e);
@@ -146,7 +180,11 @@ public class TransverseAction extends ActionSupport{
 				this.setVardic(null);
 			} else if ("mdy".equals(viewFlag)) {
 				if (!(vardic == null || vardic.getUuid() == null)) {
-					this.setVardic((Vartic) dao.get(vardic.getUuid()));
+					this.setVardic((Vartic) zdao.get(vardic.getUuid()));
+					map.clear();
+					map.put("score_id", vardic.getUuid());
+					this.setVds(dao.list(map));
+					
 				} else {
 					this.setVardic(null);
 				}
@@ -164,16 +202,71 @@ public class TransverseAction extends ActionSupport{
 	public String add() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_ADD");
 		try {
-			vardic.setTypea(0);//横向考核
+			dao.startTransaction();
+			/**
+			 * 填加主表
+			 */
 			vardic.setCheck_user(ContextHelper.getUserLoginUuid());
 			vardic.setCheck_date(new Date());
 			vardic.setLm_user(ContextHelper.getUserLoginUuid());
 			vardic.setLm_time(new Date());
-			dao.add(vardic);
+			vardic.setTypea(0);
+			vardic.setCheck_score(0.00);
+			vardic.setCheck_date(new Date());
+			zdao.add(vardic);
+			
+			/**
+			 * 填加子表
+			 */
+			Double sum=0.00;
+			if(aArray!=null){
+				aArray=aArray.replace(" ", "");
+				String aa[]=aArray.split(";");
+				for(int i=0;i<aa.length;i++){
+					vd=new VarticDetail();
+					vd.setScore_id(vardic.getUuid());
+					String index=aa[i];
+					String arr[] = index.split(",");
+					if(arr[1]!=null && arr[1]!="")vd.setCheck_index(Integer.parseInt(arr[1]));
+					if(arr[2]!=null && arr[2]!="")vd.setCheck_score(Double.parseDouble(arr[2]));
+					if(arr[3]!=null && arr[3]!="")vd.setCheck_goal(Double.parseDouble(arr[3]));
+					vd.setCheck_date(new Date());
+					sum=sum+Double.parseDouble(arr[2]);
+					//vd.setCheck_index(Double.parseDouble(arr[0]));
+					dao.add(vd);
+				}
+			}
+			
+			/**
+			 * 修改主表分数横加纵
+			 */
+			//修改纵向总分
+			vardic.setCheck_score(sum);
+			zdao.saveScore(vardic);
+			//查询部门横向考核分数 修改横+纵总分
+			vardic.setCheck_score(sum);
+			zdao.saveByay(vardic);
+			/*map.clear();
+			map.put("typea", 0);
+			map.put("acheck_usercode", vardic.getAcheck_usercode());
+			map.put("check_ym", vardic.getCheck_ym());
+			List<Vartic> v=new ArrayList<>();
+			v=zdao.list(map);
+			if(v.size()>0){
+				for(int i=0;i<v.size();i++){
+					sum=sum+v.get(i).getCheck_score();
+				}
+				
+			}*/
+			
+			dao.commitTransaction();
 			//addProcess("CLOSEORDER_ADD", "新增结案提货单", ContextHelper.getUserLoginUuid());
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!add 数据添加失败:", e);
 			throw new Exception(this.getClass().getName() + "!add 数据添加失败:", e);
+		}
+		finally {
+			dao.endTransaction();
 		}
 		return SUCCESS;
 	}
@@ -181,12 +274,24 @@ public class TransverseAction extends ActionSupport{
 	public String save() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_MDY");
 		try {
-			vardic.setLm_user(ContextHelper.getUserLoginUuid());
-			vardic.setLm_time(new Date());
-			dao.save(vardic);
+			dao.startTransaction();
+			this.setVardic((Vartic) zdao.get(vd.getScore_id()));
+			dao.save(vd);
+			
+			/**
+			 * 修改主表分数横加纵
+			 */
+			//修改纵向总分
+			zdao.saveBycheck(vardic.getUuid().toString());
+			//查询部门横向考核分数 修改横+纵总分
+			zdao.saveByay(vardic);
+			dao.commitTransaction();
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!save 数据更新失败:", e);
 			throw new Exception(this.getClass().getName() + "!save 数据更新失败:", e);
+		}
+		finally {
+			dao.endTransaction();
 		}
 		return SUCCESS;
 	}
@@ -194,68 +299,14 @@ public class TransverseAction extends ActionSupport{
 	public String del() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_DEL");
 		try {
-			dao.startTransaction();
 			dao.del(vardic);
-			VardicDetailDao vd=new VardicDetailDao();
-			VarticDetail vdc=new VarticDetail();
-			vdc.setScore_id(vardic.getUuid());
-			vd.delformV(vdc);
 			setMessage("删除成功!ID=" + vardic.getUuid());
-			dao.commitTransaction();
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!del 数据删除失败:", e);
 			throw new Exception(this.getClass().getName() + "!del 数据删除失败:", e);
-		}finally {
-			dao.endTransaction();
 		}
 		return SUCCESS;
 	}
 	
-	/**
-	 * 查询考核年月中未有考核记录的直属下级
-	 * @return
-	 * @throws Exception
-	 */
-	public String checklist() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST");
-		try {
-			map.clear();
-			if (vardic == null) {
-				vardic = new Vartic();
-			}
-			map.put("fdept", ContextHelper.getUserLoginDept());//当前登录人部门
-			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_BASIS_ASSETLIST", map, vardic, viewFlag);
-			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
-			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-	        String d = sdf.format(vardic.getCheck_ym());
-	        map.remove("check_ym");
-	        map.put("check_ym", d);
-	        List<UserDept> u=new ArrayList<>();
-	        String us=ContextHelper.getUserLoginUuid();
-	        UserDeptDAO udd=new UserDeptDAO();
-	        Map<String, Object> map2 = new HashMap<String, Object>();
-	        map2.clear();
-	        map2.put("user_id", us);
-	        u=udd.list(map2);
-	        List<String> dlist = new ArrayList<>();
-	        if(u.size()>0){
-	        	Set<String> dset = new HashSet<>();
-	        	for(int i=0;i<u.size();i++){
-	        		String t1=u.get(i).getPosition();
-	        		dset.add(t1);
-	        	}
-	        	dlist.addAll(dset);
-	        }
-	        map.put("p", dlist);
-	        map.put("typea", 0);
-			this.setCvardics(dao.Checklist(map));
-			System.out.println(cvardics.size());
-			this.setRecCount(dao.getResultCount());
-			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;添加考核";
-		} catch (Exception e) {
-			log.error(this.getClass().getName() + "!checklist 读取数据错误:", e);
-			throw new Exception(this.getClass().getName() + "!checklist 读取数据错误:", e);
-		}
-		return SUCCESS;
-	}
+
 }

@@ -59,5 +59,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/thumbnailator-0.4.5.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/US_export_policy.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/xwork-core-2.3.20.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/poi-3.10.1-20140818.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

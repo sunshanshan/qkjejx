@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>考核管理--<s:text name="APP_NAME" /></title>
+<title>考核管理11--<s:text name="APP_NAME" /></title>
 <s:action name="ref_head" namespace="/manager" executeResult="true" />
 </head>
 <style type="text/css">
@@ -84,7 +84,6 @@ cursor: pointer;
 							<th>周期</th>
 							<th>定义</th>
 							<th>标准</th>
-							<th>横向考核部门</th>
 						</tr>
 										<!-- lading.promotions -->
 						
@@ -98,7 +97,6 @@ cursor: pointer;
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>			
-								<td class="longnote"  id="c${uuid }" >${check_deptcode}</td>			
 							</tr>
 						</s:iterator>
 						
@@ -133,7 +131,7 @@ cursor: pointer;
 							<th>得分</th>
 							<th>周期</th>
 							<th>定义</th>
-							<th>标准</th>							
+							<th>标准</th>
 							<th>操作</th>
 						</tr>
 										<!-- lading.promotions -->
@@ -196,15 +194,6 @@ function add(){
 	    			var gp=document.getElementById(gid).value;
 	    			tableInfo += gp+",";
 	    			if(gp==null||gp==""){
-	    				flag=false;
-	    				break;
-	    			}
-	    		}
-	    		else if(j==8){
-	    			var cid="c"+tableObj.rows[i].cells[0].innerText;
-	    			var cp=document.getElementById(gid).value;
-	    			tableInfo += cp+",";
-	    			if(cp==null||cp==""){
 	    				flag=false;
 	    				break;
 	    			}

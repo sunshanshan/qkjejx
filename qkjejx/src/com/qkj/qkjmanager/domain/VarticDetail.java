@@ -11,8 +11,6 @@ public class VarticDetail {
 	private Integer check_index;// 指标详情id
 	private Double check_score;// 总得分 （横向+纵）
 	private Double check_goal;
-	
-	
 	private String kpi;
 	private String cyc;//周期
 	private double weight;//权重

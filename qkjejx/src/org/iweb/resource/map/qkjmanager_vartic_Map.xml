@@ -33,6 +33,7 @@
 		]]>
 		
 		<isNotNull prepend="AND" property="check_ym"><![CDATA[  k.ym like #check_ym# +'%' ]]></isNotNull>
+		<isNotNull prepend="AND" property="typea"><![CDATA[  s.typea=#typea#]]></isNotNull>
 		<![CDATA[)]]>
 		<isNotNull prepend="AND" property="fdept"><![CDATA[ d.dept_code like #fdept# +'%']]></isNotNull>
 		<isNotEmpty prepend="AND" property="p" open="(" close=")">
