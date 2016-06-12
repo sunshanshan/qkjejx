@@ -103,11 +103,10 @@ VALUES ( #dept_code#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #che
 		]]>
 	</insert>
 
-
-	<insert id="sys_addRoles" parameterClass="java.util.Map">
+	<insert id="sys_addRoles" parameterClass="role">
 		<![CDATA[ 
-			Insert Into s_sys_role(uuid,role_type,role_rank,role_name,description,lm_user,lm_time)
-			Values (#uuid#,#role_type#,#role_rank#,#role_name#,#description#,#lm_user#,#lm_time#)
+			Insert Into s_sys_role(uuid,role_type,role_rank,role_name,descriptions,lm_user,lm_time)
+			Values (#uuid#,#role_type#,#role_rank#,#role_name#,#descriptions#,#lm_user#,#lm_time#)
 		]]>
 	</insert>
 	<update id="sys_mdyRoles" parameterClass="role">
