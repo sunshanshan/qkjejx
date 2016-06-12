@@ -149,6 +149,7 @@ public class TransverseDetailAction extends ActionSupport {
 			}else{
 				map.clear();
 				map.put("dept_code", vardic.getU_code());
+				map.put("isdept", 1);//纵向考核
 				IndexDetail id=new IndexDetail();
 				KpiDAO kpid=new KpiDAO();
 				this.setIds(kpid.list(map));

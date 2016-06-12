@@ -112,15 +112,15 @@ public class VardicAction extends ActionSupport {
 	}
 
 	public String list() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST");
+		ContextHelper.isPermit("SYS_QKJMANAGER_CHECKLIST");
 		try {
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
 			
-			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_BASIS_ASSETLIST", map, "apply_depts", "apply_user");
-			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_BASIS_ASSETLIST", map, vardic, viewFlag);
+			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_CHECKLIST", map, "apply_depts", "apply_user");
+			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_CHECKLIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
 			this.setVardics(dao.list(map));
 			this.setRecCount(dao.getResultCount());

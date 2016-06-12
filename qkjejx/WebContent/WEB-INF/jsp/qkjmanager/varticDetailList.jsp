@@ -21,9 +21,7 @@ cursor: pointer;
  	<div class="tab_warp main" >
 		<div class="dq_step">
 			${path}
-			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
 				<span class="opb lb op-area"><a href="JavaScript:history.go(-1)">返回</a></span>
-			</c:if>
 		</div>
 	<s:form id="editForm" name="editForm" cssClass="validForm" action="transverseDeail_add" namespace="/qkjmanager" method="post" theme="simple">
 		<div class="label_main">
@@ -133,8 +131,10 @@ cursor: pointer;
 							<th>得分</th>
 							<th>周期</th>
 							<th>定义</th>
-							<th>标准</th>							
+							<th>标准</th>		
+							<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">					
 							<th>操作</th>
+							</c:if>
 						</tr>
 										<!-- lading.promotions -->
 						<s:iterator value="vds" status="sta">
@@ -147,9 +147,11 @@ cursor: pointer;
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
+								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
 								<td class="longnote" title="${correctly}">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
-								</td>			
+								</td>
+								</c:if>			
 							</tr>
 						</s:iterator>
 					</table>

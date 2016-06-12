@@ -139,7 +139,7 @@ public class ContextHelper {
 				Set<String> dsetall = new HashSet<>();
 
 				String value = ulf.getUser_prvg_map().get(p_id);
-				if (value.contains(",")) {
+				if (value!=null && value.contains(",")) {
 					String s1[] = (String[]) JSONUtil.toObject(value, String[].class);// 转换成数组
 					for (int i = 0; i < s1.length; i++) {
 						if (s1[i].contains("#")) {
