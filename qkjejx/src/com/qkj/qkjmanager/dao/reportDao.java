@@ -8,6 +8,6 @@ import org.iweb.sys.AbstractDAO;
 public class reportDao extends AbstractDAO{
 	public List list(Map<String, Object> map) {
 		//setCountMapid("basics_getCheckCounts");
-		return super.list("qkjmanager_getScore", map);
+		return super.list("qkjmanager_getVarticsReport", map);
 	}
 }

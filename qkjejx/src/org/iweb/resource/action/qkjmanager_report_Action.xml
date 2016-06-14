@@ -7,5 +7,8 @@
 		<action name="report_list" class="com.qkj.qkjmanager.action.ReportAction" method="list">
 			<result>/WEB-INF/jsp/qkjmanager/reportList.jsp</result>
 		</action>
+		
+		<action name="scoure_excle" class="com.qkj.qkjmanager.action.ReportAction" method="report">
+		</action>
 	</package>
 </struts>

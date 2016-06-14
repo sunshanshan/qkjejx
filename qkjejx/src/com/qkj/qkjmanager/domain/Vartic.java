@@ -12,7 +12,7 @@ public class Vartic {
 	private String lm_user;// (varchar)最后修改人
 	private Date lm_time;// (datetime)最后修改时间
 	private Date check_ym;// 考核管理表考核打开的年月
-	private Double check_score;// 总得分 （横向/纵）
+	private Double check_score=0.0;// 总得分 （横向/纵）
 	
 	private Double ay_totelScore;//总得分 （横向+纵）
 	
