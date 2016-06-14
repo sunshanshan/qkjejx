@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>商务管理中心--<s:text name="APP_NAME" /></title>
+<title>绩效管理中心--<s:text name="APP_NAME" /></title>
 <link rel="stylesheet" href="<s:url value="/css/v0.2/jquery.mobile-1.4.3.min.css" />" />
 <link rel="stylesheet" href="<s:url value="/css/v0.2/jqm-demos.css" />" />
 <link rel="stylesheet" href="<s:url value="/css/v0.2/nav.css" />" />

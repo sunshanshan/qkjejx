@@ -107,7 +107,7 @@ $(function() {
 </div>
 <div class="ui-layout-north">
 	<div class="ht_top">
-	<div class="ht_lTit">互助青稞酒商务管理中心</div>
+	<div class="ht_lTit">互助青稞酒绩效管理中心</div>
 	<ul class="ht_rczuo">
 		<li><a title="首页" href="<s:url value="default" />" target="mainFrame"><img src="<s:url value="/images" />/top//ht_tb1.gif" /></a></li>
 		<!-- <li><a title="切换账户" href="<s:url action="/login" />"  target="_top"><img src="<s:url value="/images" />/top/ht_tb2.gif" /></a></li> -->

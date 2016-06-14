@@ -5,7 +5,7 @@
 <header>
 <div class="ht_top">
 	<a href="javascript:;" class="ht_lmenu"><img src="<c:url value="/images/icon/ht_icon.png" />" width="45" /></a>
-	<div class="ht_lTit">互助青稞酒商务管理中心</div>
+	<div class="ht_lTit">互助青稞酒绩效管理中心</div>
     <div class="ht_rset">
         <a href="javascript:void(0);" class="ht_clicka"><img src="<c:url value="/images/top/ht_tb7.png" />" width="45" /></a>
         <ul class="ht_sjsub  subHide">
