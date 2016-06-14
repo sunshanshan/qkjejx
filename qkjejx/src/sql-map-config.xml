@@ -24,4 +24,5 @@
 	<sqlMap resource="org/iweb/resource/map/basics_check_Map.xml" />
 	<!--业务管理-->
 	<sqlMap resource="org/iweb/resource/map/qkjmanager_vartic_Map.xml" />
+	<sqlMap resource="org/iweb/resource/map/qkjmanager_report_Map.xml" />
 </sqlMapConfig>
