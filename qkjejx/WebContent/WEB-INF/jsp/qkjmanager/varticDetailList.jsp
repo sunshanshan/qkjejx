@@ -23,7 +23,7 @@ cursor: pointer;
 			${path}
 				<span class="opb lb op-area"><a href="JavaScript:history.go(-1)">返回</a></span>
 		</div>
-	<s:form id="editForm" name="editForm" cssClass="validForm" action="transverseDeail_add" namespace="/qkjmanager" method="post" theme="simple">
+	<s:form id="editForm" name="editForm" cssClass="validForm" action="varticDetail_add" namespace="/qkjmanager" method="post" theme="simple">
 		<div class="label_main">
 			<div class="label_hang">
 				<div class="label_ltit">考核年月:</div>
@@ -226,7 +226,7 @@ function add(){
 		// 第一次提交
 		  checkSubmitFlg = true;
 		  if(flag==true){
-			  document.getElementById("editForm").action="/qkjmanager/transverseDeail_add?aArray="+obj;
+			  document.getElementById("editForm").action="/qkjmanager/varticDeail_add?aArray="+obj;
 		  }else{
 			  alert("所评分数不能为空！");
 		  }
@@ -243,7 +243,7 @@ function mdy(uuid,so){
 	var sp=document.getElementById(sid).value;
 	var gp=document.getElementById(gid).value;
 	alert(gp);
-	window.location.href="/qkjmanager/transverseDetail_save?vd.uuid="+uuid+"&vd.check_score="+sp+"&vd.check_goal="+gp+"&vd.score_id="+so;
+	window.location.href="/qkjmanager/varticDetail_save?vd.uuid="+uuid+"&vd.check_score="+sp+"&vd.check_goal="+gp+"&vd.score_id="+so;
 }
 
 </script>

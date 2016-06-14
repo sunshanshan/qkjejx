@@ -4,7 +4,7 @@ import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 public abstract class AbstractEncrypt {
-	protected final static String pwd = "ilikeqkjebiz";
+	protected final static String pwd = "ilikeqkjejx";
 	protected final static String encoding = "UTF-8";
 
 	public abstract String encrypt(String content, String password);
