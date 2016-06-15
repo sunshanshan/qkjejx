@@ -16,7 +16,7 @@
 			<result type="redirectAction">
 				<param name="actionName">transverse_load</param>
 				<param name="viewFlag">mdy</param>
-				<param name="Transverse.uuid">${Transverse.uuid}</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
 				<param name="message">${message}</param>
 			</result>
 		</action>
@@ -25,7 +25,7 @@
 			<result type="redirectAction">
 				<param name="actionName">transverse_load</param>
 				<param name="viewFlag">mdy</param>
-				<param name="Transverse.uuid">${Transverse.uuid}</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
 				<param name="message">${message}</param>
 			</result>
 		</action>
@@ -54,7 +54,7 @@
 			<result type="redirectAction">
 				<param name="actionName">transverseDetail_load</param>
 				<param name="viewFlag">mdy</param>
-				<param name="Transverse.uuid">${Transverse.uuid}</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
 				<param name="message">${message}</param>
 			</result>
 		</action>
@@ -63,7 +63,7 @@
 			<result type="redirectAction">
 				<param name="actionName">transverseDetail_load</param>
 				<param name="viewFlag">mdy</param>
-				<param name="Transverse.uuid">${Transverse.uuid}</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
 				<param name="message">${message}</param>
 			</result>
 		</action>

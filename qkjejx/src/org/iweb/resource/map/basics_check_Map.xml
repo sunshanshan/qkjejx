@@ -12,6 +12,9 @@
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
 			<isNotNull prepend="AND" property="ym"><![CDATA[ c.ym=#ym# ]]></isNotNull>
 			<isNotNull prepend="AND" property="state"><![CDATA[ c.state=#state# ]]></isNotNull>
+			<isNotNull prepend="AND" property="a"><![CDATA[ #a# between c.acheck_startdate and c.acheck_closedate  ]]></isNotNull>
+			<isNotNull prepend="AND" property="d"><![CDATA[ #d# between c.dcheck_startdate and c.dcheck_closedate  ]]></isNotNull>
+			<isNotNull prepend="AND" property="e"><![CDATA[ #e# between c.echeck_startdate and c.echeck_closedate  ]]></isNotNull>
 		</dynamic>
 	</select>
 	<insert id="basics_addCheck" parameterClass="check">

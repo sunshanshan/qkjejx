@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>考核管理--<s:text name="APP_NAME" /></title>
+<title>报表管理--<s:text name="APP_NAME" /></title>
 <s:action name="ref_head" namespace="/manager" executeResult="true" />
 </head>
 <style type="text/css">
@@ -21,26 +21,13 @@ cursor: pointer;
  	<div class="tab_warp main" >
 		<div class="dq_step">
 			${path}
-			<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_ADD',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="transverse_load"><s:param name="viewFlag">add</s:param></s:url>">添加考核</a></span>
+			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
+				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"><s:param name="viewFlag">add</s:param></s:url>">添加考核</a></span>
 			</c:if>
 		</div>
-		<s:form id="serachForm" name="serachForm" action="transverse_list" method="get" namespace="/qkjmanager" theme="simple">
+		<s:form id="serachForm" name="serachForm" action="vartic_list" method="get" namespace="/qkjmanager" theme="simple">
 			<div class="label_con">
 				<div class="label_main">
-					<div class='label_hang'>
-						<div class='label_ltit'>主键:</div>
-						<div class='label_rwben'>
-							<s:textfield name='vardic.uuid' cssClass=' validate[maxSize[10],custom[integer],]' />
-						</div>
-					</div>
-					<%-- <div class='label_hang'>
-						<div class='label_ltit'>结案时间:</div>
-						<div class='label_rwben'>
-							<s:textfield name='closeOrder.close_time' cssClass=' datepicker validate[custom[date],]' />
-						</div>
-					</div> --%>
-					
 					<div class="label_hang">
 						<div class="label_ltit">考核年月:</div>
 						<div class="label_rwben">
@@ -65,8 +52,7 @@ cursor: pointer;
 					<th class="td1">被考核人</th>
 					<th class="td1">被考核人部门</th>
 					<th class="td2">考核完成时间</th>
-					<th class="td2">横向总分数</th>
-					<th class="td2">横+纵总分数</th>
+					<th class="td2">分数</th>
 					<th class="td4">操作</th>
 					<th class="td0">查看</th>
 				</tr>
@@ -78,11 +64,12 @@ cursor: pointer;
 						<td class="td1 nw">${acheck_deptname}</td>
 						<td class="td1 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
 						<td class="td2 nw">${check_score}</td>
-						<td class="td2 nw">${ay_totelScore}</td>
 						<td class="td4 op-area">
-								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="transverseDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
-					    	<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_DEL',null)==true}">
-								<a class="input-red" href="<s:url namespace="/qkjmanager" action="transverse_del"><s:param name="vardic.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
+							<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
+								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
+							</c:if> 
+					    	<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_DEL',null)==true}">
+								<a class="input-red" href="<s:url namespace="/qkjmanager" action="vartic_del"><s:param name="vardic.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
 							</c:if></td>
 						<td class="td0 op-area"><a href="javascript:;" onClick="showDetail('showtr${uuid}');" class="input-nostyle">查看</a></td>
 					</tr>

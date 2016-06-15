@@ -48,11 +48,15 @@ s
 				<div class="label_con">
 					<div class="label_main">
 						<div class="label_hang">
-							<div class="label_ltit">考核年月:</div>
-							<div class="label_rwben">
-								<input id="begintime" name="vardic.check_ym" type="text" onclick="setmonth(this)" readonly="readonly" value="${it:formatDate(vardic.check_ym,'yyyy-MM')}"/>
-							</div>
-						</div>
+									<div class="label_ltit">考核年月:</div>
+									<div class="label_rwbenx">
+									<select name="vardic.check_ym" class="validate[required]">
+									  <s:iterator value="checks" status="sta">
+									  	<option value="${it:formatDate(ym,'yyyy-MM')}">${it:formatDate(ym,'yyyy-MM')}</option>
+									  </s:iterator>
+									</select>
+									</div>
+								</div>
 								
 						<div class="label_hang tac">
 							<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
@@ -75,10 +79,10 @@ s
 					<s:iterator value="cvardics" status="sta">
 						<tr>
 							<td class="td1 nw">${acheck_username}</td>
-							<td class="td1 nw">${acheck_deptname}</td>
+							<td class="td1 nw">(${df_name})${acheck_deptname}</td>
 							<td class="td1 nw">${check_score }</td>
 							<td class="td4 op-area">
-								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
+								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
 									<a class="input-blue" href="/qkjmanager/transverseDetail_list?vardic.u_id=${u_id }&vardic.u_code=${u_code}&vardic.check_ym=${it:formatDate(vardic.check_ym,'yyyy-MM')}&viewFlag=add">考核</a>
 								</c:if> 
 						    </td>

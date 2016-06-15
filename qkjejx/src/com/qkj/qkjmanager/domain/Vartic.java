@@ -12,7 +12,7 @@ public class Vartic {
 	private String lm_user;// (varchar)最后修改人
 	private Date lm_time;// (datetime)最后修改时间
 	private Date check_ym;// 考核管理表考核打开的年月
-	private Double check_score;// 总得分 （横向/纵）
+	private Double check_score=0.0;// 总得分 （横向/纵）
 	
 	private Double ay_totelScore;//总得分 （横向+纵）
 	
@@ -23,16 +23,34 @@ public class Vartic {
 	private String acheck_deptname;
 	private String u_id;  
 	private String u_code;
-	private Integer typea;//0横向1纵向
+	private Integer typea;//0横向1纵向 
 	
+	private String check_yms;
 	private Date acheck_startdate;// 横向考核开始时间
 	private Date acheck_closedate;// 横向考核结束时间
 	private Date dcheck_startdate;// 部门考核开始时间
 	private Date dcheck_closedate;// 部门考核结束时间
 	private Date echeck_startdate;// 员工考核开始时间
 	private Date echeck_closedate;// 员工考核结束时间
+	private String df_name;//父部门
 	
 	
+
+	public String getDf_name() {
+		return df_name;
+	}
+
+	public void setDf_name(String df_name) {
+		this.df_name = df_name;
+	}
+
+	public String getCheck_yms() {
+		return check_yms;
+	}
+
+	public void setCheck_yms(String check_yms) {
+		this.check_yms = check_yms;
+	}
 
 	public Double getAy_totelScore() {
 		return ay_totelScore;

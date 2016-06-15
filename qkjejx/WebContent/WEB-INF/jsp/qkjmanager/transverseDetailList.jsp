@@ -110,7 +110,7 @@ cursor: pointer;
 							<div class="label_rwbenx">
 								<font color="red"><span id="messages"></span></font>
 								
-									<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
+									<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_ADD',null)==true}">
 										<button class="input-blue" onclick="add();">添加</button>
 									</c:if>
 							</div>
@@ -132,7 +132,11 @@ cursor: pointer;
 							<th>周期</th>
 							<th>定义</th>
 							<th>标准</th>
+							<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
+							<c:if test="${it:checkay(0)==true}">
 							<th>操作</th>
+							</c:if>
+							</c:if>
 						</tr>
 										<!-- lading.promotions -->
 						<s:iterator value="vds" status="sta">
@@ -145,9 +149,13 @@ cursor: pointer;
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
+								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
+								<c:if test="${it:checkay(0)==true}">
 								<td class="longnote" title="${correctly}">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
-								</td>			
+								</td>		
+								</c:if>	
+								</c:if>
 							</tr>
 						</s:iterator>
 					</table>
@@ -229,7 +237,6 @@ function mdy(uuid,so){
 	var gid="g"+uuid;
 	var sp=document.getElementById(sid).value;
 	var gp=document.getElementById(gid).value;
-	alert(gp);
 	window.location.href="/qkjmanager/transverseDetail_save?vd.uuid="+uuid+"&vd.check_score="+sp+"&vd.check_goal="+gp+"&vd.score_id="+so;
 }
 

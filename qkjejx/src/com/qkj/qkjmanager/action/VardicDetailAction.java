@@ -1,6 +1,6 @@
 package com.qkj.qkjmanager.action;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -150,6 +150,7 @@ public class VardicDetailAction extends ActionSupport {
 			}else{
 				map.clear();
 				map.put("dept_code", vardic.getU_code());
+				map.put("isdept", 1);//纵向考核
 				IndexDetail id=new IndexDetail();
 				KpiDAO kpid=new KpiDAO();
 				this.setIds(kpid.list(map));
@@ -246,6 +247,9 @@ public class VardicDetailAction extends ActionSupport {
 			zdao.saveScore(vardic);
 			//查询部门横向考核分数 修改横+纵总分
 			vardic.setCheck_score(sum);
+			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+	        String d = sdf.format(vardic.getCheck_ym());
+	        vardic.setCheck_yms(d);
 			zdao.saveByay(vardic);
 			/*map.clear();
 			map.put("typea", 0);
@@ -285,6 +289,9 @@ public class VardicDetailAction extends ActionSupport {
 			//修改纵向总分
 			zdao.saveBycheck(vardic.getUuid().toString());
 			//查询部门横向考核分数 修改横+纵总分
+			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+	        String d = sdf.format(vardic.getCheck_ym());
+	        vardic.setCheck_yms(d);
 			zdao.saveByay(vardic);
 			dao.commitTransaction();
 		} catch (Exception e) {

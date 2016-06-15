@@ -17,6 +17,8 @@ import org.iweb.sys.dao.UserDeptDAO;
 import org.iweb.sys.domain.UserDept;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.qkj.basics.dao.CheckDao;
+import com.qkj.basics.domain.Check;
 import com.qkj.qkjmanager.dao.VardicDao;
 import com.qkj.qkjmanager.dao.VardicDetailDao;
 import com.qkj.qkjmanager.domain.Vartic;
@@ -30,6 +32,7 @@ public class TransverseAction extends ActionSupport{
 	private Vartic vardic;
 	private List<Vartic> vardics;
 	private List<Vartic> cvardics;
+	private List<Check> checks;
 	private String message;
 	private String viewFlag;
 	private int recCount;
@@ -37,6 +40,14 @@ public class TransverseAction extends ActionSupport{
 	private int currPage;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核管理";
 
+
+	public List<Check> getChecks() {
+		return checks;
+	}
+
+	public void setChecks(List<Check> checks) {
+		this.checks = checks;
+	}
 
 	public String getPath() {
 		return path;
@@ -112,17 +123,18 @@ public class TransverseAction extends ActionSupport{
 	}
 
 	public String list() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST");
 		try {
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
 			
-			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_BASIS_ASSETLIST", map, "apply_depts", "apply_user");
-			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_BASIS_ASSETLIST", map, vardic, viewFlag);
+			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_HORILIST", map, "apply_depts", "apply_user");
+			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_HORILIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
 			map.put("typea", "0");
+			map.put("check_user", ContextHelper.getUserLoginUuid());
 			this.setVardics(dao.list(map));
 			this.setRecCount(dao.getResultCount());
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;横向考核列表";
@@ -143,6 +155,11 @@ public class TransverseAction extends ActionSupport{
 				this.setVardic(null);
 				setMessage("你没有选择任何操作!");
 			} else if ("add".equals(viewFlag)) {
+				CheckDao cd =new CheckDao();
+				map.clear();
+				map.put("state", 0);
+				map.put("a", new Date());
+				this.setChecks(cd.list(map));
 				this.setVardic(null);
 			} else if ("mdy".equals(viewFlag)) {
 				if (!(vardic == null || vardic.getUuid() == null)) {
@@ -162,7 +179,7 @@ public class TransverseAction extends ActionSupport{
 	}
 	
 	public String add() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_ADD");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST_ADD");
 		try {
 			vardic.setTypea(0);//横向考核
 			vardic.setCheck_user(ContextHelper.getUserLoginUuid());
@@ -179,7 +196,7 @@ public class TransverseAction extends ActionSupport{
 	}
 
 	public String save() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_MDY");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST_MDY");
 		try {
 			vardic.setLm_user(ContextHelper.getUserLoginUuid());
 			vardic.setLm_time(new Date());
@@ -192,7 +209,7 @@ public class TransverseAction extends ActionSupport{
 	}
 
 	public String del() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_DEL");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST_DEL");
 		try {
 			dao.startTransaction();
 			dao.del(vardic);
@@ -212,25 +229,25 @@ public class TransverseAction extends ActionSupport{
 	}
 	
 	/**
-	 * 查询考核年月中未有考核记录的直属下级
+	 * 查询考核年月中未有考核记录的横向考核部门人员
 	 * @return
 	 * @throws Exception
 	 */
 	public String checklist() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST");
 		try {
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
 			map.put("fdept", ContextHelper.getUserLoginDept());//当前登录人部门
-			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_BASIS_ASSETLIST", map, vardic, viewFlag);
+			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_HORILIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
 			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
 	        String d = sdf.format(vardic.getCheck_ym());
 	        map.remove("check_ym");
 	        map.put("check_ym", d);
-	        List<UserDept> u=new ArrayList<>();
+	        /*List<UserDept> u=new ArrayList<>();
 	        String us=ContextHelper.getUserLoginUuid();
 	        UserDeptDAO udd=new UserDeptDAO();
 	        Map<String, Object> map2 = new HashMap<String, Object>();
@@ -246,11 +263,17 @@ public class TransverseAction extends ActionSupport{
 	        	}
 	        	dlist.addAll(dset);
 	        }
-	        map.put("p", dlist);
-	        map.put("typea", 0);
+	        map.put("p", dlist);*/
+	        map.put("typea", 0);//成绩表中所有横向考核已经考核过的去掉
+			map.put("isdept", 0);//向横考核
 			this.setCvardics(dao.Checklist(map));
 			System.out.println(cvardics.size());
 			this.setRecCount(dao.getResultCount());
+			CheckDao cd =new CheckDao();
+			map.clear();
+			map.put("state", 0);
+			map.put("a", new Date());
+			this.setChecks(cd.list(map));
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;添加考核";
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!checklist 读取数据错误:", e);
