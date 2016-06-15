@@ -65,7 +65,7 @@ cursor: pointer;
 					<th class="td1">被考核人</th>
 					<th class="td1">被考核人部门</th>
 					<th class="td2">考核完成时间</th>
-					<th class="td2">横/纵分数</th>
+					<th class="td2">纵向总分数</th>
 					<th class="td2">横+纵总分数</th>
 					<th class="td4">操作</th>
 					<th class="td0">查看</th>
