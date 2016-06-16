@@ -13,7 +13,7 @@ body {background-color: #363636;}
 </head>
 <body>
 <div class="main lg_main">
-	<div class="lg_title">商务系统登录</div>
+	<div class="lg_title">绩效系统登录</div>
 	<div class="lg_input">
 		<s:form id="mainForm" cssClass="validForm" name="mainForm" action="check_login" namespace="/manager" method="post" theme="simple">
         <div class="label_singlecol">

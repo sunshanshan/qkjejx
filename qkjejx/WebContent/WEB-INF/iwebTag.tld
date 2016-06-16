@@ -48,6 +48,12 @@
 	</function>
 	
 	<function>
+		<name>checkay</name>
+		<function-class>org.iweb.sys.ContextHelper</function-class>
+		<function-signature>boolean checkAy(java.lang.Integer)</function-signature>
+	</function>
+	
+	<function>
 		<name>checkWarePermit</name>
 		<function-class>com.qkj.ware.action.warepower</function-class>
 		<function-signature>boolean checkWarePermit(java.lang.Integer,java.lang.String)</function-signature>

@@ -13,7 +13,7 @@ public class IndexDetail {
 	private String info_deptcode;//信息来源部门
 	private String check_deptcode;//横向考核部门 
 	private String check_post;//横向考核岗位
-	private  int isdept;//是否部门得分
+	private  int isdept;//是否部门得分  0 横1纵
 	public int getUuid() {
 		return uuid;
 	}

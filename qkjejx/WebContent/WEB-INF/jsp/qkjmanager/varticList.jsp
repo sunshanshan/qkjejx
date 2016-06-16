@@ -65,7 +65,8 @@ cursor: pointer;
 					<th class="td1">被考核人</th>
 					<th class="td1">被考核人部门</th>
 					<th class="td2">考核完成时间</th>
-					<th class="td2">分数</th>
+					<th class="td2">纵向总分数</th>
+					<th class="td2">横+纵总分数</th>
 					<th class="td4">操作</th>
 					<th class="td0">查看</th>
 				</tr>
@@ -74,16 +75,16 @@ cursor: pointer;
 						<td class="td1 nw">${uuid}</td>
 						<td class="td1 nw">${it:formatDate(check_ym,'yyyy-MM')}</td>
 						<td class="td1 nw">${acheck_username}</td>
-						<td class="td1 nw">${acheck_deptname}</td>
+						<td class="td1 nw">(${df_name})${acheck_deptname}</td>
 						<td class="td1 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
 						<td class="td2 nw">${check_score}</td>
+						<td class="td2 nw">${ay_totelScore}</td>
 						<td class="td4 op-area">
-							<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
 								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
-							</c:if> 
-					    	<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_DEL',null)==true}">
+					    	<%-- <c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_DEL',null)==true}">
 								<a class="input-red" href="<s:url namespace="/qkjmanager" action="vartic_del"><s:param name="vardic.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
-							</c:if></td>
+							</c:if> --%>
+							</td>
 						<td class="td0 op-area"><a href="javascript:;" onClick="showDetail('showtr${uuid}');" class="input-nostyle">查看</a></td>
 					</tr>
 				</s:iterator>

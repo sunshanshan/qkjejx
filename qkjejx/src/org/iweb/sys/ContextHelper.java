@@ -3,9 +3,9 @@ package org.iweb.sys;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,13 +15,11 @@ import javax.security.auth.login.LoginException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
-import org.iweb.sys.cache.CacheFactory;
-import org.iweb.sys.cache.SysDBCacheLogic;
-import org.iweb.sys.domain.RolePrvg;
 import org.iweb.sys.domain.UserLoginInfo;
 import org.iweb.sys.exception.PermitException;
 
-import com.fasterxml.jackson.annotation.JsonFormat.Value;
+import com.qkj.basics.dao.CheckDao;
+import com.qkj.basics.domain.Check;
 
 /**
  * HttpServlet相关的工具类
@@ -139,7 +137,7 @@ public class ContextHelper {
 				Set<String> dsetall = new HashSet<>();
 
 				String value = ulf.getUser_prvg_map().get(p_id);
-				if (value.contains(",")) {
+				if (value!=null && value.contains(",")) {
 					String s1[] = (String[]) JSONUtil.toObject(value, String[].class);// 转换成数组
 					for (int i = 0; i < s1.length; i++) {
 						if (s1[i].contains("#")) {
@@ -691,5 +689,30 @@ public class ContextHelper {
 		if (p_map.containsKey(Parameters.Current_Page_Str) && p_map.get(Parameters.Current_Page_Str) != null) return Integer.parseInt(p_map.get(Parameters.Current_Page_Str)
 				.toString());
 		return 1;
+	}
+	
+	/**
+	 * 考核时间
+	 * @param p_id
+	 * @return
+	 */
+	public static boolean checkAy(Integer p_id) {
+		UserLoginInfo ulf = ContextHelper.getUserLoginInfo();
+		CheckDao cd =new CheckDao();
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Check> cs=new ArrayList<>();
+		map.clear();
+		map.put("state", 0);
+		if(p_id==1){
+			map.put("d", new Date());
+		}else{
+			map.put("a", new Date());
+		}
+		cs=cd.list(map);
+		if(cs.size()>0){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }

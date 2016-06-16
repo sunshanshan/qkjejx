@@ -58,7 +58,7 @@ s
 							</div>
 							<div class='label_hang'>
 								<div class='label_ltit'>添加时间:</div>
-								<div class='label_rwbenx'>${it:formatDate(check.lm_time,'yyyy-MM-dd hh:mm:ss')}</div>
+								<div class='label_rwbenx'>${it:formatDate(check.add_time,'yyyy-MM-dd hh:mm:ss')}</div>
 							</div>
 						</s:if>
 						

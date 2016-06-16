@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>商务管理中心--<s:text name="APP_NAME" /></title>
+<title>绩效管理中心--<s:text name="APP_NAME" /></title>
 <s:action name="ref_head" namespace="/manager" executeResult="true" />
 </head>
 <body>

@@ -17,6 +17,8 @@ import org.iweb.sys.dao.UserDeptDAO;
 import org.iweb.sys.domain.UserDept;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.qkj.basics.dao.CheckDao;
+import com.qkj.basics.domain.Check;
 import com.qkj.qkjmanager.dao.VardicDao;
 import com.qkj.qkjmanager.dao.VardicDetailDao;
 import com.qkj.qkjmanager.domain.Vartic;
@@ -29,7 +31,8 @@ public class VardicAction extends ActionSupport {
 	private VardicDao dao = new VardicDao();
 	private Vartic vardic;
 	private List<Vartic> vardics;
-	private List<Vartic> cvardics;
+	private List<Vartic> cvardics; 
+	private List<Check> checks;
 	private String message;
 	private String viewFlag;
 	private int recCount;
@@ -37,6 +40,13 @@ public class VardicAction extends ActionSupport {
 	private int currPage;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核管理";
 
+	public List<Check> getChecks() {
+		return checks;
+	}
+
+	public void setChecks(List<Check> checks) {
+		this.checks = checks;
+	}
 
 	public String getPath() {
 		return path;
@@ -112,16 +122,18 @@ public class VardicAction extends ActionSupport {
 	}
 
 	public String list() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST");
+		ContextHelper.isPermit("SYS_QKJMANAGER_CHECKLIST");
 		try {
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
 			
-			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_BASIS_ASSETLIST", map, "apply_depts", "apply_user");
-			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_BASIS_ASSETLIST", map, vardic, viewFlag);
+			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_CHECKLIST", map, "apply_depts", "apply_user");
+			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_CHECKLIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
+			map.put("typea", 1);
+			map.put("check_user", ContextHelper.getUserLoginUuid());
 			this.setVardics(dao.list(map));
 			this.setRecCount(dao.getResultCount());
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";
@@ -143,6 +155,11 @@ public class VardicAction extends ActionSupport {
 				setMessage("你没有选择任何操作!");
 			} else if ("add".equals(viewFlag)) {
 				this.setVardic(null);
+				CheckDao cd =new CheckDao();
+				map.clear();
+				map.put("state", 0);
+				map.put("d", new Date());
+				this.setChecks(cd.list(map));
 			} else if ("mdy".equals(viewFlag)) {
 				if (!(vardic == null || vardic.getUuid() == null)) {
 					this.setVardic((Vartic) dao.get(vardic.getUuid()));
@@ -246,8 +263,15 @@ public class VardicAction extends ActionSupport {
 	        	dlist.addAll(dset);
 	        }
 	        map.put("p", dlist);
+	        map.put("typea", 1);//成绩表中所有纵向向考核已经考核过的去掉
+			map.put("isdept", 1);//纵向考核
 			this.setCvardics(dao.Checklist(map));
 			System.out.println(cvardics.size());
+			CheckDao cd =new CheckDao();
+			map.clear();
+			map.put("state", 0);
+			map.put("a", new Date());
+			this.setChecks(cd.list(map));
 			this.setRecCount(dao.getResultCount());
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;添加考核";
 		} catch (Exception e) {

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>商务管理中心--<s:text name="APP_NAME" /></title>
+<title>绩效管理中心--<s:text name="APP_NAME" /></title>
 <link rel="stylesheet" href="<s:url value="/css/v0.2/jquery.mobile-1.4.3.min.css" />" />
 <link rel="stylesheet" href="<s:url value="/css/v0.2/jqm-demos.css" />" />
 <link rel="stylesheet" href="<s:url value="/css/v0.2/nav.css" />" />
@@ -25,7 +25,7 @@ cursor: pointer;
 <!--top顶部-->
 <header>
 	<div class="ht_top">
-        <div class="ht_lTit">互助青稞酒商务管理中心</div>
+        <div class="ht_lTit">互助青稞酒绩效管理中心</div>
         <ul class="ht_rczuo">
             <li><a href="" title="系统首页" class="rhv">系统首页</a></li><li>|</li><li><a href="" title="帮助信息">帮助信息</a></li><li>|</li><li><a href="" title="刷新主页">刷新主页</a></li><li>|</li><li><a href="" title="退出系统">退出系统</a></li>
         </ul>
