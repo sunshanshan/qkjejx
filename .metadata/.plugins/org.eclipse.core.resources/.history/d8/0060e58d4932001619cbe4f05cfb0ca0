@@ -1,0 +1,7 @@
+package com.qkj.qkjmanager.dao;
+
+import org.iweb.sys.AbstractDAO;
+
+public class reportDao extends AbstractDAO{
+
+}

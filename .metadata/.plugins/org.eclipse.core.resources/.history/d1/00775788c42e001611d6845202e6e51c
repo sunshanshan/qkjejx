@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="qkjmanager_transverse" extends="default" namespace="/qkjmanager">
+			<action name="transverse_list" class="com.qkj.qkjmanager.action.VardicAction" method="list">
+			<result>/WEB-INF/jsp/qkjmanager/transverseList.jsp</result>
+		</action>
+		
+		<action name="transverse_load" class="com.qkj.qkjmanager.action.VardicAction" method="load">
+			<result>/WEB-INF/jsp/qkjmanager/transverseEdit.jsp</result>
+		</action>
+		
+		<action name="transverse_save" class="com.qkj.qkjmanager.action.VardicAction" method="save">
+			<result type="redirectAction">
+				<param name="actionName">transverse_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="transverse_add" class="com.qkj.qkjmanager.action.VardicAction" method="add">
+			<result type="redirectAction">
+				<param name="actionName">transverse_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="transverse_del" class="com.qkj.qkjmanager.action.VardicAction" method="del">
+			<result type="redirectAction">
+				<param name="actionName">transverse_list</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="transverse_checklist" class="com.qkj.qkjmanager.action.VardicAction" method="checklist">
+			<result>/WEB-INF/jsp/qkjmanager/transverseEdit.jsp</result>
+		</action>
+		
+	<!-- qkj_r_score end -->
+	<!-- qkj_r_sonscore Start -->
+		<action name="transverseDetail_list" class="com.qkj.qkjmanager.action.VardicDetailAction" method="list">
+			<result>/WEB-INF/jsp/qkjmanager/transverseDetailList.jsp</result>
+		</action>
+		
+		<action name="transverseDetail_load" class="com.qkj.qkjmanager.action.VardicDetailAction" method="load">
+			<result>/WEB-INF/jsp/qkjmanager/transverseDetailList.jsp</result>
+		</action>
+		
+		<action name="transverseDetail_save" class="com.qkj.qkjmanager.action.VardicDetailAction" method="save">
+			<result type="redirectAction">
+				<param name="actionName">transverseDetail_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="transverseDeail_add" class="com.qkj.qkjmanager.action.VardicDetailAction" method="add">
+			<result type="redirectAction">
+				<param name="actionName">transverseDetail_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="transverseDetail_del" class="com.qkj.qkjmanager.action.VardicDetailAction" method="del">
+			<result type="redirectAction">
+				<param name="actionName">transverse_list</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+	</package>
+</struts>
