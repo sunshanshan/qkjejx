@@ -9,8 +9,10 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iweb.sys.ContextHelper;
+import org.iweb.sys.dao.DepartmentDAO;
 import org.iweb.sys.dao.KpiDAO;
 import org.iweb.sys.dao.UserDAO;
+import org.iweb.sys.domain.Department;
 import org.iweb.sys.domain.IndexDetail;
 import org.iweb.sys.domain.User;
 
@@ -28,7 +30,15 @@ public class TransverseDetailAction extends ActionSupport {
 	private VardicDao zdao=new VardicDao();
 	private VarticDetail vd;
 	private List<VarticDetail> vds;
-	
+	private Department depa;
+	public Department getDepa() {
+		return depa;
+	}
+
+	public void setDepa(Department depa) {
+		this.depa = depa;
+	}
+
 	private Vartic vardic;
 	private List<IndexDetail> ids;
 	private User user;
@@ -157,8 +167,8 @@ public class TransverseDetailAction extends ActionSupport {
 				String userid=vardic.getU_id();
 				Date km=vardic.getCheck_ym();
 				vardic.setCheck_ym(km);
-				UserDAO ud=new UserDAO();
-				this.setUser((User)ud.get(userid));
+				DepartmentDAO dp=new DepartmentDAO();
+				this.setDepa((Department)dp.list(map).get(0));
 			}
 			
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";

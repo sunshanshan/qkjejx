@@ -12,7 +12,6 @@ public class KpiDAO extends AbstractDAO {
 	}
 
 	
-
 	
 	public int getResultCount() {
 		return super.getResultCount();
