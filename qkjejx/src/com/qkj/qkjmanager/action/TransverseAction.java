@@ -9,13 +9,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.ServletActionContext;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
 import org.iweb.sys.dao.UserDeptDAO;
 import org.iweb.sys.domain.UserDept;
+import org.iweb.sys.domain.UserLoginInfo;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.basics.dao.CheckDao;
 import com.qkj.basics.domain.Check;
@@ -133,6 +139,12 @@ public class TransverseAction extends ActionSupport{
 			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_HORILIST", map, "apply_depts", "apply_user");
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_HORILIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
+			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+	        String d = sdf.format(vardic.getCheck_ym());
+	        if(map.get("check_ym")!=null){
+	        map.remove("check_ym");
+	        map.put("check_ym", d);
+	        }
 			map.put("typea", "0");
 			map.put("check_user", ContextHelper.getUserLoginUuid());
 			this.setVardics(dao.list(map));
@@ -247,6 +259,14 @@ public class TransverseAction extends ActionSupport{
 	        String d = sdf.format(vardic.getCheck_ym());
 	        map.remove("check_ym");
 	        map.put("check_ym", d);
+	        UserLoginInfo ulf = new UserLoginInfo();
+	        ActionContext context = ActionContext.getContext();  
+			HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);  
+			HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);  
+			ulf=(UserLoginInfo) request.getSession().getAttribute(Parameters.UserLoginInfo_Session_Str);
+			map.put("userid", ulf.getUuid());
+	        map.put("dept_code", ulf.getDept_code());
+	        
 	        /*List<UserDept> u=new ArrayList<>();
 	        String us=ContextHelper.getUserLoginUuid();
 	        UserDeptDAO udd=new UserDeptDAO();
@@ -266,7 +286,7 @@ public class TransverseAction extends ActionSupport{
 	        map.put("p", dlist);*/
 	        map.put("typea", 0);//成绩表中所有横向考核已经考核过的去掉
 			map.put("isdept", 0);//向横考核
-			this.setCvardics(dao.Checklist(map));
+			this.setCvardics(dao.Checklist1(map));
 			System.out.println(cvardics.size());
 			this.setRecCount(dao.getResultCount());
 			CheckDao cd =new CheckDao();

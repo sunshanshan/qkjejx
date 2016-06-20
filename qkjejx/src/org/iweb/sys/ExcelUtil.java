@@ -1,4 +1,5 @@
 package org.iweb.sys;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -81,29 +82,27 @@ public class ExcelUtil {
             cell.setCellStyle(cs);
         }
         //设置每行每列的值
-        for (short i = 1; i < list.size(); i++) {
+        SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM");
+        SimpleDateFormat sim1=new SimpleDateFormat("yyyy-MM-dd");
+        for (short i = 0; i < list.size(); i++) {
             // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
             // 创建一行，在页sheet上
-            Row row1 = sheet.createRow((short) i);
+            Row row1 = sheet.createRow((short) i+1);
             // 在row行上创建一个方格
-         
-            
-            for (Vartic v : list) {
-            	
                 Cell cell1 = row1.createCell(0);
                 Cell cell2 = row1.createCell(1);
                 Cell cell3 =row1.createCell(2);
                 Cell cell4 = row1.createCell(3);
                 Cell cell5 =row1.createCell(4);
-                Cell cell6 =row1.createCell(4);
-                cell1.setCellValue(v.getUuid());
-                cell2.setCellValue(v.getCheck_ym());
-                cell3.setCellValue(v.getAcheck_username());
-                cell4.setCellValue(v.getAcheck_deptname());
-                cell5.setCellValue(v.getCheck_date());
-                cell6.setCellValue(v.getCheck_score());
+                Cell cell6 =row1.createCell(5);
+                cell1.setCellValue(list.get(i).getUuid());
+                cell2.setCellValue(sim.format(list.get(i).getCheck_ym()));
+                cell3.setCellValue(list.get(i).getAcheck_username());
+                cell4.setCellValue(list.get(i).getAcheck_deptname());
+                cell5.setCellValue(sim1.format(list.get(i).getCheck_date()));
+                cell6.setCellValue(list.get(i).getAy_totelScore());
                 
-			}
+			
            
                    }
         return wb;

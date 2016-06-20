@@ -107,7 +107,7 @@ var dept_name_obj;
 function createDeptAllSelectDiv(p_dept_code_obj, p_dept_name_obj) {
 	dept_code_obj = p_dept_code_obj;
 	dept_name_obj = p_dept_name_obj;
-	createModelDivByUrl('/qkjebiz/sys/dept_select_all', 220, 400);
+	createModelDivByUrl('/qkjejx/sys/dept_select_all', 220, 400);
 }
 
 function closeDeptAllSelectDiv(dept_code_value, dept_name_value) {
@@ -119,7 +119,7 @@ function closeDeptAllSelectDiv(dept_code_value, dept_name_value) {
 function createDeptLimitSelectDiv(p_dept_code_obj, p_dept_name_obj) {
 	dept_code_obj = p_dept_code_obj;
 	dept_name_obj = p_dept_name_obj;
-	createModelDivByUrl('/qkjebiz/sys/dept_select_limit', 220, 400);
+	createModelDivByUrl('/qkjejx/sys/dept_select_limit', 220, 400);
 }
 
 function closeDeptLimitSelectDiv(dept_code_value, dept_name_value) {

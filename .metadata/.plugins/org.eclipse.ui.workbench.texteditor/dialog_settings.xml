@@ -13,15 +13,15 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="map" key="selection"/>
+		<item value="Simpl" key="selection"/>
 		<list key="findhistory">
-			<item value="Map"/>
-			<item value="qkjmanager_getVarticsReport"/>
+			<item value="simpl"/>
+			<item value="simpld"/>
+			<item value="sim"/>
 			<item value="list"/>
-			<item value="HttpServletRequest"/>
-			<item value="util"/>
-			<item value="qkjmanager_getVartics"/>
-			<item value="vartic_list"/>
+			<item value="transverse_list"/>
+			<item value="1"/>
+			<item value="Checklist"/>
 			<item value="qkjmanager_getCheckVartics"/>
 		</list>
 		<list key="replacehistory">

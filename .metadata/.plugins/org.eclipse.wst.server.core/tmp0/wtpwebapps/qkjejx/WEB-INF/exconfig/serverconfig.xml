@@ -20,6 +20,6 @@
 	proxool.test-before-use="true" />
 <!-- 配置 -->
 <Connector URIEncoding="UTF-8" connectionTimeout="20000" port="8888" protocol="HTTP/1.1" redirectPort="8443"/>
-<Context crossContext="true" docBase="qkjebiz" path="/" reloadable="true" source="org.eclipse.jst.jee.server:qkjebiz"/>
+<Context crossContext="true" docBase="qkjejx" path="/" reloadable="true" source="org.eclipse.jst.jee.server:qkjejx"/>
 <Context crossContext="true" docBase="ckframe" path="/ckframe" reloadable="true" source="org.eclipse.jst.jee.server:ckframe"/>
 </Host>

@@ -47,7 +47,8 @@
 	<!-- 考核人 -->
 	<select id="qkjmanager_getCheckVartics" resultClass="vartic" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select distinct u.uuid u_id,u.DEPT_CODE u_code,u.USER_NAME acheck_username,d.dept_cname acheck_deptname,df.dept_cname df_name from s_sys_user u  
+			select distinct u.uuid u_id,u.DEPT_CODE u_code,u.USER_NAME acheck_username,d.dept_cname acheck_deptname,df.dept_cname df_name
+			 from s_sys_user u  
 			LEFT JOIN s_sys_department d on (u.dept_code=d.dept_code)
 			LEFT JOIN s_sys_department df on (df.dept_code=d.parent_dept)
 			LEFT JOIN qkj_t_indexdetail id on (d.dept_code=id.dept_code)
@@ -74,6 +75,36 @@
 			<iterate property="p" open="(" close=")" conjunction=" , "> #p[]#</iterate>
 		</isNotEmpty>
 	</select>
+	
+	
+	<select id="qkjmanager_getCheckVartics1" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select distinct u.uuid u_id,u.DEPT_CODE u_code,u.dept_cname acheck_username,df.dept_cname df_name
+			 from s_sys_department u  
+			LEFT JOIN s_sys_department df on (df.dept_code=u.parent_dept)
+			LEFT JOIN qkj_t_indexdetail id on (u.dept_code=id.dept_code)
+where id.check_deptcode=#dept_code# 	   and  not exists (select * from qkj_r_score s 
+			left join qkj_r_check k on(s.check_ym=k.ym) 	where s.acheck_user=u.uuid
+		]]>
+		
+		<isNotNull prepend="AND" property="check_ym"><![CDATA[  s.check_ym like #check_ym# +'%' ]]></isNotNull>
+		<isNotNull prepend="AND" property="typea"><![CDATA[  s.typea=#typea#]]></isNotNull>
+		<![CDATA[)]]>
+		<isNotNull property="isdept">
+		<isEqual property="isdept" compareValue="1"><!-- 纵向 -->
+			<isNotNull prepend="AND" property="fdept"><![CDATA[ d.dept_code like #fdept# +'%']]></isNotNull>
+		</isEqual>
+		
+		<isEqual property="isdept" compareValue="0"><!-- 横向  -->
+			<isNotNull prepend="AND" property="fdept"><![CDATA[ id.check_deptcode = #fdept#]]></isNotNull>
+		</isEqual>
+		</isNotNull>
+		<isNotEmpty prepend="AND" property="p" open="(" close=")">
+			<![CDATA[ p.POSITION_SENIOR In ]]>
+			<iterate property="p" open="(" close=")" conjunction=" , "> #p[]#</iterate>
+		</isNotEmpty>
+	</select>
+	
 
 	<insert id="qkjmanager_addVartics" parameterClass="vartic">
 		<![CDATA[ 

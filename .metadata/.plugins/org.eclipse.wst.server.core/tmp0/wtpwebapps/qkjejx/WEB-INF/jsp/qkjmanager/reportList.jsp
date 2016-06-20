@@ -22,7 +22,7 @@ cursor: pointer;
 		<div class="dq_step">
 			${path}
 			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"><s:param name="viewFlag">add</s:param></s:url>">打印审核</a></span>
+				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"><s:param name="viewFlag">add</s:param><s:param name="vardic.check_ym">${vardic.check_yms}</s:param></s:url>">保存考核</a></span>
 			</c:if>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="report_list" method="get" namespace="/qkjmanager" theme="simple">
@@ -31,8 +31,8 @@ cursor: pointer;
 					<div class="label_hang">
 						<div class="label_ltit">考核年月:</div>
 						<div class="label_rwben">
-							<input id="begintime" name="vardic.check_ym" type="text" onclick="setmonth(this)" readonly="readonly"/>
-						</div>	
+							<input id="begintime" name="vardic.check_ym" value="${vardic.check_yms}" type="text" onclick="setmonth(this)" readonly="readonly"/>
+						</div>
 					</div>
 							
 					<div class="label_hang tac">
@@ -77,6 +77,15 @@ $(function(){
 	printPagination("listpage",'${currPage}','${recCount}','${pageSize}');
  });
  
+ 
+
+
+function savee(date){
+	
+	alert($("#begintime").val())
+	
+	
+}
 </script>
 </body>
 </html>

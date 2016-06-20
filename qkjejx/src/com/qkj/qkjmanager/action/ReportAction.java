@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,13 @@ public class ReportAction extends ActionSupport {
 	private static Log log = LogFactory.getLog(ReportAction.class);
 	private Map<String, Object> map = new HashMap<String, Object>();
 	private List<Score> score;
+	private Vartic vardic;
+	public Vartic getVardic() {
+		return vardic;
+	}
+	public void setVardic(Vartic vardic) {
+		this.vardic = vardic;
+	}
 	private List<Vartic> vardics;
 	private List<Vartic> vardicsc;
 	private List<Vartic> vardicsb;
@@ -106,12 +114,16 @@ public class ReportAction extends ActionSupport {
 	}
 	public String list() throws Exception {
 		try {
+			if(vardic!=null){
+			      SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM");
+			      vardic.setCheck_yms(sim.format(vardic.getCheck_ym()));
+				}
 			map.clear();
-		/*	ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_BASIS_ASSETLIST", map, "apply_depts", "apply_user");
+			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_BASIS_ASSETLIST", map, "apply_depts", "apply_user");
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_BASIS_ASSETLIST", map, vardic, viewFlag);
-			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));*/
+			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
 			this.setVardics(dao.list(map));
-		/*	this.setRecCount(dao.getResultCount());*/
+			this.setRecCount(dao.getResultCount());
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!list 读取数据错误:", e);
@@ -121,35 +133,24 @@ public class ReportAction extends ActionSupport {
 	}
 
 	public String report() throws Exception {
+		if(vardic!=null){
+	      SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM");
+	      vardic.setCheck_yms(sim.format(vardic.getCheck_ym()));
+	      map.put("check_yms", vardic.getCheck_yms());
+		}
 		ActionContext context = ActionContext.getContext();  
 		HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);  
 		HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);  
 		String fileName="汇总表格";
 		Vartic v1=new Vartic();
 		int count=0;
+
 		this.setVardics(dao.list(map));
-		Map<String,Object> map1 = new HashMap<String,Object>();
-		for(Vartic w : vardics){
-		    if(map1.get(w.getAcheck_user())==null){
-		        map1.put(w.getAcheck_user(),w.getCheck_score());
-		    }else{
-		        map1.put(w.getAcheck_user(),w.getCheck_score()+(double)map1.get(w.getAcheck_user()));
-		    }
-		}
-		
-		for(Vartic w : vardics){
-		    if(map1.get(w.getAcheck_user())!=null){
-		    	w.setCheck_score((double)map1.get(w.getAcheck_user()));		    }
-		}
-		
-		
-		
 		String columnNames[]={"主键","考核年月","被考核人","被考核人部门","考核完成时间","分数"};
-		String keys[]={"uuid","check_ym","acheck_username","acheck_deptname","check_date","check_score"};
+		String keys[]={"uuid","check_ym","acheck_username","acheck_deptname","check_date","ay_totelScore"};
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ExcelUtil.createWorkBook(vardics,keys,columnNames).write(os);
-        	System.out.println("=========");
         } catch (IOException e) {
             e.printStackTrace();
         }
