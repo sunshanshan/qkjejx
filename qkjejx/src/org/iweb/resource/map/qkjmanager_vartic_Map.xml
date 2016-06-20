@@ -84,7 +84,7 @@
 			LEFT JOIN s_sys_department df on (df.dept_code=u.parent_dept)
 			LEFT JOIN qkj_t_indexdetail id on (u.dept_code=id.dept_code)
 where id.check_deptcode=#dept_code# 	   and  not exists (select * from qkj_r_score s 
-			left join qkj_r_check k on(s.check_ym=k.ym) 	where s.acheck_user=u.uuid
+			left join qkj_r_check k on(s.check_ym=k.ym)  where  s.acheck_usercode=u.dept_code
 		]]>
 		
 		<isNotNull prepend="AND" property="check_ym"><![CDATA[  s.check_ym like #check_ym# +'%' ]]></isNotNull>

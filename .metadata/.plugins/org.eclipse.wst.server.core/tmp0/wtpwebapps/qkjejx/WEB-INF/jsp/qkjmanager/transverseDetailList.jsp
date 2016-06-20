@@ -36,12 +36,6 @@ cursor: pointer;
 			</div>
 			
 			<s:if test="'mdy' == viewFlag">	
-			<div class="label_hang">
-				<div class="label_ltit">姓名:</div>
-					<div class="label_rwben">
-						${vardic.acheck_username }
-					</div>
-			</div>	
 			
 			<div class="label_hang">
 				<div class="label_ltit">部门:</div>
@@ -52,18 +46,10 @@ cursor: pointer;
 			</s:if>
 			<s:else>
 			<div class="label_hang">
-				<div class="label_ltit">姓名:</div>
-					<div class="label_rwben">
-						${user.user_name }
-						<input type="hidden" name="vardic.acheck_user" value="${user.uuid}">
-					</div>
-			</div>	
-			
-			<div class="label_hang">
 				<div class="label_ltit">部门:</div>
 					<div class="label_rwben">
-						${user.dept_cname }
-						<input type="hidden" name="vardic.acheck_usercode" value="${user.dept_code}">
+						${depa.dept_cname }
+						<input type="hidden" name="vardic.acheck_usercode" value="${depa.dept_code}">
 					</div>
 			</div>	
 			</s:else>

@@ -22,6 +22,8 @@ public class DepartmentDAO extends AbstractDAO {
 	public List list(Map<String, Object> map) {
 		return super.list("sys_getDepts", map);
 	}
+	
+	
 
 	public List listPermit(Map<String, Object> map) {
 		return super.list("sys_getPermitDepts", map);

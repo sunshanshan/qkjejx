@@ -139,9 +139,11 @@ public class TransverseAction extends ActionSupport{
 			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_HORILIST", map, "apply_depts", "apply_user");
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_HORILIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
-			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-	        String d = sdf.format(vardic.getCheck_ym());
+			
+			
 	        if(map.get("check_ym")!=null){
+	        	SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+		        String d = sdf.format(vardic.getCheck_ym());
 	        map.remove("check_ym");
 	        map.put("check_ym", d);
 	        }

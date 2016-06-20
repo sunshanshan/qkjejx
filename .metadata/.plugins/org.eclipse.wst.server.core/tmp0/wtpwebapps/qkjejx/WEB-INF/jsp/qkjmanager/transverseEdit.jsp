@@ -76,12 +76,13 @@ s
 						<th class="td1">分数</th>
 						<th class="td4">操作</th>
 					</tr>
-					<s:iterator value="cvardics" status="sta">
+					<s:iterator value="cvardics" status="sta">	
 						<tr>
 							<td class="td1 nw">${acheck_username}</td>
 							<td class="td1 nw">(${df_name})${acheck_deptname}</td>
 							<td class="td1 nw">${check_score }</td>
 							<td class="td4 op-area">
+							
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
 									<a class="input-blue" href="/qkjmanager/transverseDetail_list?vardic.u_id=${u_id }&vardic.u_code=${u_code}&vardic.check_ym=${it:formatDate(vardic.check_ym,'yyyy-MM')}&viewFlag=add">考核</a>
 								</c:if> 
