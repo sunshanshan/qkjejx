@@ -16,7 +16,7 @@
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
-			<isNotNull prepend="AND" property="check_ym"><![CDATA[  c.check_ym like #check_ym# +'%' ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_yms"><![CDATA[  c.check_ym like #check_yms# +'%' ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# ]]></isNotNull>
 			<isNotNull prepend="AND" property="typea"><![CDATA[  c.typea=#typea# ]]></isNotNull>
 		</dynamic>

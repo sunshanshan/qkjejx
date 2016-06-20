@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "sql-map-2.dtd">
+<sqlMap>
+	<typeAlias alias="score" type="com.qkj.qkjmanager.domain.Score" />
+	<typeAlias alias="vartic" type="com.qkj.qkjmanager.domain.Vartic" />
+	<select id="qkjmanager_getVarticsReport" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select c.*,checku.USER_NAME check_username,achecku.user_name acheck_username,mdyu.USER_NAME lm_username,checkd.dept_cname check_deptname,acheckd.dept_cname acheck_deptname
+			from qkj_r_score c 
+			left join s_sys_user checku on(c.check_user=checku.uuid)
+			left join s_sys_user achecku on(c.acheck_user=achecku.uuid)
+			left join s_sys_user mdyu on(c.lm_user=mdyu.uuid)
+			left join s_sys_department checkd on(checkd.dept_code=c.check_usercode)
+			left join s_sys_department acheckd on(acheckd.dept_code=c.acheck_usercode)
+			
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_yms"><![CDATA[  c.check_ym like #check_ym# +'%' ]]></isNotNull>
+			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# ]]></isNotNull>
+			<isNotNull prepend="AND" property="typea"><![CDATA[  c.typea=#typea# ]]></isNotNull>
+		</dynamic>
+	</select>
+</sqlMap>
