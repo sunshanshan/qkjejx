@@ -14,6 +14,20 @@ public class IndexDetail {
 	private String check_deptcode;//横向考核部门 
 	private String check_post;//横向考核岗位
 	private  int isdept;//是否部门得分  0 横1纵
+	private String position_id;
+	private int type;//1：职务权重 2：部门权重
+	public String getPosition_id() {
+		return position_id;
+	}
+	public void setPosition_id(String position_id) {
+		this.position_id = position_id;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
 	public int getUuid() {
 		return uuid;
 	}

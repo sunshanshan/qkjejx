@@ -96,7 +96,7 @@ s
 						
 						<div class="label_main">
 							<div class="label_hang">
-								<div class="label_ltit">部门考核结束时间:</div>
+								<div class="label_ltit">部门考核开始时间:</div>
 								<div class="label_rwben2">
 									<span class="label_rwb nw"> <input class="datepicker validate[required,custom[date]]" type="text" name="check.dcheck_startdate" value="${it:formatDate(check.dcheck_startdate,'yyyy-MM-dd')}" />
 									</span>
@@ -114,7 +114,7 @@ s
 						
 						<div class="label_main">
 							<div class="label_hang">
-								<div class="label_ltit">员工考核结束时间:</div>
+								<div class="label_ltit">员工考核开始时间:</div>
 								<div class="label_rwben2">
 									<span class="label_rwb nw"> <input class="datepicker validate[required,custom[date]]" type="text" name="check.echeck_startdate" value="${it:formatDate(check.echeck_startdate,'yyyy-MM-dd')}" />
 									</span>

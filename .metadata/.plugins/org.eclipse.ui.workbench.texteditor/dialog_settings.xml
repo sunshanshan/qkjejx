@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Simpl" key="selection"/>
+		<item value="新增kpi" key="selection"/>
 		<list key="findhistory">
-			<item value="simpl"/>
-			<item value="simpld"/>
-			<item value="sim"/>
-			<item value="list"/>
-			<item value="transverse_list"/>
-			<item value="1"/>
-			<item value="Checklist"/>
-			<item value="qkjmanager_getCheckVartics"/>
+			<item value="新增kpi"/>
+			<item value="相关操作"/>
+			<item value="纵向考核列表"/>
+			<item value="纵向考核列表 "/>
+			<item value="qkjmanager_getCheckVartics1"/>
+			<item value="cvardics"/>
+			<item value="sys_getDepts"/>
+			<item value="sys_getDeptsKpi"/>
 		</list>
 		<list key="replacehistory">
 			<item value="Transverse"/>

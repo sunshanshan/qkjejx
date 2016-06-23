@@ -98,8 +98,8 @@
 		<![CDATA[ 
 		
 INSERT INTO qkj_t_indexdetail 
-       (dept_code,kpi,weight,count_way,correctly,definition,check_deptcode,check_post,isdept)
-VALUES ( #dept_code#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #check_deptcode#, #check_post#, #isdept#)
+       (position_id,kpi,weight,count_way,correctly,definition,check_deptcode,check_post,isdept,type)
+VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #check_deptcode#, #check_post#, #isdept#,#type#)
 		]]>
 	</insert>
 
@@ -236,6 +236,7 @@ VALUES ( #dept_code#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #che
 			Where 1=1
 		]]>
 		<isNotNull prepend="AND" property="dept_code"><![CDATA[ dept_code=#dept_code# ]]></isNotNull>
+		<isNotNull prepend="AND" property="positionid"><![CDATA[ position_id=#positionid# ]]></isNotNull>
 		<isNotNull prepend="AND" property="isdept"><![CDATA[ isdept=#isdept# ]]></isNotNull>
 	</select>
 	
