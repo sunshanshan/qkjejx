@@ -89,7 +89,8 @@
 				correctly=#correctly#,
 				check_deptcode=#check_deptcode#,
 					check_post=#check_post#,
-						isdept=#isdept#
+						isdept=#isdept#,
+						position_dept=#position_dept#
 			Where uuid=#dept_code#
 		]]>
 	</update>		
@@ -98,8 +99,8 @@
 		<![CDATA[ 
 		
 INSERT INTO qkj_t_indexdetail 
-       (position_id,kpi,weight,count_way,correctly,definition,check_deptcode,check_post,isdept,type)
-VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #check_deptcode#, #check_post#, #isdept#,#type#)
+       (position_id,kpi,weight,count_way,correctly,definition,check_deptcode,check_post,isdept,type,position_dept)
+VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #check_deptcode#, #check_post#, #isdept#,#type#,#position_dept#)
 		]]>
 	</insert>
 

@@ -32,7 +32,7 @@
 			</div>
 			<div class="label_hang">
 		       <div class="label_ltit">职务级别:</div>
-		       <div class="label_rwben"><s:select title="职务级别" id="position.position_grade" name="position.position_grade" list="#{1:'总经理',2:'副总经理',3:'总监',4:'经理',5:'主管',6:'员工'}" cssClass="validate[required]"/></div>
+		       <div class="label_rwben"><s:select title="职务级	别" id="position.position_grade" name="position.position_grade" list="#{1:'总经理',2:'副总经理',3:'总监',4:'经理',5:'主管',6:'员工'}" cssClass="validate[required]"/></div>
 			</div>
 			<div class="label_hang">
 		       <div class="label_ltit">汇报对象:</div>
@@ -45,7 +45,7 @@
 			<div class="label_hang clear">
 		       <div class="label_ltit">职务描述:</div>
 		       <div class="label_rwben"><s:textfield id="position.position_note" name="position.position_note" title="职务描述" cssClass="label_hang_linput"/></div>
-			</div>
+			</div>  
 			<s:if test="null != position">
 				<div class="label_hang clear">
 			       <div class="label_ltit">修改人:</div>
@@ -69,6 +69,7 @@
 		<th class="td5" >计分方式</th  >
 		<th class="td6" >指标定义</th >
 		<th class="td7" >指标标准</th >
+		 <th class="td5" >部门 </th  >
 		 <th class="td5" >横向考核部门 </th  >
 		 <th class="td6" >横向考核岗位</th  >
 		 <th class="td7" >取部门得分</th  >
@@ -98,9 +99,6 @@
 
 <script type="text/javascript" src="<s:url value="/include/dtree/dtree.js" />"></script>
 <script type="text/javascript">
-
-
-
 $(function(){ 
 	var ajax = new Common_Ajax('message');
 	var positionid=$("#positionid").val();
@@ -119,6 +117,7 @@ $(function(){
 			 show.push('<td class="td5" id="'+arr[i].uuid+'count_way">'+ arr[i].count_way+'</td  >' ) ;
 			 show.push('<td class="td6"  id="'+arr[i].uuid+'definition">'+ arr[i].definition+'</td  >' ) ;
 			 show.push('<td class="td7" id="'+arr[i].uuid+'correctly">'+ arr[i].correctly+'</td  >' ) ;
+			 show.push('<td class="td5" id="'+arr[i].uuid+'position_dept">'+ arr[i].position_dept+'</td  >' ) ;
 			 show.push('<td class="td5" id="'+arr[i].uuid+'check_deptcode">'+ arr[i].check_deptcode+'</td  >' ) ;
 			 show.push('<td class="td6" id="'+arr[i].uuid+'check_post">'+ arr[i].check_post+'</td  >' ) ;
 			 show.push('<td class="td7" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
@@ -143,6 +142,9 @@ function updatedetermine(obj){
 	 var check_deptcode=$("#"+obj+"check_deptcodeip").val();
 	 var check_post=$("#"+obj+"check_postip").val();
 	 var isdept=$("#"+obj+"isdeptip").val();
+	 var position_dept=$("#"+obj+"position_deptip").val();
+
+	
 	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
 	ajax.config._success = function(data, textStatus) {
 		var show = new Array(); 
@@ -154,6 +156,7 @@ function updatedetermine(obj){
 		 show.push('<td class="td5" id="'+obj+'count_way">'+count_way+'</td  >' ) ;
 		 show.push('<td class="td6"  id="'+obj+'definition">'+ definition+'</td  >' ) ;
 		 show.push('<td class="td7" id="'+obj+'correctly">'+correctly+'</td  >' ) ;
+		 show.push('<td class="td5" id="'+obj+'position_dept">'+position_dept+'</td  >' ) ;
 		 show.push('<td class="td5" id="'+obj+'check_deptcode">'+check_deptcode+'</td  >' ) ;
 		 show.push('<td class="td6" id="'+obj+'check_post">'+ check_post+'</td  >' ) ;
 		 show.push('<td class="td7" id="'+obj+'isdept">'+isdept+'</td  >' ) ;
@@ -165,7 +168,7 @@ function updatedetermine(obj){
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + obj+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
 			+"&definition="+definition+"&correctly="+correctly+"&check_deptcode="+check_deptcode+"&check_post="+check_post
-			+"&isdept="+isdept);
+			+"&isdept="+isdept+"&position_dept="+position_dept);
 	ajax.sendAjax();
 }
 function updatetab(obj) {
@@ -211,6 +214,13 @@ function updatetab(obj) {
 	 $("#"+obj+"isdept").text("");
 	 $("#"+obj+"isdept").append(show.join(""));
 	 show=[];
+	 
+	 var position_dept=$("#"+obj+"position_dept").text();
+	 alert(position_dept)
+	 show.push('<input type="text" style="width:80px" value="'+position_dept+'" id="'+obj+'position_deptip" />');
+	 $("#"+obj+"position_dept").text("");
+	 $("#"+obj+"position_dept").append(show.join(""));
+	 show=[];
 	 $("#"+obj+"buttd").show()
 	  $("#"+obj+"buttb").hide()
 }
@@ -228,6 +238,7 @@ function setkpi() {
 	 show.push('<td class="td4" ><input type="text" style="width:80px" value="" id="newcount_wayip" /></td  >' ) ;
 	 show.push('<td class="td6"  ><input type="text" style="width:80px" value="" id="newdefinitionip" /></td  >' ) ;
 	 show.push('<td class="td7"><input type="text" style="width:80px" value="" id="newcorrectlyip" /></td  >' ) ;
+	 show.push('<td class="td7"><input type="text" style="width:80px" value="" id="newposition_deptip" /></td  >' ) ;
 	 show.push('<td class="td5"><input type="text" style="width:80px" value="" id="newcheck_deptcodeip" /></td  >' ) ;
 	 show.push('<td class="td6" ><input type="text" style="width:80px" value="" id="newcheck_postip" /></td  >' ) ;
 	 show.push('<td class="td7" ><input type="text" style="width:80px" value="" id="newisdeptip" /></td  >' ) ;
@@ -237,6 +248,7 @@ function setkpi() {
 	
 }
 function addtab(ct) {
+	
 	var positionid=$("#positionid").val();
 
 	var ajax = new Common_Ajax('message');
@@ -248,16 +260,20 @@ function addtab(ct) {
 	var check_deptcode=$("#newcheck_deptcodeip").val();
 	var check_post=$("#newcheck_postip").val();
 	var isdept=$("#newisdeptip").val();
+	
+	var position_dept=$("#newposition_deptip").val();
 	var dept_code=$("#dept\\.dept_code").val();
+
 	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
 	ajax.config._success = function(data, textStatus) {
 		  window.location.reload();//刷新当前页面.
 	};
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_ADDKPI");
 	ajax.addParameter("work","update");
+
 	ajax.addParameter("parameters", "positionid=" + positionid+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
 			+"&definition="+definition+"&correctly="+correctly+"&check_deptcode="+check_deptcode+"&check_post="+check_post
-			+"&isdept="+isdept+"&type=2");
+			+"&isdept="+isdept+"&type=2&position_dept="+position_dept);
 	ajax.sendAjax();
 }
 	//type=2是部门权重 type=1是职务权重
