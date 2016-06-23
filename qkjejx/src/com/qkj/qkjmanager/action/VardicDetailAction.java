@@ -148,17 +148,23 @@ public class VardicDetailAction extends ActionSupport {
 			if (vardic == null) {
 				vardic = new Vartic();
 			}else{
-				map.clear();
-				map.put("dept_code", vardic.getU_code());
-				map.put("isdept", 1);//纵向考核
-				IndexDetail id=new IndexDetail();
-				KpiDAO kpid=new KpiDAO();
-				this.setIds(kpid.list(map));
+				//查询考核人的用户信息
 				String userid=vardic.getU_id();
 				Date km=vardic.getCheck_ym();
 				vardic.setCheck_ym(km);
 				UserDAO ud=new UserDAO();
 				this.setUser((User)ud.get(userid));
+				
+				//查询部门下面职务的kpi
+				map.clear();
+				map.put("dept_code", vardic.getU_code());
+				map.put("isdept", 1);//纵向考核
+				map.put("positionid", user.getPosition());//职务
+				map.put("type", 1);//查询职务的kpi
+				IndexDetail id=new IndexDetail();
+				KpiDAO kpid=new KpiDAO();
+				this.setIds(kpid.list(map));
+			
 			}
 			
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";

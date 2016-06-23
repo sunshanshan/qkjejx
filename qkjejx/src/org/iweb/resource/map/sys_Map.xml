@@ -238,6 +238,7 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 		<isNotNull prepend="AND" property="dept_code"><![CDATA[ dept_code=#dept_code# ]]></isNotNull>
 		<isNotNull prepend="AND" property="positionid"><![CDATA[ position_id=#positionid# ]]></isNotNull>
 		<isNotNull prepend="AND" property="isdept"><![CDATA[ isdept=#isdept# ]]></isNotNull>
+		<isNotNull prepend="AND" property="type"><![CDATA[ type=#type# ]]></isNotNull>
 	</select>
 	
 	
