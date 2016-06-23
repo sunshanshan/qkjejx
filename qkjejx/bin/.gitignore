@@ -1,6 +1,12 @@
+<<<<<<< HEAD
+/com
+/log4j.xml
+/org
+=======
 /com/
 /log4j.xml
 /org/
+>>>>>>> efcccd9db19f437542eea23fc8c100ee1b543386
 /sql-map-config.xml
 /sql-map-config02.xml
 /struts.properties
