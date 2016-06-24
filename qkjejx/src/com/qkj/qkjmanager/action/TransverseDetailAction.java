@@ -1,6 +1,7 @@
 package com.qkj.qkjmanager.action;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -255,24 +256,54 @@ public class TransverseDetailAction extends ActionSupport {
 			//修改纵向总分
 			vardic.setCheck_score(sum);
 			zdao.saveScore(vardic);
-			//查询部门横向考核分数 修改横+纵总分
-			vardic.setCheck_score(sum);
-			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-	        String d = sdf.format(vardic.getCheck_ym());
-	        vardic.setCheck_yms(d);
-			zdao.saveByay(vardic);
-			/*map.clear();
-			map.put("typea", 0);
-			map.put("acheck_usercode", vardic.getAcheck_usercode());
-			map.put("check_ym", vardic.getCheck_ym());
-			List<Vartic> v=new ArrayList<>();
-			v=zdao.list(map);
-			if(v.size()>0){
-				for(int i=0;i<v.size();i++){
-					sum=sum+v.get(i).getCheck_score();
+			/**
+			 * 修改总分数 横+纵
+			 */
+			Double tsum=0.00;
+			//哪些人有此部门权重
+			UserDAO ud=new UserDAO();
+			List<User> u=new ArrayList();
+			map.clear();
+			map.put("position_dept", vardic.getAcheck_usercode());
+			map.put("type", 2);
+			u=ud.listBypro(map);
+			if(u.size()>0){//有部门权重 则给人加上部门得分*权重
+				for(int i=0;i<u.size();i++){
+					//查询部门分数可能是多个
+					SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+			        String d = sdf.format(vardic.getCheck_ym());
+			        map.clear();
+			        map.put("check_yms", d);
+			        map.put("acheck_usercode", vardic.getAcheck_usercode());
+			        map.put("position_id", u.get(i).getPosition());
+					List<Vartic> v=new ArrayList();
+					VardicDao vds=new VardicDao();
+					v=vds.listByPosition(map);
+					if(v.size()>0){
+						//职务kpi中部门与此一样的kpi
+							User user=new User();
+							user=u.get(i);
+							for(int j=0;j<v.size();j++){
+								Vartic v2=new Vartic();
+								v2=v.get(j);
+								if(user.getPd()==v2.getAcheck_usercode()){
+									tsum=tsum+v2.getTscore()*user.getW();//部门得分*个人权重
+									break;
+								}
+							}
+							
+							tsum=tsum+sum;
+							
+							//修改总得分
+							vardic.setAy_totelScore(tsum);
+							zdao.saveay(vardic);
+							
+					}
+					
 				}
 				
-			}*/
+			
+			}
 			
 			dao.commitTransaction();
 			//addProcess("CLOSEORDER_ADD", "新增结案提货单", ContextHelper.getUserLoginUuid());
@@ -296,13 +327,60 @@ public class TransverseDetailAction extends ActionSupport {
 			/**
 			 * 修改主表分数横加纵
 			 */
-			//修改纵向总分
+			//修改横向向总分
 			zdao.saveBycheck(vardic.getUuid().toString());
+			
+			Vartic c=new Vartic();
+			c=(Vartic) zdao.get(vardic.getUuid());
+			Double sum=c.getCheck_score();
 			//查询部门横向考核分数 修改横+纵总分
-			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-	        String d = sdf.format(vardic.getCheck_ym());
-	        vardic.setCheck_yms(d);
-			zdao.saveByay(vardic);
+			/**
+			 * 修改总分数 横+纵
+			 */
+			Double tsum=0.00;
+			//哪些人有此部门权重
+			UserDAO ud=new UserDAO();
+			List<User> u=new ArrayList();
+			map.clear();
+			map.put("position_dept", vardic.getAcheck_usercode());
+			map.put("type", 2);
+			u=ud.listBypro(map);
+			if(u.size()>0){//有部门权重 则给人加上部门得分*权重
+				for(int i=0;i<u.size();i++){
+					//查询部门分数可能是多个
+					SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+			        String d = sdf.format(vardic.getCheck_ym());
+			        map.clear();
+			        map.put("check_yms", d);
+			        map.put("acheck_usercode", vardic.getAcheck_usercode());
+			        map.put("position_id", u.get(i).getPosition());
+					List<Vartic> v=new ArrayList();
+					VardicDao vds=new VardicDao();
+					v=vds.listByPosition(map);
+					if(v.size()>0){
+						//职务kpi中部门与此一样的kpi
+							User user=new User();
+							user=u.get(i);
+							for(int j=0;j<v.size();j++){
+								Vartic v2=new Vartic();
+								v2=v.get(j);
+								if(user.getPd()==v2.getAcheck_usercode()){
+									tsum=tsum+v2.getTscore()*user.getW();//部门得分*个人权重
+									break;
+								}
+							}
+							
+							tsum=tsum+sum;
+							//修改总得分
+							vardic.setAy_totelScore(tsum);
+							zdao.saveay(vardic);
+							
+					}
+					
+				}
+				
+			
+			}
 			dao.commitTransaction();
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!save 数据更新失败:", e);

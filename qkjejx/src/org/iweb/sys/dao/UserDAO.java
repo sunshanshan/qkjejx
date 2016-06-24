@@ -35,6 +35,10 @@ public class UserDAO extends AbstractDAO {
 	public List list(Map<String, Object> map) {
 		return super.list("sys_getUser", map);
 	}
+	
+	public List listBypro(Map<String, Object> map) {
+		return super.list("sys_getUserByPos", map);
+	}
 
 	public List listCheck(Map<String, Object> map) {
 		return super.list("sys_checkUserList", map);

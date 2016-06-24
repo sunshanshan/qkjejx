@@ -1,6 +1,7 @@
 package com.qkj.qkjmanager.action;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.iweb.sys.domain.User;
 import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.qkjmanager.dao.VardicDao;
 import com.qkj.qkjmanager.dao.VardicDetailDao;
+import com.qkj.qkjmanager.domain.Score;
 import com.qkj.qkjmanager.domain.Vartic;
 import com.qkj.qkjmanager.domain.VarticDetail;
 
@@ -251,25 +253,51 @@ public class VardicDetailAction extends ActionSupport {
 			//修改纵向总分
 			vardic.setCheck_score(sum);
 			zdao.saveScore(vardic);
-			//查询部门横向考核分数 修改横+纵总分
-			vardic.setCheck_score(sum);
-			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-	        String d = sdf.format(vardic.getCheck_ym());
-	        vardic.setCheck_yms(d);
-			zdao.saveByay(vardic);
-			/*map.clear();
-			map.put("typea", 0);
-			map.put("acheck_usercode", vardic.getAcheck_usercode());
-			map.put("check_ym", vardic.getCheck_ym());
-			List<Vartic> v=new ArrayList<>();
-			v=zdao.list(map);
-			if(v.size()>0){
-				for(int i=0;i<v.size();i++){
-					sum=sum+v.get(i).getCheck_score();
-				}
-				
-			}*/
 			
+			/**
+			 * 修改总分数 横+纵
+			 */
+			Double tsum=0.00;
+			//查询被考核人的职务kpi中是否有部门权重
+			UserDAO ud=new UserDAO();
+			List<User> u=new ArrayList();
+			map.clear();
+			map.put("uuid", vardic.getAcheck_user());
+			map.put("type", 2);
+			u=ud.listBypro(map);
+			if(u.size()>0){//有部门权重 则加上部门得分*权重
+				//查询部门分数可能是多个
+				SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+		        String d = sdf.format(vardic.getCheck_ym());
+		        map.clear();
+		        map.put("check_yms", d);
+		        map.put("acheck_usercode", vardic.getAcheck_usercode());
+		        map.put("position_id", u.get(0).getPosition());
+				List<Vartic> v=new ArrayList();
+				VardicDao vds=new VardicDao();
+				v=vds.listByPosition(map);
+				if(v.size()>0){
+					//职务kpi中部门与此一样的kpi
+					for(int j=0;j<u.size();j++){
+						User user=new User();
+						user=u.get(j);
+						for(int i=0;i<v.size();i++){
+							Vartic v2=new Vartic();
+							v2=v.get(i);
+							if(user.getPd()==v2.getAcheck_usercode()){
+								tsum=tsum+v2.getTscore()*user.getW();//部门得分*个人权重
+								break;
+							}
+						}
+					}
+					
+				}
+			}
+			tsum=tsum+sum;
+			
+			//修改总得分
+			vardic.setAy_totelScore(tsum);
+			zdao.saveay(vardic);
 			dao.commitTransaction();
 			//addProcess("CLOSEORDER_ADD", "新增结案提货单", ContextHelper.getUserLoginUuid());
 		} catch (Exception e) {
@@ -294,11 +322,54 @@ public class VardicDetailAction extends ActionSupport {
 			 */
 			//修改纵向总分
 			zdao.saveBycheck(vardic.getUuid().toString());
-			//查询部门横向考核分数 修改横+纵总分
-			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-	        String d = sdf.format(vardic.getCheck_ym());
-	        vardic.setCheck_yms(d);
-			zdao.saveByay(vardic);
+			Vartic c=new Vartic();
+			c=(Vartic) zdao.get(vardic.getUuid());
+			Double sum=c.getCheck_score();
+			/**
+			 * 修改总分数 横+纵
+			 */
+			Double tsum=0.00;
+			//查询被考核人的职务kpi中是否有部门权重
+			UserDAO ud=new UserDAO();
+			List<User> u=new ArrayList();
+			map.clear();
+			map.put("uuid", vardic.getAcheck_user());
+			map.put("type", 2);
+			u=ud.listBypro(map);
+			if(u.size()>0){//有部门权重 则加上部门得分*权重
+				//查询部门分数可能是多个
+				SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+		        String d = sdf.format(vardic.getCheck_ym());
+		        map.clear();
+		        map.put("check_yms", d);
+		        map.put("acheck_usercode", vardic.getAcheck_usercode());
+		        map.put("position_id", u.get(0).getPosition());
+				List<Vartic> v=new ArrayList();
+				VardicDao vds=new VardicDao();
+				v=vds.listByPosition(map);
+				if(v.size()>0){
+					//职务kpi中部门与此一样的kpi
+					for(int j=0;j<u.size();j++){
+						User user=new User();
+						user=u.get(j);
+						for(int i=0;i<v.size();i++){
+							Vartic v2=new Vartic();
+							v2=v.get(i);
+							if(user.getPd()==v2.getAcheck_usercode()){
+								tsum=tsum+v2.getTscore()*user.getW();//部门得分*个人权重
+								break;
+							}
+						}
+					}
+					
+				}
+			}
+			tsum=tsum+sum;
+			
+			//修改总得分
+			vardic.setAy_totelScore(tsum);
+			zdao.saveay(vardic);
+			
 			dao.commitTransaction();
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!save 数据更新失败:", e);

@@ -48,6 +48,7 @@ public class IWebConfig extends HttpServlet implements javax.servlet.Servlet {
 			/**
 			 * 设置系统时区为中国
 			 */
+			System.out.println("12344444444444444444444444");
 			final TimeZone zone = TimeZone.getTimeZone("GMT+8");
 			TimeZone.setDefault(zone);
 			/** ------------------------------- **/
@@ -55,6 +56,8 @@ public class IWebConfig extends HttpServlet implements javax.servlet.Servlet {
 			/** ------------------------------- **/
 			super.init(config);
 			String appDir = config.getServletContext().getRealPath("/");
+			System.out.println("1234");
+			System.out.println(File.separator);
 			if (!appDir.endsWith(File.separator)) {
 				appDir += File.separator;
 			}

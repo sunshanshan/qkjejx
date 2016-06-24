@@ -7,6 +7,8 @@ import java.util.Map;
 import org.iweb.common.dao.CommonDAO;
 import org.iweb.sys.AbstractDAO;
 
+import com.qkj.qkjmanager.domain.Score;
+
 public class VardicDao extends AbstractDAO {
 
 	public int add(Object parameters) {
@@ -46,17 +48,22 @@ public class VardicDao extends AbstractDAO {
 		super.save("qkjmanager_mdyVarticsCore", parameters);
 	}
 	
+	public void saveay(Object parameters) {
+		super.save("qkjmanager_mdyay", parameters);
+	}
+	
 	public void saveBycheck(String uuid) {
 		super.save("qkjmanager_mdyCheckCord", uuid);
 	}
 	
-	public void saveByay(Object parameters) {
-		super.save("qkjmanager_mdyayCord", parameters);
+	
+	public List listByPosition(Map<String, Object> map) {
+		return super.list("qkjmanager_getVarticsByPosition", map);
 	}
 
 	/**
 	 * 删除客户信息
-	 * 
+	 
 	 * @param parameters
 	 */
 	public void del(Object parameters) {

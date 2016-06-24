@@ -40,6 +40,10 @@ public class User {
 	private String position_name;
 	private String deptFlag;
 	private String is_sub_dept;
+	private Integer type;
+	
+	private String pd; 
+	private Double w;
 
 	// 以下为查询专用字段
 	private String[] positions;
@@ -298,6 +302,30 @@ public class User {
 
 	public void setSenior_name(String senior_name) {
 		this.senior_name = senior_name;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public String getPd() {
+		return pd;
+	}
+
+	public void setPd(String pd) {
+		this.pd = pd;
+	}
+
+	public Double getW() {
+		return w;
+	}
+
+	public void setW(Double w) {
+		this.w = w;
 	}
 
 }

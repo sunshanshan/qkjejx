@@ -138,6 +138,14 @@ where id.check_deptcode=#dept_code# 	   and  not exists (select * from qkj_r_sco
 		]]>
 	</update>
 	
+	<update id="qkjmanager_mdyay" parameterClass="vartic">
+		<![CDATA[
+			Update qkj_r_score
+			Set ay_totelScore=#ay_totelScore#
+			Where uuid=#uuid#
+		]]>
+	</update>
+	
 	<update id="qkjmanager_mdyCheckCord" parameterClass="String">
 		<![CDATA[
 			
@@ -149,16 +157,6 @@ where id.check_deptcode=#dept_code# 	   and  not exists (select * from qkj_r_sco
 		]]>
 	</update>
 	
-	<update id="qkjmanager_mdyayCord" parameterClass="vartic">
-		<![CDATA[
-			
-			Update qkj_r_score
-			Set ay_totelScore=(select SUM(check_score)
-			from qkj_r_score where (acheck_user=#acheck_user#  and check_ym like #check_yms# +'%') or (acheck_usercode=#acheck_usercode# and check_ym like #check_yms# +'%' and (acheck_user is null or acheck_user='') )
-			)
-			Where acheck_user=#acheck_user#  and check_ym like #check_yms# +'%'
-		]]>
-	</update>
 	
 	<delete id="qkjmanager_delVartic" parameterClass="vartic">
 		<![CDATA[
@@ -173,6 +171,19 @@ where id.check_deptcode=#dept_code# 	   and  not exists (select * from qkj_r_sco
 		<![CDATA[ Where uuid In ]]>
 		<iterate property="uuid" open="(" close=")" conjunction=" , "> #uuid[]#</iterate>
 	</delete>
+	
+	<select id="qkjmanager_getVarticsByPosition" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select SUM(s.check_score) tscore,s.acheck_usercode from qkj_r_score s where 
+			s.acheck_usercode=(select id.position_dept from qkj_t_indexdetail id where  
+			id.type=2 and id.position_id=#position_id#)
+			and 
+			acheck_usercode=#acheck_usercode# and check_ym like #check_yms# +'%'
+			
+			GROUP BY s.acheck_usercode
+		]]>
+	</select>
+	
 	
 	<typeAlias alias="varticdetail" type="com.qkj.qkjmanager.domain.VarticDetail" />
 	<select id="qkjmanager_getVarticDetails" resultClass="varticdetail" parameterClass="java.util.Map">

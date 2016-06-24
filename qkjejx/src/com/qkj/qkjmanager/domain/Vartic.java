@@ -34,6 +34,7 @@ public class Vartic {
 	private Date echeck_closedate;// 员工考核结束时间
 	private String df_name;//父部门
 	
+	private Double tscore;
 	
 
 	public String getDf_name() {
@@ -252,6 +253,14 @@ public class Vartic {
 
 	public void setU_code(String u_code) {
 		this.u_code = u_code;
+	}
+
+	public Double getTscore() {
+		return tscore;
+	}
+
+	public void setTscore(Double tscore) {
+		this.tscore = tscore;
 	}
 
 
