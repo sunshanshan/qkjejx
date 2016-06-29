@@ -159,7 +159,7 @@ public class VardicDetailAction extends ActionSupport {
 				
 				//查询部门下面职务的kpi
 				map.clear();
-				map.put("dept_code", vardic.getU_code());
+//				map.put("dept_code", vardic.getU_code());
 				map.put("isdept", 1);//纵向考核
 				map.put("positionid", user.getPosition());//职务
 				map.put("type", 1);//查询职务的kpi
@@ -241,7 +241,7 @@ public class VardicDetailAction extends ActionSupport {
 					if(arr[2]!=null && arr[2]!="")vd.setCheck_score(Double.parseDouble(arr[2]));
 					if(arr[3]!=null && arr[3]!="")vd.setCheck_goal(Double.parseDouble(arr[3]));
 					vd.setCheck_date(new Date());
-					sum=sum+Double.parseDouble(arr[2]);
+					sum=sum+Double.parseDouble(arr[3]);
 					//vd.setCheck_index(Double.parseDouble(arr[0]));
 					dao.add(vd);
 				}
@@ -273,6 +273,7 @@ public class VardicDetailAction extends ActionSupport {
 		        map.put("check_yms", d);
 		        map.put("acheck_usercode", vardic.getAcheck_usercode());
 		        map.put("position_id", u.get(0).getPosition());
+		        map.put("uuid", vardic.getUuid());
 				List<Vartic> v=new ArrayList();
 				VardicDao vds=new VardicDao();
 				v=vds.listByPosition(map);
@@ -284,7 +285,7 @@ public class VardicDetailAction extends ActionSupport {
 						for(int i=0;i<v.size();i++){
 							Vartic v2=new Vartic();
 							v2=v.get(i);
-							if(user.getPd()==v2.getAcheck_usercode()){
+							if(user.getPd().equals(v2.getAcheck_usercode())){
 								tsum=tsum+v2.getTscore()*user.getW();//部门得分*个人权重
 								break;
 							}
@@ -344,6 +345,7 @@ public class VardicDetailAction extends ActionSupport {
 		        map.put("check_yms", d);
 		        map.put("acheck_usercode", vardic.getAcheck_usercode());
 		        map.put("position_id", u.get(0).getPosition());
+		        map.put("uuid", vardic.getUuid());
 				List<Vartic> v=new ArrayList();
 				VardicDao vds=new VardicDao();
 				v=vds.listByPosition(map);
@@ -355,7 +357,7 @@ public class VardicDetailAction extends ActionSupport {
 						for(int i=0;i<v.size();i++){
 							Vartic v2=new Vartic();
 							v2=v.get(i);
-							if(user.getPd()==v2.getAcheck_usercode()){
+							if(user.getPd().equals(v2.getAcheck_usercode())){
 								tsum=tsum+v2.getTscore()*user.getW();//部门得分*个人权重
 								break;
 							}
