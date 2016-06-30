@@ -90,12 +90,23 @@
 				check_deptcode=#check_deptcode#,
 					check_post=#check_post#,
 						isdept=#isdept#,
-						position_dept=#position_dept#
+						position_dept=#position_dept#,
+						type=#type#
 			Where uuid=#dept_code#
 		]]>
 	</update>		
 
 <insert id="sys_addkpi" parameterClass="java.util.Map">
+		<![CDATA[ 
+		
+INSERT INTO qkj_t_indexdetail 
+       (dept_code,kpi,weight,count_way,correctly,definition,check_deptcode,check_post,isdept,type,position_dept)
+VALUES ( #dept_code#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #check_deptcode#, #check_post#, #isdept#,#type#,#position_dept#)
+		]]>
+	</insert>
+
+
+<insert id="sys_addkpis" parameterClass="java.util.Map">
 		<![CDATA[ 
 		
 INSERT INTO qkj_t_indexdetail 
@@ -230,6 +241,15 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 		<isNotNull prepend="AND" property="check_code"><![CDATA[ dept_code Like #check_code#+'%') ]]></isNotNull>
 		<![CDATA[ ORDER BY DEPT_CODE ]]>
 	</select>
+	
+		<delete id="sys_delkpi" parameterClass="java.util.Map">
+		<![CDATA[
+			delete from qkj_t_indexdetail where 1=1
+		]]>
+		<isNotNull prepend="AND" property="uuid"><![CDATA[ uuid = #uuid# ]]></isNotNull>
+		<isNotNull prepend="AND" property="privilege_id"><![CDATA[ privilege_id=#privilege_id# ]]></isNotNull>
+	</delete>
+	
 	
 	<select id="sys_getDeptsKpi" resultClass="kpi" parameterClass="java.util.Map">
 		<![CDATA[ 

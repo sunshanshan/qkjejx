@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item value="273" key="DIALOG_WIDTH"/>
-		<item value="334" key="DIALOG_Y_ORIGIN"/>
-		<item value="950" key="DIALOG_X_ORIGIN"/>
-		<item value="407" key="DIALOG_HEIGHT"/>
-		<item value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI" key="DIALOG_FONT_NAME"/>
+		<item value="369" key="DIALOG_WIDTH"/>
+		<item value="598" key="DIALOG_Y_ORIGIN"/>
+		<item value="501" key="DIALOG_HEIGHT"/>
+		<item value="1181" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="新增kpi" key="selection"/>
+		<item value="getInfo" key="selection"/>
 		<list key="findhistory">
-			<item value="新增kpi"/>
-			<item value="相关操作"/>
-			<item value="纵向考核列表"/>
-			<item value="纵向考核列表 "/>
-			<item value="qkjmanager_getCheckVartics1"/>
-			<item value="cvardics"/>
-			<item value="sys_getDepts"/>
+			<item value="&#x09;getInfo(dept_uuid)"/>
+			<item value="getInfo"/>
+			<item value="&#x09;getInfo(puuid);"/>
+			<item value="kpi"/>
+			<item value="delete"/>
+			<item value="isDel"/>
+			<item value="删除"/>
 			<item value="sys_getDeptsKpi"/>
 		</list>
 		<list key="replacehistory">
+			<item value=""/>
 			<item value="Transverse"/>
 			<item value="transverse"/>
 			<item value="com.qkj.qkjmanager.action.TransverseAction"/>
 			<item value="count_way"/>
 			<item value="coun_way"/>
-			<item value=""/>
 			<item value="FUNCTION1"/>
 		</list>
 	</section>
