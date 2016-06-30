@@ -75,12 +75,18 @@ cursor: pointer;
 						<td class="td1 nw">${uuid}</td>
 						<td class="td1 nw">${it:formatDate(check_ym,'yyyy-MM')}</td>
 						<td class="td1 nw">${acheck_username}</td>
-						<td class="td1 nw">(${df_name})${acheck_deptname}</td>
+						<td class="td1 nw">(${df_name}${acd_cname})${acheck_deptname}</td>
 						<td class="td1 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
 						<td class="td2 nw">${check_score}</td>
 						<td class="td2 nw">${ay_totelScore}</td>
 						<td class="td4 op-area">
-								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
+						<s:if test="%{acheck_username==null}">
+						<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_loadDept"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
+						</s:if>
+						<s:else>
+						<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
+						</s:else>
+								
 					    	<%-- <c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_DEL',null)==true}">
 								<a class="input-red" href="<s:url namespace="/qkjmanager" action="vartic_del"><s:param name="vardic.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
 							</c:if> --%>

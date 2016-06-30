@@ -31,7 +31,8 @@ public class VardicAction extends ActionSupport {
 	private VardicDao dao = new VardicDao();
 	private Vartic vardic;
 	private List<Vartic> vardics;
-	private List<Vartic> cvardics; 
+	private List<Vartic> cvardics;
+	private List<Vartic> cvardicsd;
 	private List<Check> checks;
 	private String message;
 	private String viewFlag;
@@ -39,6 +40,14 @@ public class VardicAction extends ActionSupport {
 	private int pageSize;
 	private int currPage;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核管理";
+
+	public List<Vartic> getCvardicsd() {
+		return cvardicsd;
+	}
+
+	public void setCvardicsd(List<Vartic> cvardicsd) {
+		this.cvardicsd = cvardicsd;
+	}
 
 	public List<Check> getChecks() {
 		return checks;
@@ -266,6 +275,7 @@ public class VardicAction extends ActionSupport {
 	        map.put("typea", 1);//成绩表中所有纵向向考核已经考核过的去掉
 			map.put("isdept", 1);//纵向考核
 			this.setCvardics(dao.Checklist(map));
+			this.setCvardicsd(dao.Checklistbydept(map));
 			System.out.println(cvardics.size());
 			CheckDao cd =new CheckDao();
 			map.clear();

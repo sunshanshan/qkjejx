@@ -33,9 +33,28 @@ public class Vartic {
 	private Date echeck_startdate;// 员工考核开始时间
 	private Date echeck_closedate;// 员工考核结束时间
 	private String df_name;//父部门
+	private String acheck_dept;//纵向考核部门
 	
+	private String acd_cname;
 	private Double tscore;
+	private String d_code;
 	
+
+	public String getAcd_cname() {
+		return acd_cname;
+	}
+
+	public void setAcd_cname(String acd_cname) {
+		this.acd_cname = acd_cname;
+	}
+
+	public String getD_code() {
+		return d_code;
+	}
+
+	public void setD_code(String d_code) {
+		this.d_code = d_code;
+	}
 
 	public String getDf_name() {
 		return df_name;
@@ -261,6 +280,14 @@ public class Vartic {
 
 	public void setTscore(Double tscore) {
 		this.tscore = tscore;
+	}
+
+	public String getAcheck_dept() {
+		return acheck_dept;
+	}
+
+	public void setAcheck_dept(String acheck_dept) {
+		this.acheck_dept = acheck_dept;
 	}
 
 

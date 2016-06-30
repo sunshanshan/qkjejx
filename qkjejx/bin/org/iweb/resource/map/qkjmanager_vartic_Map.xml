@@ -4,7 +4,8 @@
 	<typeAlias alias="vartic" type="com.qkj.qkjmanager.domain.Vartic" />
 	<select id="qkjmanager_getVartics" resultClass="vartic" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select c.*,checku.USER_NAME check_username,achecku.user_name acheck_username,mdyu.USER_NAME lm_username,checkd.dept_cname check_deptname,acheckd.dept_cname acheck_deptname,df.dept_cname df_name
+			select c.*,checku.USER_NAME check_username,achecku.user_name acheck_username,mdyu.USER_NAME lm_username,checkd.dept_cname check_deptname,acheckd.dept_cname acheck_deptname,df.dept_cname df_name,
+			acd.dept_cname acd_cname
 			from qkj_r_score c 
 			left join s_sys_user checku on(c.check_user=checku.uuid)
 			left join s_sys_user achecku on(c.acheck_user=achecku.uuid)
@@ -12,6 +13,7 @@
 			left join s_sys_department checkd on(checkd.dept_code=c.check_usercode)
 			left join s_sys_department acheckd on(acheckd.dept_code=c.acheck_usercode)
 			LEFT JOIN s_sys_department df on (df.dept_code=acheckd.parent_dept)
+			left JOIN s_sys_department acd on(acd.dept_code=c.acheck_dept)
 			
 		]]>
 		<dynamic prepend="WHERE">
@@ -77,6 +79,26 @@
 		</isNotEmpty>
 	</select>
 	
+	<select id="qkjmanager_getCheckVarticsdept" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select distinct d.DEPT_CODE d_code,d.dept_cname acheck_deptname
+			from s_sys_department d
+			LEFT JOIN qkj_t_indexdetail id on (d.dept_code=id.dept_code)
+			where  not exists (select * from qkj_r_score s 
+			left join qkj_r_check k on(s.check_ym=k.ym)
+			where s.acheck_dept=d.dept_code 
+		]]>
+		
+		<isNotNull prepend="AND" property="check_ym"><![CDATA[  s.check_ym like #check_ym# +'%' ]]></isNotNull>
+		<isNotNull prepend="AND" property="typea"><![CDATA[  s.typea=#typea#]]></isNotNull>
+		<![CDATA[)]]>
+		<isNotNull property="isdept">
+		<isEqual property="isdept" compareValue="1"><!-- 纵向 -->
+			<isNotNull prepend="AND" property="fdept"><![CDATA[ d.parent_dept = #fdept#]]></isNotNull>
+		</isEqual>
+		</isNotNull>
+	</select>
+	
 	
 	<select id="qkjmanager_getCheckVartics1" resultClass="vartic" parameterClass="java.util.Map">
 		<![CDATA[ 
@@ -109,8 +131,8 @@ where id.check_deptcode=#dept_code# 	   and  not exists (select * from qkj_r_sco
 
 	<insert id="qkjmanager_addVartics" parameterClass="vartic">
 		<![CDATA[ 
-			insert into qkj_r_score(check_ym,check_user,check_usercode,acheck_user,acheck_usercode,check_score,check_date,lm_user,lm_time,typea,ay_totelScore)
-			VALUES(#check_ym#,#check_user#,#check_usercode#,#acheck_user#,#acheck_usercode#,#check_score#,#check_date#,#lm_user#,#lm_time#,#typea#,0.00);
+			insert into qkj_r_score(check_ym,check_user,check_usercode,acheck_user,acheck_usercode,check_score,check_date,lm_user,lm_time,typea,ay_totelScore,acheck_dept)
+			VALUES(#check_ym#,#check_user#,#check_usercode#,#acheck_user#,#acheck_usercode#,#check_score#,#check_date#,#lm_user#,#lm_time#,#typea#,0.00,#acheck_dept#);
 		]]>
 		
 		

@@ -17,6 +17,16 @@ public class IndexDetail {
 	private String position_id;
 	private Integer type;// 1：职务权重 2：部门权重
 	private String position_dept;
+	
+	private double goal;
+
+	public double getGoal() {
+		return goal;
+	}
+
+	public void setGoal(double goal) {
+		this.goal = goal;
+	}
 
 	public String getPosition_dept() {
 		return position_dept;
