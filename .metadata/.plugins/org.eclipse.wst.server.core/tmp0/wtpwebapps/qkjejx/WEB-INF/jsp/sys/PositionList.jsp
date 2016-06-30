@@ -16,7 +16,7 @@
 			${path}
 			<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="position_load"><s:param name="viewFlag">add</s:param></s:url>" >添加职务</a></span>
 		</div>
-		<s:form id="serachForm" name="serachForm" action="position_list"  method="get" namespace="/sys" theme="simple">
+		<s:form id="serachForm" name="serachForm" action="position_list"  method="post" namespace="/sys" theme="simple">
 		<div class="label_main">
 			<div class="label_hang">
 		       <div class="label_ltit">职务名称:</div>

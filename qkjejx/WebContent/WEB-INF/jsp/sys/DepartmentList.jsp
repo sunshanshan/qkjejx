@@ -169,6 +169,7 @@ $(function(){
 	}	
 });
 function getInfo(obj) {
+
 	var ajax = new Common_Ajax('message');
 	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
 	ajax.config._success = function(data, textStatus) {
@@ -215,7 +216,7 @@ function getIndexDetail(obj) {
 			 show.push('<td class="td5" id="'+arr[i].uuid+'check_deptcode">'+ arr[i].check_deptcode+'</td  >' ) ;
 			 show.push('<td class="td6" id="'+arr[i].uuid+'check_post">'+ arr[i].check_post+'</td  >' ) ;
 			 show.push('<td class="td7" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
-			 show.push(' <td class="td1 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a></td>') ;
+			 show.push(' <td class="td1 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a> <input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" cssClass="input-red"/></td>') ;
 			 show.push('</tr>');
 			}  
 		 $("#intop").append(show.join(""));
@@ -223,6 +224,29 @@ function getIndexDetail(obj) {
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_LOADKPI");
 	ajax.addParameter("parameters", "dept_code=" + obj);
 	ajax.sendAjax();
+}
+
+function delkpi(obj){
+	
+	var dept_uuid=$("#dept\\.uuid").val();
+	 if(confirm("确认删除？")){
+	  
+	  
+	var ajax = new Common_Ajax('message');
+	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
+	ajax.config._success = function(data, textStatus) {
+
+		getInfo(dept_uuid);
+		
+	};
+	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_DELETEKPI");
+	ajax.addParameter("work","update");
+	ajax.addParameter("parameters", "uuid=" + obj);
+	ajax.sendAjax();
+	
+	 }
+	
+	
 }
 function updatedetermine(obj){
 	var ajax = new Common_Ajax('message');
@@ -337,9 +361,11 @@ function addtab(ct) {
 	var check_post=$("#newcheck_postip").val();
 	var isdept=$("#newisdeptip").val();
 	var dept_code=$("#dept\\.dept_code").val();
+	var dept_uuid=$("#dept\\.uuid").val();
 	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
 	ajax.config._success = function(data, textStatus) {
-		  window.location.reload();//刷新当前页面.
+	
+		getInfo(dept_uuid)
 	};
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_ADDKPI");
 	ajax.addParameter("work","update");

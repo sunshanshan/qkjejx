@@ -125,7 +125,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
 
-      <Context docBase="E:\work\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\qkjejx" path="" reloadable="true" source="org.eclipse.jst.jee.server:qkjejx">
+      <Context docBase="C:\work\qkjejx\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\qkjejx" path="" reloadable="true" source="org.eclipse.jst.jee.server:qkjejx">
 
 	
 	<Resource auth="Container" driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" factory="com.alibaba.druid.pool.DruidDataSourceFactory" filters="stat" initialSize="1" logabandoned="false" maxActive="300" maxOpenPreparedStatements="20" maxWait="60000" minEvictableIdleTimeMillis="300000" minIdle="10" name="qkj/sqlServer_druid_huzhu" password="iloveqkj2646huzhums02" poolPreparedStatements="true" removeabandoned="true" removeabandonedtimeout="600" testOnBorrow="false" testOnReturn="false" testWhileIdle="true" timeBetweenEvictionRunsMillis="60000" type="javax.sql.DataSource" url="jdbc:sqlserver://rdsjqyjmzjrjr3q.sqlserver.rds.aliyuncs.com:3433;database=qqkjjx" username="huzhujx" validationQuery="SELECT 1"/>
