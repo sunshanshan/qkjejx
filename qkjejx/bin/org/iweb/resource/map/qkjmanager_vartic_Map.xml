@@ -19,6 +19,7 @@
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[  c.check_ym like #check_ym# +'%' ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# ]]></isNotNull>
 			<isNotNull prepend="AND" property="typea"><![CDATA[  c.typea=#typea# ]]></isNotNull>
+			<isNotNull prepend="AND" property="acheck_user"><![CDATA[  c.acheck_user=#acheck_user# ]]></isNotNull>
 			
 			<isNotEmpty prepend="AND" property="apply_depts" open="(" close=")">
 			<![CDATA[ c.acheck_usercode In ]]>
@@ -150,7 +151,7 @@ where id.check_deptcode=#dept_code# 	   and  not exists (select * from qkj_r_sco
 		<![CDATA[
 			
 			Update qkj_r_score
-			Set check_score=(select SUM(check_score)
+			Set check_score=(select SUM(check_goal)
 			from qkj_r_sonscore where score_id=#value#
 			)
 			Where uuid=#value#
@@ -175,10 +176,10 @@ where id.check_deptcode=#dept_code# 	   and  not exists (select * from qkj_r_sco
 	<select id="qkjmanager_getVarticsByPosition" resultClass="vartic" parameterClass="java.util.Map">
 		<![CDATA[ 
 			select SUM(s.check_score) tscore,s.acheck_usercode from qkj_r_score s where 
-			s.acheck_usercode=(select id.position_dept from qkj_t_indexdetail id where  
+			s.acheck_usercode in (select id.position_dept from qkj_t_indexdetail id where  
 			id.type=2 and id.position_id=#position_id#)
 			and 
-			acheck_usercode=#acheck_usercode# and check_ym like #check_yms# +'%'
+			acheck_usercode=#acheck_usercode# and check_ym like #check_yms# +'%' and s.uuid <>#uuid#
 			
 			GROUP BY s.acheck_usercode
 		]]>
