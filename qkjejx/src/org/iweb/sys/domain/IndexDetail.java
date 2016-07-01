@@ -18,13 +18,15 @@ public class IndexDetail {
 	private Integer type;// 1：职务权重 2：部门权重
 	private String position_dept;
 	
-	private double goal;
+	private Double goal;
 
-	public double getGoal() {
+	
+
+	public Double getGoal() {
 		return goal;
 	}
 
-	public void setGoal(double goal) {
+	public void setGoal(Double goal) {
 		this.goal = goal;
 	}
 
