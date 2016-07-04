@@ -320,7 +320,7 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 		<isNotNull prepend="AND" property="email"><![CDATA[ u.email like #email# ]]></isNotNull>
 		<isNotNull prepend="AND" property="mobile"><![CDATA[ u.mobile like #mobile# ]]></isNotNull>
 		<isNotNull prepend="AND" property="status"><![CDATA[ u.status=#status# ]]></isNotNull>
-		
+			<isNotNull prepend="AND" property="post"><![CDATA[ p.POSITION_NAME like '%'+#post# +'%']]></isNotNull>
 		<isNotEmpty prepend="AND" property="dept_code">
 			<isNotEqual property="is_sub_dept" compareValue="true"><![CDATA[ ud.dept_code=#dept_code#]]></isNotEqual>
 			<isEqual property="is_sub_dept" compareValue="true"><![CDATA[ ud.dept_code LIKE #dept_code#+'%') ]]></isEqual>

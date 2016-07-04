@@ -45,8 +45,17 @@ public class User {
 	private String pd; 
 	private Double w;
 
+
 	// 以下为查询专用字段
 	private String[] positions;
+	private String post;
+	public String getPost() {
+		return post;
+	}
+
+	public void setPost(String post) {
+		this.post = post;
+	}
 
 	public String getIs_sub_dept() {
 		return is_sub_dept;
