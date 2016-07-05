@@ -30,6 +30,11 @@
 		       <div class="label_ltit">姓名:</div>
 		       <div class="label_rwben"><s:textfield id="user.user_name" title="姓名" name="user.user_name" /></div>
 			</div>
+			
+			<div class="label_hang">
+		       <div class="label_ltit">职务:</div>
+		       <div class="label_rwben"><s:textfield id="user.post" title="职务" name="user.post" /></div>
+			</div>
 			<div class="label_hang">
 	            <div class="label_ltit">所属部门:</div>
 	            <div class="label_rwben2">
