@@ -13,7 +13,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
+import org.iweb.sys.dao.UserDAO;
 import org.iweb.sys.dao.UserDeptDAO;
+import org.iweb.sys.domain.User;
 import org.iweb.sys.domain.UserDept;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -190,7 +192,7 @@ public class VardicAction extends ActionSupport {
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_ADD");
 		try {
 			vardic.setTypea(1);//纵向考核
-			vardic.setCheck_user(ContextHelper.getUserLoginUuid());
+			//vardic.setCheck_user(ContextHelper.getUserLoginUuid());
 			vardic.setCheck_date(new Date());
 			vardic.setLm_user(ContextHelper.getUserLoginUuid());
 			vardic.setLm_time(new Date());
@@ -274,9 +276,47 @@ public class VardicAction extends ActionSupport {
 	        map.put("p", dlist);
 	        map.put("typea", 1);//成绩表中所有纵向向考核已经考核过的去掉
 			map.put("isdept", 1);//纵向考核
-			this.setCvardics(dao.Checklist(map));
+			List<Vartic> linshi=new ArrayList();
+			linshi=dao.Checklist(map);
+			if(linshi.size()>0){//如果有部门取值且取值的部门kpi考核日期内还未评分的不能考核
+				for(int i=0;i<linshi.size();i++){
+					Boolean flag=true;
+					Vartic lc=new Vartic();
+					lc=linshi.get(i);
+					//根据用户id查询type=2的kpi
+					UserDAO ud=new UserDAO();
+					map.clear();
+					map.put("uuid", lc.getU_id());
+					map.put("type", 2);
+					List<User> kpis=new ArrayList<>();
+					kpis=ud.listBypro(map);//查询这些kpi是否在本月的里面找到,找不到则不加入list
+					if(kpis.size()>0){
+			        	for(int j=0;j<kpis.size();j++){
+			        		map.clear();
+							map.put("check_ym", d);
+							map.put("kpiid", kpis.get(j).getId_uid());
+							VardicDetailDao  vdd=new VardicDetailDao();
+							List<VarticDetail> vdds=new ArrayList<>();
+							vdds=vdd.list(map);
+							if(vdds.size()>0){
+							}else{
+								flag=false;
+								break;
+							}
+			        	}
+			        	
+					}else{
+						flag=false;
+					}
+					if(flag==true){
+		        		this.cvardics.add(lc);
+		        	}
+					
+				}
+			}
+			
 			this.setCvardicsd(dao.Checklistbydept(map));
-			System.out.println(cvardics.size());
+			//System.out.println(cvardics.size());
 			CheckDao cd =new CheckDao();
 			map.clear();
 			map.put("state", 0);

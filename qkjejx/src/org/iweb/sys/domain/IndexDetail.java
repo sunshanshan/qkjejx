@@ -19,8 +19,15 @@ public class IndexDetail {
 	private String position_dept;
 	
 	private Double goal;
+	private Double score;
 
-	
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
 
 	public Double getGoal() {
 		return goal;

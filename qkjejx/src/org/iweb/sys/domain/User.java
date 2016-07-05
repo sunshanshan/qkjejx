@@ -44,6 +44,7 @@ public class User {
 	
 	private String pd; 
 	private Double w;
+	private Integer id_uid;//kpi编号
 
 	// 以下为查询专用字段
 	private String[] positions;
@@ -326,6 +327,14 @@ public class User {
 
 	public void setW(Double w) {
 		this.w = w;
+	}
+
+	public Integer getId_uid() {
+		return id_uid;
+	}
+
+	public void setId_uid(Integer id_uid) {
+		this.id_uid = id_uid;
 	}
 
 }

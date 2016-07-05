@@ -31,6 +31,7 @@ public class TransverseDetailAction extends ActionSupport {
 	private VardicDao zdao=new VardicDao();
 	private VarticDetail vd;
 	private List<VarticDetail> vds;
+	private List<IndexDetail> kpis;
 	private Department depa;
 	public Department getDepa() {
 		return depa;
@@ -51,6 +52,14 @@ public class TransverseDetailAction extends ActionSupport {
 	private String aArray;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核管理";
 
+
+	public List<IndexDetail> getKpis() {
+		return kpis;
+	}
+
+	public void setKpis(List<IndexDetail> kpis) {
+		this.kpis = kpis;
+	}
 
 	public List<IndexDetail> getIds() {
 		return ids;
@@ -161,7 +170,7 @@ public class TransverseDetailAction extends ActionSupport {
 			}else{
 				map.clear();
 				map.put("dept_code", vardic.getU_code());
-				map.put("isdept", 0);//向横考核
+				//map.put("isdept", 0);//向横考核
 				IndexDetail id=new IndexDetail();
 				KpiDAO kpid=new KpiDAO();
 				this.setIds(kpid.list(map));
@@ -197,6 +206,12 @@ public class TransverseDetailAction extends ActionSupport {
 					map.clear();
 					map.put("score_id", vardic.getUuid());
 					this.setVds(dao.list(map));
+					//查询此部门其它kpi
+					KpiDAO kpidao=new KpiDAO();
+					map.clear();
+					map.put("sp", 1);
+					map.put("dept_code", vardic.getAcheck_usercode());
+					this.setKpis(kpidao.list(map));
 					
 				} else {
 					this.setVardic(null);
@@ -219,14 +234,28 @@ public class TransverseDetailAction extends ActionSupport {
 			/**
 			 * 填加主表
 			 */
-			vardic.setCheck_user(ContextHelper.getUserLoginUuid());
-			vardic.setCheck_date(new Date());
-			vardic.setLm_user(ContextHelper.getUserLoginUuid());
-			vardic.setLm_time(new Date());
-			vardic.setTypea(0);
-			vardic.setCheck_score(0.00);
-			vardic.setCheck_date(new Date());
-			zdao.add(vardic);
+			//横向考核时如果本月此部门已经有考核记录则不在添加主表只添加子表
+			if(vardic!=null && vardic.getCheck_ym()!=null){
+				List<Vartic> vs=new ArrayList();
+				SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+		        String d = sdf.format(vardic.getCheck_ym());
+		        map.remove("check_ym");
+		        map.put("check_ym", d);
+				map.put("acheck_usercode", vardic.getAcheck_usercode());
+				vs=zdao.list(map);
+				if(vs.size()>0){//说明本月此部门已经有考核记录
+					vardic=vs.get(0);//一个部门一个月考核主表记录数只有一条
+				}else{
+					vardic.setCheck_date(new Date());
+					vardic.setLm_user(ContextHelper.getUserLoginUuid());
+					vardic.setLm_time(new Date());
+					vardic.setTypea(0);
+					vardic.setCheck_score(0.00);
+					vardic.setCheck_date(new Date());
+					zdao.add(vardic);
+				}
+			}
+			
 			
 			/**
 			 * 填加子表
@@ -240,79 +269,30 @@ public class TransverseDetailAction extends ActionSupport {
 					vd.setScore_id(vardic.getUuid());
 					String index=aa[i];
 					String arr[] = index.split(",");
-					if(arr[1]!=null && arr[1]!="")vd.setCheck_index(Integer.parseInt(arr[1]));
-					if(arr[2]!=null && arr[2]!="")vd.setCheck_score(Double.parseDouble(arr[2]));
-					if(arr[3]!=null && arr[3]!="")vd.setCheck_goal(Double.parseDouble(arr[3]));
-					vd.setCheck_date(new Date());
-					sum=sum+Double.parseDouble(arr[3]);
-					//vd.setCheck_index(Double.parseDouble(arr[0]));
-					dao.add(vd);
-				}
-			}
-			
-			/**
-			 * 修改主表分数横加纵
-			 */
-			//修改纵向总分
-			vardic.setCheck_score(sum);
-			zdao.saveScore(vardic);
-			/**
-			 * 修改总分数 横+纵
-			 */
-			Double tsum=0.00;
-			//哪些人有此部门权重
-			UserDAO ud=new UserDAO();
-			List<User> u=new ArrayList();
-			map.clear();
-			map.put("position_dept", vardic.getAcheck_usercode());
-			map.put("type", 2);
-			u=ud.listBypro(map);
-			if(u.size()>0){//有部门权重 则给人加上部门得分*权重
-				for(int i=0;i<u.size();i++){
-					User user=new User();
-					user=u.get(i);
-					SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-			        String d = sdf.format(vardic.getCheck_ym());
-					//查询本月这个人的分数主表id
-					map.clear();
-					map.put("check_ym", d);
-					map.put("acheck_user", user.getUuid());
-					List<Vartic> vs=new ArrayList();
-					vs=zdao.list(map);
-					//查询部门分数可能是多个
-					if(vs.size()>0){
-						map.clear();
-				        map.put("check_yms", d);
-				        map.put("acheck_usercode", vardic.getAcheck_usercode());
-				        map.put("position_id", u.get(i).getPosition());
-				        map.put("uuid", vs.get(0).getUuid());
-						List<Vartic> v=new ArrayList();
-						VardicDao vds=new VardicDao();
-						v=vds.listByPosition(map);
-						if(v.size()>0){
-							//职务kpi中部门与此一样的kpi
-								for(int j=0;j<v.size();j++){
-									Vartic v2=new Vartic();
-									v2=v.get(j);
-									if(user.getPd().equals(v2.getAcheck_usercode())){
-										tsum=tsum+v2.getTscore()*user.getW();//部门得分*个人权重
-										break;
-									}
-								}
-								
-								//tsum=tsum+sum;
-								//修改总得分
-								vardic.setAy_totelScore(tsum);
-								zdao.saveay(vardic);
-								
-						}
+					if(index.length()>=11){
+						if(arr[1]!=null && arr[1]!="")vd.setCheck_index(Integer.parseInt(arr[1]));
+						if(arr[2]!=null && arr[2]!="")vd.setCheck_score(Double.parseDouble(arr[2]));
+						if(arr[3]!=null && arr[3]!="")vd.setCheck_goal(Double.parseDouble(arr[3]));
+						vd.setCheck_date(new Date());
+						vd.setCheck_user(ContextHelper.getUserLoginUuid());
+						vd.setCheck_usercode(ContextHelper.getUserLoginDept());
+						sum=sum+Double.parseDouble(arr[3]);
+						//vd.setCheck_index(Double.parseDouble(arr[0]));
+						dao.add(vd);
 					}
 					
 				}
-				
-			
+			}else{
+				log.error(this.getClass().getName() + "!没有数据分数:");
+				throw new Exception(this.getClass().getName() + "!没有数据分数:");
 			}
 			
+			/**
+			 * 修改主表分数
+			 */
+			//修改纵向总分
+			//vardic.setCheck_score(sum);
+			zdao.saveBycheck(vardic.getUuid().toString());
 			dao.commitTransaction();
 			//addProcess("CLOSEORDER_ADD", "新增结案提货单", ContextHelper.getUserLoginUuid());
 		} catch (Exception e) {
@@ -343,61 +323,9 @@ public class TransverseDetailAction extends ActionSupport {
 			Double sum=c.getCheck_score();
 			//查询部门横向考核分数 修改横+纵总分
 			/**
-			 * 修改总分数 横+纵
+			 * 修改总分数 横+纵的部门
 			 */
-			Double tsum=0.00;
-			//哪些人有此部门权重
-			UserDAO ud=new UserDAO();
-			List<User> u=new ArrayList();
-			map.clear();
-			map.put("position_dept", vardic.getAcheck_usercode());
-			map.put("type", 2);
-			u=ud.listBypro(map);
-			if(u.size()>0){//有部门权重 则给人加上部门得分*权重
-				for(int i=0;i<u.size();i++){
-					User user=new User();
-					user=u.get(i);
-					SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-			        String d = sdf.format(vardic.getCheck_ym());
-					//查询本月这个人的分数主表id
-					map.clear();
-					map.put("check_ym", d);
-					map.put("acheck_user", user.getUuid());
-					List<Vartic> vs=new ArrayList();
-					vs=zdao.list(map);
-					//查询部门分数可能是多个
-					if(vs.size()>0){
-						map.clear();
-				        map.put("check_yms", d);
-				        map.put("acheck_usercode", vardic.getAcheck_usercode());
-				        map.put("position_id", u.get(i).getPosition());
-				        map.put("uuid", vs.get(0).getUuid());
-						List<Vartic> v=new ArrayList();
-						VardicDao vds=new VardicDao();
-						v=vds.listByPosition(map);
-						if(v.size()>0){
-							//职务kpi中部门与此一样的kpi
-								for(int j=0;j<v.size();j++){
-									Vartic v2=new Vartic();
-									v2=v.get(j);
-									if(user.getPd().equals(v2.getAcheck_usercode())){
-										tsum=tsum+v2.getTscore()*user.getW();//部门得分*个人权重
-										break;
-									}
-								}
-								
-								//tsum=tsum+sum;
-								//修改总得分
-								vardic.setAy_totelScore(tsum);
-								zdao.saveay(vardic);
-								
-						}
-					}
-					
-				}
-				
-			
-			}
+			zdao.saveBycheck(vardic.getUuid().toString());
 			dao.commitTransaction();
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!save 数据更新失败:", e);

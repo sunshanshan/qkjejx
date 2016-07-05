@@ -262,7 +262,7 @@ public class VardicDetailAction extends ActionSupport {
 			/**
 			 * 填加主表
 			 */
-			vardic.setCheck_user(ContextHelper.getUserLoginUuid());
+			//vardic.setCheck_user(ContextHelper.getUserLoginUuid());
 			vardic.setCheck_date(new Date());
 			vardic.setLm_user(ContextHelper.getUserLoginUuid());
 			vardic.setLm_time(new Date());

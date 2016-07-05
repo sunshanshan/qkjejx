@@ -4,8 +4,6 @@ import java.util.Date;
 
 public class Vartic {
 	private Integer uuid;// (int)系统编号
-	private String check_user;// 考核人
-	private String check_usercode;// 考核人部门
 	private Date check_date;// 考核人考核时间
 	private String acheck_user;// 被考核人
 	private String acheck_usercode;// 被考核人部门
@@ -94,22 +92,6 @@ public class Vartic {
 
 	public void setUuid(Integer uuid) {
 		this.uuid = uuid;
-	}
-
-	public String getCheck_user() {
-		return check_user;
-	}
-
-	public void setCheck_user(String check_user) {
-		this.check_user = check_user;
-	}
-
-	public String getCheck_usercode() {
-		return check_usercode;
-	}
-
-	public void setCheck_usercode(String check_usercode) {
-		this.check_usercode = check_usercode;
 	}
 
 	public Date getCheck_date() {

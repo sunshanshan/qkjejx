@@ -253,19 +253,26 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 	
 	<select id="sys_getDeptsKpi" resultClass="kpi" parameterClass="java.util.Map">
 		<![CDATA[ 
-			Select i.*,s.check_goal goal From qkj_t_indexdetail i
+			Select i.*,s.check_goal goal,s.check_score score From qkj_t_indexdetail i
 			left join qkj_r_sonscore s on(i.uuid=s.check_index)
 			left join qkj_r_score z on(s.score_id=z.uuid)
 			Where 1=1
 		]]>
+		<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
 		<isNotNull prepend="AND" property="dept_code"><![CDATA[ i.dept_code=#dept_code# ]]></isNotNull>
 		<isNotNull prepend="AND" property="positionid"><![CDATA[ i.position_id=#positionid# ]]></isNotNull>
 		<isNotNull prepend="AND" property="position_dept"><![CDATA[ i.position_dept=#position_dept# ]]></isNotNull>
 		<isNotNull prepend="AND" property="isdept"><![CDATA[ i.isdept=#isdept# ]]></isNotNull>
 		<isNotNull prepend="AND" property="type"><![CDATA[ i.type=#type# ]]></isNotNull>
 		<isNotNull prepend="AND" property="kpi"><![CDATA[ i.kpi=#kpi# ]]></isNotNull>
+		<isNotNull prepend="AND" property="check_deptcode"><![CDATA[ i.check_deptcode=#check_deptcode# ]]></isNotNull>
+		<isNotNull prepend="AND" property="check_post"><![CDATA[ i.check_post=#check_post# ]]></isNotNull>
 		<isNotNull prepend="AND" property="check_ym"><![CDATA[  z.check_ym like #check_ym# +'%' ]]></isNotNull>
+		<isNotNull prepend="AND" property="sp"><![CDATA[ not exists(select 1 from qkj_r_sonscore k where k.check_index=i.uuid)]]></isNotNull>
 	</select>
+	
+	
+	
 	
 	
 	
@@ -329,7 +336,7 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 		<isNotNull prepend="AND" property="status"><![CDATA[ u.status=#status# ]]></isNotNull>
 		<isNotNull prepend="AND" property="position"><![CDATA[ u.position=#position# ]]></isNotNull>
 		<isNotEmpty prepend="AND" property="dept_code">
-			<isNotEqual property="is_sub_dept" compareValue="true"><![CDATA[ ud.dept_code=#dept_code#]]></isNotEqual>
+			<isNotEqual property="is_sub_dept" compareValue="false"><![CDATA[ ud.dept_code=#dept_code#]]></isNotEqual>
 			<isEqual property="is_sub_dept" compareValue="true"><![CDATA[ ud.dept_code LIKE #dept_code#+'%') ]]></isEqual>
 		</isNotEmpty>
 		
@@ -364,7 +371,7 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 	
 	<select id="sys_getUserByPos" resultClass="user" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select u.*,id.weight w,id.position_dept pd from s_sys_user u 
+			select u.*,id.uuid id_uid,id.weight w,id.position_dept pd from s_sys_user u 
 			left JOIN s_cfg_position p on (u.[POSITION]=p.uuid)
 			left join qkj_t_indexdetail id on (id.position_id=p.UUID)
 			Where 1=1
