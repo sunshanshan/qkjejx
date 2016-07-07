@@ -17,6 +17,45 @@ public class IndexDetail {
 	private String position_id;
 	private String type;// 1：职务权重 2：部门权重
 	private String position_dept;
+<<<<<<< HEAD
+=======
+	
+	private Double goal;
+	private Double score;
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public Double getGoal() {
+		return goal;
+	}
+
+	public void setGoal(Double goal) {
+		this.goal = goal;
+	}
+
+	public String getPosition_dept() {
+		return position_dept;
+	}
+
+	public void setPosition_dept(String position_dept) {
+		this.position_dept = position_dept;
+	}
+
+	public String getPosition_id() {
+		return position_id;
+	}
+
+	public void setPosition_id(String position_id) {
+		this.position_id = position_id;
+	}
+
+>>>>>>> dcc19c880dbc5d1ee0e8b6d0fc44c6edaa2eb365
 	public int getUuid() {
 		return uuid;
 	}

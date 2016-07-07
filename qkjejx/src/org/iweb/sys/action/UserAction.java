@@ -56,11 +56,20 @@ public class UserAction extends ActionSupport {
 	private String viewFlag;
 	private int recCount;
 	private int pageSize;
+	private int currPage;
 
 	private String ajaxResult;
 
 	private boolean overSub;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;用户信息";
+
+	public int getCurrPage() {
+		return currPage;
+	}
+
+	public void setCurrPage(int currPage) {
+		this.currPage = currPage;
+	}
 
 	public List<User> getUserMDepts() {
 		return userMDepts;
@@ -199,9 +208,12 @@ public class UserAction extends ActionSupport {
 			if (!ToolsUtil.isEmpty(user.getTitle())) {
 				user.setTitle(user.getTitle().toLowerCase());
 			}
+			ContextHelper.SimpleSearchMap4Page("SYS_MANAGER_USER_LIST", map, user, viewFlag);
 			map.putAll(ToolsUtil.getMapByBean(user));
-			map.putAll(ContextHelper.getDefaultRequestMap4Page());
+			//map.putAll(ContextHelper.getDefaultRequestMap4Page());
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
+			this.setCurrPage(ContextHelper.getCurrPage(map));
+			System.out.println(currPage);
 			this.setUsers(dao.list(map));
 			this.setRecCount(dao.getResultCount());
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;客户信息";

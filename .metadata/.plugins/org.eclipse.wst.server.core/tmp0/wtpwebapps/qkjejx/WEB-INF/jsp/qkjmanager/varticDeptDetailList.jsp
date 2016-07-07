@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>考核管理11--<s:text name="APP_NAME" /></title>
+<title>考核管理--<s:text name="APP_NAME" /></title>
 <s:action name="ref_head" namespace="/manager" executeResult="true" />
 </head>
 <style type="text/css">
@@ -21,11 +21,9 @@ cursor: pointer;
  	<div class="tab_warp main" >
 		<div class="dq_step">
 			${path}
-			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
 				<span class="opb lb op-area"><a href="JavaScript:history.go(-1)">返回</a></span>
-			</c:if>
 		</div>
-	<s:form id="editForm" cssClass="validForm" action="transverseDeail_add" namespace="/qkjmanager" method="post" theme="simple">
+	<s:form id="editForm" name="editForm" cssClass="validForm" action="varticDetail_add" namespace="/qkjmanager" method="post" theme="simple">
 		<div class="label_main">
 			<div class="label_hang">
 				<div class="label_ltit">考核年月:</div>
@@ -36,11 +34,10 @@ cursor: pointer;
 			</div>
 			
 			<s:if test="'mdy' == viewFlag">	
-			
 			<div class="label_hang">
 				<div class="label_ltit">部门:</div>
 					<div class="label_rwben">
-						${vardic.acheck_deptname }
+						${vardic.acd_cname }
 					</div>
 			</div>	
 			</s:if>
@@ -48,8 +45,8 @@ cursor: pointer;
 			<div class="label_hang">
 				<div class="label_ltit">部门:</div>
 					<div class="label_rwben">
-						${depa.dept_cname }
-						<input type="hidden" name="vardic.acheck_usercode" value="${depa.dept_code}">
+						${dept.dept_cname }
+						<input type="hidden" name="vardic.acheck_dept" value="${dept.dept_code}">
 					</div>
 			</div>	
 			</s:else>
@@ -70,6 +67,7 @@ cursor: pointer;
 							<th>周期</th>
 							<th>定义</th>
 							<th>标准</th>
+							<th>横向考核部门</th>
 						</tr>
 										<!-- lading.promotions -->
 						
@@ -78,25 +76,12 @@ cursor: pointer;
 								<td class="nw">${uuid }</td>
 								<td class="nw">${kpi }</td>
 								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
-								<s:if test="isdept==0">
-									<!-- kpi 横向的部门职务对上 -->
-									<c:if test="${it:checkay(0,uuid)==true}">
-									<td class="nw" width="100px;"><input id="s${uuid }" type="text" onblur="kpi('${uuid}');" class="validate[required]" /></td>
-									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]"/></td>
-									</c:if>
-									<c:if test="${it:checkay(0,uuid)==false}">
-									<td class="nw" width="100px;">${check_score}</td>
-									<td class="nw" width="100px;">${check_goal}</td>
-									</c:if>
-								</s:if>
-								<s:else>
-								<td class="nw" width="100px;">${check_score}</td>
-								<td class="nw" width="100px;">${check_goal}</td>
-								</s:else>
-								
+								<td class="nw" width="100px;"><input id="s${uuid }" type="text" onblur="kpi('${uuid}');" class="validate[required]" /></td>
+								<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]"/></td>
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>			
+								<td class="longnote"  id="c${uuid }" >${check_deptcode}</td>			
 							</tr>
 						</s:iterator>
 						
@@ -110,7 +95,7 @@ cursor: pointer;
 							<div class="label_rwbenx">
 								<font color="red"><span id="messages"></span></font>
 								
-									<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_ADD',null)==true}">
+									<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
 										<button class="input-blue" onclick="add();">添加</button>
 									</c:if>
 							</div>
@@ -131,8 +116,12 @@ cursor: pointer;
 							<th>得分</th>
 							<th>周期</th>
 							<th>定义</th>
-							<th>标准</th>
+							<th>标准</th>		
+							<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">		
+							<c:if test="${it:checkay(1)==true}">			
 							<th>操作</th>
+							</c:if>
+							</c:if>
 						</tr>
 										<!-- lading.promotions -->
 						<s:iterator value="vds" status="sta">
@@ -140,46 +129,18 @@ cursor: pointer;
 								<td class="nw">${uuid }</td>
 								<td class="nw">${kpi }</td>
 								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
-								<s:if test="isdept==0">
-									<!-- kpi 横向的部门职务对上 -->
-									<c:if test="${it:checkay(0,kpi_id)==true}">
-									<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
-									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
-									</c:if>
-									<c:if test="${it:checkay(0,kpi_id)==false}">
-									<td class="nw" width="100px;">${check_score}</td>
-									<td class="nw" width="100px;">${check_goal}</td>
-									</c:if>
-								</s:if>
-								<s:else>
-								<td class="nw" width="100px;">${check_score}</td>
-								<td class="nw" width="100px;">${check_goal}</td>
-								</s:else>
+								<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
+								<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
-								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
-								<c:if test="${it:checkay(0,kpi_id)==true}">
+								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
+								<c:if test="${it:checkay(1)==true}">
 								<td class="longnote" title="${correctly}">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
-								</td>		
-								</c:if>	
+								</td>
 								</c:if>
-							</tr>
-						</s:iterator>
-						
-						<s:iterator value="kpis" status="sta">
-							<tr id="showtr${uuid}">
-								<td class="nw">${uuid }</td>
-								<td class="nw">${kpi }</td>
-								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
-								<td class="nw" width="100px;">${score}</td>
-								<td class="nw" width="100px;">${goal}</td>
-								<td class="nw">${cyc }</td>
-								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
-								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
-								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
-								</c:if>
+								</c:if>			
 							</tr>
 						</s:iterator>
 					</table>
@@ -207,7 +168,6 @@ function add(){
 	var obj=new Array();
 	 var flag=true;
 	  var tableObj = document.getElementById("t");
-	  alert(tableObj.rows.lengths);
 	  for (var i = 1; i < tableObj.rows.length; i++) {  //遍历Table的所有Row
 		  var tableInfo = "";
 	    for (var j = 0; j < tableObj.rows[i].cells.length; j++) {  //遍历Row中的每一列
@@ -216,12 +176,7 @@ function add(){
 	    	}else{
 	    		if(j==3){
 	    			var sid="s"+tableObj.rows[i].cells[0].innerText;//分数
-	    			var sp="";
-	    			if(document.getElementById(sid)!=undefined && document.getElementById(sid).value!=''){
-	    				sp=document.getElementById(sid).value;
-	    				}else{
-	    					continue;
-	    				}
+	    			var sp=document.getElementById(sid).value;
 	    			if(sp==null||sp==""){
 	    				flag=false;
 	    				break;
@@ -229,42 +184,45 @@ function add(){
 	    			tableInfo += sp+",";
 	    		}else if(j==4){
 	    			var gid="g"+tableObj.rows[i].cells[0].innerText;
-	    			var gp="";
-	    			if(document.getElementById(gid)!=undefined && document.getElementById(gid).value!=''){
-	    				 gp=document.getElementById(gid).value;
-	    			}else{
-    					continue;
-    				}
-	    			
+	    			var gp=document.getElementById(gid).value;
 	    			tableInfo += gp+",";
 	    			if(gp==null||gp==""){
 	    				flag=false;
 	    				break;
-	    			};
+	    			}
+	    		}
+	    		else if(j==8){
+	    			var cid="c"+tableObj.rows[i].cells[0].innerText;
+	    			var cp=document.getElementById(gid).value;
+	    			tableInfo += cp+",";
+	    			if(cp==null||cp==""){
+	    				flag=false;
+	    				break;
+	    			}
 	    		}else{
 	    			tableInfo = tableObj.rows[i].cells[j].innerText;  //uuid
 	    			tableInfo = tableInfo+",";
-	    		};
-	    		
-	    	};
+	    		}
+	    	}
 	    	 
 	    }
 	    tableInfo+=";";
 	   obj[i]=tableInfo;
+	   
 	  }
-	  alert("aaaa");
+	  
 	   if (!checkSubmitFlg) {
 		// 第一次提交
 		  checkSubmitFlg = true;
 		  if(flag==true){
-			  document.getElementById("editForm").action="/qkjmanager/transverseDeail_add?aArray="+obj;
+			  document.getElementById("editForm").action="/qkjmanager/varticDeail_addDept?aArray="+obj;
 		  }else{
 			  alert("所评分数不能为空！");
-		  };
+		  }
 		 } else {
 		//重复提交
 		  return false;
-		 };
+		 }
 }
 
 
@@ -273,8 +231,8 @@ function mdy(uuid,so){
 	var gid="g"+uuid;
 	var sp=document.getElementById(sid).value;
 	var gp=document.getElementById(gid).value;
-	window.location.href="/qkjmanager/transverseDetail_save?vd.uuid="+uuid+"&vd.check_score="+sp+"&vd.check_goal="+gp+"&vd.score_id="+so;
-};
+	window.location.href="/qkjmanager/varticDetail_saveDept?vd.uuid="+uuid+"&vd.check_score="+sp+"&vd.check_goal="+gp+"&vd.score_id="+so;
+}
 
 </script>
 </body>

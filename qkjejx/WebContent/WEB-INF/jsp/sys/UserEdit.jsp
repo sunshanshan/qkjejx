@@ -19,7 +19,7 @@
 	<div class="tab_warp main">
 		<div class="dq_step">
 			<a href="/manager/default">首页</a>&nbsp;&gt;&nbsp;<s:if test="null == user && 'add' == viewFlag">增加</s:if><s:elseif test="null != user && 'mdy' == viewFlag">修改</s:elseif>管理员
-			<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="user_list"></s:url>" >管理员列表</a></span>
+			<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="user_list"><s:param name="viewFlag">relist</s:param></s:url>" >管理员列表</a></span>
 		</div>
 		<s:form id="formEdit" name="form1" cssClass="validForm" action="user_add" namespace="/sys" onsubmit="return validator(this);" method="post" theme="simple">
 			<s:if test="null != user">

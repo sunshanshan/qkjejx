@@ -196,7 +196,6 @@ public class TransverseAction extends ActionSupport{
 		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST_ADD");
 		try {
 			vardic.setTypea(0);//横向考核
-			vardic.setCheck_user(ContextHelper.getUserLoginUuid());
 			vardic.setCheck_date(new Date());
 			vardic.setLm_user(ContextHelper.getUserLoginUuid());
 			vardic.setLm_time(new Date());
@@ -254,7 +253,7 @@ public class TransverseAction extends ActionSupport{
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
-			map.put("fdept", ContextHelper.getUserLoginDept());//当前登录人部门
+			
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_HORILIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
 			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
@@ -266,26 +265,10 @@ public class TransverseAction extends ActionSupport{
 			HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);  
 			HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);  
 			ulf=(UserLoginInfo) request.getSession().getAttribute(Parameters.UserLoginInfo_Session_Str);
-			map.put("userid", ulf.getUuid());
-	        map.put("dept_code", ulf.getDept_code());
-	        
-	        /*List<UserDept> u=new ArrayList<>();
-	        String us=ContextHelper.getUserLoginUuid();
-	        UserDeptDAO udd=new UserDeptDAO();
-	        Map<String, Object> map2 = new HashMap<String, Object>();
-	        map2.clear();
-	        map2.put("user_id", us);
-	        u=udd.list(map2);
-	        List<String> dlist = new ArrayList<>();
-	        if(u.size()>0){
-	        	Set<String> dset = new HashSet<>();
-	        	for(int i=0;i<u.size();i++){
-	        		String t1=u.get(i).getPosition();
-	        		dset.add(t1);
-	        	}
-	        	dlist.addAll(dset);
-	        }
-	        map.put("p", dlist);*/
+			map.put("fdept", ContextHelper.getUserLoginDept());//登录人部门是考核人部门
+	        map.put("check_post", ulf.getPosition());//登录人职务是考核人职务
+	        map.put("check_user", ContextHelper.getUserLoginUuid());
+	        System.out.println("登录人职务"+ulf.getPosition());
 	        map.put("typea", 0);//成绩表中所有横向考核已经考核过的去掉
 			map.put("isdept", 0);//向横考核
 			this.setCvardics(dao.Checklist1(map));

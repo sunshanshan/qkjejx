@@ -4,8 +4,6 @@ import java.util.Date;
 
 public class Vartic {
 	private Integer uuid;// (int)系统编号
-	private String check_user;// 考核人
-	private String check_usercode;// 考核人部门
 	private Date check_date;// 考核人考核时间
 	private String acheck_user;// 被考核人
 	private String acheck_usercode;// 被考核人部门
@@ -33,9 +31,28 @@ public class Vartic {
 	private Date echeck_startdate;// 员工考核开始时间
 	private Date echeck_closedate;// 员工考核结束时间
 	private String df_name;//父部门
+	private String acheck_dept;//纵向考核部门
 	
+	private String acd_cname;
 	private Double tscore;
+	private String d_code;
 	
+
+	public String getAcd_cname() {
+		return acd_cname;
+	}
+
+	public void setAcd_cname(String acd_cname) {
+		this.acd_cname = acd_cname;
+	}
+
+	public String getD_code() {
+		return d_code;
+	}
+
+	public void setD_code(String d_code) {
+		this.d_code = d_code;
+	}
 
 	public String getDf_name() {
 		return df_name;
@@ -75,22 +92,6 @@ public class Vartic {
 
 	public void setUuid(Integer uuid) {
 		this.uuid = uuid;
-	}
-
-	public String getCheck_user() {
-		return check_user;
-	}
-
-	public void setCheck_user(String check_user) {
-		this.check_user = check_user;
-	}
-
-	public String getCheck_usercode() {
-		return check_usercode;
-	}
-
-	public void setCheck_usercode(String check_usercode) {
-		this.check_usercode = check_usercode;
 	}
 
 	public Date getCheck_date() {
@@ -261,6 +262,14 @@ public class Vartic {
 
 	public void setTscore(Double tscore) {
 		this.tscore = tscore;
+	}
+
+	public String getAcheck_dept() {
+		return acheck_dept;
+	}
+
+	public void setAcheck_dept(String acheck_dept) {
+		this.acheck_dept = acheck_dept;
 	}
 
 

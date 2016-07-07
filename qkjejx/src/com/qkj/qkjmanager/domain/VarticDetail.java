@@ -16,6 +16,35 @@ public class VarticDetail {
 	private double weight;//权重
 	private String definition;//定义
 	private String correctly;//标准
+	
+	private String check_user;// 考核人
+	private String check_usercode;// 考核人部门
+	private Integer kpi_id;
+	private Integer isdept;
+	
+	public Integer getKpi_id() {
+		return kpi_id;
+	}
+
+	public void setKpi_id(Integer kpi_id) {
+		this.kpi_id = kpi_id;
+	}
+
+	public String getCheck_user() {
+		return check_user;
+	}
+
+	public void setCheck_user(String check_user) {
+		this.check_user = check_user;
+	}
+
+	public String getCheck_usercode() {
+		return check_usercode;
+	}
+
+	public void setCheck_usercode(String check_usercode) {
+		this.check_usercode = check_usercode;
+	}
 
 	private List<VarticDetail> vdes = new ArrayList<>();
 
@@ -113,6 +142,14 @@ public class VarticDetail {
 
 	public void setCorrectly(String correctly) {
 		this.correctly = correctly;
+	}
+
+	public Integer getIsdept() {
+		return isdept;
+	}
+
+	public void setIsdept(Integer isdept) {
+		this.isdept = isdept;
 	}
 
 }

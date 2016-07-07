@@ -50,7 +50,7 @@
 	<function>
 		<name>checkay</name>
 		<function-class>org.iweb.sys.ContextHelper</function-class>
-		<function-signature>boolean checkAy(java.lang.Integer)</function-signature>
+		<function-signature>boolean checkAy(java.lang.Integer,java.lang.Integer)</function-signature>
 	</function>
 	
 	<function>
