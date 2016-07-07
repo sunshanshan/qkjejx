@@ -3,26 +3,26 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="369" key="DIALOG_WIDTH"/>
 		<item value="771" key="DIALOG_Y_ORIGIN"/>
-		<item value="1727" key="DIALOG_X_ORIGIN"/>
 		<item value="501" key="DIALOG_HEIGHT"/>
+		<item value="1727" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="user_load" key="selection"/>
+		<item value="updatedetermine" key="selection"/>
 		<list key="findhistory">
+			<item value="updatedetermine"/>
+			<item value=" alert(type)"/>
+			<item value="definitionip"/>
+			<item value="position_dept"/>
+			<item value="sys_updateKpi"/>
+			<item value="update"/>
 			<item value="user_load"/>
 			<item value="user_list"/>
-			<item value="user_save"/>
-			<item value="sys_getUser"/>
-			<item value="list"/>
-			<item value="uuid"/>
-			<item value="dept_uuid"/>
-			<item value="getInfo"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>
