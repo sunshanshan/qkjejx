@@ -280,8 +280,8 @@ function updatedetermine(obj){
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_UPDATEKPI");
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + obj+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
-			+"&definition="+definition+"&correctly="+correctly+"&check_deptcode="+check_deptcode+"&check_post="+check_post
-			+"&isdept="+isdept);
+			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
+			+"&isdept="+encodeURI(isdept));
 	ajax.sendAjax();
 }
 function updatetab(obj) {
@@ -370,8 +370,8 @@ function addtab(ct) {
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_ADDKPI");
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + dept_code+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
-			+"&definition="+definition+"&correctly="+correctly+"&check_deptcode="+check_deptcode+"&check_post="+check_post
-			+"&isdept="+isdept);
+			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
+			+"&isdept="+encodeURI(isdept));
 	ajax.sendAjax();
 	 
 	

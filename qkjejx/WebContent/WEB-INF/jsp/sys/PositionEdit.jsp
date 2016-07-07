@@ -194,7 +194,7 @@ function updatedetermine(obj){
 	 var isdept=$("#"+obj+"isdeptip").val();
 	 var position_dept=$("#"+obj+"position_deptip").val();
 	 var type=$("#"+obj+"typeip").val();
-	alert(type)
+	alert(position_dept)
 	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
 	ajax.config._success = function(data, textStatus) {
 	
@@ -204,8 +204,8 @@ function updatedetermine(obj){
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_UPDATEKPI");
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + obj+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
-			+"&definition="+definition+"&correctly="+correctly+"&check_deptcode="+check_deptcode+"&check_post="+check_post
-			+"&isdept="+isdept+"&position_dept="+position_dept+"&type="+type);
+			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
+			+"&isdept="+encodeURI(isdept)+"&position_dept="+encodeURI(position_dept)+"&type="+encodeURI(type));
 	ajax.sendAjax();
 	
 
@@ -327,8 +327,8 @@ function addtab(ct) {
 	ajax.addParameter("work","update");
 
 	ajax.addParameter("parameters", "positionid=" + positionid+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
-			+"&definition="+definition+"&correctly="+correctly+"&check_deptcode="+check_deptcode+"&check_post="+check_post
-			+"&isdept="+isdept+"&type="+type+"&position_dept="+position_dept);
+			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
+			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type)+"&position_dept="+encodeURI(position_dept));
 	ajax.sendAjax();
 }
 	//type=2是部门权重 type=1是职务权重
