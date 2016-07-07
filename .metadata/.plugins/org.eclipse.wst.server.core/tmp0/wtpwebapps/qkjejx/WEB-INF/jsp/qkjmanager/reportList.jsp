@@ -61,7 +61,14 @@ cursor: pointer;
 						<td class="td1 nw">${acheck_username}</td>
 						<td class="td1 nw">${acheck_deptname}</td>
 						<td class="td1 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
-						<td class="td2 nw">${check_score}</td>
+						<td class="td2 nw">
+						<s:if test="acheck_username!=null">
+						${ay_totelScore}
+						</s:if>
+						<s:else>
+						${check_score}
+						</s:else>
+						</td>
 					</tr>
 				</s:iterator>
 			</table>

@@ -57,7 +57,7 @@
 		       <div class="label_ltit">默认职务:</div>
 		       <div class="label_rwbenx"><s:select name="user.position" list="positions" listKey="uuid" listValue="position_name" headerKey="" headerValue="--请选择--" cssClass="validate[required]"/></div>
 			</div>
-			
+			<input type="hidden" name="user.page" value="page" id="page">
 			<div class="label_hang">
 		       <div class="label_ltit">默认提交部门:</div>
 		       <div class="label_rwben2">

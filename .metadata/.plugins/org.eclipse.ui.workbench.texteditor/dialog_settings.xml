@@ -2,27 +2,27 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="369" key="DIALOG_WIDTH"/>
-		<item value="598" key="DIALOG_Y_ORIGIN"/>
+		<item value="771" key="DIALOG_Y_ORIGIN"/>
+		<item value="1727" key="DIALOG_X_ORIGIN"/>
 		<item value="501" key="DIALOG_HEIGHT"/>
-		<item value="1181" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="isRegEx"/>
 		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="getInfo" key="selection"/>
+		<item value="user_load" key="selection"/>
 		<list key="findhistory">
-			<item value="&#x09;getInfo(dept_uuid)"/>
+			<item value="user_load"/>
+			<item value="user_list"/>
+			<item value="user_save"/>
+			<item value="sys_getUser"/>
+			<item value="list"/>
+			<item value="uuid"/>
+			<item value="dept_uuid"/>
 			<item value="getInfo"/>
-			<item value="&#x09;getInfo(puuid);"/>
-			<item value="kpi"/>
-			<item value="delete"/>
-			<item value="isDel"/>
-			<item value="删除"/>
-			<item value="sys_getDeptsKpi"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

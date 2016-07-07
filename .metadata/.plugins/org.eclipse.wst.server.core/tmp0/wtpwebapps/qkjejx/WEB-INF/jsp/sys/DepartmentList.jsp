@@ -216,7 +216,7 @@ function getIndexDetail(obj) {
 			 show.push('<td class="td5" id="'+arr[i].uuid+'check_deptcode">'+ arr[i].check_deptcode+'</td  >' ) ;
 			 show.push('<td class="td6" id="'+arr[i].uuid+'check_post">'+ arr[i].check_post+'</td  >' ) ;
 			 show.push('<td class="td7" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
-			 show.push(' <td class="td1 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a> <input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" cssClass="input-red"/></td>') ;
+			 show.push(' <td class="td1 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a> <input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" class="input-red"/></td>') ;
 			 show.push('</tr>');
 			}  
 		 $("#intop").append(show.join(""));
@@ -280,8 +280,8 @@ function updatedetermine(obj){
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_UPDATEKPI");
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + obj+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
-			+"&definition="+definition+"&correctly="+correctly+"&check_deptcode="+check_deptcode+"&check_post="+check_post
-			+"&isdept="+isdept);
+			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
+			+"&isdept="+encodeURI(isdept));
 	ajax.sendAjax();
 }
 function updatetab(obj) {
@@ -370,8 +370,8 @@ function addtab(ct) {
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_ADDKPI");
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + dept_code+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
-			+"&definition="+definition+"&correctly="+correctly+"&check_deptcode="+check_deptcode+"&check_post="+check_post
-			+"&isdept="+isdept);
+			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
+			+"&isdept="+encodeURI(isdept));
 	ajax.sendAjax();
 	 
 	
