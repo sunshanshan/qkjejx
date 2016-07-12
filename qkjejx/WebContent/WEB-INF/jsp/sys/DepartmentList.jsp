@@ -95,7 +95,8 @@
 		 <th class="td5" >横向考核部门 </th  >
 		 <th class="td6" >横向考核岗位</th  >
 		 <th class="td7" >取部门得分</th  >
-		  <th class="td8" >操作</th  >
+		  <th class="td8" >kpi类型</th  >
+		  <th class="td9" >操作</th  >
 		</tr>
 		</table>
 							
@@ -216,6 +217,16 @@ function getIndexDetail(obj) {
 			 show.push('<td class="td5" id="'+arr[i].uuid+'check_deptcode">'+ arr[i].check_deptcode+'</td  >' ) ;
 			 show.push('<td class="td6" id="'+arr[i].uuid+'check_post">'+ arr[i].check_post+'</td  >' ) ;
 			 show.push('<td class="td7" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
+			 
+			 var types=null;
+			 if(arr[i].type==1){
+				 types="职务权重"
+			 }else if(arr[i].type==2){
+				 types="部门权重"
+			 }else if(arr[i].type==3){
+				 types="班组权重"
+			 }
+			 show.push('<td class="td9" id="'+arr[i].uuid+'type">'+types+' <input type="hidden" value="'+arr[i].type+'"   id="'+arr[i].uuid+'types"></input></td  >' ) ;
 			 show.push(' <td class="td1 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a> <input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" class="input-red"/></td>') ;
 			 show.push('</tr>');
 			}  
@@ -249,7 +260,9 @@ function delkpi(obj){
 	
 }
 function updatedetermine(obj){
+	
 	var ajax = new Common_Ajax('message');
+	var dept_uuid=$("#dept\\.uuid").val();
 	var kpi=$("#"+obj+"kpiip").val();
 	 var weight=$("#"+obj+"weightip").val();
 	 var cyc=$("#"+obj+"cyc").val();
@@ -259,29 +272,16 @@ function updatedetermine(obj){
 	 var check_deptcode=$("#"+obj+"check_deptcodeip").val();
 	 var check_post=$("#"+obj+"check_postip").val();
 	 var isdept=$("#"+obj+"isdeptip").val();
+	 var type=$("#"+obj+"typeip").val();
 	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
 	ajax.config._success = function(data, textStatus) {
-		var show = new Array(); 
-		var dept_name=$("#dept\\.dept_cname").val();
-		 show.push('<td class="td1">'+dept_name+'</td  >' ) ;
-		 show.push('<td class="td2"  id="'+obj+'kpi">'+kpi+'</td  >' ) ;
-		 show.push('<td class="td3"  id="'+obj+'cyc">'+ cyc+'</td  >' ) ;
-		 show.push('<td class="td4"  id="'+obj+'weight">'+weight+'</td  >' ) ;
-		 show.push('<td class="td5" id="'+obj+'count_way">'+count_way+'</td  >' ) ;
-		 show.push('<td class="td6"  id="'+obj+'definition">'+ definition+'</td  >' ) ;
-		 show.push('<td class="td7" id="'+obj+'correctly">'+correctly+'</td  >' ) ;
-		 show.push('<td class="td5" id="'+obj+'check_deptcode">'+check_deptcode+'</td  >' ) ;
-		 show.push('<td class="td6" id="'+obj+'check_post">'+ check_post+'</td  >' ) ;
-		 show.push('<td class="td7" id="'+obj+'isdept">'+isdept+'</td  >' ) ;
-		 show.push(' <td class="td1 op-area"><a  id="'+obj+'buttb" onclick="javascript:updatetab('+obj+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+obj+'buttd" onclick="javascript:updatedetermine('+obj+')" href="javascript:void(0)" class="input-greed">保存</a></td>') ;
-		 $("#"+obj+"tr").empty();	
-		 $("#"+obj+"tr").append(show.join(""));
+		getInfo(dept_uuid);
 	};
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_UPDATEKPI");
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + obj+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
 			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
-			+"&isdept="+encodeURI(isdept));
+			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type));
 	ajax.sendAjax();
 }
 function updatetab(obj) {
@@ -327,8 +327,22 @@ function updatetab(obj) {
 	 $("#"+obj+"isdept").text("");
 	 $("#"+obj+"isdept").append(show.join(""));
 	 show=[];
+	 var type=$("#"+obj+"types").val();
+	 show.push('<select id="'+obj+'typeip" value="'+type+'"><option value ="1" >职务权重</option> <option value ="2">部门权重</option><option value ="3">班组权重</option>     </select>  ');
+	 $("#"+obj+"type").text("");
+	 $("#"+obj+"type").append(show.join(""));
+	 show=[];
 	 $("#"+obj+"buttd").show()
 	  $("#"+obj+"buttb").hide()
+		 if(type==1){
+			 $("#"+obj+"typeip").find("option[value='1']").attr("selected",true);
+			 }
+			 if(type==2){
+				 $("#"+obj+"typeip").find("option[value='2']").attr("selected",true);
+				 }
+			 if(type==3){
+				 $("#"+obj+"typeip").find("option[value='3']").attr("selected",true);
+				 }
 }
 
 function setkpi() {
@@ -345,6 +359,7 @@ function setkpi() {
 	 show.push('<td class="td5"><input type="text" style="width:80px" value="" id="newcheck_deptcodeip" /></td  >' ) ;
 	 show.push('<td class="td6" ><input type="text" style="width:80px" value="" id="newcheck_postip" /></td  >' ) ;
 	 show.push('<td class="td7" ><input type="text" style="width:80px" value="" id="newisdeptip" /></td  >' ) ;
+	 show.push('<td class="td6"  ><select  id="newtypeip"><option value ="1">职务权重</option> <option value ="2">部门权重</option> <option value ="3">班组权重</option>   </select>  ' ) ;
 	 show.push(' <td class="td1 op-area"><a   onclick="javascript:addtab()" href="javascript:void(0)" class="input-greed">添加</a></td>') ;
 	 show.push('</tr>');
 	 $("#intop").append(show.join(""));
@@ -362,6 +377,7 @@ function addtab(ct) {
 	var isdept=$("#newisdeptip").val();
 	var dept_code=$("#dept\\.dept_code").val();
 	var dept_uuid=$("#dept\\.uuid").val();
+	var type=$("#newtypeip").val();
 	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
 	ajax.config._success = function(data, textStatus) {
 	
@@ -371,7 +387,7 @@ function addtab(ct) {
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + dept_code+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
 			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
-			+"&isdept="+encodeURI(isdept));
+			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type));
 	ajax.sendAjax();
 	 
 	

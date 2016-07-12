@@ -56,9 +56,9 @@
 	</section>
 	<section name="DialogBounds_GetterSetterTreeSelectionDialog">
 		<item value="856" key="DIALOG_WIDTH"/>
-		<item value="11" key="DIALOG_Y_ORIGIN"/>
+		<item value="362" key="DIALOG_Y_ORIGIN"/>
 		<item value="1049" key="DIALOG_HEIGHT"/>
-		<item value="219" key="DIALOG_X_ORIGIN"/>
+		<item value="1128" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-18|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">

@@ -121,8 +121,10 @@ $(function(){
 			var types=null;
 			 if(arr[i].type==1){
 				 types="职务权重"
-			 }else{
+			 }else if(arr[i].type==2){
 				 types="部门权重"
+			 }else if(arr[i].type==3){
+				 types="班组权重"
 			 }
 			 show.push('<td class="td9" id="'+arr[i].uuid+'type">'+types+' <input type="hidden" value="'+arr[i].type+'"   id="'+arr[i].uuid+'types"></input></td  >' ) ;
 				
@@ -163,8 +165,10 @@ function init(){
 			var types=null;
 			 if(arr[i].type==1){
 				 types="职务权重"
-			 }else{
+			 }else if(arr[i].type==2){
 				 types="部门权重"
+			 }else if(arr[i].type==3){
+				 types="班组权重"
 			 }
 			 show.push('<td class="td9" id="'+arr[i].uuid+'type">'+types+' <input type="hidden" value="'+arr[i].type+'"   id="'+arr[i].uuid+'types"></input></td  >' ) ;
 				
@@ -231,7 +235,7 @@ function updatetab(obj) {
 	 
 	 var type=$("#"+obj+"types").val();
 	 alert(type)
-	 show.push('<select id="'+obj+'typeip" value="'+type+'"><option value ="1" >职务权重</option> <option value ="2">部门权重</option>    </select>  ');
+	 show.push('<select id="'+obj+'typeip" value="'+type+'"><option value ="1" >职务权重</option> <option value ="2">部门权重</option><option value ="3">班组权重</option>     </select>  ');
 	 $("#"+obj+"type").text("");
 	 $("#"+obj+"type").append(show.join(""));
 	 show=[];
@@ -265,6 +269,9 @@ function updatetab(obj) {
 	 if(type==2){
 		 $("#"+obj+"typeip").find("option[value='2']").attr("selected",true);
 		 }
+	 if(type==3){
+		 $("#"+obj+"typeip").find("option[value='3']").attr("selected",true);
+		 }
 	 show=[];
 	 
 	 var position_dept=$("#"+obj+"position_dept").text();
@@ -289,9 +296,7 @@ function setkpi() {
 	 show.push('<td class="td6"  ><input type="text" style="width:80px" value="" id="newdefinitionip" /></td  >' ) ;
 	 show.push('<td class="td7"><input type="text" style="width:80px" value="" id="newcorrectlyip" /></td  >' ) ;
 	 show.push('<td class="td7"><input type="text" style="width:80px" value="" id="newposition_deptip" /></td  >' ) ;
-	 show.push('<td class="td6"  ><select  id="newtypeip"><option value ="1">职务权重</option> <option value ="2">部门权重</option>    </select>  ' ) ;
-	
-	
+	 show.push('<td class="td6"  ><select  id="newtypeip"><option value ="1">职务权重</option> <option value ="2">部门权重</option> <option value ="3">班组权重</option>   </select>  ' ) ;
 	 show.push('<td class="td5"><input type="text" style="width:80px" value="" id="newcheck_deptcodeip" /></td  >' ) ;
 	 show.push('<td class="td6" ><input type="text" style="width:80px" value="" id="newcheck_postip" /></td  >' ) ;
 	 show.push('<td class="td7" ><input type="text" style="width:80px" value="" id="newisdeptip" /></td  >' ) ;
@@ -331,7 +336,7 @@ function addtab(ct) {
 			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type)+"&position_dept="+encodeURI(position_dept));
 	ajax.sendAjax();
 }
-	//type=2是部门权重 type=1是职务权重
+	//type=2是部门权重 type=1是职务权重 type=3是班组权重
 	 
 	
 	
