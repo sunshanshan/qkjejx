@@ -75,6 +75,7 @@
 		  <th class="td13" >操作</th  >
 		</tr>
 		</table>
+					<span id="messagewei"><s:property value="messagewei" /></span>
 		</div>
 			<div class="label_hang clear">
 		       <div class="label_ltit">相关操作:</div>
@@ -106,6 +107,7 @@ $(function(){
 		var arr=data;
 		var show = new Array(); 
 		var dept_name=$("#position\\.position_name").val();
+		var wei=0;
 		$("[name='deletetd']").remove();
 		for (var i in arr) {  
 			 show.push('<tr name="deletetd" id="'+arr[i].uuid+'tr">');
@@ -133,7 +135,11 @@ $(function(){
 			 show.push('<td class="td12" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
 			 show.push(' <td class="td13 op-area" style="width:200"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a><input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" class="input-red"></input></td>') ;
 			 show.push('</tr>');
+			 wei= Number((arr[i].weight+wei).toFixed(2))
 			}  
+		$("#messagewei").text('权重总和:'+wei);
+		$("#messagewei").css("color","red");
+		$("#messagewei").css("color","red");
 		 $("#intop").append(show.join(""));
 	};
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_LOADKPI");
@@ -177,7 +183,12 @@ function init(){
 			 show.push('<td class="td12" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
 			 show.push(' <td class="td13 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a><input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" class="input-red"/></td>') ;
 			 show.push('</tr>');
+			 wei= Number((arr[i].weight+wei).toFixed(2))
+			
 			}  
+		$("#messagewei").text('权重总和:'+wei);
+		$("#messagewei").css("color","red");
+		$("#messagewei").css("color","red");
 		 $("#intop").append(show.join(""));
 	};
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_LOADKPI");

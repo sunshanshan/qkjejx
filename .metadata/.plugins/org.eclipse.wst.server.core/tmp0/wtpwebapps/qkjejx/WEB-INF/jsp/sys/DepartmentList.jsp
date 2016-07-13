@@ -99,7 +99,7 @@
 		  <th class="td9" >操作</th  >
 		</tr>
 		</table>
-							
+							<span id="messagewei"><s:property value="messagewei" /></span>
 									</div>
 									
 							<div class="label_hang clear">
@@ -204,6 +204,7 @@ function getIndexDetail(obj) {
 		var arr=data;
 		var show = new Array(); 
 		var dept_name=$("#dept\\.dept_cname").val();
+		var wei=0;
 		$("[name='deletetd']").remove();
 		for (var i in arr) {  
 			 show.push('<tr name="deletetd" id="'+arr[i].uuid+'tr">');
@@ -217,8 +218,8 @@ function getIndexDetail(obj) {
 			 show.push('<td class="td5" id="'+arr[i].uuid+'check_deptcode">'+ arr[i].check_deptcode+'</td  >' ) ;
 			 show.push('<td class="td6" id="'+arr[i].uuid+'check_post">'+ arr[i].check_post+'</td  >' ) ;
 			 show.push('<td class="td7" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
-			 
 			 var types=null;
+			 
 			 if(arr[i].type==1){
 				 types="职务权重"
 			 }else if(arr[i].type==2){
@@ -229,8 +230,14 @@ function getIndexDetail(obj) {
 			 show.push('<td class="td9" id="'+arr[i].uuid+'type">'+types+' <input type="hidden" value="'+arr[i].type+'"   id="'+arr[i].uuid+'types"></input></td  >' ) ;
 			 show.push(' <td class="td1 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a> <input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" class="input-red"/></td>') ;
 			 show.push('</tr>');
+			 wei= Number((arr[i].weight+wei).toFixed(2))
 			}  
+		$("#messagewei").text('权重总和:'+wei);
+		$("#messagewei").css("color","red");
+		$("#messagewei").css("color","red");
 		 $("#intop").append(show.join(""));
+		 
+	
 	};
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_LOADKPI");
 	ajax.addParameter("parameters", "dept_code=" + obj);
