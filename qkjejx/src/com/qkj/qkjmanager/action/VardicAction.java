@@ -131,7 +131,6 @@ public class VardicAction extends ActionSupport {
 	}
 
 	public String list() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST");
 		try {
 			map.clear();
 			if (vardic == null) {
@@ -151,7 +150,7 @@ public class VardicAction extends ActionSupport {
 			map.put("typea", "1");
 			map.put("check_user", ContextHelper.getUserLoginUuid());
 			this.setVardics(dao.list(map));//已经考核的记录
-			
+			this.setRecCount(dao.getResultCount());
 			//需要考核的人员
 			map.clear();
 			if (vardic == null) {
@@ -264,7 +263,7 @@ public class VardicAction extends ActionSupport {
 			}else{
 				System.out.println("没有可以考核的人或部门");
 			}
-			this.setRecCount(dao.getResultCount());
+			
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!list 读取数据错误:", e);

@@ -14,7 +14,6 @@
 			left join s_sys_department acheckd on(acheckd.dept_code=c.acheck_usercode)
 			LEFT JOIN s_sys_department df on (df.dept_code=acheckd.parent_dept)
 			left JOIN s_sys_department acd on(acd.dept_code=c.acheck_dept)
-			left join qkj_t_indexdetail id on(id.uuid=ss.check_index)
 			left join qkj_r_check chec on (chec.uuid=c.check_ym)
 		]]>
 		<dynamic prepend="WHERE">
@@ -22,7 +21,6 @@
 			<isNotNull prepend="AND" property="cym"><![CDATA[  chec.ym like #cym# +'%' ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# ]]></isNotNull>
 			<isNotNull prepend="AND" property="isaunull"><![CDATA[  ISNULL(c.acheck_user, '0')='0' ]]></isNotNull>
-			<isNotNull prepend="AND" property="typea"><![CDATA[  id.isdept=#typea# ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_user"><![CDATA[  c.acheck_user=#acheck_user# ]]></isNotNull>
 			
 			<isNotEmpty prepend="AND" property="apply_depts" open="(" close=")">
@@ -36,9 +34,7 @@
 			<isNotEmpty prepend="OR" property="check_user">
 				<![CDATA[cuser.UUID=#check_user#]]>
 			</isNotEmpty>
-			
 			</isNotEmpty>
-			
 			<isEmpty  property="apply_depts">
 				<isNotEmpty prepend="AND" property="apply_perdepts">
 					<![CDATA[ c.acheck_usercode In ]]>
