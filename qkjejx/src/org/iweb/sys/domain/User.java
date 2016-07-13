@@ -41,15 +41,65 @@ public class User {
 	private String deptFlag;
 	private String is_sub_dept;
 	private Integer type;
+	private String parent_user; //汇报人e 
 	
 	private String pd; 
 	private Double w;
 	private Integer id_uid;//kpi编号
+	private String kpi;
 
 
 	// 以下为查询专用字段
 	private String[] positions;
 	private String post;
+	private String parent_user_name;
+	private String p_dname;
+	private String p_code;
+	
+	private String dept_codelist;
+	private String pardname; 
+	private String pparname;
+	
+	public String getPparname() {
+		return pparname;
+	}
+
+	public void setPparname(String pparname) {
+		this.pparname = pparname;
+	}
+
+	public String getPardname() {
+		return pardname;
+	}
+
+	public void setPardname(String pardname) {
+		this.pardname = pardname;
+	}
+
+	public String getDept_codelist() {
+		return dept_codelist;
+	}
+
+	public void setDept_codelist(String dept_codelist) {
+		this.dept_codelist = dept_codelist;
+	}
+
+	public String getP_dname() {
+		return p_dname;
+	}
+
+	public void setP_dname(String p_dname) {
+		this.p_dname = p_dname;
+	}
+
+	public String getP_code() {
+		return p_code;
+	}
+
+	public void setP_code(String p_code) {
+		this.p_code = p_code;
+	}
+
 	public String getPost() {
 		return post;
 	}
@@ -344,6 +394,30 @@ public class User {
 
 	public void setId_uid(Integer id_uid) {
 		this.id_uid = id_uid;
+	}
+
+	public String getKpi() {
+		return kpi;
+	}
+
+	public void setKpi(String kpi) {
+		this.kpi = kpi;
+	}
+
+	public String getParent_user() {
+		return parent_user;
+	}
+
+	public void setParent_user(String parent_user) {
+		this.parent_user = parent_user;
+	}
+
+	public String getParent_user_name() {
+		return parent_user_name;
+	}
+
+	public void setParent_user_name(String parent_user_name) {
+		this.parent_user_name = parent_user_name;
 	}
 
 }

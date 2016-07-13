@@ -32,16 +32,29 @@
 			</div>
 			<div class="label_hang">
 		       <div class="label_ltit">职务级别:</div>
-		       <div class="label_rwben"><s:select title="职务级	别" id="position.position_grade" name="position.position_grade" list="#{1:'总经理',2:'副总经理',3:'总监',4:'经理',5:'主管',6:'员工'}" cssClass="validate[required]"/></div>
+		       <div class="label_rwben"><s:select title="职务级别" id="position.position_grade" name="position.position_grade" list="#{1:'总经理',2:'副总经理',3:'总监',4:'经理',5:'主管',6:'班长',7:'员工'}" cssClass="validate[required]"/></div>
 			</div>
+			
 			<div class="label_hang">
+		       <div class="label_ltit">职务所属部门:</div>
+		       <div class="label_rwben2">
+		       		<span class="label_rwb">
+					<s:textfield title="部门名称" id="userdept_nameid" name="position.dept_cname" readonly="true" />
+					<s:hidden title="部门代码" id="userdept_codeid" name="position.dept_code" readonly="true" />
+					</span>
+					<span class="lb nw">
+					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('userdept_codeid','userdept_nameid',true);" />
+					</span>
+		       </div>
+			</div>
+			<%-- <div class="label_hang">
 		       <div class="label_ltit">汇报对象:</div>
 		       <div class="label_rwbenx"><s:select title="汇报对象" id="position.position_senior" name="position.position_senior" list="positions" listKey="uuid" listValue="position_name" headerKey="0" headerValue="无" cssClass="validate[required]"/></div>
-			</div>
-			<div class="label_hang">
+			</div> --%>
+			<%-- <div class="label_hang">
 		       <div class="label_ltit">职务属性:</div>
 		       <div class="label_rwben"><s:textfield id="position.position_attribute" name="position.position_attribute" title="职务属性" /></div>
-			</div>
+			</div> --%>
 			<div class="label_hang clear">
 		       <div class="label_ltit">职务描述:</div>
 		       <div class="label_rwben"><s:textfield id="position.position_note" name="position.position_note" title="职务描述" cssClass="label_hang_linput"/></div>

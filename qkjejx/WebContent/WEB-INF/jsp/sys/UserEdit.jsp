@@ -52,11 +52,23 @@
 		       <div class="label_ltit">电子邮件:</div>
 		       <div class="label_rwbenx"><s:textfield id="user.email" title="电子邮件" name="user.email" /></div>
 			</div>
-			
-			<div class="label_hang">
-		       <div class="label_ltit">默认职务:</div>
-		       <div class="label_rwbenx"><s:select name="user.position" list="positions" listKey="uuid" listValue="position_name" headerKey="" headerValue="--请选择--" cssClass="validate[required]"/></div>
-			</div>
+			<s:if test="%{user.position!=null}">
+			<script type="text/javascript">
+			$(function(){
+				var p=${user.position};
+				loadPosition2(encodeURI(p),1);
+			});
+			</script>
+			</s:if>
+			<s:if test="%{user.p_code!=null}">
+			<script type="text/javascript">
+			$(function(){
+				var code=${user.p_code};
+				var u=${user.parent_user};
+				loadManagers(encodeURI(code),encodeURI(u),1);
+			});
+			</script>
+			</s:if>
 			<input type="hidden" name="user.page" value="page" id="page">
 			<div class="label_hang">
 		       <div class="label_ltit">默认提交部门:</div>
@@ -66,8 +78,37 @@
 					<s:hidden title="部门代码" id="userdept_codeid" name="user.dept_code" readonly="true" />
 					</span>
 					<span class="lb nw">
-					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('userdept_codeid','userdept_nameid',true);" />
+					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('userdept_codeid','userdept_nameid',false);" />
 					</span>
+		       </div>
+			</div>
+			
+			<div class="label_hang">
+		       <div class="label_ltit">默认职务:</div>
+		       <div class="label_rwbenx">
+		       <%-- <s:select name="user.position" list="positions" listKey="uuid" listValue="position_name" headerKey="" headerValue="--请选择--" cssClass="validate[required]"/> --%>
+		       <s:select id="membermanageridp" cssClass="selectKick" name="user.position" list="#{}" headerKey="" headerValue="--请选择--" />
+		       </div>
+			</div>
+			
+			<div class="label_hang">
+		       <div class="label_ltit">汇报人部门:</div>
+		       <div class="label_rwben2">
+		       		<span class="label_rwb">
+					<s:textfield title="部门名称" id="p_name" name="user.p_dname" readonly="true" />
+					<s:hidden title="部门代码" id="p_code" name="user.p_code" readonly="true" />
+					</span>
+					<span class="lb nw">
+					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('p_code','p_name',true);" />
+					</span>
+		       </div>
+			</div>
+			
+			<div class="label_hang">
+		       <div class="label_ltit">汇报人:</div>
+		       <div class="label_rwbenx">
+		       <%-- <s:select name="user.position" list="positions" listKey="uuid" listValue="position_name" headerKey="" headerValue="--请选择--" cssClass="validate[required]"/> --%>
+		       <s:select id="membermanagerid" cssClass="selectKick" name="user.parent_user" list="#{}" headerKey="" headerValue="--请选择--"/>
 		       </div>
 			</div>
 			
@@ -279,6 +320,7 @@ $(function(){
 	});
 	addTransferSelect("aroles","uroles");
 });
+
 function changePWD() {	
 	$("#changePWDdiv").dialog("open");
 }

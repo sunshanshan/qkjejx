@@ -41,10 +41,7 @@
 		       <div class="label_rwbenx"><s:textfield title="用户编号" name="userDept.user_id" /></div>
 			</div>
 			
-	       <div class="label_hang">
-		       <div class="label_ltit">职务:</div>
-		       <div class="label_rwbenx"><s:select name="userDept.position" list="positions" listKey="uuid" listValue="position_name" headerKey="" headerValue="--请选择--" cssClass="validate[required]"/></div>
-			</div>
+			
 			<div class="label_hang">
 		       <div class="label_ltit">部门:</div>
 		       <div class="label_rwben2">
@@ -53,8 +50,25 @@
 					<s:hidden title="部门代码" id="userdept_codeid" name="userDept.dept_code" readonly="true" />
 					</span>
 					<span class="lb nw">
-					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('userdept_codeid','userdept_nameid',true);" />
+					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('userdept_codeid','userdept_nameid',false);" />
 					</span>
+		       </div>
+			</div>
+			
+			<s:if test="%{userDept.position!=null}">
+			<script type="text/javascript">
+			$(function(){
+				var zcode=${userDept.dept_code};
+				var p=${userDept.position};
+				loadPosition2(encodeURI(p),1);
+			});
+			</script>
+			</s:if>
+			
+	       <div class="label_hang">
+		       <div class="label_ltit">职务:</div>
+		       <div class="label_rwbenx">
+		        <s:select id="membermanageridp" cssClass="selectKick" name="userDept.position" list="#{}" headerKey="" headerValue="--请选择--" />
 		       </div>
 			</div>
 			<div class="label_hang">

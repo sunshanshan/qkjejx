@@ -24,6 +24,8 @@ import org.iweb.sys.exception.PermitException;
 import com.opensymphony.xwork2.ActionContext;
 import com.qkj.basics.dao.CheckDao;
 import com.qkj.basics.domain.Check;
+import com.qkj.qkjmanager.dao.TalkDao;
+import com.qkj.qkjmanager.domain.Talk;
 
 /**
  * HttpServlet相关的工具类
@@ -695,6 +697,46 @@ public class ContextHelper {
 		return 1;
 	}
 	
+	public static boolean checktalk(Integer suid){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.clear();
+		map.put("suid", suid);
+		List<Talk> talks=new ArrayList<>();
+		TalkDao td=new TalkDao();
+		talks=td.list(map);
+		if(talks.size()>0){
+			return false;
+		}else{
+			return true;
+		}
+		
+	}
+	
+	public static boolean checkTalkbyU(String user){
+		if(user.equals(ContextHelper.getUserLoginUuid())){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	
+	public static boolean checkb(Integer kpiid,Integer d,String dept){
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<IndexDetail> kpi=new ArrayList();
+		map.clear();
+		map.put("dept_code", dept);
+		map.put("check_ym", d);
+		KpiDAO kd=new KpiDAO();
+		kpi=kd.listbydept(map);
+		if(kpi.size()>0){
+			return false;
+		}else{
+			return true;
+		}
+	    
+	}
+	
 	/**
 	 * 考核时间
 	 * @param p_id
@@ -726,13 +768,22 @@ public class ContextHelper {
 			map.put("uuid", kpiId);
 			map.put("check_post", ulf.getPosition());
 			map.put("check_deptcode", ContextHelper.getUserLoginDept());
+		}else{
+			if(kpiId!=null&&kpiId>0){
+				map.put("uuid", kpiId);
+				map.put("type", 1);
+			}
 		}
+		
 		ids=kd.list(map);
 		if(cs.size()>0&&ids.size()>0&&p_id==0){
 			return true;
-		}else if(p_id==1&&cs.size()>0){
+		}else if(p_id==1&&cs.size()>0&&kpiId==null){
 			return true;
 		}else if(p_id==0&&cs.size()>0&&kpiId==null){
+			return true;
+		}
+		else if(p_id==1&&cs.size()>0&&ids.size()>0&&kpiId!=null){
 			return true;
 		}
 		else{

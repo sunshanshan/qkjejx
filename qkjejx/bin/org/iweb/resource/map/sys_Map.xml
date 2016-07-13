@@ -253,9 +253,33 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 	
 	<select id="sys_getDeptsKpi" resultClass="kpi" parameterClass="java.util.Map">
 		<![CDATA[ 
-			Select i.*,s.check_goal goal,s.check_score score From qkj_t_indexdetail i
+			Select i.* From qkj_t_indexdetail i
+			Where 1=1
+		]]>
+		<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
+		<isNotNull prepend="AND" property="dept_code"><![CDATA[ i.dept_code=#dept_code# ]]></isNotNull>
+		<isNotNull prepend="AND" property="positionid"><![CDATA[ i.position_id=#positionid# ]]></isNotNull>
+		<isNotNull prepend="AND" property="position_dept"><![CDATA[ i.position_dept=#position_dept# ]]></isNotNull>
+		<isNotNull prepend="AND" property="isdept"><![CDATA[ i.isdept=#isdept# ]]></isNotNull>
+		<isNotNull prepend="AND" property="type">
+		<![CDATA[ i.type=#type# ]]>
+		</isNotNull>
+		<isNotNull prepend="AND" property="ftype">
+		<![CDATA[ (i.type='1' or  ISNULL(i.type, '0')='0') ]]>
+		</isNotNull>
+		<isNotNull prepend="AND" property="type2"><![CDATA[ (i.type=2 or i.type=3) ]]></isNotNull>
+		<isNotNull prepend="AND" property="kpi"><![CDATA[ i.kpi=#kpi# ]]></isNotNull>
+		<isNotNull prepend="AND" property="check_deptcode"><![CDATA[ i.check_deptcode=#check_deptcode# ]]></isNotNull>
+		<isNotNull prepend="AND" property="check_post"><![CDATA[ i.check_post=#check_post# ]]></isNotNull>
+	</select>
+	
+	<!-- 考核人员用的 -->
+	<select id="sys_getDeptsKpiByp" resultClass="kpi" parameterClass="java.util.Map">
+		<![CDATA[ 
+			Select z.acheck_user acheck_user,u.DEPT_CODE code,i.* From qkj_t_indexdetail i
 			left join qkj_r_sonscore s on(i.uuid=s.check_index)
 			left join qkj_r_score z on(s.score_id=z.uuid)
+			left join s_sys_user u on (u.UUID=z.acheck_user)
 			Where 1=1
 		]]>
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
@@ -269,10 +293,29 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 		<isNotNull prepend="AND" property="check_post"><![CDATA[ i.check_post=#check_post# ]]></isNotNull>
 		<isNotNull prepend="AND" property="check_ym"><![CDATA[  z.check_ym like #check_ym# +'%' ]]></isNotNull>
 		<isNotNull prepend="AND" property="sp"><![CDATA[ not exists(select 1 from qkj_r_sonscore k where k.check_index=i.uuid)]]></isNotNull>
+		<isNotNull prepend="AND" property="ac"><![CDATA[ ISNULL(z.acheck_user, '0')<>'0']]></isNotNull>
 	</select>
 	
-	
-	
+	<!-- 判断部门的成绩是否可以修改 -->
+	<select id="flagDept" resultClass="kpi" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select 1 uuid from qkj_r_sonscore ss
+			left join qkj_r_score s on (ss.score_id=s.uuid)
+			where (ss.check_index in (
+			Select i.uuid From qkj_t_indexdetail i
+						Where i.position_dept=#dept_code# and i.type=2 and i.kpi=1)
+			or ss.check_index IN
+			(
+			select id.uuid from qkj_t_indexdetail id
+			LEFT JOIN s_cfg_position p on (id.position_id=p.UUID)
+			left join s_sys_user u on (u.[POSITION]=p.UUID)
+			where id.type=3 and u.DEPT_CODE=#dept_code#
+			)
+			)
+			and s.check_ym=#check_ym#
+		]]>
+		
+	</select>
 	
 	
 	
@@ -319,13 +362,18 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 	<typeAlias alias="user" type="org.iweb.sys.domain.User" />
 	<select id="sys_getUser" resultClass="user" parameterClass="java.util.Map">
 		<![CDATA[ 
-			SELECT DISTINCT u.uuid,u.*,r.ROLE_NAME TYPE_NAME,d.DEPT_CNAME,u2.USER_NAME AS senior_name,p.POSITION_NAME
+			SELECT DISTINCT u.uuid,u.*,r.ROLE_NAME TYPE_NAME,d.DEPT_CNAME,u2.USER_NAME AS senior_name,p.POSITION_NAME,
+pu.USER_NAME  parent_user_name,pud.dept_cname p_dname,pud.dept_code p_code,par.dept_cname pardname,ppar.dept_cname pparname
 			FROM s_sys_user u
 			LEFT JOIN s_sys_department d ON (u.dept_code = d.dept_code)
 			LEFT JOIN s_sys_user u2 ON (u.SENIOR = u2.UUID)
 			LEFT JOIN s_sys_role r ON (u.USER_TYPE = r.UUID)
 			LEFT JOIN s_cfg_position p ON (u.POSITION = p.UUID)
 			LEFT JOIN s_sys_userdept ud ON(ud.user_id=u.UUID)
+			left join s_sys_user pu on(pu.UUID=u.parent_user)
+      left join s_sys_department pud on(pud.dept_code=pu.DEPT_CODE)
+			left join s_sys_department par on(par.dept_code=d.parent_dept)
+			left join s_sys_department ppar on (ppar.dept_code=par.parent_dept)
 			Where 1=1
 		]]>
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ u.uuid=#uuid# ]]></isNotNull>
@@ -337,10 +385,12 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 		<isNotNull prepend="AND" property="position"><![CDATA[ u.position=#position# ]]></isNotNull>
 		<isNotNull prepend="AND" property="post"><![CDATA[ p.POSITION_NAME like '%'+#post# +'%']]></isNotNull>
 		<isNotEmpty prepend="AND" property="dept_code">
-			<isNotEqual property="is_sub_dept" compareValue="false"><![CDATA[ ud.dept_code=#dept_code#]]></isNotEqual>
-			<isEqual property="is_sub_dept" compareValue="true"><![CDATA[ ud.dept_code LIKE #dept_code#+'%') ]]></isEqual>
+			<![CDATA[ u.dept_code=#dept_code#]]>
 		</isNotEmpty>
-		
+		<isNotEmpty prepend="AND" property="dept_codelist">
+			<![CDATA[ u.dept_code like #dept_codelist# +'%']]>
+		</isNotEmpty>
+	
 		<!-- <isNotEmpty prepend="AND" property="dept_codes" open="(" close=")">
 			<![CDATA[ u.dept_code In ]]>
 			<iterate property="dept_codes" open="(" close=")" conjunction=" , "> #dept_code[]#</iterate>
@@ -372,23 +422,23 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 	
 	<select id="sys_getUserByPos" resultClass="user" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select u.*,id.uuid id_uid,id.weight w,id.position_dept pd from s_sys_user u 
+			select u.*,id.uuid id_uid,id.kpi kpi,id.weight w,id.position_dept pd,id.type type from s_sys_user u 
 			left JOIN s_cfg_position p on (u.[POSITION]=p.uuid)
 			left join qkj_t_indexdetail id on (id.position_id=p.UUID)
 			Where 1=1
 		]]>
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ u.uuid=#uuid# ]]></isNotNull>
-		<isNotNull prepend="AND" property="type"><![CDATA[ id.type=#type# ]]></isNotNull>
+		<isNotNull prepend="AND" property="type"><![CDATA[ (id.type=2 or id.type=3) ]]></isNotNull>
 		<isNotNull prepend="AND" property="position_dept"><![CDATA[ id.position_dept=#position_dept# ]]></isNotNull>
 	</select>
 	
 	<insert id="sys_addUser" parameterClass="user">
 		<![CDATA[ 
 			Insert Into s_sys_user(uuid,title,passwords,ukeys,dept_code,user_roles,extra_prvg,user_type,work_id,user_name,sex,
-				email,phone,mobile,position,descriptions,status,filesystem_root,reg_time,lm_user,lm_time) 
+				email,phone,mobile,position,descriptions,status,filesystem_root,reg_time,lm_user,lm_time,parent_user) 
 			Values (#uuid#,#title#,#passwords#,#ukeys#,#dept_code#,#user_roles#,#extra_prvg#,#user_type#,#work_id#,
 			#user_name#,#sex#,	#email#,#phone#,#mobile#,#position#,#descriptions#,#status#,
-			#filesystem_root#,#reg_time#,#lm_user#,#lm_time#)
+			#filesystem_root#,#reg_time#,#lm_user#,#lm_time#,#parent_user#)
 		]]>
 	</insert>
 	<update id="sys_mdyUser" parameterClass="user">
@@ -410,6 +460,7 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 				status=#status#,
 				filesystem_root=#filesystem_root#,
 				lm_user=#lm_user#,
+				parent_user=#parent_user#,
 				lm_time=#lm_time#
 			Where uuid=#uuid#
 		]]>
@@ -493,19 +544,30 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 	<typeAlias alias="position" type="org.iweb.sys.domain.Position" />
 	<select id="sys_getPosition" resultClass="position" parameterClass="java.util.Map">
 		<![CDATA[ 
-			Select * 
-			From s_cfg_position
+			Select p.*,d.dept_cname dept_cname
+			From s_cfg_position p 
+left join s_sys_department d on (d.dept_code=p.dept_code)
 		]]>
 		<dynamic prepend="WHERE">
-			<isNotNull prepend="AND" property="uuid"><![CDATA[ uuid=#uuid# ]]></isNotNull>
-			<isNotNull prepend="AND" property="position_name"><![CDATA[ position_name like '%'+#position_name# +'%']]></isNotNull>
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ p.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="position_name"><![CDATA[ p.position_name like '%'+#position_name# +'%']]></isNotNull>
+			<isNotNull prepend="AND" property="dept_code2">
+			<![CDATA[ p.dept_code=#dept_code2#]]>
+			<isNotEmpty prepend="OR" property="dept_code3">
+				<![CDATA[ p.dept_code=#dept_code3#]]>
+			</isNotEmpty> 
+			</isNotNull>
+			<isNotEmpty prepend="AND" property="dept_code">
+			<isNotEqual property="is_sub_dept" compareValue="false"><![CDATA[ p.dept_code=#dept_code#]]></isNotEqual>
+			<isEqual property="is_sub_dept" compareValue="true"><![CDATA[ p.dept_code LIKE #dept_code#+'%') ]]></isEqual>
+			</isNotEmpty>
 		</dynamic>
 		<![CDATA[ ORDER BY POSITION_GRADE ]]>
 	</select>
 	<insert id="sys_addPosition" parameterClass="position">
 		<![CDATA[ 
-			Insert Into s_cfg_position(uuid,position_name,position_grade,position_senior,position_attribute,position_note,lm_user,lm_time)
-			Values (#uuid#,#position_name#,#position_grade#,#position_senior#,#position_attribute#,#position_note#,#lm_user#,#lm_time#)
+			Insert Into s_cfg_position(uuid,position_name,position_grade,position_senior,position_attribute,position_note,lm_user,lm_time,dept_code)
+			Values (#uuid#,#position_name#,#position_grade#,#position_senior#,#position_attribute#,#position_note#,#lm_user#,#lm_time#,#dept_code#)
 		]]>
 	</insert>
 	<update id="sys_mdyPosition" parameterClass="position">
@@ -517,6 +579,7 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 				position_attribute = #position_attribute#,
 				position_note = #position_note#,
 				lm_user = #lm_user#,
+				dept_code=#dept_code#,
 				lm_time = #lm_time#
 			Where uuid = #uuid#
 		]]>

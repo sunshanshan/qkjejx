@@ -1,5 +1,6 @@
 package com.qkj.qkjmanager.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,8 @@ import java.util.Map;
 import org.iweb.common.dao.CommonDAO;
 import org.iweb.sys.AbstractDAO;
 
+import com.qkj.basics.dao.CheckDao;
+import com.qkj.basics.domain.Check;
 import com.qkj.qkjmanager.domain.Score;
 
 public class VardicDao extends AbstractDAO {
@@ -30,10 +33,7 @@ public class VardicDao extends AbstractDAO {
 		return super.list("qkjmanager_getCheckVarticsdept", map);
 	}
 	
-	public List Checklist1(Map<String, Object> map) {
-		//setCountMapid("basics_getCheckCounts");
-		return super.list("qkjmanager_getCheckVartics1", map);
-	}
+	
 
 	public Object get(Object uuid) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -48,6 +48,9 @@ public class VardicDao extends AbstractDAO {
 	 */
 	public void save(Object parameters) {
 		super.save("qkjmanager_mdyVartics", parameters);
+	}
+	public void savev(Object parameters) {
+		super.save("qkjmanager_mdyV", parameters);
 	}
 	
 	public void saveScore(Object parameters) {
@@ -80,4 +83,24 @@ public class VardicDao extends AbstractDAO {
 	public int getResultCount() {
 		return super.getResultCount();
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Check check_cym(){
+		//查询打开的审核日期
+		Check check=new Check();
+		Map<String, Object> map = new HashMap<String, Object>();
+		CheckDao c=new CheckDao();
+		List<Check> checks=new ArrayList();
+		map.clear();
+		map.put("state", 0);//状态打开的审核日期
+		checks=c.list(map);
+		if(checks.size()>0){
+			check=checks.get(0);
+		}
+		return check;
+	}
+	
 }

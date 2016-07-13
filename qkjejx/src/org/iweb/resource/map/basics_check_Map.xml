@@ -44,6 +44,16 @@
 			Where uuid=#uuid#
 		]]>
 	</update>
+	
+	<update id="basics_mdyState" parameterClass="check">
+		<![CDATA[
+			Update qkj_r_check
+			Set 
+				state=2
+			Where state=0
+		]]>
+	</update>
+	
 	<delete id="basics_delCheck" parameterClass="check">
 		<![CDATA[
 			Delete From qkj_r_check where uuid=#uuid#

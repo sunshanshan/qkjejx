@@ -15,11 +15,29 @@ public class IndexDetail {
 	private String check_post;// 横向考核岗位
 	private Integer isdept;// 是否部门得分 0 横1纵
 	private String position_id;
-	private Integer type;// 1：职务权重 2：部门权重
+	private String type;// 1：职务权重 2：部门权重
 	private String position_dept;
 	
 	private Double goal;
 	private Double score;
+	private String acheck_user;
+	private String code;
+	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getAcheck_user() {
+		return acheck_user;
+	}
+
+	public void setAcheck_user(String acheck_user) {
+		this.acheck_user = acheck_user;
+	}
 
 	public Double getScore() {
 		return score;
@@ -157,12 +175,14 @@ public class IndexDetail {
 		this.isdept = isdept;
 	}
 
-	public Integer getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(Integer type) {
+	public void setType(String type) {
 		this.type = type;
 	}
+
+	
 
 }

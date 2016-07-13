@@ -21,7 +21,7 @@ cursor: pointer;
  	<div class="tab_warp main" >
 		<div class="dq_step">
 			${path}
-			<c:if test="${it:checkPermit('SYS_QKJMANAGER_BASIS_ASSETLIST_ADD',null)==true}">
+			<c:if test="${it:checkPermit('SYS_QKJMANAGER_BASIS_PLAN_ADD',null)==true}">
 				<span class="opb lb op-area"><a href="<s:url namespace="/basics" action="plan_load"><s:param name="viewFlag">add</s:param></s:url>">添加</a></span>
 			</c:if>
 		</div>

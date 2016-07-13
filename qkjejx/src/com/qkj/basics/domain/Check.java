@@ -5,7 +5,7 @@ import java.util.Date;
 public class Check {
 	private Integer uuid;// (int)系统编号
 	private Date ym;// 考核年月
-	private Integer state;// 0打开1关闭
+	private Integer state;// 0打开1关闭3已审核
 	private Date acheck_startdate;// 横向考核开始时间
 	private Date acheck_closedate;// 横向考核结束时间
 	private Date dcheck_startdate;// 部门考核开始时间
