@@ -33,16 +33,18 @@
 	 		<table id="table1">
 	 			<tr id="coltr">
 	              <th  class="td1">系统编号</th>
+	              <th  class="td1">部门</th>
 	              <th  class="td1">职务名称</th>
 	              <th  class="td2">职务等级</th>
-	              <th  class="td2">职务属性</th>
-	              <th  class="td3">职务描述</th>
+	              <!-- <th  class="td2">职务属性</th>
+	              <th  class="td3">职务描述</th> -->
 	              <th  class="td4">操作</th>
 	              <th  class="td0">查看</th>
 	            </tr>
 	            <s:iterator value="positions" status="sta">
 	            <tr id="showtr${uuid}">
 	              <td  class="td1">${uuid}</td>
+	              <td  class="td1">${dept_cname}</td>
 	              <td  class="td1">${position_name}</td>
 	              <td  class="td2">
 		              	<s:if test="1==position_grade">总经理</s:if>
@@ -50,10 +52,11 @@
 						<s:if test="3==position_grade">总监</s:if>
 						<s:if test="4==position_grade">经理</s:if>
 						<s:if test="5==position_grade">主管</s:if>
-						<s:if test="6==position_grade">员工</s:if>
+						<s:if test="6==position_grade">班长</s:if>
+						<s:if test="7==position_grade">员工</s:if>
 	              </td>
-	              <td  class="td2">${position_attribute}</td>
-	              <td  class="td3">${position_note}</td>
+	             <%--  <td  class="td2">${position_attribute}</td>
+	              <td  class="td3">${position_note}</td> --%>
 	              <td  class="td4 op-area">
 	              		<a class="input-blue" href="<s:url namespace="/sys" action="position_load"><s:param name="viewFlag">mdy</s:param><s:param name="position.uuid" value="uuid"></s:param></s:url>">修改</a>
 	    				<a class="input-red" href="<s:url namespace="/sys" action="position_del"><s:param name="position.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>

@@ -46,8 +46,15 @@
 			<result>/WEB-INF/jsp/qkjmanager/transverseDetailList.jsp</result>
 		</action>
 		
+		<action name="transverseDetail_listuser" class="com.qkj.qkjmanager.action.TransverseDetailAction" method="listbyUser">
+			<result>/WEB-INF/jsp/qkjmanager/transverseUserDetailList.jsp</result>
+		</action>
 		<action name="transverseDetail_load" class="com.qkj.qkjmanager.action.TransverseDetailAction" method="load">
 			<result>/WEB-INF/jsp/qkjmanager/transverseDetailList.jsp</result>
+		</action>
+		
+		<action name="transverseDetail_loadUser" class="com.qkj.qkjmanager.action.TransverseDetailAction" method="loadUser">
+			<result>/WEB-INF/jsp/qkjmanager/transverseUserDetailList.jsp</result>
 		</action>
 		
 		<action name="transverseDetail_save" class="com.qkj.qkjmanager.action.TransverseDetailAction" method="save">
@@ -58,10 +65,27 @@
 				<param name="message">${message}</param>
 			</result>
 		</action>
+		<action name="transverseDetail_saveUser" class="com.qkj.qkjmanager.action.TransverseDetailAction" method="save">
+			<result type="redirectAction">
+				<param name="actionName">transverseDetail_loadUser</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
 		
 		<action name="transverseDeail_add" class="com.qkj.qkjmanager.action.TransverseDetailAction" method="add">
 			<result type="redirectAction">
 				<param name="actionName">transverseDetail_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="transverseDeail_addUser" class="com.qkj.qkjmanager.action.TransverseDetailAction" method="addUser">
+			<result type="redirectAction">
+				<param name="actionName">transverseDetail_loadUser</param>
 				<param name="viewFlag">mdy</param>
 				<param name="vardic.uuid">${vardic.uuid}</param>
 				<param name="message">${message}</param>

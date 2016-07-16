@@ -17,7 +17,11 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
+import org.iweb.sys.dao.KpiDAO;
+import org.iweb.sys.dao.UserDAO;
 import org.iweb.sys.dao.UserDeptDAO;
+import org.iweb.sys.domain.IndexDetail;
+import org.iweb.sys.domain.User;
 import org.iweb.sys.domain.UserDept;
 import org.iweb.sys.domain.UserLoginInfo;
 
@@ -45,7 +49,25 @@ public class TransverseAction extends ActionSupport{
 	private int pageSize;
 	private int currPage;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核管理";
+	private List<Vartic> cvardicsd;
+	private Check check;
 
+
+	public Check getCheck() {
+		return check;
+	}
+
+	public void setCheck(Check check) {
+		this.check = check;
+	}
+
+	public List<Vartic> getCvardicsd() {
+		return cvardicsd;
+	}
+
+	public void setCvardicsd(List<Vartic> cvardicsd) {
+		this.cvardicsd = cvardicsd;
+	}
 
 	public List<Check> getChecks() {
 		return checks;
@@ -139,18 +161,50 @@ public class TransverseAction extends ActionSupport{
 			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_HORILIST", map, "apply_depts", "apply_user");
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_HORILIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
-			
-			
-	        if(map.get("check_ym")!=null){
-	        	SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-		        String d = sdf.format(vardic.getCheck_ym());
-	        map.remove("check_ym");
-	        map.put("check_ym", d);
-	        }
+			check=dao.check_cym();
+			if(check!=null){//只查询打开的已考核记录
+				map.put("check_ym", check.getUuid());
+			}
 			map.put("typea", "0");
 			map.put("check_user", ContextHelper.getUserLoginUuid());
 			this.setVardics(dao.list(map));
 			this.setRecCount(dao.getResultCount());
+			
+			map.clear();
+			if (vardic == null) {
+				vardic = new Vartic();
+			}
+			
+			//查询待考核   
+			//查询横向向考核人
+			
+			if(check!=null){
+				ActionContext context = ActionContext.getContext();  
+				HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);  
+				HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);  
+				UserLoginInfo ulf = new UserLoginInfo();
+				ulf=(UserLoginInfo) request.getSession().getAttribute(Parameters.UserLoginInfo_Session_Str);
+				
+		        map.remove("check_ym");
+		        map.put("check_ym", check.getUuid());
+				map.put("check_deptcode", ContextHelper.getUserLoginDept());//登录人部门是考核人部门
+		        map.put("check_post", ulf.getPosition());//登录人职务是考核人职务
+		        map.put("check_user", ContextHelper.getUserLoginUuid());
+		        map.put("typea", 0);//成绩表中所有横向考核已经考核过的去掉
+				map.put("isdept", 0);//向横考核
+				
+				this.setCvardics(dao.Checklist(map));
+				this.setCvardicsd(dao.Checklistbydept(map));
+				
+				CheckDao cd =new CheckDao();
+				map.clear();
+				map.put("state", 0);
+				map.put("a", new Date());
+				this.setChecks(cd.list(map));
+			}else{
+				System.out.println("没有待考核人或部门");
+			}
+			
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;横向考核列表";
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!list 读取数据错误:", e);
@@ -192,10 +246,10 @@ public class TransverseAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	
 	public String add() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST_ADD");
 		try {
-			vardic.setTypea(0);//横向考核
 			vardic.setCheck_date(new Date());
 			vardic.setLm_user(ContextHelper.getUserLoginUuid());
 			vardic.setLm_time(new Date());
@@ -241,49 +295,5 @@ public class TransverseAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	/**
-	 * 查询考核年月中未有考核记录的横向考核部门人员
-	 * @return
-	 * @throws Exception
-	 */
-	public String checklist() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST");
-		try {
-			map.clear();
-			if (vardic == null) {
-				vardic = new Vartic();
-			}
-			
-			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_HORILIST", map, vardic, viewFlag);
-			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
-			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-	        String d = sdf.format(vardic.getCheck_ym());
-	        map.remove("check_ym");
-	        map.put("check_ym", d);
-	        UserLoginInfo ulf = new UserLoginInfo();
-	        ActionContext context = ActionContext.getContext();  
-			HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);  
-			HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);  
-			ulf=(UserLoginInfo) request.getSession().getAttribute(Parameters.UserLoginInfo_Session_Str);
-			map.put("fdept", ContextHelper.getUserLoginDept());//登录人部门是考核人部门
-	        map.put("check_post", ulf.getPosition());//登录人职务是考核人职务
-	        map.put("check_user", ContextHelper.getUserLoginUuid());
-	        System.out.println("登录人职务"+ulf.getPosition());
-	        map.put("typea", 0);//成绩表中所有横向考核已经考核过的去掉
-			map.put("isdept", 0);//向横考核
-			this.setCvardics(dao.Checklist1(map));
-			System.out.println(cvardics.size());
-			this.setRecCount(dao.getResultCount());
-			CheckDao cd =new CheckDao();
-			map.clear();
-			map.put("state", 0);
-			map.put("a", new Date());
-			this.setChecks(cd.list(map));
-			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;添加考核";
-		} catch (Exception e) {
-			log.error(this.getClass().getName() + "!checklist 读取数据错误:", e);
-			throw new Exception(this.getClass().getName() + "!checklist 读取数据错误:", e);
-		}
-		return SUCCESS;
-	}
+	
 }

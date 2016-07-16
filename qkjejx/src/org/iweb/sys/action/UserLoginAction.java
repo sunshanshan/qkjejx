@@ -211,6 +211,7 @@ public class UserLoginAction extends ActionSupport {
 		map.clear();
 		map.put("user_id", user.getUuid());
 		this.setUserDepts(udDao.list(map));
+		ulf.setUds(userDepts);
 		if (!ToolsUtil.isEmpty(ulf.getUser_roles()) || userDepts.size() > 0) {
 			{// 设置角色列表
 				map.clear();

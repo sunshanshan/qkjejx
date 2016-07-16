@@ -46,10 +46,19 @@ public class UserLoginInfo {
 	private HashMap<String, Integer> user_dept_type;// 是否包含子部门
 
 	private HashMap<String, String> permit_depts2;// 默认部门
-
+	
+	private List<UserDept> uds;
 	private String sex_name;
 	private String status_name;
 	private String position_name;
+
+	public List<UserDept> getUds() {
+		return uds;
+	}
+
+	public void setUds(List<UserDept> uds) {
+		this.uds = uds;
+	}
 
 	public HashMap<String, String> getPermit_depts2() {
 		return permit_depts2;

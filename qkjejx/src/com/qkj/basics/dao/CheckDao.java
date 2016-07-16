@@ -32,6 +32,10 @@ public class CheckDao extends AbstractDAO {
 	public void save(Object parameters) {
 		super.save("basics_mdyCheck", parameters);
 	}
+	
+	public void saveState() {
+		super.save("basics_mdyState",null );
+	}
 
 	/**
 	 * 删除客户信息

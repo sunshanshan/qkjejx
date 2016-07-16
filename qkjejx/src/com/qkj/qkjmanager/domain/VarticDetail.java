@@ -13,15 +13,26 @@ public class VarticDetail {
 	private Double check_goal;
 	private String kpi;
 	private String cyc;//周期
-	private double weight;//权重
+	private Double weight;//权重
 	private String definition;//定义
 	private String correctly;//标准
+	private Integer typea;//0横向1纵向 
 	
 	private String check_user;// 考核人
 	private String check_usercode;// 考核人部门
 	private Integer kpi_id;
 	private Integer isdept;
 	
+	
+	
+	public Integer getTypea() {
+		return typea;
+	}
+
+	public void setTypea(Integer typea) {
+		this.typea = typea;
+	}
+
 	public Integer getKpi_id() {
 		return kpi_id;
 	}
@@ -120,11 +131,11 @@ public class VarticDetail {
 		this.cyc = cyc;
 	}
 
-	public double getWeight() {
+	public Double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(double weight) {
+	public void setWeight(Double weight) {
 		this.weight = weight;
 	}
 

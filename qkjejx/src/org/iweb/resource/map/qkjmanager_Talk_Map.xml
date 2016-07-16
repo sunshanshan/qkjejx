@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "sql-map-2.dtd">
+<sqlMap>
+	<typeAlias alias="talk" type="com.qkj.qkjmanager.domain.Talk" />
+	<select id="qkjmanager_getTalks" resultClass="talk" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select t.*,c.state cstate from qkj_t_talk t 
+			left join qkj_r_score s on (t.vartic_id=s.uuid)
+			left join qkj_r_check c on (s.check_ym=c.uuid)
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ t.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="suid"><![CDATA[  s.uuid=#suid# ]]></isNotNull>
+		</dynamic>
+	</select>
+	
+	<insert id="qkjmanager_addTalks" parameterClass="talk">
+		<![CDATA[ 
+			insert into qkj_t_talk(vartic_id,gjob,bjob,isnext,add_user,lm_user,add_time,lm_time)
+			VALUES(#vartic_id#,#gjob#,#bjob#,#isnext#,#add_user#,#lm_user#,#add_time#,#lm_time#);
+		]]>
+		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
+       	 	select @@IDENTITY as value     
+    	 </selectKey>   
+	</insert>
+	
+	<update id="qkjmanager_mdyLeader" parameterClass="talk">
+		<![CDATA[
+			Update qkj_t_talk
+			Set gjob=#gjob#,
+				bjob=#bjob#,
+				isnext=#isnext#
+			Where uuid=#uuid#
+		]]>
+	</update>
+	
+	<update id="qkjmanager_mdyEmp" parameterClass="talk">
+		<![CDATA[
+			Update qkj_t_talk
+			Set eujob=#eujob#,
+				enjob=#enjob#
+			Where uuid=#uuid#
+		]]>
+	</update>
+	<delete id="qkjmanager_delTalk" parameterClass="talk">
+		<![CDATA[
+			Delete From qkj_t_talk where uuid=#uuid#
+		]]>
+	</delete>
+	
+</sqlMap>

@@ -9,7 +9,7 @@ public class Vartic {
 	private String acheck_usercode;// 被考核人部门
 	private String lm_user;// (varchar)最后修改人
 	private Date lm_time;// (datetime)最后修改时间
-	private Date check_ym;// 考核管理表考核打开的年月
+	private Integer check_ym;// 考核管理表考核打开的年月
 	private Double check_score=0.0;// 总得分 （横向/纵）
 	
 	private Double ay_totelScore;//总得分 （横向+纵）
@@ -21,7 +21,6 @@ public class Vartic {
 	private String acheck_deptname;
 	private String u_id;  
 	private String u_code;
-	private Integer typea;//0横向1纵向 
 	
 	private String check_yms;
 	private Date acheck_startdate;// 横向考核开始时间
@@ -31,12 +30,43 @@ public class Vartic {
 	private Date echeck_startdate;// 员工考核开始时间
 	private Date echeck_closedate;// 员工考核结束时间
 	private String df_name;//父部门
-	private String acheck_dept;//纵向考核部门
+	private String acheck_dept;//纵向考核部门 
+	private Double bscore;
+	private String remark;
+	private String hremark;
 	
 	private String acd_cname;
 	private Double tscore;
-	private String d_code;
+	private String d_code; 
+	private Integer cstate;
 	
+	
+	public String getHremark() {
+		return hremark;
+	}
+
+	public void setHremark(String hremark) {
+		this.hremark = hremark;
+	}
+
+	private Date cym;
+	
+
+	public Integer getCstate() {
+		return cstate;
+	}
+
+	public void setCstate(Integer cstate) {
+		this.cstate = cstate;
+	}
+
+	public Date getCym() {
+		return cym;
+	}
+
+	public void setCym(Date cym) {
+		this.cym = cym;
+	}
 
 	public String getAcd_cname() {
 		return acd_cname;
@@ -76,14 +106,6 @@ public class Vartic {
 
 	public void setAy_totelScore(Double ay_totelScore) {
 		this.ay_totelScore = ay_totelScore;
-	}
-
-	public Integer getTypea() {
-		return typea;
-	}
-
-	public void setTypea(Integer typea) {
-		this.typea = typea;
 	}
 
 	public Integer getUuid() {
@@ -183,14 +205,13 @@ public class Vartic {
 		this.acheck_deptname = acheck_deptname;
 	}
 
-	public Date getCheck_ym() {
+	public Integer getCheck_ym() {
 		return check_ym;
 	}
 
-	public void setCheck_ym(Date check_ym) {
+	public void setCheck_ym(Integer check_ym) {
 		this.check_ym = check_ym;
 	}
-
 
 	public Date getAcheck_startdate() {
 		return acheck_startdate;
@@ -270,6 +291,22 @@ public class Vartic {
 
 	public void setAcheck_dept(String acheck_dept) {
 		this.acheck_dept = acheck_dept;
+	}
+
+	public Double getBscore() {
+		return bscore;
+	}
+
+	public void setBscore(Double bscore) {
+		this.bscore = bscore;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 

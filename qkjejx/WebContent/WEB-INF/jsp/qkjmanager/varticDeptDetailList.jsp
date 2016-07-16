@@ -25,28 +25,33 @@ cursor: pointer;
 		</div>
 	<s:form id="editForm" name="editForm" cssClass="validForm" action="varticDetail_add" namespace="/qkjmanager" method="post" theme="simple">
 		<div class="label_main">
+			<s:if test="'mdy' == viewFlag"><s:hidden name="vardic.uuid" value="%{vardic.uuid}"></s:hidden>
 			<div class="label_hang">
 				<div class="label_ltit">考核年月:</div>
 					<div class="label_rwben">
-					${it:formatDate(vardic.check_ym,'yyyy-MM')}
-						<input type="hidden" name="vardic.check_ym" value="${it:formatDate(vardic.check_ym,'yyyy-MM')}">
+					${it:formatDate(vardic.cym,'yyyy-MM')}
 					</div>
-			</div>
-			
-			<s:if test="'mdy' == viewFlag">	
+			</div>	
 			<div class="label_hang">
 				<div class="label_ltit">部门:</div>
 					<div class="label_rwben">
-						${vardic.acd_cname }
+						${vardic.acheck_deptname }
 					</div>
 			</div>	
 			</s:if>
 			<s:else>
 			<div class="label_hang">
+				<div class="label_ltit">考核年月:</div>
+					<div class="label_rwben">
+					${it:formatDate(check.ym,'yyyy-MM')}
+						<input type="hidden" name="vardic.check_ym" value="${check.uuid}">
+					</div>
+			</div>
+			<div class="label_hang">
 				<div class="label_ltit">部门:</div>
 					<div class="label_rwben">
 						${dept.dept_cname }
-						<input type="hidden" name="vardic.acheck_dept" value="${dept.dept_code}">
+						<input type="hidden" name="vardic.acheck_usercode" value="${dept.dept_code}">
 					</div>
 			</div>	
 			</s:else>
@@ -75,20 +80,49 @@ cursor: pointer;
 							<tr id="showtr${uuid}">
 								<td class="nw">${uuid }</td>
 								<td class="nw">${kpi }</td>
-								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
-								<td class="nw" width="100px;"><input id="s${uuid }" type="text" onblur="kpi('${uuid}');" class="validate[required]" /></td>
-								<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]"/></td>
+								<td class="nw">${weight }<input id="w${uuid }" name="weight" type="hidden"  value="${weight }"></td>
+								<s:if test="isdept==1">
+									<!-- kpi 横向的部门职务对上 -->
+									<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
+									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
+								</s:if>
+								<s:else>
+								<td class="nw" width="100px;">${score}</td>
+								<td class="nw" width="100px;">${goal}</td>
+								</s:else>
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>			
 								<td class="longnote"  id="c${uuid }" >${check_deptcode}</td>			
 							</tr>
 						</s:iterator>
-						
+						<tr>
+							<td>加扣分项</td>
+							<td class="nw" style="width:150px;">
+							<s:textfield name="vardic.bscore" title=""
+									cssClass="validate[required]" />
+							</td>
+							<td colspan="8">*分值范围是-30至10分</td>
+							</tr>
+							<tr>
+							<td>合计
+							</td>
+							<td>总分：${vardic.check_score}
+							</td>
+							<td id="sumC"  colspan="8">总权重：
+							</td>
+							</tr>
 					</table>
 				</fieldset>
 			</div>
-			
+			<div class="label_main">
+			<div class="label_hang">
+				<div class="label_ltit">备注:</div>
+				<div class="label_rwbenx">
+						<s:textarea name="vardic.remark" title="备注" cssClass="label_hang_linput inputNote validate[maxSize[65535]]" />
+				</div>
+			</div>
+		</div>
 			<div class="label_main">
 						<div class="label_hang">
 							<div class="label_ltit">相关操作:</div>
@@ -102,7 +136,7 @@ cursor: pointer;
 						</div>
 			</div>
 			</s:if>
-		</s:form>
+		
 		<s:if test="'mdy' == viewFlag">	
 		<div class="label_main">
 			<fieldset class="clear">
@@ -118,9 +152,7 @@ cursor: pointer;
 							<th>定义</th>
 							<th>标准</th>		
 							<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">		
-							<c:if test="${it:checkay(1)==true}">			
 							<th>操作</th>
-							</c:if>
 							</c:if>
 						</tr>
 										<!-- lading.promotions -->
@@ -128,25 +160,71 @@ cursor: pointer;
 							<tr id="showtr${uuid}">
 								<td class="nw">${uuid }</td>
 								<td class="nw">${kpi }</td>
-								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
-								<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
-								<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
+								<td class="nw">${weight }<input id="w${uuid }" type="hidden" name="weight" value="${weight }"></td>
+								<s:if test="isdept==1">
+									<!-- kpi 横向的部门职务对上 -->
+									<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
+									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
+								</s:if>
+								<s:else>
+								<td class="nw" width="100px;">${check_score}</td>
+								<td class="nw" width="100px;">${check_goal}</td>
+								</s:else>
+								
+								
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-								<c:if test="${it:checkay(1)==true}">
+								<s:if test="isdept==1">
 								<td class="longnote" title="${correctly}">
+								<c:if test="${it:checkb(uuid)==true}">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
-								</td>
 								</c:if>
+								</td>
+								</s:if>
+								<s:else>
+								<td class="longnote" title="${correctly}"></td>
+								</s:else>
 								</c:if>			
 							</tr>
 						</s:iterator>
+						<tr>
+							<td>加扣分项</td>
+							<td class="nw"  style="width:150px;">
+							<s:textfield name="vardic.bscore" title=""
+									cssClass="validate[required]"/>
+							</td>
+							<td colspan="8">*分值范围是-30至10分</td>
+							</tr>
+							<tr>
+							<td>合计
+							</td>
+							<td>总分：${vardic.check_score}
+							</td>
+							<td id="sumC"  colspan="8">总权重：
+							</td>
+							</tr>
 					</table>
 				</fieldset>
 			</div>
+			
+			<div class="label_main">
+			<div class="label_hang">
+				<div class="label_ltit">备注:</div>
+				<div class="label_rwbenx">
+						<s:textarea name="vardic.remark" title="备注" cssClass="label_hang_linput inputNote validate[maxSize[65535]]" />
+				</div>
+			</div>
+		</div>
+		
+		<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
+			<s:submit id="save" name="save" value="保存备注及加扣分项" action="varticD_saveDept" cssClass="input-blue" />
+		</c:if>
 		</s:if>
+		
+		
+		</s:form>
 	</div>
 </div>
 
@@ -154,7 +232,18 @@ cursor: pointer;
 <script type="text/javascript" src="<s:url value="/js/DatePicker.js" />"></script>
 <script type="text/javascript">
 var checkSubmitFlg = false;
-
+$(function(){
+	var sum=0;
+	var a=$("#sumC").text();
+	
+	$("input[name='weight']").each(
+			function() {
+				sum=sum+Number($(this).val())*100;
+			}
+			);
+	sum=a+sum;
+	$("#sumC").text(sum+"%");
+});
 function kpi(uuid){
 	var sid="s"+uuid;
 	var gid="g"+uuid;
@@ -176,7 +265,13 @@ function add(){
 	    	}else{
 	    		if(j==3){
 	    			var sid="s"+tableObj.rows[i].cells[0].innerText;//分数
-	    			var sp=document.getElementById(sid).value;
+	    			var sp="";
+	    			if(document.getElementById(sid)!=undefined && document.getElementById(sid).value!=''){
+	    				sp=document.getElementById(sid).value;
+	    				}else{
+	    					continue;
+	    				}
+	    			
 	    			if(sp==null||sp==""){
 	    				flag=false;
 	    				break;
@@ -184,7 +279,12 @@ function add(){
 	    			tableInfo += sp+",";
 	    		}else if(j==4){
 	    			var gid="g"+tableObj.rows[i].cells[0].innerText;
-	    			var gp=document.getElementById(gid).value;
+	    			var gp="";
+	    			if(document.getElementById(gid)!=undefined && document.getElementById(gid).value!=''){
+	    				 gp=document.getElementById(gid).value;
+	    			}else{
+    					continue;
+    				}
 	    			tableInfo += gp+",";
 	    			if(gp==null||gp==""){
 	    				flag=false;
@@ -193,7 +293,13 @@ function add(){
 	    		}
 	    		else if(j==8){
 	    			var cid="c"+tableObj.rows[i].cells[0].innerText;
-	    			var cp=document.getElementById(gid).value;
+	    			
+	    			var cp="";
+	    			if(document.getElementById(gid)!=undefined && document.getElementById(gid).value!=''){
+	    				cp=document.getElementById(gid).value;
+	    			}else{
+    					continue;
+    				}
 	    			tableInfo += cp+",";
 	    			if(cp==null||cp==""){
 	    				flag=false;
@@ -210,7 +316,6 @@ function add(){
 	   obj[i]=tableInfo;
 	   
 	  }
-	  
 	   if (!checkSubmitFlg) {
 		// 第一次提交
 		  checkSubmitFlg = true;

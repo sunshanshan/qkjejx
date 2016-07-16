@@ -11,6 +11,9 @@ public class Position {
 	private String position_note; // 职务描述
 	private String lm_user; //
 	private Date lm_time; //
+	private String dept_code;// 所属部门
+	
+	private String dept_cname;
 
 	public String getPosition_senior() {
 		return position_senior;
@@ -74,6 +77,22 @@ public class Position {
 
 	public void setLm_time(Date lm_time) {
 		this.lm_time = lm_time;
+	}
+
+	public String getDept_code() {
+		return dept_code;
+	}
+
+	public void setDept_code(String dept_code) {
+		this.dept_code = dept_code;
+	}
+
+	public String getDept_cname() {
+		return dept_cname;
+	}
+
+	public void setDept_cname(String dept_cname) {
+		this.dept_cname = dept_cname;
 	}
 
 }

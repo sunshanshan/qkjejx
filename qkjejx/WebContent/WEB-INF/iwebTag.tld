@@ -48,9 +48,21 @@
 	</function>
 	
 	<function>
-		<name>checkay</name>
+		<name>checkb</name>
 		<function-class>org.iweb.sys.ContextHelper</function-class>
-		<function-signature>boolean checkAy(java.lang.Integer,java.lang.Integer)</function-signature>
+		<function-signature>boolean checkb(java.lang.Integer)</function-signature>
+	</function>
+	
+	<function>
+		<name>checktalk</name>
+		<function-class>org.iweb.sys.ContextHelper</function-class>
+		<function-signature>boolean checktalk(java.lang.Integer)</function-signature>
+	</function>
+	
+	<function>
+		<name>checkTalkbyU</name>
+		<function-class>org.iweb.sys.ContextHelper</function-class>
+		<function-signature>boolean checkTalkbyU(java.lang.String)</function-signature>
 	</function>
 	
 	<function>

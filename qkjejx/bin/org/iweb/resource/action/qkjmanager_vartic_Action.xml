@@ -68,6 +68,24 @@
 			</result>
 		</action>
 		
+		<action name="varticD_save" class="com.qkj.qkjmanager.action.VardicAction" method="savev">
+			<result type="redirectAction">
+				<param name="actionName">varticDetail_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="varticD_saveDept" class="com.qkj.qkjmanager.action.VardicAction" method="savev">
+			<result type="redirectAction">
+				<param name="actionName">varticDetail_loadDept</param>
+				<param name="viewFlag">mdy</param>
+				<param name="vardic.uuid">${vardic.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
 		<action name="varticDetail_saveDept" class="com.qkj.qkjmanager.action.VardicDetailAction" method="save">
 			<result type="redirectAction">
 				<param name="actionName">varticDetail_loadDept</param>

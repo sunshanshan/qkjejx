@@ -55,6 +55,8 @@ var DialogIFrame = function(config){
 	};
 };
 
+
+
 var sobj02;
 var selectWarevar = function(dcode_id, dname_id,type){
 	if(type!=null && type!="" && type==1){
@@ -158,6 +160,8 @@ var selectDept = function(dcode_id, dname_id, isLoad, p_m,b_m,u_pid){
 					loadManagers(val1, p_m);
 				}
 
+			}else{
+				loadPosition(val1, p_m);
 			}
 		};
 
@@ -166,6 +170,8 @@ var selectDept = function(dcode_id, dname_id, isLoad, p_m,b_m,u_pid){
 	sobj01.create();
 	sobj01.open();
 };
+
+
 
 var loadManagers = function(dept_code, curr_apply_user, b_m){
 	var ajax = new Common_Ajax('ajax_member_message');
@@ -223,6 +229,80 @@ var loadManagers2 = function(dept_code, curr_apply_user, b_m){
 		ndept+="'"+newdept[i]+"',";
 	}
 	ajax.addParameter("parameters", "privilege_id=QKJCJ_SYS_AJAXLOAD_USER&dept_codeds=" + ndept.substring(0, ndept.length-1));
+	ajax.sendAjax2();
+};
+
+var loadPosition = function(dept_code, curr_apply_user, b_m){
+	
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var uc = $("#membermanageridp");
+		if (uc.length > 0 && uc.get(0).tagName.toUpperCase() == 'SELECT') {
+			uc.clearAllOption();
+			uc.addOption("--请选择--", "");
+			var l = $(data).length;
+			if (l == 1) { // 如果只有一个结果,那么直接选中
+				uc.addOption($(data)[0].position_name, $(data)[0].uuid);
+				if (b_m == 1) {
+					uc.setSelectedValue($(data)[0].uuid);
+				} else {}
+
+			} else if (l > 1) {
+				$.each(data, function(i, n){
+					uc.addOption(n.position_name, n.uuid);
+				});
+				if (curr_apply_user != '') {
+					uc.val(curr_apply_user);
+				}
+			}
+		}
+	};
+	
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_POSITION");
+	if(encodeURI(dept_code).indexOf("10301", 1)){
+		ajax.addParameter("parameters", "dept_code3=" + encodeURI("10301")+"&dept_code2="+encodeURI(dept_code));
+	}else if(encodeURI(dept_code).indexOf("1020104", 1)){
+		ajax.addParameter("parameters", "dept_code3=" + encodeURI("1020104")+"&dept_code2="+encodeURI(dept_code));
+	}else if(encodeURI(dept_code).indexOf("1020102", 1)){
+		ajax.addParameter("parameters", "dept_code3=" + encodeURI("1020102")+"&dept_code2="+encodeURI(dept_code));
+	}
+	else{
+		ajax.addParameter("parameters", "dept_code2=" + encodeURI(dept_code));
+	}
+	ajax.sendAjax2();
+};
+
+var loadPosition2 = function(curr_apply_user,b_m){
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var uc = $("#membermanageridp");
+		if (uc.length > 0 && uc.get(0).tagName.toUpperCase() == 'SELECT') {
+			uc.clearAllOption();
+			uc.addOption("--请选择--", "");
+			var l = $(data).length;
+			
+			if (l == 1) { // 如果只有一个结果,那么直接选中
+				uc.addOption($(data)[0].position_name, $(data)[0].uuid);
+				if (b_m == 1) {
+					uc.setSelectedValue($(data)[0].uuid);
+				} else {}
+
+			} else if (l > 1) {
+				$.each(data, function(i, n){
+					uc.addOption(n.position_name, n.uuid);
+				});
+				if (curr_apply_user != '') {
+					uc.val(curr_apply_user);
+				}
+			}
+		}
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_POSITION");
+	ajax.addParameter("parameters", "uuid=" + encodeURI(curr_apply_user));
 	ajax.sendAjax2();
 };
 
