@@ -41,12 +41,6 @@ cursor: pointer;
 						</div>
 					</div> --%>
 					
-					<div class="label_hang">
-						<div class="label_ltit">考核年月:</div>
-						<div class="label_rwben">
-							<input id="begintime" name="vardic.cym" type="text" onclick="setmonth(this)" readonly="readonly"/>
-						</div>
-					</div>
 							
 					<div class="label_hang tac">
 						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
@@ -86,7 +80,7 @@ cursor: pointer;
 							<td class="td1 nw"></td>
 							<td class="td1 nw">${check_score }</td>
 							<td class="td4 op-area">
-								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
+								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_ADD',null)==true}">
 									<a class="input-blue" href="/qkjmanager/transverseDetail_list?vardic.u_code=${d_code}&vardic.check_ym=${it:formatDate(vardic.check_ym,'yyyy-MM')}&viewFlag=add">考核</a>
 								</c:if> 
 						    </td>

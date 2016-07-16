@@ -5,7 +5,7 @@ public class IndexDetail {
 	private String dept_code;// 部门code
 	private String kpi;
 	private String cyc;// 周期
-	private double weight;// 权重
+	private Double weight;// 权重
 	private String count_way;// 计分方式
 	private String definition;// 定义
 	private String correctly;// 标准
@@ -15,7 +15,7 @@ public class IndexDetail {
 	private String check_post;// 横向考核岗位
 	private String isdept;// 是否部门得分 0 横1纵
 	private String position_id;
-	private String type;// 1：职务权重 2：部门权重
+	private String type;// 1：职务权重 2：部门权重 3:班组权重
 	private String position_dept;
 	private Double goal;
 	private Double score;
@@ -45,10 +45,11 @@ public class IndexDetail {
 	public void setCyc(String cyc) {
 		this.cyc = cyc;
 	}
-	public double getWeight() {
+	
+	public Double getWeight() {
 		return weight;
 	}
-	public void setWeight(double weight) {
+	public void setWeight(Double weight) {
 		this.weight = weight;
 	}
 	public String getCount_way() {

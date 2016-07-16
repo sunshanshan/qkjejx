@@ -34,12 +34,6 @@ cursor: pointer;
 							<s:textfield name='vardic.uuid' cssClass=' validate[maxSize[10],custom[integer],]' />
 						</div>
 					</div>
-					<div class="label_hang">
-						<div class="label_ltit">考核年月:</div>
-						<div class="label_rwben">
-							<input id="begintime" name="vardic.cym" type="text" onclick="setmonth(this)" readonly="readonly"/>
-						</div>
-					</div>
 							
 					<div class="label_hang tac">
 						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />

@@ -85,14 +85,8 @@ cursor: pointer;
 								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
 								<s:if test="isdept==0">
 									<!-- kpi 横向的部门职务对上 -->
-									<%-- <c:if test="${it:checkay(0,uuid)==true}"> --%>
 									<td class="nw" width="100px;"><input id="s${uuid }" type="text" onblur="kpi('${uuid}');" class="validate[required]" /></td>
 									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]"/></td>
-									<%-- </c:if> --%>
-									<%-- <c:if test="${it:checkay(0,uuid)==false}">
-									<td class="nw" width="100px;">${check_score}</td>
-									<td class="nw" width="100px;">${check_goal}</td>
-									</c:if> --%>
 								</s:if>
 								<s:else>
 								<td class="nw" width="100px;">${check_score}</td>
@@ -153,14 +147,8 @@ cursor: pointer;
 								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
 								<s:if test="isdept==0">
 									<!-- kpi 横向的部门职务对上 -->
-									<%-- <c:if test="${it:checkay(0,kpi_id)==true}"> --%>
 									<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
 									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
-								<%-- 	</c:if>
-									<c:if test="${it:checkay(0,kpi_id)==false}">
-									<td class="nw" width="100px;">${check_score}</td>
-									<td class="nw" width="100px;">${check_goal}</td>
-									</c:if> --%>
 								</s:if>
 								<s:else>
 								<td class="nw" width="100px;">${check_score}</td>
@@ -170,13 +158,11 @@ cursor: pointer;
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
-								<c:if test="${it:checkay(0,kpi_id)==true}">
 								<td class="longnote" title="${correctly}">
-								<c:if test="${it:checkb(kpi_id,vardic.check_ym,vardic.acheck_usercode)==true}">
+								<c:if test="${it:checkb(uuid)==true}">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
 								</c:if>
 								</td>	
-								</c:if>	
 								</c:if>
 							</tr>
 						</s:iterator>

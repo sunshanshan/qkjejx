@@ -24,6 +24,26 @@
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[  c.check_ym=#check_ym# ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# ]]></isNotNull>
 			<isNotNull prepend="AND" property="cym"><![CDATA[  chec.ym like #cym# +'%' ]]></isNotNull>
+			
+			<isNotEmpty prepend="AND" property="apply_depts" open="(" close=")">
+			<![CDATA[ c.acheck_usercode In ]]>
+			<iterate property="apply_depts" open="(" close=")" conjunction=" , "> #apply_depts[]#</iterate>
+			<isNotEmpty prepend="OR" property="apply_perdepts">
+				<![CDATA[ c.acheck_usercode In ]]>
+				<iterate property="apply_perdepts" open="(" close=")" conjunction=" , "> #apply_perdepts[]#</iterate>
+				<isNotEmpty prepend="AND" property="apply_userDouble"><![CDATA[ c.acheck_user=#apply_userDouble# ]]></isNotEmpty>
+			</isNotEmpty> 
+			<isNotEmpty prepend="OR" property="check_user">
+				<![CDATA[cuser.UUID=#check_user#]]>
+			</isNotEmpty>
+			</isNotEmpty>
+			<isEmpty  property="apply_depts">
+				<isNotEmpty prepend="AND" property="apply_perdepts">
+					<![CDATA[ c.acheck_usercode In ]]>
+					<iterate property="apply_perdepts" open="(" close=")" conjunction=" , "> #apply_perdepts[]#</iterate>
+					<isNotEmpty prepend="AND" property="apply_userDouble"><![CDATA[ c.acheck_user=#apply_userDouble# ]]></isNotEmpty>
+				</isNotEmpty>
+			</isEmpty>
 		</dynamic>
 	</select>
 </sqlMap>

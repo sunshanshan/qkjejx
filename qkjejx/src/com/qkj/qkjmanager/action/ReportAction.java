@@ -123,11 +123,36 @@ public class ReportAction extends ActionSupport {
 			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_REPORT", map, "apply_depts", "apply_user");
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_REPORT", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
-	        if(map.get("check_ym")!=null){
+			if(map.get("cym")!=null){
 	        	SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
-		        String d = sdf.format(vardic.getCheck_ym());
-		        map.remove("check_ym");
-		        map.put("check_ym", d);
+		        String d = sdf.format(vardic.getCym());
+		        map.remove("cym");
+		        map.put("cym", d);
+	        }
+			this.setVardics(dao.list(map));
+			this.setRecCount(dao.getResultCount());
+			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";
+		} catch (Exception e) {
+			log.error(this.getClass().getName() + "!list 读取数据错误:", e);
+			throw new Exception(this.getClass().getName() + "!list 读取数据错误:", e);
+		}
+		return SUCCESS;
+	}
+	
+	public String listjx() throws Exception {
+		try {
+			map.clear();
+			if (vardic == null) {
+				vardic = new Vartic();
+			}
+			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_CHECKLIST", map, "apply_depts", "apply_user");
+			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_CHECKLIST", map, vardic, viewFlag);
+			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
+	        if(map.get("cym")!=null){
+	        	SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+		        String d = sdf.format(vardic.getCym());
+		        map.remove("cym");
+		        map.put("cym", d);
 	        }
 			this.setVardics(dao.list(map));
 			this.setRecCount(dao.getResultCount());

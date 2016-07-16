@@ -179,7 +179,7 @@ public class TransverseDetailAction extends ActionSupport {
 	}
 
 	public String list() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST");
 		try {
 			map.clear();
 			if (vardic == null) {
@@ -222,7 +222,7 @@ public class TransverseDetailAction extends ActionSupport {
 	 * @throws Exception
 	 */
 	public String listbyUser() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST");
 		try {
 			map.clear();
 			if (vardic == null) {
@@ -351,7 +351,7 @@ public class TransverseDetailAction extends ActionSupport {
 	}
 	
 	public String add() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_ADD");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST_ADD");
 		try {
 			dao.startTransaction();
 			/**
@@ -431,7 +431,7 @@ public class TransverseDetailAction extends ActionSupport {
 	
 	
 	public String addUser() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_ADD");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST_ADD");
 		try {
 			dao.startTransaction();
 			/**
@@ -510,7 +510,7 @@ public class TransverseDetailAction extends ActionSupport {
 	}
 
 	public String save() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_MDY");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST_MDY");
 		try {
 			dao.startTransaction();
 			this.setVardic((Vartic) zdao.get(vd.getScore_id()));
@@ -542,7 +542,7 @@ public class TransverseDetailAction extends ActionSupport {
 	}
 
 	public String del() throws Exception {
-		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_DEL");
+		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST_DEL");
 		try {
 			dao.del(vardic);
 			setMessage("删除成功!ID=" + vardic.getUuid());

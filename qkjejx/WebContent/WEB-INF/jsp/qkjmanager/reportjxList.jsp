@@ -25,13 +25,13 @@ cursor: pointer;
 				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"><s:param name="viewFlag">add</s:param><s:param name="vardic.check_ym">${vardic.check_yms}</s:param></s:url>">导出考核</a></span>
 			</c:if>
 		</div>
-		<s:form id="serachForm" name="serachForm" action="report_list" method="get" namespace="/qkjmanager" theme="simple">
+		<s:form id="serachForm" name="serachForm" action="report_listjx" method="get" namespace="/qkjmanager" theme="simple">
 			<div class="label_con">
 				<div class="label_main">
 					<div class="label_hang">
 						<div class="label_ltit">考核年月:</div>
 						<div class="label_rwben">
-							<input id="begintime" name="vardic.cym" value="${it:formatDate(vardic.cym,'yyyy-MM')}"  type="text" onclick="setmonth(this)" readonly="readonly"/>
+							<input id="begintime" name="vardic.cym" value="${it:formatDate(vardic.cym,'yyyy-MM')}" type="text" onclick="setmonth(this)" readonly="readonly"/>
 						</div>
 					</div>
 							

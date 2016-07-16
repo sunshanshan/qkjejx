@@ -150,14 +150,14 @@
 													type="text" readonly="readonly"></td>
 												<td class="nw" width="100px;"><input id="g${uuid }"
 													type="text" readonly="readonly"></td>
-													<s:if test="%{user.dept_code!=null}">
+													<s:if test="%{user.uuid!=null}">
 														<script type="text/javascript">
 															$(function(){
 																var uuid=${uuid };
 																var kpi=${kpi};
 																var d=$('#ck').val();
-																var dept=${user.dept_code};
-																kpibys(uuid,kpi,d,dept);
+																var userid=${user.uuid};
+																kpibys(uuid,kpi,d,userid);
 																
 															});
 														</script>
@@ -168,8 +168,8 @@
 																var uuid=${uuid };
 																var kpi=${kpi};
 																var d=$('#ck').val();
-																var dept=${vardic.acheck_usercode};
-																kpibys(uuid,kpi,d,dept);
+																var userid=${vardic.acheck_user};
+																kpibys(uuid,kpi,d,userid);
 																
 															});
 														</script>
@@ -292,7 +292,7 @@
 									<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
 									<c:if
 										test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-										<c:if test="${it:checkay(1,kpi_id)==true}">
+										<c:if test="${it:checkb(uuid)==true}">
 											
 											<td class="longnote" title="${correctly}">
 											<s:if test="%{typea==1}">
@@ -302,9 +302,6 @@
 											横向考核
 											</s:else>
 											</td>
-										</c:if>
-										<c:if test="${it:checkay(1,kpi_id)==false}">
-											<td class="longnote" title="${correctly}">取部门/班组分数</td>
 										</c:if>
 									</c:if>
 								</tr>
@@ -451,7 +448,7 @@ function mdy(uuid,so){
 	window.location.href="/qkjmanager/varticDetail_save?vd.uuid="+uuid+"&vd.check_score="+sp+"&vd.check_goal="+gp+"&vd.score_id="+so;
 }
 
-var kpibys = function(uuid,kpi,d,dept){
+var kpibys = function(uuid,kpi,d,userid){
 	var ajax = new Common_Ajax('ajax_member_message');
 	ajax.config.action_url = ajax_url;
 	ajax.config._success = function(data, textStatus){
@@ -468,7 +465,7 @@ var kpibys = function(uuid,kpi,d,dept){
 	};
 	ajax.addParameter("work", "AutoComplete");
 	ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_KPI");
-	ajax.addParameter("parameters", "dept_code=" + encodeURI(dept)+"&check_ym="+encodeURI(d)+"&kpi="+encodeURI(kpi));
+	ajax.addParameter("parameters", "userid=" + encodeURI(userid)+"&check_ym="+encodeURI(d)+"&kpi="+encodeURI(kpi));
 	ajax.sendAjax2();
 };
 

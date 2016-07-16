@@ -176,10 +176,9 @@ cursor: pointer;
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-								<c:if test="${it:checkay(1,null)==true}">
 								<s:if test="isdept==1">
 								<td class="longnote" title="${correctly}">
-								<c:if test="${it:checkb(kpi_id,vardic.check_ym,vardic.acheck_usercode)==true}">
+								<c:if test="${it:checkb(uuid)==true}">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
 								</c:if>
 								</td>
@@ -187,7 +186,6 @@ cursor: pointer;
 								<s:else>
 								<td class="longnote" title="${correctly}"></td>
 								</s:else>
-								</c:if>
 								</c:if>			
 							</tr>
 						</s:iterator>

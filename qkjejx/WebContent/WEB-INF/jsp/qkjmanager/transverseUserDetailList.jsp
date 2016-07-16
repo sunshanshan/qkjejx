@@ -168,16 +168,9 @@ cursor: pointer;
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-								<c:if test="${it:checkay(1,kpi_id)==true}">
 								<td class="longnote" title="${correctly}">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
 								</td>
-								</c:if>
-								<c:if test="${it:checkay(1,kpi_id)==false}">
-								<td class="longnote" title="${correctly}">
-								取部门分数
-								</td>
-								</c:if>
 								</c:if>			
 							</tr>
 						</s:iterator>

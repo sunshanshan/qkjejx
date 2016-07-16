@@ -7,7 +7,9 @@
 		<action name="report_list" class="com.qkj.qkjmanager.action.ReportAction" method="list">
 			<result>/WEB-INF/jsp/qkjmanager/reportList.jsp</result>
 		</action>
-		
+		<action name="report_listjx" class="com.qkj.qkjmanager.action.ReportAction" method="listjx">
+			<result>/WEB-INF/jsp/qkjmanager/reportjxList.jsp</result>
+		</action>
 		<action name="scoure_excle" class="com.qkj.qkjmanager.action.ReportAction" method="report">
 		</action>
 		

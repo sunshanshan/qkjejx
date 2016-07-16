@@ -25,7 +25,9 @@ import com.opensymphony.xwork2.ActionContext;
 import com.qkj.basics.dao.CheckDao;
 import com.qkj.basics.domain.Check;
 import com.qkj.qkjmanager.dao.TalkDao;
+import com.qkj.qkjmanager.dao.VardicDetailDao;
 import com.qkj.qkjmanager.domain.Talk;
+import com.qkj.qkjmanager.domain.VarticDetail;
 
 /**
  * HttpServlet相关的工具类
@@ -721,73 +723,23 @@ public class ContextHelper {
 		
 	}
 	
-	public static boolean checkb(Integer kpiid,Integer d,String dept){
+	public static boolean checkb(Integer uuid){
+		//查询成绩表是登录人审核且状态为打开则可以修改成绩
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<IndexDetail> kpi=new ArrayList();
 		map.clear();
-		map.put("dept_code", dept);
-		map.put("check_ym", d);
-		KpiDAO kd=new KpiDAO();
-		kpi=kd.listbydept(map);
-		if(kpi.size()>0){
-			return false;
-		}else{
-			return true;
-		}
-	    
-	}
-	
-	/**
-	 * 考核时间
-	 * @param p_id
-	 * @return
-	 */
-	public static boolean checkAy(Integer p_id,Integer kpiId) {
-		UserLoginInfo ulf = ContextHelper.getUserLoginInfo();
-		CheckDao cd =new CheckDao();
-		KpiDAO kd=new KpiDAO();
-		Map<String, Object> map = new HashMap<String, Object>();
-		List<Check> cs=new ArrayList<>();
-		//考核时间对应
-		map.clear();
+		map.put("uuid", uuid);
+		map.put("check_user", ContextHelper.getUserLoginUuid());
 		map.put("state", 0);
-		if(p_id==1){
-			map.put("d", new Date());
-		}else{
-			map.put("a", new Date());
-		}
-		cs=cd.list(map);
-		
-		//横向考核要与考核部门职务对应
-		List<IndexDetail> ids=new ArrayList<>();
-		map.clear();
-		if(p_id==0){
-			ActionContext context = ActionContext.getContext(); 
-			HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);
-			ulf=(UserLoginInfo) request.getSession().getAttribute(Parameters.UserLoginInfo_Session_Str);
-			map.put("uuid", kpiId);
-			map.put("check_post", ulf.getPosition());
-			map.put("check_deptcode", ContextHelper.getUserLoginDept());
-		}else{
-			if(kpiId!=null&&kpiId>0){
-				map.put("uuid", kpiId);
-				map.put("type", 1);
-			}
-		}
-		
-		ids=kd.list(map);
-		if(cs.size()>0&&ids.size()>0&&p_id==0){
-			return true;
-		}else if(p_id==1&&cs.size()>0&&kpiId==null){
-			return true;
-		}else if(p_id==0&&cs.size()>0&&kpiId==null){
-			return true;
-		}
-		else if(p_id==1&&cs.size()>0&&ids.size()>0&&kpiId!=null){
+		List<VarticDetail> vs=new ArrayList();
+		VardicDetailDao vd=new VardicDetailDao();
+		vs=vd.list(map);
+		if(vs.size()>0){
 			return true;
 		}
 		else{
 			return false;
 		}
+	    
 	}
+	
 }
