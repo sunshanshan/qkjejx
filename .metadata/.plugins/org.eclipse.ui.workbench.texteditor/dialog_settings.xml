@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="alert" key="selection"/>
+		<item value="" key="selection"/>
 		<list key="findhistory">
 			<item value="alert"/>
+			<item value="setkpi"/>
+			<item value="cyc"/>
+			<item value="messagewei"/>
+			<item value="message"/>
+			<item value="intop"/>
 			<item value="dept_uuid"/>
 			<item value="getInfo"/>
-			<item value="sys_updateKpi"/>
-			<item value="types"/>
-			<item value="updatedetermine"/>
-			<item value="updatetab"/>
-			<item value="typeip"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

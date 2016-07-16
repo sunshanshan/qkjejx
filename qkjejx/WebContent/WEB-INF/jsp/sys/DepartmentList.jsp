@@ -193,7 +193,7 @@ function getInfo(obj) {
 	};
 	ajax.addParameter("privilege_id","SYS_MANAGER_DEPT_AJAX_LOAD");
 	ajax.addParameter("parameters","uuid="+obj);
-	ajax.sendAjax();
+	ajax.sendAjax2();
 
 }
 
@@ -241,7 +241,7 @@ function getIndexDetail(obj) {
 	};
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_LOADKPI");
 	ajax.addParameter("parameters", "dept_code=" + obj);
-	ajax.sendAjax();
+	ajax.sendAjax2();
 }
 
 function delkpi(obj){
@@ -260,7 +260,7 @@ function delkpi(obj){
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_DELETEKPI");
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "uuid=" + obj);
-	ajax.sendAjax();
+	ajax.sendAjax2();
 	
 	 }
 	
@@ -271,8 +271,8 @@ function updatedetermine(obj){
 	var ajax = new Common_Ajax('message');
 	var dept_uuid=$("#dept\\.uuid").val();
 	var kpi=$("#"+obj+"kpiip").val();
+	var cyc=$("#"+obj+"cycip").val();
 	 var weight=$("#"+obj+"weightip").val();
-	 var cyc=$("#"+obj+"cyc").val();
 	 var count_way=$("#"+obj+"count_wayip").val();
 	 var definition=$("#"+obj+"definitionip").val();
 	 var correctly=$("#"+obj+"correctlyip").val();
@@ -286,10 +286,10 @@ function updatedetermine(obj){
 	};
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_UPDATEKPI");
 	ajax.addParameter("work","update");
-	ajax.addParameter("parameters", "dept_code=" + obj+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
+	ajax.addParameter("parameters", "dept_code=" + obj+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+encodeURI(count_way)
 			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
-			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type));
-	ajax.sendAjax();
+			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type)+"&cyc="+encodeURI(cyc));
+	ajax.sendAjax2();
 }
 function updatetab(obj) {
 
@@ -339,8 +339,16 @@ function updatetab(obj) {
 	 $("#"+obj+"type").text("");
 	 $("#"+obj+"type").append(show.join(""));
 	 show=[];
+		var cyc=$("#"+obj+"cyc").text();
+		alert(cyc)
+		 show.push('<input type="text" value="'+cyc+'" id="'+obj+'cycip" />');
+		 $("#"+obj+"cyc").text("");
+		 $("#"+obj+"cyc").append(show.join(""));
+		 show=[];
 	 $("#"+obj+"buttd").show()
 	  $("#"+obj+"buttb").hide()
+	  
+	  
 		 if(type==1){
 			 $("#"+obj+"typeip").find("option[value='1']").attr("selected",true);
 			 }
@@ -358,7 +366,7 @@ function setkpi() {
 	 show.push('<tr name="deletetd" ·>');
 	 show.push('<td class="td1"  >'+dept_name+'</td  >' ) ;
 	 show.push('<td class="td2" ><input type="text" value="" id="newkpiip" /></td  >' ) ;
-	 show.push('<td class="td5">1</td  >' ) ;
+	 show.push('<td class="td5"><input type="text" value="" id="newcycip" /></td  >' ) ;
 	 show.push('<td class="td3" ><input type="text" value="" id="newweightip" /></td  >' ) ;
 	 show.push('<td class="td4" ><input type="text" style="width:80px" value="" id="newcount_wayip" /></td  >' ) ;
 	 show.push('<td class="td6"  ><input type="text" style="width:80px" value="" id="newdefinitionip" /></td  >' ) ;
@@ -381,6 +389,7 @@ function addtab(ct) {
 	var correctly=$("#newcorrectlyip").val();
 	var check_deptcode=$("#newcheck_deptcodeip").val();
 	var check_post=$("#newcheck_postip").val();
+	var cyc=$("#newcycip").val();
 	var isdept=$("#newisdeptip").val();
 	var dept_code=$("#dept\\.dept_code").val();
 	var dept_uuid=$("#dept\\.uuid").val();
@@ -394,8 +403,8 @@ function addtab(ct) {
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + dept_code+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
 			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
-			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type));
-	ajax.sendAjax();
+			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type)+"&cyc="+encodeURI(cyc));
+	ajax.sendAjax2();
 	 
 	
 }
