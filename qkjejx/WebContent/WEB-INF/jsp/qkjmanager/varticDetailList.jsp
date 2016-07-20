@@ -98,7 +98,7 @@
 								<s:iterator value="ids" status="sta">
 									<tr id="showtr${uuid}">
 										<td class="nw">${uuid }</td>
-										<td class="nw">${kpi }</td>
+										<td class="nw" id="kpi${uuid}">${kpi }</td>
 										<td class="nw">${weight }<input id="w${uuid }" name="weight"
 											type="hidden" value="${weight }"></td>
 										<s:if test="isdept==1&&type==1">
@@ -117,10 +117,9 @@
 												<script type="text/javascript">
 													$(function(){
 														var uuid=${uuid };
-														var kpi=${kpi};
+														var kpi=$('#kpi'+uuid).text();
 														var d=$('#ck').val();
 														var dept=${position_dept};
-														
 														var ajax = new Common_Ajax('ajax_member_message');
 														ajax.config.action_url = ajax_url;
 														ajax.config._success = function(data, textStatus){
@@ -129,7 +128,7 @@
 																		var sid="s"+uuid;
 																		var gid="g"+uuid;
 																		var w="w"+uuid;
-																		
+																		 
 																		document.getElementById(sid).value=n.check_score;
 																		document.getElementById(gid).value=n.check_score*document.getElementById(w).value;
 																	});
@@ -154,7 +153,7 @@
 														<script type="text/javascript">
 															$(function(){
 																var uuid=${uuid };
-																var kpi=${kpi};
+																var kpi=$('#kpi'+uuid).text();
 																var d=$('#ck').val();
 																var userid=${user.uuid};
 																kpibys(uuid,kpi,d,userid);
@@ -215,7 +214,7 @@
 							<td>加扣分项</td>
 							<td class="nw" style="width:150px;">
 							<s:textfield name="vardic.bscore" title=""
-									cssClass="validate[required]"/>
+									/>
 							</td>
 							<td colspan="8">*分值范围是-30至10分</td>
 							</tr>
@@ -247,7 +246,7 @@
 
 								<c:if
 									test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-									<button class="input-blue" onclick="add();">添加</button>
+									<button  id="btnzhuce" class="input-blue" onclick="add();">添加</button>
 								</c:if>
 							</div>
 						</div>
@@ -294,12 +293,14 @@
 										test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
 										<c:if test="${it:checkb(uuid)==true}">
 											
-											<td class="longnote" title="${correctly}">
-											<s:if test="%{typea==1}">
+											<td>
+											<s:if test="%{typea==1&&dtype==1}">
 											<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
 											</s:if>
+											<s:elseif test="%{typea==0&&dtype==1}">横向考核</s:elseif>
+											<s:elseif test="%{dtype==2}">取部门分数</s:elseif>
 											<s:else>
-											横向考核
+											取班组分数
 											</s:else>
 											</td>
 										</c:if>
@@ -310,7 +311,7 @@
 							<td>加扣分项</td>
 							<td class="nw" style="width:150px;">
 							<s:textfield name="vardic.bscore" title=""
-									cssClass="validate[required]"/>
+									/>
 							</td>
 							<td colspan="8">*分值范围是-30至10分</td>
 							</tr>
@@ -429,6 +430,7 @@ function add(){
 		// 第一次提交
 		  checkSubmitFlg = true;
 		  if(flag==true){
+			  $('#btnzhuce').hide();
 			  document.getElementById("editForm").action="/qkjmanager/varticDeail_add?aArray="+obj;
 		  }else{
 			  alert("所评分数不能为空！");
@@ -437,6 +439,7 @@ function add(){
 		//重复提交
 		  return false;
 		 }
+	  
 }
 
 
@@ -457,15 +460,27 @@ var kpibys = function(uuid,kpi,d,userid){
 		var sid="s"+uuid;
 		var gid="g"+uuid;
 		var w="w"+uuid;
-				$.each(data, function(i, n){
-					score=score+n.check_score;
-				});
-				document.getElementById(sid).value=score;
-				document.getElementById(gid).value=score*document.getElementById(w).value;
+				if(l>1){
+					var w=document.getElementById(w).value;
+					$.each(data, function(i, n){
+						score= Number((n.check_score*(w/l)+score).toFixed(3));
+					});
+					document.getElementById(sid).value=score/w;
+					document.getElementById(gid).value=score;
+				}else{
+					$.each(data, function(i, n){
+						score=score+n.check_score;
+					});
+					
+					document.getElementById(sid).value=score;
+					document.getElementById(gid).value=score*document.getElementById(w).value;
+				}
+				
+				
 	};
 	ajax.addParameter("work", "AutoComplete");
-	ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_KPI");
-	ajax.addParameter("parameters", "userid=" + encodeURI(userid)+"&check_ym="+encodeURI(d)+"&kpi="+encodeURI(kpi));
+	ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_KPIDEPT");
+	ajax.addParameter("parameters", "userid=" + encodeURI(userid)+"&check_ym="+encodeURI(d));
 	ajax.sendAjax2();
 };
 

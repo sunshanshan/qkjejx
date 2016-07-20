@@ -22,9 +22,16 @@ public class VarticDetail {
 	private String check_usercode;// 考核人部门
 	private Integer kpi_id;
 	private Integer isdept;
+	private Integer dtype;
 	
-	
-	
+	public Integer getDtype() {
+		return dtype;
+	}
+
+	public void setDtype(Integer dtype) {
+		this.dtype = dtype;
+	}
+
 	public Integer getTypea() {
 		return typea;
 	}

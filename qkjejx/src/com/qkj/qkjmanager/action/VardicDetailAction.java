@@ -298,6 +298,7 @@ public class VardicDetailAction extends ActionSupport {
 						map.put("acheck_usercode", vardic.getAcheck_usercode());
 						map.put("isaunull", 0);
 						vs=zdao.list(map);
+						
 						if(vs.size()>0){//说明本月此部门已经有考核记录
 							vardic=vs.get(0);//一个部门一个月考核主表记录数只有一条
 						}else{
@@ -308,7 +309,10 @@ public class VardicDetailAction extends ActionSupport {
 							vardic.setCheck_date(new Date());
 							zdao.add(vardic);
 						}
+						
+						
 					}
+					
 					
 				}
 			}else{//人员考核
@@ -373,6 +377,21 @@ public class VardicDetailAction extends ActionSupport {
 			 */
 			//修改纵向总分
 			zdao.saveBycheck(vardic.getUuid().toString());
+			
+			//查询部门考核是否完成：完成修改状态（查询部门kpi数量是否与已有记录相同）
+			List<IndexDetail> a =new ArrayList();
+			KpiDAO kd=new KpiDAO();
+			map.clear();
+			map.put("dept_code", vardic.getAcheck_usercode());
+			a=kd.list(map);
+			
+			List<VarticDetail> vsd=new ArrayList();
+			map.clear();
+			map.put("score_id", vardic.getUuid());
+			vsd=dao.list(map);
+			if(a.size()==vsd.size()){//修改状态为完成
+				zdao.saveFin(vardic);
+			}
 			dao.commitTransaction();
 			//addProcess("CLOSEORDER_ADD", "新增结案提货单", ContextHelper.getUserLoginUuid());
 		} catch (Exception e) {
@@ -420,6 +439,7 @@ public class VardicDetailAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
+	
 	
 	/**
 	 * 

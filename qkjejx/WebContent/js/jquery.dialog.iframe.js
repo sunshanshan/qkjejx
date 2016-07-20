@@ -262,7 +262,7 @@ var loadPosition = function(dept_code, curr_apply_user, b_m){
 	ajax.addParameter("work", "AutoComplete");
 	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_POSITION");
 	if(encodeURI(dept_code).indexOf("10301", 1)){
-		ajax.addParameter("parameters", "dept_code3=" + encodeURI("10301")+"&dept_code2="+encodeURI(dept_code));
+		ajax.addParameter("parameters", "dept_code3=" + encodeURI("103")+"&dept_code2="+encodeURI(dept_code));
 	}else if(encodeURI(dept_code).indexOf("1020104", 1)){
 		ajax.addParameter("parameters", "dept_code3=" + encodeURI("1020104")+"&dept_code2="+encodeURI(dept_code));
 	}else if(encodeURI(dept_code).indexOf("1020102", 1)){

@@ -19,21 +19,20 @@ public class VardicDao extends AbstractDAO {
 	}
 
 	public List list(Map<String, Object> map) {
-		//setCountMapid("basics_getCheckCounts");
 		return super.list("qkjmanager_getVartics", map);
 	}
 	
 	public List Checklist(Map<String, Object> map) {
-		//setCountMapid("basics_getCheckCounts");
 		return super.list("qkjmanager_getCheckVartics", map);
 	}
 	
 	public List Checklistbydept(Map<String, Object> map) {
-		//setCountMapid("basics_getCheckCounts");
 		return super.list("qkjmanager_getCheckVarticsdept", map);
 	}
 	
-	
+	public List getHScore(Map<String, Object> map) {
+		return super.list("qkjmanager_getHScore", map);
+	}
 
 	public Object get(Object uuid) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -49,6 +48,11 @@ public class VardicDao extends AbstractDAO {
 	public void save(Object parameters) {
 		super.save("qkjmanager_mdyVartics", parameters);
 	}
+	
+	public void saveFin(Object parameters) {
+		super.save("qkjmanager_mdyFin", parameters);
+	}
+	
 	public void savev(Object parameters) {
 		super.save("qkjmanager_mdyV", parameters);
 	}
