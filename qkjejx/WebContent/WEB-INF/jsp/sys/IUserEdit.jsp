@@ -193,7 +193,7 @@ $(function(){
 });
 
 $(document).ready(function(){
-	$("#filebtn").removeClass("filearea"); //添加样式marketimgid_filebutton
+	$("#filebtn").removeClass("filearea"); //提交样式marketimgid_filebutton
 	$("#marketimgid_filebutton").val("选择签字图片");
 });
 

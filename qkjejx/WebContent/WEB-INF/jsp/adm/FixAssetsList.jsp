@@ -18,7 +18,7 @@
 	<div class="dq_step">
 		${path}
 		<c:if test="${it:checkPermit('QKJ_ADM_ASSETS_ADD',null)==true}">
-			<span class="opb lb op-area"><a href="<s:url namespace="/adm" action="fixassets_load"><s:param name="viewFlag">add</s:param></s:url>" >添加资产</a></span>
+			<span class="opb lb op-area"><a href="<s:url namespace="/adm" action="fixassets_load"><s:param name="viewFlag">add</s:param></s:url>" >提交资产</a></span>
 		</c:if>
 	</div>
 	<s:form id="serachForm" name="serachForm" action="fixassets_list"  method="get" namespace="/adm" theme="simple">
@@ -114,7 +114,7 @@
 						<td  class="td4 op-area">
 							<c:if test="${it:checkPermit('QKJ_ADM_ASSETS',null)==true}">
 					    	<a class="input-blue" href="<s:url namespace="/adm" action="fixassets_load"><s:param name="viewFlag">mdy</s:param><s:param name="fixassets.uuid" value="uuid"></s:param></s:url>">修改</a>
-					    	<a class="input-blue" onclick="return isOp('对这条信息进行类似创建吗?');" href="<s:url namespace="/adm" action="fixassets_addP"><s:param name="fixassets.uuid" value="uuid"></s:param></s:url>">类似添加</a>
+					    	<a class="input-blue" onclick="return isOp('对这条信息进行类似创建吗?');" href="<s:url namespace="/adm" action="fixassets_addP"><s:param name="fixassets.uuid" value="uuid"></s:param></s:url>">类似提交</a>
 					    	</c:if>
 					    	<c:if test="${it:checkPermit('QKJ_ADM_ASSETS_DEL',null)==true}">
 					    	<a class="input-red" href="<s:url namespace="/adm" action="fixassets_del"><s:param name="fixassets.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>

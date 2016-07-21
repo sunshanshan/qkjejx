@@ -35,7 +35,7 @@ function selectDept() {
 			<s:url id="member_add_uid" value="member_add" namespace="/sys">
 				<s:param name="viewFlag">add</s:param>
 			</s:url>
-			<s:a href="%{member_add_uid}" >添加会员</s:a>
+			<s:a href="%{member_add_uid}" >提交会员</s:a>
 		</span>
 	</div>
 	<div class="ilistsearch">

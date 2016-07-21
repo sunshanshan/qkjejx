@@ -143,7 +143,7 @@ var setclass = function() {
 <div id="main">
 <div id="result">
 	<div class="itablemdy">
-	<div class="itabletitle"><s:if test="null == user && 'add' == viewFlag">添加</s:if><s:elseif test="null != user && 'mdy' == viewFlag">修改</s:elseif>会员</div>
+	<div class="itabletitle"><s:if test="null == user && 'add' == viewFlag">提交</s:if><s:elseif test="null != user && 'mdy' == viewFlag">修改</s:elseif>会员</div>
 <s:form name="form1" action="user_add" namespace="/sys" onsubmit="return validator(this);" method="post" theme="simple">
 	<div class="ifromoperate" ></div>
 	<s:hidden id="user.uuid" name="user.uuid" />

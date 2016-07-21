@@ -34,16 +34,31 @@ cursor: pointer;
 			</div>
 			<div class="label_hang">
 				<div class="label_ltit">姓名:</div>
-					<div class="label_rwben">
-						${vardic.acheck_username }
-					</div>
+					<div class="label_rwben" id="aut"><input id="au" type="hidden" value="${vardic.acheck_user}">
+							
+							<script type="text/javascript">
+															$(function(){
+																var au=$('#au').val();
+																aus(au);
+																
+															});
+							</script>
+							</div>
 			</div>	
 			
 			<div class="label_hang">
 				<div class="label_ltit">部门:</div>
-					<div class="label_rwben">
-						${vardic.acheck_deptname }
-					</div>
+					<div class="label_rwben" id="adt">${vardic.acheck_deptname }
+							
+							<input id="ad" type="hidden" value="${vardic.acheck_usercode}">
+							<script type="text/javascript">
+															$(function(){
+																var au=$('#ad').val();
+																ads(au);
+																
+															});
+							</script>
+							</div>
 			</div>	
 			</s:if>
 			<s:else>
@@ -131,7 +146,7 @@ cursor: pointer;
 								<font color="red"><span id="messages"></span></font>
 								
 									<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_ADD',null)==true}">
-										<button  id="btnzhuce" class="input-blue" onclick="add();">添加</button>
+										<button  id="btnzhuce" class="input-blue" onclick="add();">提交</button>
 									</c:if>
 							</div>
 						</div>
@@ -288,7 +303,40 @@ function mdy(uuid,so){
 	var sp=document.getElementById(sid).value;
 	var gp=document.getElementById(gid).value;
 	window.location.href="/qkjmanager/transverseDetail_saveUser?vd.uuid="+uuid+"&vd.check_score="+sp+"&vd.check_goal="+gp+"&vd.score_id="+so;
-}
+};
+
+var aus= function(au){
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var l = $(data).length;
+				if(l==1){
+					$('#aut').html($(data)[0].user_name);
+				}
+				
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_USERBYID");
+	ajax.addParameter("parameters", "uuid=" + encodeURI(au));
+	ajax.sendAjax2();
+};
+
+
+var ads= function(ad){
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var l = $(data).length;
+				if(l==1){
+					$('#adt').html($(data)[0].dept_cname);
+				}
+				
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "SYS_SELECT_DEPT_LISTBYDEPT");
+	ajax.addParameter("parameters", "dept_code=" + encodeURI(ad));
+	ajax.sendAjax2();
+};
 
 </script>
 </body>

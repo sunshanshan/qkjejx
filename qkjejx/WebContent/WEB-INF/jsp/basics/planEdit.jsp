@@ -63,11 +63,11 @@ s
 								</div>
 							</div>
 							<div class='label_hang'>
-								<div class='label_ltit'>添加人:</div>
+								<div class='label_ltit'>提交人:</div>
 								<div class='label_rwben'>${plan.add_username}</div>
 							</div>
 							<div class='label_hang'>
-								<div class='label_ltit'>添加时间:</div>
+								<div class='label_ltit'>提交时间:</div>
 								<div class='label_rwbenx'>${it:formatDate(plan.add_time,'yyyy-MM-dd hh:mm:ss')}</div>
 							</div>
 						</s:if>

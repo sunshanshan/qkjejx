@@ -22,7 +22,7 @@ cursor: pointer;
 		<div class="dq_step">
 			${path}
 			<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_ADD',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="transverse_load"><s:param name="viewFlag">add</s:param></s:url>">添加考核</a></span>
+				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="transverse_load"><s:param name="viewFlag">add</s:param></s:url>">提交考核</a></span>
 			</c:if>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="transverse_list" method="get" namespace="/qkjmanager" theme="simple">
@@ -93,7 +93,8 @@ cursor: pointer;
 				<tr id="coltr">
 					<th class="td1">主键</th>
 					<th class="td1">考核年月</th>
-					<th class="td1">被考核人部门</th>
+					<th class="td1">被考核人</th>
+					<th class="td1">被考核部门</th>
 					<th class="td2">考核完成时间</th>
 					<th class="td4">操作</th>
 					<th class="td0">查看</th>
@@ -101,11 +102,30 @@ cursor: pointer;
 				<s:iterator value="vardics" status="sta">
 					<tr id="showtr${uuid}">
 						<td class="td1 nw">${uuid}</td>
-						<td class="td1 nw">${it:formatDate(cym,'yyyy-MM')}</td>
-						<td class="td1 nw">${df_name}${acheck_deptname}${acheck_username }</td>
+						<td class="td1 nw">${it:formatDate(cym,'yyyy-MM')}</td>						
+						<td class="td1 nw" id="aut${uuid }"><input id="au${uuid }" type="hidden" value="${acheck_user}">
+							<script type="text/javascript">
+															$(function(){
+																var uuid=${uuid };
+																var au=$('#au'+uuid).val();
+																aus(uuid,au);
+																
+															});
+							</script>
+							</td>
+							<td class="td1 nw" id="adt${uuid }"><input id="ad${uuid }" type="hidden" value="${acheck_usercode}">
+							<script type="text/javascript">
+															$(function(){
+																var uuid=${uuid };
+																var au=$('#ad'+uuid).val();
+																ads(uuid,au);
+																
+															});
+							</script>
+							</td>
 						<td class="td2 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
 						<td class="td4 op-area">
-								<s:if test="%{acheck_username==null}">
+								<s:if test="%{acheck_user==null}">
 								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="transverseDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
 								</s:if>
 								<s:else>
@@ -132,6 +152,38 @@ $(function(){
 	printPagination("listpage",'${currPage}','${recCount}','${pageSize}');
  });
  
+var aus= function(uuid,au){
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var l = $(data).length;
+				if(l==1){
+					$('#aut'+uuid).html($(data)[0].user_name);
+				}
+				
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_USERBYID");
+	ajax.addParameter("parameters", "uuid=" + encodeURI(au));
+	ajax.sendAjax2();
+};
+
+
+var ads= function(uuid,ad){
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var l = $(data).length;
+				if(l==1){
+					$('#adt'+uuid).html($(data)[0].dept_cname);
+				}
+				
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "SYS_SELECT_DEPT_LISTBYDEPT");
+	ajax.addParameter("parameters", "dept_code=" + encodeURI(ad));
+	ajax.sendAjax2();
+};
 </script>
 </body>
 </html>

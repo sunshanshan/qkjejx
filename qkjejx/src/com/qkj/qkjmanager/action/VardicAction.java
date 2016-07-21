@@ -152,7 +152,7 @@ public class VardicAction extends ActionSupport {
 			if(checks.size()>0){//只查询打开的已考核记录
 				map.put("check_ym", checks.get(0).getUuid());
 			}
-			this.setVardics(dao.list(map));//已经考核的记录
+			vardics=dao.list(map);//已经考核的记录
 			this.setRecCount(dao.getResultCount());
 			//需要考核的人员
 			map.clear();

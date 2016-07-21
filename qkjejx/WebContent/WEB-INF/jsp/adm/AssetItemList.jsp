@@ -29,7 +29,7 @@ $(function(){
 		<span class="title1">资产物品列表</span>
 		<span class="extra1">
 			<c:if test="${it:checkPermit('QKJ_ADM_ASSETITEM_ADD',null)==true}">
-			<a href="<s:url namespace="/adm" action="assetItem_load"><s:param name="viewFlag">add</s:param></s:url>" >添加资产物品</a>
+			<a href="<s:url namespace="/adm" action="assetItem_load"><s:param name="viewFlag">add</s:param></s:url>" >提交资产物品</a>
 			</c:if>
 		</span>
 	</div>	

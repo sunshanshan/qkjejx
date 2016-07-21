@@ -130,7 +130,7 @@
             <span id="message"><s:property value="message" /></span>
             	
             	<s:if test="'add' == viewFlag">
-				<s:submit id="add" name="add" value="添加" action="user_dept_add" cssClass="input-blue"/>
+				<s:submit id="add" name="add" value="提交" action="user_dept_add" cssClass="input-blue"/>
 				</s:if>
 				<s:elseif test="null != userDept && 'mdy' == viewFlag">
 				<s:submit id="save" name="save" value="保存" action="user_dept_save" cssClass="input-blue"/>

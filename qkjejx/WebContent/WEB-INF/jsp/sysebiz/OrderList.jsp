@@ -17,7 +17,7 @@
 	<div class="dq_step">
 		${path}
 		<c:if test="${it:checkPermit('QKJ_QKJMANAGE_PRODUCT_ADD',null)==true}">
-			<span class="opb lb op-area"><a href="<s:url namespace="/sysebiz" action="order_load"><s:param name="viewFlag">add</s:param></s:url>" >添加订单</a></span>
+			<span class="opb lb op-area"><a href="<s:url namespace="/sysebiz" action="order_load"><s:param name="viewFlag">add</s:param></s:url>" >提交订单</a></span>
 		</c:if>
 	</div>
 	<s:form id="serachForm" name="serachForm" action="order_list"  method="get" namespace="/sysebiz" theme="simple">

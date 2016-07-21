@@ -258,15 +258,19 @@ var loadPosition = function(dept_code, curr_apply_user, b_m){
 			}
 		}
 	};
-	
 	ajax.addParameter("work", "AutoComplete");
 	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_POSITION");
-	if(encodeURI(dept_code).indexOf("10301", 1)){
+	
+	if(encodeURI(dept_code).substring(0,5)=="10301"){
 		ajax.addParameter("parameters", "dept_code3=" + encodeURI("103")+"&dept_code2="+encodeURI(dept_code));
-	}else if(encodeURI(dept_code).indexOf("1020104", 1)){
-		ajax.addParameter("parameters", "dept_code3=" + encodeURI("1020104")+"&dept_code2="+encodeURI(dept_code));
-	}else if(encodeURI(dept_code).indexOf("1020102", 1)){
-		ajax.addParameter("parameters", "dept_code3=" + encodeURI("1020102")+"&dept_code2="+encodeURI(dept_code));
+	}else if(encodeURI(dept_code).substring(0,5)=="10201"){
+		ajax.addParameter("parameters", "dept_code3=" + encodeURI("10201")+"&dept_code2="+encodeURI(dept_code));
+	}
+	else if(encodeURI(dept_code).substring(0,7)=="1020402"){
+		ajax.addParameter("parameters", "dept_code3=" + encodeURI("1020402")+"&dept_code2="+encodeURI(dept_code));
+	}
+	else if(encodeURI(dept_code).substring(0,7)=="1020403"){
+		ajax.addParameter("parameters", "dept_code3=" + encodeURI("1020403")+"&dept_code2="+encodeURI(dept_code));
 	}
 	else{
 		ajax.addParameter("parameters", "dept_code2=" + encodeURI(dept_code));

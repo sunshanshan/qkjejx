@@ -4,24 +4,22 @@
 	<typeAlias alias="vartic" type="com.qkj.qkjmanager.domain.Vartic" />
 	<select id="qkjmanager_getVartics" resultClass="vartic" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select DISTINCT c.uuid,c.*,achecku.user_name acheck_username,mdyu.USER_NAME lm_username,acheckd.dept_cname acheck_deptname,
-			chec.ym cym,chec.state cstate
+			select c.*,
+			chec.ym cym
 			from qkj_r_score c 
-			left join qkj_r_sonscore ss on(ss.score_id=c.uuid)
-			left join s_sys_user achecku on(c.acheck_user=achecku.uuid)
-			left join s_sys_user mdyu on(c.lm_user=mdyu.uuid)
-			left join s_sys_user cuser on(cuser.UUID=ss.check_user)
-			left join s_sys_department acheckd on(acheckd.dept_code=c.acheck_usercode)
-			left join qkj_r_check chec on (chec.uuid=c.check_ym)
+			join  qkj_r_check chec on (chec.uuid=c.check_ym)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
-			<isNotNull prepend="AND" property="cym"><![CDATA[  chec.ym like #cym# +'%' ]]></isNotNull>
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[  c.check_ym=#check_ym# ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# ]]></isNotNull>
 			<isNotNull prepend="AND" property="isaunull"><![CDATA[  ISNULL(c.acheck_user, '0')='0' ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_user"><![CDATA[  c.acheck_user=#acheck_user# ]]></isNotNull>
-			<isNotNull prepend="AND" property="typea"><![CDATA[  ss.typea=#typea# ]]></isNotNull>
+			<isNotNull prepend="AND" property="typea">
+			<![CDATA[  EXISTS(
+				select 1 from qkj_r_sonscore ss where ss.score_id=c.uuid and ss.typea=#typea# and ss.check_user=#check_userh#
+			) ]]>
+			</isNotNull>
 			<!-- <isNotEmpty prepend="AND" property="apply_depts" open="(" close=")">
 			<![CDATA[ c.acheck_usercode In ]]>
 			<iterate property="apply_depts" open="(" close=")" conjunction=" , "> #apply_depts[]#</iterate>
@@ -38,10 +36,10 @@
 					<isNotEmpty prepend="AND" property="apply_userDouble"><![CDATA[ c.acheck_user=#apply_userDouble# ]]></isNotEmpty>
 				</isNotEmpty>
 			</isEmpty> -->
-			<isNotNull prepend="AND" property="check_userh">
+<!-- 			<isNotNull prepend="AND" property="check_userh">
 				<![CDATA[cuser.UUID=#check_userh#]]>
 			</isNotNull>
-		</dynamic>
+ -->		</dynamic>
 	</select>
 	<!-- 2016-07-16查询待考核人 -->
 	<select id="qkjmanager_getCheckVartics" resultClass="vartic" parameterClass="java.util.Map">
@@ -349,7 +347,7 @@
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="kpiid"><![CDATA[ s.check_index=#kpiid# ]]></isNotNull>
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[  ss.check_ym=#check_ym#]]></isNotNull>
-			<isNotNull prepend="AND" property="dept_code"><![CDATA[ ss.acheck_dept=#dept_code# and isnull(ss.acheck_user,'0')='0' and ISNULL(ss.acheck_usercode, '0')<>'0' ]]></isNotNull>
+			<isNotNull prepend="AND" property="dept_code"><![CDATA[ ss.acheck_usercode=#dept_code# and isnull(ss.acheck_user,'0')='0' and ISNULL(ss.acheck_usercode, '0')<>'0' ]]></isNotNull>
 			<isNotNull prepend="AND" property="userid"><![CDATA[ ss.acheck_usercode in (select ud.dept_code from s_sys_userdept ud where ud.user_id=#userid#) and isnull(ss.acheck_user,'0')='0' and ISNULL(ss.acheck_usercode, '0')<>'0' ]]></isNotNull>
 			<isNotNull prepend="AND" property="kpi"><![CDATA[ i.kpi=#kpi# ]]></isNotNull>
 		</dynamic>

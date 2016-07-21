@@ -132,7 +132,7 @@
 				<fieldset class="clear">
 					<legend>商品信息
 						<c:if test="${(order.status>=10 && order.status<=36) && viewFlag=='mdy' && it:checkPermit('QKJCJ_SYSEBIZ_ORDERGOODS_ADD',null)==true}">
-							[<a id="addGoods" href="javascript:;">添加商品</a>]
+							[<a id="addGoods" href="javascript:;">提交商品</a>]
 						</c:if>						
 						<s:if test="30==order.status">
 				    		[<a href="<s:url namespace="/sysebiz" action="orderCellar_list"><s:param name="memberCellar.order_id" value="order.uuid" /><s:param name="memberCellar.member_id" value="order.user_id" /></s:url>">藏酒配货</a>]
@@ -367,7 +367,7 @@
 	</s:form>
 </div>
 </div>
-<div id="addGoodsForm"  title="添加商品">
+<div id="addGoodsForm"  title="提交商品">
 <s:form name="form_addGoods" action="orderGoods_add"  cssClass="validForm" namespace="/sysebiz" onsubmit="return validator(this);" method="post" theme="simple">
 	<div class="ifromoperate" ></div>
 	<table class="ilisttable" width="100%">

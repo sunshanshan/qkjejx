@@ -93,7 +93,7 @@
 									<s:submit id="delete" name="delete" value="删除" action="assets_del" onclick="return isDel();"  cssClass="input-red"/>
 								</c:if>
 								<c:if test="${it:checkPermit('QKJ_ADM_ASSETITEM_MDY',null)==true}">
-						    		<input type="button" value="添加物品明细" onclick='openAddAssetItems();' class="input-green"/>
+						    		<input type="button" value="提交物品明细" onclick='openAddAssetItems();' class="input-green"/>
 						    	</c:if>
 							</s:if>
 							<input type="button" value="返回" onclick="linkurl('<s:url action="assets_relist" namespace="/adm" />');" />
@@ -150,8 +150,8 @@
 </div>
 <!-- 以下为dialog div内容 -->
 <s:if test="'mdy' == viewFlag">
-<!-- 添加/修改明细 -->
-<div id="addAssetItems" title="添加/修改明细">
+<!-- 提交/修改明细 -->
+<div id="addAssetItems" title="提交/修改明细">
 <s:form id="form_addAssetItems" name="form_addAssetItems" action="assetItem_add" namespace="/adm" onsubmit="return validator(this);" method="post" theme="simple">
 <table class="ilisttable" width="100%">
 	 <tr>

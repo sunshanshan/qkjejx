@@ -105,7 +105,7 @@ function checkExist(uuid) {
 			}
 		}
 	}	
-	// 检查现在正在添加的数据
+	// 检查现在正在提交的数据
 	for ( var j = 0; j < num-1; j++) {
 		if($('classFileType['+j+'].filetype_id') && j!=current_num) {
 			if(uuid == $('classFileType['+j+'].filetype_id').value) {
@@ -245,7 +245,7 @@ function viewx(obj) {
 		</s:iterator>
 		<tr>
 	    <td colspan="4" class="buttonarea"><span id="message2" style="color:red;"><s:property value="message2" /></span>
-			<input type="button" value="添加" onclick="createTr();" />&nbsp;
+			<input type="button" value="提交" onclick="createTr();" />&nbsp;
 			<s:submit type="button" value="保存" />
 		</td>    
 	    </tr>

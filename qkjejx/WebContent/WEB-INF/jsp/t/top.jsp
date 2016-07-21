@@ -67,7 +67,7 @@ cursor: pointer;
 				<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed"><a href="#" class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">会员管理</a></h3>
 				<div class="ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed" aria-hidden="true">
                     <ul>
-                        <li><a href="#" data-ajax="false">添加会员</a></li>
+                        <li><a href="#" data-ajax="false">提交会员</a></li>
                         <li><a href="#" data-ajax="false">会员列表</a></li>
                         <li><a href="#" data-ajax="false">会员移交</a></li>
                         <li><a href="#" data-ajax="false">会员预付款</a></li>

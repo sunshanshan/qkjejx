@@ -25,7 +25,7 @@ window.onload = function() {
 	<div class="itabletitle">
 		<span class="title1">订单列表</span>
 		<span class="extra1">
-			<a href="<s:url namespace="/sysebiz" action="orderGoods_load"><s:param name="viewFlag">add</s:param></s:url>" >添加订单</a>
+			<a href="<s:url namespace="/sysebiz" action="orderGoods_load"><s:param name="viewFlag">add</s:param></s:url>" >提交订单</a>
 		</span>
 	</div>	
 	<div class="ilistsearch">

@@ -16,7 +16,7 @@
 	<div class="dq_step">
 		${path}
 		<c:if test="${it:checkPermit('SYS_EBIZ_GOODS_ADDLOAD',null)==true}">
-			<span class="opb lb op-area"><a href="<s:url namespace="/sysebiz" action="goods_addload"><s:param name="viewFlag">add</s:param></s:url>" >添加新商品</a></span>
+			<span class="opb lb op-area"><a href="<s:url namespace="/sysebiz" action="goods_addload"><s:param name="viewFlag">add</s:param></s:url>" >提交新商品</a></span>
 		</c:if>
 	</div>
 	<s:form id="serachForm" name="serachForm" action="goods_list"  method="get" namespace="/sysebiz" theme="simple">
@@ -104,12 +104,12 @@
 </div>
 </div>
 
-<div id="SaveInStockArea" title="添加商品库存">
+<div id="SaveInStockArea" title="提交商品库存">
 <s:form name="form_saveInStock" action="goods_saveInStock" namespace="/sysebiz" cssClass="validForm" onsubmit="return validator(this);" method="post" theme="simple">
 	<div class="ifromoperate" ></div>
 	<table class="ilisttable" width="100%">
 		  <tr>
-				<td align="right">添加库存数量:</td>
+				<td align="right">提交库存数量:</td>
 				<td>
 				<s:textfield name="stockNum" title="库存数量" cssClass="validate[required,custom[integer]]" />
 				</td>

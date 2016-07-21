@@ -19,7 +19,7 @@
 	<div class="dq_step">
 		${path}
 		<c:if test="${it:checkPermit('INFO_MANAGER_NEWS_ADD',null)==true}">
-			<span class="opb lb op-area"><a href="<s:url namespace="/info" action="news_load"><s:param name="viewFlag">add</s:param></s:url>" >添加信息</a></span>
+			<span class="opb lb op-area"><a href="<s:url namespace="/info" action="news_load"><s:param name="viewFlag">add</s:param></s:url>" >提交信息</a></span>
 		</c:if>
 	</div>
 	<s:form id="serachForm" name="serachForm" action="news_list"  method="get" namespace="/info" theme="simple">

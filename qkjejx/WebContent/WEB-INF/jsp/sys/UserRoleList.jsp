@@ -14,7 +14,7 @@
 	<div class="tab_warp main">
 	<div class="dq_step">
 		<a href="/manager/default">首页</a>&nbsp;&gt;&nbsp;会员组列表
-		<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="userrole_load_add"><s:param name="viewFlag">add</s:param></s:url>" >添加系统角色</a></span>
+		<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="userrole_load_add"><s:param name="viewFlag">add</s:param></s:url>" >提交系统角色</a></span>
 	</div>
 	<div class="tab_warp">
 	 		<table id="table1">
@@ -23,7 +23,7 @@
 					<th  class="td1">名称</th>
 					<th  class="td3">等级</th>
 					<th  class="td2">描述</th>
-					<th  class="td2">添加时间</th>
+					<th  class="td2">提交时间</th>
 					<th  class="td3">操作</th>
 					<th  class="td0">查看</th>
 	            </tr>

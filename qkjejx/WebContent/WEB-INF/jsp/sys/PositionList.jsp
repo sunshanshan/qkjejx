@@ -14,7 +14,7 @@
 	<div class="tab_warp main">
 		<div class="dq_step">
 			${path}
-			<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="position_load"><s:param name="viewFlag">add</s:param></s:url>" >添加职务</a></span>
+			<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="position_load"><s:param name="viewFlag">add</s:param></s:url>" >提交职务</a></span>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="position_list"  method="post" namespace="/sys" theme="simple">
 		<div class="label_main">

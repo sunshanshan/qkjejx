@@ -45,7 +45,7 @@ cursor: pointer;
 <!--right列表-->
 <div class="tab_right">
 	<div class="tab_warp  input-a">
-	<p class="dq_step"><a href="">首页</a>&nbsp;&gt;&nbsp;工时申请单列表<span class="opb lb op-area"><a href="">添加申请单</a></span></p>
+	<p class="dq_step"><a href="">首页</a>&nbsp;&gt;&nbsp;工时申请单列表<span class="opb lb op-area"><a href="">提交申请单</a></span></p>
     <form id="serachForm" name="serachForm" action="/adm/leave_list" method="get">
         <div class="label_main">
             <div class="label_hang">

@@ -22,7 +22,7 @@ cursor: pointer;
 		<div class="dq_step">
 			${path}
 			<c:if test="${it:checkPermit('SYS_QKJMANAGER_BASIS_PLAN_ADD',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/basics" action="plan_load"><s:param name="viewFlag">add</s:param></s:url>">添加</a></span>
+				<span class="opb lb op-area"><a href="<s:url namespace="/basics" action="plan_load"><s:param name="viewFlag">add</s:param></s:url>">提交</a></span>
 			</c:if>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="plan_list" method="get" namespace="/basics" theme="simple">
