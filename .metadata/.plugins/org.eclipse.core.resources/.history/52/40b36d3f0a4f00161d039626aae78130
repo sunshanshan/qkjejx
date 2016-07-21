@@ -233,7 +233,10 @@ function getIndexDetail(obj) {
 			 show.push(' <td class="td1 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a> <input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" class="input-red"/></td>') ;
 			 show.push('</tr>');
 			 wei= Number((arr[i].weight+wei).toFixed(3))
-
+<<<<<<< HEAD
+			
+=======
+>>>>>>> b885e44db8fa8d4a2f05c40aedf7ed3b3b6aa0d8
 			}  
 		$("#messagewei").text('权重总和:'+wei);
 		$("#messagewei").css("color","red");
@@ -387,7 +390,7 @@ function setkpi() {
 	 show.push('<td class="td6" ><input type="text" style="width:80px" value="" id="newcheck_postip" /></td  >' ) ;
 	 show.push('<td class="td7" ><input type="text" style="width:80px" value="" id="newisdeptip" /></td  >' ) ;
 	 show.push('<td class="td6"  ><select  id="newtypeip"><option value ="1">职务权重</option> <option value ="2">部门权重</option> <option value ="3">班组权重</option>   </select>  ' ) ;
-	 show.push(' <td class="td1 op-area"><a   onclick="javascript:addtab()" href="javascript:void(0)" class="input-greed">提交</a></td>') ;
+	 show.push(' <td class="td1 op-area"><a   onclick="javascript:addtab()" href="javascript:void(0)" class="input-greed">添加</a></td>') ;
 	 show.push('</tr>');
 	 $("#intop").append(show.join(""));
 	

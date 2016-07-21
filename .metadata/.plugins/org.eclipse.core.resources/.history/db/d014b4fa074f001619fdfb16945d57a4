@@ -86,18 +86,18 @@
 				       <table  id="intop">
 		<tr>
 		<th class="td1" >部门名称</th  >
-		<th class="td2" >kpi</th  >
+		<th class="td3" >kpi</th  >
 		 <th class="td3" >周期</th  >
 		<th class="td4" >权重</th  >
 		<th class="td5" >计分方式</th  >
 		<th class="td6" >指标定义</th >
 		<th class="td7" >指标标准</th >
 		 <th class="td8" >部门 </th  >
-		 <th class="td9" >横向考核部门 </th  >
-		 <th class="td10" >横向考核岗位</th  >
-		 <th class="td11" >取部门得分</th  >
-		  <th class="td12" >kpi类型</th  >
-		  <th class="td13" >操作</th  >
+		 <th class="td5" >横向考核部门 </th  >
+		 <th class="td6" >横向考核岗位</th  >
+		 <th class="td7" >取部门得分</th  >
+		  <th class="td8" >kpi类型</th  >
+		  <th class="td9" >操作</th  >
 		</tr>
 		</table>
 							<span id="messagewei"><s:property value="messagewei" /></span>
@@ -216,7 +216,6 @@ function getIndexDetail(obj) {
 			 show.push('<td class="td5" id="'+arr[i].uuid+'count_way">'+ arr[i].count_way+'</td  >' ) ;
 			 show.push('<td class="td6"  id="'+arr[i].uuid+'definition">'+ arr[i].definition+'</td  >' ) ;
 			 show.push('<td class="td7" id="'+arr[i].uuid+'correctly">'+ arr[i].correctly+'</td  >' ) ;
-			 show.push('<td class="td8" id="'+arr[i].uuid+'position_dept">'+ arr[i].position_dept+'</td  >' ) ;
 			 show.push('<td class="td5" id="'+arr[i].uuid+'check_deptcode">'+ arr[i].check_deptcode+'</td  >' ) ;
 			 show.push('<td class="td6" id="'+arr[i].uuid+'check_post">'+ arr[i].check_post+'</td  >' ) ;
 			 show.push('<td class="td7" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
@@ -233,7 +232,7 @@ function getIndexDetail(obj) {
 			 show.push(' <td class="td1 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a> <input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" class="input-red"/></td>') ;
 			 show.push('</tr>');
 			 wei= Number((arr[i].weight+wei).toFixed(3))
-
+			
 			}  
 		$("#messagewei").text('权重总和:'+wei);
 		$("#messagewei").css("color","red");
@@ -283,7 +282,6 @@ function updatedetermine(obj){
 	 var check_post=$("#"+obj+"check_postip").val();
 	 var isdept=$("#"+obj+"isdeptip").val();
 	 var type=$("#"+obj+"typeip").val();
-	 var position_dept=$("#"+obj+"position_deptip").val();
 	ajax.config.action_url = '<s:url value="/common_ajax/json_ajax" />';
 	ajax.config._success = function(data, textStatus) {
 		getInfo(dept_uuid);
@@ -292,7 +290,7 @@ function updatedetermine(obj){
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + obj+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+encodeURI(count_way)
 			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
-			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type)+"&cyc="+encodeURI(cyc)+"&position_dept="+encodeURI(position_dept));
+			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type)+"&cyc="+encodeURI(cyc));
 	ajax.sendAjax2();
 }
 function updatetab(obj) {
@@ -349,13 +347,6 @@ function updatetab(obj) {
 		 $("#"+obj+"cyc").text("");
 		 $("#"+obj+"cyc").append(show.join(""));
 		 show=[];
-		 
-		 var position_dept=$("#"+obj+"position_dept").text();
-
-		 show.push('<input type="text" style="width:80px" value="'+position_dept+'" id="'+obj+'position_deptip" />');
-		 $("#"+obj+"position_dept").text("");
-		 $("#"+obj+"position_dept").append(show.join(""));
-		 show=[];
 	 $("#"+obj+"buttd").show()
 	  $("#"+obj+"buttb").hide()
 	  
@@ -382,12 +373,11 @@ function setkpi() {
 	 show.push('<td class="td4" ><input type="text" style="width:80px" value="" id="newcount_wayip" /></td  >' ) ;
 	 show.push('<td class="td6"  ><input type="text" style="width:80px" value="" id="newdefinitionip" /></td  >' ) ;
 	 show.push('<td class="td7"><input type="text" style="width:80px" value="" id="newcorrectlyip" /></td  >' ) ;
-	 show.push('<td class="td7"><input type="text" style="width:80px" value="" id="newposition_deptip" /></td  >' ) ;
 	 show.push('<td class="td5"><input type="text" style="width:80px" value="" id="newcheck_deptcodeip" /></td  >' ) ;
 	 show.push('<td class="td6" ><input type="text" style="width:80px" value="" id="newcheck_postip" /></td  >' ) ;
 	 show.push('<td class="td7" ><input type="text" style="width:80px" value="" id="newisdeptip" /></td  >' ) ;
 	 show.push('<td class="td6"  ><select  id="newtypeip"><option value ="1">职务权重</option> <option value ="2">部门权重</option> <option value ="3">班组权重</option>   </select>  ' ) ;
-	 show.push(' <td class="td1 op-area"><a   onclick="javascript:addtab()" href="javascript:void(0)" class="input-greed">提交</a></td>') ;
+	 show.push(' <td class="td1 op-area"><a   onclick="javascript:addtab()" href="javascript:void(0)" class="input-greed">添加</a></td>') ;
 	 show.push('</tr>');
 	 $("#intop").append(show.join(""));
 	
@@ -402,7 +392,6 @@ function addtab(ct) {
 	var check_deptcode=$("#newcheck_deptcodeip").val();
 	var check_post=$("#newcheck_postip").val();
 	var cyc=$("#newcycip").val();
-	var position_dept=$("#newposition_deptip").val();
 	var isdept=$("#newisdeptip").val();
 	var dept_code=$("#dept\\.dept_code").val();
 	var dept_uuid=$("#dept\\.uuid").val();
@@ -416,7 +405,7 @@ function addtab(ct) {
 	ajax.addParameter("work","update");
 	ajax.addParameter("parameters", "dept_code=" + dept_code+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
 			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
-			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type)+"&cyc="+encodeURI(cyc)+"&position_dept="+encodeURI(position_dept));
+			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type)+"&cyc="+encodeURI(cyc));
 	ajax.sendAjax2();
 	 
 	

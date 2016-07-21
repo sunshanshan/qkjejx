@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /com
 /log4j.xml
 /org
@@ -6,3 +7,18 @@
 /struts.properties
 /struts.xml
 /xwork-conversion.properties
+=======
+<<<<<<< HEAD
+/com/
+/log4j.xml
+/org/
+/sql-map-config.xml
+/sql-map-config02.xml
+/struts.properties
+/struts.xml
+/xwork-conversion.properties
+=======
+/org
+/com
+>>>>>>> b885e44db8fa8d4a2f05c40aedf7ed3b3b6aa0d8
+>>>>>>> f3612a8b4cd8486ee22432e331573d1b32bc5fe2

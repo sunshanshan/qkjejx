@@ -51,7 +51,7 @@ cursor: pointer;
 					<div class="label_hang">
 						<div class="label_ltit">状态:</div>
 						<div class="label_rwben label_rwb">
-							<s:select  name="check.state" cssClass="selectKick" list="#{0:'打开',1:'关闭'}" headerKey="" headerValue="--请选择--" />
+							<s:select  name="check.state" cssClass="selectKick" list="#{0:'打开',1:'关闭',2:'已审核'}" headerKey="" headerValue="--请选择--" />
 						</div>
 					</div>
 					
@@ -92,6 +92,7 @@ cursor: pointer;
 						<td class="td3 nw">
 						<s:if test="state==0">打开</s:if>
 						<s:if test="state==1">关闭</s:if>
+						<s:if test="state==2">已审核</s:if>
 						</td>
 						<td class="td4 op-area">
 							<c:if test="${it:checkPermit('SYS_QKJMANAGER_BASIS_ASSETLIST_MDY',null)==true}">

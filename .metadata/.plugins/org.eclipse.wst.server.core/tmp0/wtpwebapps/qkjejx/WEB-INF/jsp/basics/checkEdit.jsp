@@ -72,7 +72,7 @@ s
 						<div class="label_hang">
 								<div class="label_ltit">状态:</div>
 								<div class="label_rwben label_rwb">
-									<s:select  name="check.state" cssClass="selectKick" list="#{0:'打开',1:'关闭'}" headerKey=""/>
+									<s:select  name="check.state" cssClass="selectKick" list="#{0:'打开',1:'关闭',2:'已审核'}" headerKey=""/>
 								</div>
 						</div>
 					</div>
