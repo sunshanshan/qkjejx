@@ -276,12 +276,12 @@
 	
 	<update id="qkjmanager_mdyCheckCord" parameterClass="String">
 		<![CDATA[
-			
 			Update qkj_r_score
-			Set check_score=(select SUM(check_goal)
+			Set check_score=ISNULL(bscore,0)+(select SUM(check_goal)
 			from qkj_r_sonscore where score_id=#value#
 			)
 			Where uuid=#value#
+			
 		]]>
 	</update>
 	

@@ -281,6 +281,8 @@ public class VardicAction extends ActionSupport {
 			vardic.setLm_user(ContextHelper.getUserLoginUuid());
 			vardic.setLm_time(new Date());
 			dao.savev(vardic);
+			//修改纵向总分
+			dao.saveBycheck(vardic.getUuid().toString());
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!save 数据更新失败:", e);
 			throw new Exception(this.getClass().getName() + "!save 数据更新失败:", e);
