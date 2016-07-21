@@ -1,13 +1,9 @@
 package com.qkj.qkjmanager.action;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,12 +13,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
-import org.iweb.sys.dao.KpiDAO;
-import org.iweb.sys.dao.UserDAO;
-import org.iweb.sys.dao.UserDeptDAO;
-import org.iweb.sys.domain.IndexDetail;
-import org.iweb.sys.domain.User;
-import org.iweb.sys.domain.UserDept;
 import org.iweb.sys.domain.UserLoginInfo;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -158,7 +148,7 @@ public class TransverseAction extends ActionSupport{
 				vardic = new Vartic();
 			}
 			
-			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_HORILIST", map, "apply_depts", "apply_user");
+			//ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_HORILIST", map, "apply_depts", "apply_user");
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_HORILIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
 			check=dao.check_cym();
@@ -166,7 +156,7 @@ public class TransverseAction extends ActionSupport{
 				map.put("check_ym", check.getUuid());
 			}
 			map.put("typea", "0");
-			map.put("check_user", ContextHelper.getUserLoginUuid());
+			map.put("check_userh", ContextHelper.getUserLoginUuid());
 			this.setVardics(dao.list(map));
 			this.setRecCount(dao.getResultCount());
 			

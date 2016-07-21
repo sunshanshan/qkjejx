@@ -39,8 +39,26 @@ public class Vartic {
 	private Double tscore;
 	private String d_code; 
 	private Integer cstate;
+	private Double ss_goal;
 	
+	private Integer finish;//部门是否考核完成，，用于取班组分数时判断是否班组考核完成
 	
+	public Integer getFinish() {
+		return finish;
+	}
+
+	public void setFinish(Integer finish) {
+		this.finish = finish;
+	}
+
+	public Double getSs_goal() {
+		return ss_goal;
+	}
+
+	public void setSs_goal(Double ss_goal) {
+		this.ss_goal = ss_goal;
+	}
+
 	public String getHremark() {
 		return hremark;
 	}

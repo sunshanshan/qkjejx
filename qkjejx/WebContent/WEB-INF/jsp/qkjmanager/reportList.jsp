@@ -57,7 +57,7 @@ cursor: pointer;
 					<th class="td2">考核完成时间</th>
 					<th class="td2">分数</th>
 					<th class="td2">状态</th>
-					<th class="td2">操作</th>
+					<th class="td1">操作</th>
 				</tr>
 				<s:iterator value="vardics" status="sta">
 					<tr id="showtr${uuid}">
@@ -65,7 +65,7 @@ cursor: pointer;
 						<td class="td1 nw">${it:formatDate(cym,'yyyy-MM')}</td>
 						<td class="td1 nw">${acheck_username}</td>
 						<td class="td1 nw">${acheck_deptname}</td>
-						<td class="td1 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
+						<td class="td2 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
 						<td class="td2 nw">
 						${check_score}
 						</td>
@@ -76,7 +76,7 @@ cursor: pointer;
 						<s:elseif test="cstate==1">关闭</s:elseif>
 						<s:elseif test="cstate==2">已审核</s:elseif>
 						</td>
-						<td class="td4 op-area">
+						<td class="td1 nw">
 						<s:if test="%{acheck_username==null}">
 							<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_loadDept"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">查看</a>
 							</s:if>

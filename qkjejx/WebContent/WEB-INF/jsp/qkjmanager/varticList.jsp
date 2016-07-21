@@ -51,13 +51,13 @@ cursor: pointer;
 					<tr id="coltr">
 						<th class="td1">被考核人/部门</th>
 						<th class="td1">部门</th>
-						<th class="td4">操作</th>
+						<th class="td1">操作</th>
 					</tr>
 					<s:iterator value="cvardics" status="sta">
 						<tr>
 							<td class="td1 nw">${acheck_username}</td>
 							<td class="td1 nw">(${df_name})${acheck_deptname}</td>
-							<td class="td4 op-area">
+							<td class="td1 nw">
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
 									<a class="input-blue" href="/qkjmanager/varticDetail_list?vardic.u_id=${u_id }&vardic.u_code=${u_code}&viewFlag=add">考核</a>
 								</c:if> 
@@ -68,7 +68,7 @@ cursor: pointer;
 						<tr>
 							<td class="td1 nw">${acheck_deptname}</td>
 							<td class="td1 nw"></td>
-							<td class="td4 op-area">
+							<td class="td1 nw">
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
 									<a class="input-blue" href="/qkjmanager/varticDeptDetail_list?vardic.u_code=${d_code}&viewFlag=add">考核</a>
 								</c:if> 
@@ -97,8 +97,8 @@ cursor: pointer;
 							<td class="td1 nw">${uuid}</td>
 							<td class="td1 nw">${it:formatDate(cym,'yyyy-MM')}</td>
 							<td class="td1 nw">${acheck_username}</td>
-							<td class="td1 nw">(${df_name}${acd_cname})${acheck_deptname}</td>
-							<td class="td1 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
+							<td class="td1 nw">${df_name}${acd_cname}${acheck_deptname}</td>
+							<td class="td2 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
 							<td class="td2 nw">${check_score}</td>
 							<td class="td4 op-area">
 							<s:if test="%{acheck_username==null}">

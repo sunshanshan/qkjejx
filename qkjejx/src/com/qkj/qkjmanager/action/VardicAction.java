@@ -1,6 +1,5 @@
 package com.qkj.qkjmanager.action;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,10 +16,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
-import org.iweb.sys.dao.KpiDAO;
-import org.iweb.sys.dao.UserDAO;
-import org.iweb.sys.domain.IndexDetail;
-import org.iweb.sys.domain.User;
 import org.iweb.sys.domain.UserDept;
 import org.iweb.sys.domain.UserLoginInfo;
 
@@ -146,14 +141,14 @@ public class VardicAction extends ActionSupport {
 				vardic = new Vartic();
 			}
 			
-			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_VERTICLIST", map, "apply_depts", "apply_user");
+			//ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_VERTICLIST", map, "apply_depts", "apply_user");
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_VERTICLIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
 			//查询打开的审核日期
 			CheckDao c=new CheckDao();
 			List<Check> checks=new ArrayList();
 			map.put("typea", "1");
-			map.put("check_user", ContextHelper.getUserLoginUuid());
+			map.put("check_userh", ContextHelper.getUserLoginUuid());
 			if(checks.size()>0){//只查询打开的已考核记录
 				map.put("check_ym", checks.get(0).getUuid());
 			}
