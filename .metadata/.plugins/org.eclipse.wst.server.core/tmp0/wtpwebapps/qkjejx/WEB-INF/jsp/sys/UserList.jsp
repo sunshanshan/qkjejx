@@ -40,12 +40,12 @@
 	            <div class="label_rwben2">
 	            	<span class="label_rwb">
 					<s:textfield title="部门名称" id="userdept_nameid" name="user.dept_cname" readonly="true" />
-					<s:hidden title="部门代码" id="userdept_codeid" name="user.dept_code" readonly="true" />
+					<s:hidden title="部门代码" id="userdept_codeid" name="user.dept_codelist" readonly="true" />
 					</span>
 					<span class="lb nw">
-					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('userdept_codeid','userdept_nameid',true);" />
-					<s:checkbox id="apply_is_sub_dept" name="user.is_sub_dept" cssClass="regular-checkbox" />
-					<label for="apply_is_sub_dept"></label>包含子部门<span id="ajax_member_message"></span>
+					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('userdept_codeid','userdept_nameid',null);" />
+					<%-- <s:checkbox id="apply_is_sub_dept" name="user.is_sub_dept"></s:checkbox>
+					<label for="apply_is_sub_dept"></label>包含子部门<span id="ajax_member_message"></span> --%>
 					</span>
 	            </div>
 	        </div>
@@ -73,7 +73,7 @@
 				<tr id="showtr${uuid}">
 	              <td class="td1">${title}</td>
 	              <td class="td1">${user_name}</td>
-	              <td class="td2">${dept_cname}</td>
+	              <td class="td2">(${pparname}:${pardname})${dept_cname}</td>
 	              <td class="td2">${position_name}</td>
 	              <td class="td3">${mobile}</td>
 	              <td class="td4">
@@ -85,9 +85,6 @@
 	              </td>
 	              <td class="td5 op-area">
 	              		<a class="input-blue" href="<s:url namespace="/sys" action="user_load"><s:param name="viewFlag">mdy</s:param><s:param name="user.uuid" value="uuid"></s:param></s:url>">修改</a>
-	              		<c:if test="${ it:checkPermit('QKJ_PERSONAL_POWER_ADD',null)==true}">
-						<a class="input-blue" href="<s:url namespace="/person" action="perWorkPower_load"><s:param name="viewFlag">add</s:param><s:param name="perWorkSelect.perUser" value="uuid"></s:param></s:url>" >添加个人工作权限</a>
-						</c:if>
 	    				<a class="input-red" href="<s:url namespace="/sys" action="user_del"><s:param name="user.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
 	              </td>
 	              <td  class="td0 op-area"><a onclick="showDetail('showtr${uuid}');" href="javascript:;" class="input-nostyle">查看</a></td>

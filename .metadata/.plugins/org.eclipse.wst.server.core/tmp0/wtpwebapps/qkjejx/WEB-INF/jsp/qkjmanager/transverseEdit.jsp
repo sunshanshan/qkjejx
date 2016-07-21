@@ -71,7 +71,7 @@ s
 			<div class="tab_warp">
 				<table>
 					<tr id="coltr">
-						<th class="td1">被考核人</th>
+						<th class="td1">被考核人/部门</th>
 						<th class="td1">部门</th>
 						<th class="td1">分数</th>
 						<th class="td4">操作</th>
@@ -84,7 +84,19 @@ s
 							<td class="td4 op-area">
 							
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
-									<a class="input-blue" href="/qkjmanager/transverseDetail_list?vardic.u_id=${u_id }&vardic.u_code=${u_code}&vardic.check_ym=${it:formatDate(vardic.check_ym,'yyyy-MM')}&viewFlag=add">考核</a>
+									<a class="input-blue" href="/qkjmanager/transverseDetail_listuser?vardic.u_id=${u_id }&vardic.u_code=${u_code}&vardic.check_ym=${it:formatDate(vardic.check_ym,'yyyy-MM')}&viewFlag=add">考核</a>
+								</c:if> 
+						    </td>
+						</tr>
+					</s:iterator>
+					<s:iterator value="cvardicsd" status="sta">
+						<tr>
+							<td class="td1 nw">${acheck_deptname}</td>
+							<td class="td1 nw"></td>
+							<td class="td1 nw">${check_score }</td>
+							<td class="td4 op-area">
+								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
+									<a class="input-blue" href="/qkjmanager/transverseDetail_list?vardic.u_code=${d_code}&vardic.check_ym=${it:formatDate(vardic.check_ym,'yyyy-MM')}&viewFlag=add">考核</a>
 								</c:if> 
 						    </td>
 						</tr>

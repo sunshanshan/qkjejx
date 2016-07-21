@@ -22,7 +22,7 @@ cursor: pointer;
 		<div class="dq_step">
 			${path}
 			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"><s:param name="viewFlag">add</s:param><s:param name="vardic.check_ym">${vardic.check_yms}</s:param></s:url>">保存考核</a></span>
+				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"><s:param name="viewFlag">add</s:param><s:param name="vardic.check_ym">${vardic.check_yms}</s:param></s:url>">导出考核</a></span>
 			</c:if>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="report_list" method="get" namespace="/qkjmanager" theme="simple">
@@ -31,7 +31,7 @@ cursor: pointer;
 					<div class="label_hang">
 						<div class="label_ltit">考核年月:</div>
 						<div class="label_rwben">
-							<input id="begintime" name="vardic.check_ym" value="${vardic.check_yms}" type="text" onclick="setmonth(this)" readonly="readonly"/>
+							<input id="begintime" name="vardic.cym" value="${it:formatDate(vardic.cym,'yyyy-MM')}"  type="text" onclick="setmonth(this)" readonly="readonly"/>
 						</div>
 					</div>
 							
@@ -40,6 +40,9 @@ cursor: pointer;
 						<label for="search_mcondition"></label>更多条件
 						<s:submit value="搜索" />
 						<s:reset value="重置" />
+						<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_CHECKSURE',null)==true}">
+						<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="check_sure"></s:url>">审核考核成绩</a></span>
+						</c:if>
 					</div>
 				</div>
 			</div>
@@ -53,21 +56,33 @@ cursor: pointer;
 					<th class="td1">被考核人部门</th>
 					<th class="td2">考核完成时间</th>
 					<th class="td2">分数</th>
+					<th class="td2">状态</th>
+					<th class="td2">操作</th>
 				</tr>
 				<s:iterator value="vardics" status="sta">
 					<tr id="showtr${uuid}">
 						<td class="td1 nw">${uuid}</td>
-						<td class="td1 nw">${it:formatDate(check_ym,'yyyy-MM')}</td>
+						<td class="td1 nw">${it:formatDate(cym,'yyyy-MM')}</td>
 						<td class="td1 nw">${acheck_username}</td>
 						<td class="td1 nw">${acheck_deptname}</td>
 						<td class="td1 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
 						<td class="td2 nw">
-						<s:if test="acheck_username!=null">
-						${ay_totelScore}
-						</s:if>
-						<s:else>
 						${check_score}
-						</s:else>
+						</td>
+						<td class="td2 nw">
+						<s:if test="cstate==0">
+						打开
+						</s:if>
+						<s:elseif test="cstate==1">关闭</s:elseif>
+						<s:elseif test="cstate==2">已审核</s:elseif>
+						</td>
+						<td class="td4 op-area">
+						<s:if test="%{acheck_username==null}">
+							<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_loadDept"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">查看</a>
+							</s:if>
+							<s:else>
+							<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">查看</a>
+							</s:else>
 						</td>
 					</tr>
 				</s:iterator>

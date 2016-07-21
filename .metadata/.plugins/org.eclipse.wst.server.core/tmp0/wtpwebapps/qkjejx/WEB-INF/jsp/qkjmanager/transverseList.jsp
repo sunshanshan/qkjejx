@@ -41,12 +41,6 @@ cursor: pointer;
 						</div>
 					</div> --%>
 					
-					<div class="label_hang">
-						<div class="label_ltit">考核年月:</div>
-						<div class="label_rwben">
-							<input id="begintime" name="vardic.check_ym" type="text" onclick="setmonth(this)" readonly="readonly"/>
-						</div>
-					</div>
 							
 					<div class="label_hang tac">
 						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
@@ -57,7 +51,47 @@ cursor: pointer;
 				</div>
 			</div>
 		</s:form>
-		<div class="tab_warp">
+		<fieldset class="clear">
+			<legend>待考核信息</legend>
+			<div class="tab_warp">
+				<table>
+					<tr id="coltr">
+						<th class="td1">被考核人/部门</th>
+						<th class="td1">部门</th>
+						<th class="td1">分数</th>
+						<th class="td4">操作</th>
+					</tr>
+					<s:iterator value="cvardics" status="sta">	
+						<tr>
+							<td class="td1 nw">${acheck_username}</td>
+							<td class="td1 nw">(${df_name})${acheck_deptname}</td>
+							<td class="td1 nw">${check_score }</td>
+							<td class="td4 op-area">
+							
+								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
+									<a class="input-blue" href="/qkjmanager/transverseDetail_listuser?vardic.u_id=${u_id }&vardic.u_code=${u_code}&vardic.check_ym=${it:formatDate(vardic.check_ym,'yyyy-MM')}&viewFlag=add">考核</a>
+								</c:if> 
+						    </td>
+						</tr>
+					</s:iterator>
+					<s:iterator value="cvardicsd" status="sta">
+						<tr>
+							<td class="td1 nw">${acheck_deptname}</td>
+							<td class="td1 nw"></td>
+							<td class="td1 nw">${check_score }</td>
+							<td class="td4 op-area">
+								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_ADD',null)==true}">
+									<a class="input-blue" href="/qkjmanager/transverseDetail_list?vardic.u_code=${d_code}&vardic.check_ym=${it:formatDate(vardic.check_ym,'yyyy-MM')}&viewFlag=add">考核</a>
+								</c:if> 
+						    </td>
+						</tr>
+					</s:iterator>
+				</table>
+			</div>
+		</fieldset>
+		<fieldset class="clear">
+			<legend>已考核信息</legend>
+			<div class="tab_warp">
 			<table>
 				<tr id="coltr">
 					<th class="td1">主键</th>
@@ -71,12 +105,18 @@ cursor: pointer;
 				<s:iterator value="vardics" status="sta">
 					<tr id="showtr${uuid}">
 						<td class="td1 nw">${uuid}</td>
-						<td class="td1 nw">${it:formatDate(check_ym,'yyyy-MM')}</td>
-						<td class="td1 nw">(${df_name})${acheck_deptname}</td>
+						<td class="td1 nw">${it:formatDate(cym,'yyyy-MM')}</td>
+						<td class="td1 nw">(${df_name})${acheck_deptname}${acheck_username }</td>
 						<td class="td1 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
 						<td class="td2 nw">${check_score}</td>
 						<td class="td4 op-area">
+								
+								<s:if test="%{acheck_username==null}">
 								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="transverseDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
+								</s:if>
+								<s:else>
+								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="transverseDetail_loadUser"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
+								</s:else>
 					    	<%-- <c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_DEL',null)==true}">
 								<a class="input-red" href="<s:url namespace="/qkjmanager" action="transverse_del"><s:param name="vardic.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
 							</c:if> --%>
@@ -87,6 +127,7 @@ cursor: pointer;
 			</table>
 		</div>
 		<div id="listpage" class="pagination"></div>
+		</fieldset>	
 	</div>
 </div>
 

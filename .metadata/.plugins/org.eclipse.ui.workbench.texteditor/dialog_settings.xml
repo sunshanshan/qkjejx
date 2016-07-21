@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="toFixed" key="selection"/>
 		<list key="findhistory">
+			<item value="toFixed"/>
+			<item value="3"/>
+			<item value="kpi"/>
+			<item value="position_dept"/>
 			<item value="alert"/>
+			<item value="addParameter"/>
 			<item value="setkpi"/>
 			<item value="cyc"/>
-			<item value="messagewei"/>
-			<item value="message"/>
-			<item value="intop"/>
-			<item value="dept_uuid"/>
-			<item value="getInfo"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

@@ -27,15 +27,13 @@ cursor: pointer;
 		</div>
 	<s:form id="editForm" cssClass="validForm" action="transverseDeail_add" namespace="/qkjmanager" method="post" theme="simple">
 		<div class="label_main">
+			<s:if test="'mdy' == viewFlag">	<s:hidden name="vardic.uuid" value="%{vardic.uuid}"></s:hidden>
 			<div class="label_hang">
 				<div class="label_ltit">考核年月:</div>
 					<div class="label_rwben">
-					${it:formatDate(vardic.check_ym,'yyyy-MM')}
-						<input type="hidden" name="vardic.check_ym" value="${it:formatDate(vardic.check_ym,'yyyy-MM')}">
+					${it:formatDate(vardic.cym,'yyyy-MM')}
 					</div>
 			</div>
-			
-			<s:if test="'mdy' == viewFlag">	
 			
 			<div class="label_hang">
 				<div class="label_ltit">部门:</div>
@@ -45,6 +43,13 @@ cursor: pointer;
 			</div>	
 			</s:if>
 			<s:else>
+			<div class="label_hang">
+				<div class="label_ltit">考核年月:</div>
+					<div class="label_rwben">
+					${it:formatDate(check.ym,'yyyy-MM')}
+						<input type="hidden" name="vardic.check_ym" value="${check.uuid}">
+					</div>
+			</div>
 			<div class="label_hang">
 				<div class="label_ltit">部门:</div>
 					<div class="label_rwben">
@@ -80,14 +85,8 @@ cursor: pointer;
 								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
 								<s:if test="isdept==0">
 									<!-- kpi 横向的部门职务对上 -->
-									<c:if test="${it:checkay(0,uuid)==true}">
 									<td class="nw" width="100px;"><input id="s${uuid }" type="text" onblur="kpi('${uuid}');" class="validate[required]" /></td>
 									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]"/></td>
-									</c:if>
-									<c:if test="${it:checkay(0,uuid)==false}">
-									<td class="nw" width="100px;">${check_score}</td>
-									<td class="nw" width="100px;">${check_goal}</td>
-									</c:if>
 								</s:if>
 								<s:else>
 								<td class="nw" width="100px;">${check_score}</td>
@@ -99,11 +98,17 @@ cursor: pointer;
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>			
 							</tr>
 						</s:iterator>
-						
 					</table>
 				</fieldset>
 			</div>
-			
+			<div class="label_main">
+			<div class="label_hang">
+				<div class="label_ltit">备注:</div>
+				<div class="label_rwbenx">
+						<s:textarea name="vardic.hremark" title="备注" cssClass="label_hang_linput inputNote validate[maxSize[65535]]" />
+				</div>
+			</div>
+		</div>
 			<div class="label_main">
 						<div class="label_hang">
 							<div class="label_ltit">相关操作:</div>
@@ -117,7 +122,7 @@ cursor: pointer;
 						</div>
 			</div>
 			</s:if>
-		</s:form>
+		
 		<s:if test="'mdy' == viewFlag">	
 		<div class="label_main">
 			<fieldset class="clear">
@@ -142,14 +147,8 @@ cursor: pointer;
 								<td class="nw">${weight }<input id="w${uuid }" type="hidden"  value="${weight }"></td>
 								<s:if test="isdept==0">
 									<!-- kpi 横向的部门职务对上 -->
-									<c:if test="${it:checkay(0,kpi_id)==true}">
 									<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
 									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
-									</c:if>
-									<c:if test="${it:checkay(0,kpi_id)==false}">
-									<td class="nw" width="100px;">${check_score}</td>
-									<td class="nw" width="100px;">${check_goal}</td>
-									</c:if>
 								</s:if>
 								<s:else>
 								<td class="nw" width="100px;">${check_score}</td>
@@ -159,11 +158,11 @@ cursor: pointer;
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
-								<c:if test="${it:checkay(0,kpi_id)==true}">
 								<td class="longnote" title="${correctly}">
+								<c:if test="${it:checkb(uuid)==true}">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
-								</td>		
-								</c:if>	
+								</c:if>
+								</td>	
 								</c:if>
 							</tr>
 						</s:iterator>
@@ -185,7 +184,17 @@ cursor: pointer;
 					</table>
 				</fieldset>
 			</div>
+			<div class="label_main">
+			<div class="label_hang">
+				<div class="label_ltit">备注:</div>
+				<div class="label_rwbenx">
+						<s:textarea name="vardic.hremark" title="备注" cssClass="label_hang_linput inputNote validate[maxSize[65535]]" />
+				</div>
+			</div>
+		</div>
 		</s:if>
+		
+		</s:form>
 	</div>
 </div>
 
@@ -207,7 +216,6 @@ function add(){
 	var obj=new Array();
 	 var flag=true;
 	  var tableObj = document.getElementById("t");
-	  alert(tableObj.rows.lengths);
 	  for (var i = 1; i < tableObj.rows.length; i++) {  //遍历Table的所有Row
 		  var tableInfo = "";
 	    for (var j = 0; j < tableObj.rows[i].cells.length; j++) {  //遍历Row中的每一列
@@ -252,7 +260,6 @@ function add(){
 	    tableInfo+=";";
 	   obj[i]=tableInfo;
 	  }
-	  alert("aaaa");
 	   if (!checkSubmitFlg) {
 		// 第一次提交
 		  checkSubmitFlg = true;
