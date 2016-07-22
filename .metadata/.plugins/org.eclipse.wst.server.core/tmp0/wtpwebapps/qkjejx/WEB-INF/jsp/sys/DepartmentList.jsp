@@ -233,7 +233,7 @@ function getIndexDetail(obj) {
 			 show.push(' <td class="td1 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a> <input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" class="input-red"/></td>') ;
 			 show.push('</tr>');
 			 wei= Number((arr[i].weight+wei).toFixed(3))
-			
+
 			}  
 		$("#messagewei").text('权重总和:'+wei);
 		$("#messagewei").css("color","red");
@@ -414,7 +414,7 @@ function addtab(ct) {
 	};
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_ADDKPI");
 	ajax.addParameter("work","update");
-	ajax.addParameter("parameters", "dept_code=" + dept_code+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
+	ajax.addParameter("parameters", "dept_code=" + dept_code+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+encodeURI(count_way)
 			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
 			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type)+"&cyc="+encodeURI(cyc)+"&position_dept="+encodeURI(position_dept));
 	ajax.sendAjax2();

@@ -72,35 +72,96 @@ cursor: pointer;
 							<th>周期</th>
 							<th>定义</th>
 							<th>标准</th>
-							<th>横向考核部门</th>
+							<!-- <th>横向考核部门</th> -->
 						</tr>
 										<!-- lading.promotions -->
 						
 						<s:iterator value="ids" status="sta">
 							<tr id="showtr${uuid}">
 								<td class="nw">${uuid }</td>
-								<td class="nw">${kpi }</td>
+								<td class="nw" id="kpi${uuid }">${kpi }</td>
 								<td class="nw">${weight }<input id="w${uuid }" name="weight" type="hidden"  value="${weight }"></td>
-								<s:if test="isdept==1">
+								<s:if test="isdept==1&&type==1">
 									<!-- kpi 横向的部门职务对上 -->
 									<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
 									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
 								</s:if>
 								<s:else>
-								<td class="nw" width="100px;">${score}</td>
-								<td class="nw" width="100px;">${goal}</td>
-								</s:else>
+											<s:if test="type==2">
+												<td class="nw" title="取部门分数"><input id="s${uuid }"
+													type="text" readonly="readonly"></td>
+												<td class="nw"><input id="g${uuid }" type="text"
+													readonly="readonly"></td>
+												<script type="text/javascript">
+													$(function(){
+														var uuid=${uuid };
+														var kpi=$('#kpi'+uuid).text();
+														var d=$('#ck').val();
+														var dept=${position_dept};
+														
+														var ajax = new Common_Ajax('ajax_member_message');
+														ajax.config.action_url = ajax_url;
+														ajax.config._success = function(data, textStatus){
+															var l = $(data).length;
+																	$.each(data, function(i, n){
+																		var sid="s"+uuid;
+																		var gid="g"+uuid;
+																		var w="w"+uuid;
+																		
+																		document.getElementById(sid).value=n.check_score;
+																		document.getElementById(gid).value=n.check_score*document.getElementById(w).value;
+																	});
+																	
+														};
+														ajax.addParameter("work", "AutoComplete");
+														ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_KPI");
+														ajax.addParameter("parameters", "dept_code=" + encodeURI(dept)+"&check_ym="+encodeURI(d)+"&kpi="+encodeURI(kpi));
+														ajax.sendAjax2();
+													});
+													
+													
+													</script>
+											</s:if>
+											<s:elseif test="isdept==0&&type==1">
+												<td class="nw" title="横向分数：" id="s1${uuid }"></td>
+												<td class="nw" width="100px;" id="g1${uuid }"></td>
+												<script type="text/javascript">
+													$(function(){
+														var uuid=${uuid };
+														
+														var ajax = new Common_Ajax('ajax_member_message');
+														ajax.config.action_url = ajax_url;
+														ajax.config._success = function(data, textStatus){
+															var l = $(data).length;
+																	$.each(data, function(i, n){
+																		var sid="s1"+uuid;
+																		var gid="g1"+uuid;
+																		document.getElementById(sid).innerHTML=n.check_score;
+																		document.getElementById(gid).innerHTML=n.check_goal;
+																	});
+																	
+														};
+														ajax.addParameter("work", "AutoComplete");
+														ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_KPI");
+														ajax.addParameter("parameters", "kpiid=" + encodeURI(uuid));
+														ajax.sendAjax2();
+													});
+														
+											
+								</script>
+											</s:elseif>
+										</s:else>
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>			
-								<td class="longnote"  id="c${uuid }" >${check_deptcode}</td>			
+								<%-- <td class="longnote"  id="c${uuid }" >${check_deptcode}</td> --%>			
 							</tr>
 						</s:iterator>
 						<tr>
 							<td>加扣分项</td>
 							<td class="nw" style="width:150px;">
 							<s:textfield name="vardic.bscore" title=""
-									cssClass="validate[required]" />
+							 />
 							</td>
 							<td colspan="8">*分值范围是-30至10分</td>
 							</tr>
@@ -130,7 +191,7 @@ cursor: pointer;
 								<font color="red"><span id="messages"></span></font>
 								
 									<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-										<button class="input-blue" onclick="add();">添加</button>
+										<button id="btnzhuce" class="input-blue" onclick="add();">添加</button>
 									</c:if>
 							</div>
 						</div>
@@ -193,7 +254,7 @@ cursor: pointer;
 							<td>加扣分项</td>
 							<td class="nw"  style="width:150px;">
 							<s:textfield name="vardic.bscore" title=""
-									cssClass="validate[required]"/>
+							/>
 							</td>
 							<td colspan="8">*分值范围是-30至10分</td>
 							</tr>
@@ -320,9 +381,11 @@ function add(){
 		// 第一次提交
 		  checkSubmitFlg = true;
 		  if(flag==true){
+			  $('#btnzhuce').hide();
 			  document.getElementById("editForm").action="/qkjmanager/varticDeail_addDept?aArray="+obj;
 		  }else{
 			  alert("所评分数不能为空！");
+			  $('#btnzhuce').show();
 		  }
 		 } else {
 		//重复提交

@@ -130,8 +130,8 @@ cursor: pointer;
 							<div class="label_rwbenx">
 								<font color="red"><span id="messages"></span></font>
 								
-									<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-										<button class="input-blue" onclick="add();">添加</button>
+									<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_ADD',null)==true}">
+										<button  id="btnzhuce" class="input-blue" onclick="add();">添加</button>
 									</c:if>
 							</div>
 						</div>
@@ -270,6 +270,7 @@ function add(){
 		// 第一次提交
 		  checkSubmitFlg = true;
 		  if(flag==true){
+			  $('#btnzhuce').hide();
 			  document.getElementById("editForm").action="/qkjmanager/transverseDeail_addUser?aArray="+obj;
 		  }else{
 			  alert("所评分数不能为空！");

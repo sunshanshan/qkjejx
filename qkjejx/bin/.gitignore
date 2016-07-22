@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /com/
 /log4j.xml
 /org/
@@ -7,7 +6,3 @@
 /struts.properties
 /struts.xml
 /xwork-conversion.properties
-=======
-/org
-/com
->>>>>>> b885e44db8fa8d4a2f05c40aedf7ed3b3b6aa0d8

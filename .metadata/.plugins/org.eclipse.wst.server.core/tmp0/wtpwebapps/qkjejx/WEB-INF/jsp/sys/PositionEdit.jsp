@@ -148,7 +148,7 @@ $(function(){
 			 show.push('<td class="td12" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
 			 show.push(' <td class="td13 op-area" style="width:200"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a><input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" class="input-red"></input></td>') ;
 			 show.push('</tr>');
-			 wei= Number((arr[i].weight+wei).toFixed(2))
+			 wei= Number((arr[i].weight+wei).toFixed(3))
 			}  
 		$("#messagewei").text('权重总和:'+wei);
 		$("#messagewei").css("color","red");
@@ -201,7 +201,7 @@ function init(){
 			 show.push('<td class="td12" id="'+arr[i].uuid+'isdept">'+ arr[i].isdept+'</td  >' ) ;
 			 show.push(' <td class="td13 op-area"><a  id="'+arr[i].uuid+'buttb" onclick="javascript:updatetab('+arr[i].uuid+')" href="javascript:void(0)" class="input-red">修改</a><a style="display: none" id="'+arr[i].uuid+'buttd" onclick="javascript:updatedetermine('+arr[i].uuid+')" href="javascript:void(0)" class="input-greed">保存</a><input id="'+arr[i].uuid+'delete" type="button" value="删除"  onclick="delkpi('+arr[i].uuid+');" class="input-red"/></td>') ;
 			 show.push('</tr>');
-			 wei= Number((arr[i].weight+wei).toFixed(2))
+			 wei= Number((arr[i].weight+wei).toFixed(3))
 			
 			}  
 		$("#messagewei").text('权重总和:'+wei);
