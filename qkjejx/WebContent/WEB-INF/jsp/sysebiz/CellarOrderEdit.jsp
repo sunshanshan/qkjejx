@@ -66,7 +66,7 @@
 				     </div>
 				     <s:if test="null != cellarOrder">
 				     	<div class="label_hang">
-					         <div class="label_ltit">订单添加人:</div>
+					         <div class="label_ltit">订单提交人:</div>
 					         <div class="label_rwbenx">
 					         <s:property value="cellarOrder.add_user_name" />[<s:date name="cellarOrder.add_time" format="yyyy-MM-dd HH:mm:ss" />]
 					         </div>

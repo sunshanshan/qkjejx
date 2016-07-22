@@ -165,11 +165,13 @@ public class ReportAction extends ActionSupport {
 	}
 
 	public String report() throws Exception {
-		if(vardic!=null){
+		if(vardic!=null&&vardic.getCym()!=null){
 	      SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM");
-	      vardic.setCheck_yms(sim.format(vardic.getCheck_ym()));
-	      map.put("check_yms", vardic.getCheck_yms());
+	      vardic.setCheck_yms(sim.format(vardic.getCym()));
+	      map.put("cym", vardic.getCheck_yms());
 		}
+		ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_CHECKLIST", map, "apply_depts", "apply_user");
+		ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_CHECKLIST", map, vardic, viewFlag);
 		ActionContext context = ActionContext.getContext();  
 		HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);  
 		HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);  

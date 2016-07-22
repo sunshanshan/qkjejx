@@ -15,7 +15,7 @@
 	<div class="tab_warp main">
 		<div class="dq_step">
 			<a href="/manager/default">首页</a>&nbsp;&gt;&nbsp;管理员列表
-			<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="user_load"><s:param name="viewFlag">add</s:param></s:url>" >添加管理员</a></span>
+			<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="user_load"><s:param name="viewFlag">add</s:param></s:url>" >提交管理员</a></span>
 			<span class="opb lb op-area">
 	<s:hidden id="marketimgid"></s:hidden>
 	</span>
@@ -103,7 +103,7 @@ $(function(){
 });
 
 $(document).ready(function(){
-	$("#filebtn").removeClass("filearea"); //添加样式marketimgid_filebutton
+	$("#filebtn").removeClass("filearea"); //提交样式marketimgid_filebutton
 	$("#marketimgid_filebutton").val("选择导入文件");
 });
 </script>

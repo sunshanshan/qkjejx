@@ -334,7 +334,7 @@ function setkpi() {
 	 show.push('<td class="td5"><input type="text" style="width:80px" value="" id="newcheck_deptcodeip" /></td  >' ) ;
 	 show.push('<td class="td6" ><input type="text" style="width:80px" value="" id="newcheck_postip" /></td  >' ) ;
 	 show.push('<td class="td7" ><input type="text" style="width:80px" value="" id="newisdeptip" /></td  >' ) ;
-	 show.push(' <td class="td1 op-area"><a   onclick="javascript:addtab()" href="javascript:void(0)" class="input-greed">添加</a></td>') ;
+	 show.push(' <td class="td1 op-area"><a   onclick="javascript:addtab()" href="javascript:void(0)" class="input-greed">提交</a></td>') ;
 	 show.push('</tr>');
 	 $("#intop").append(show.join(""));
 	

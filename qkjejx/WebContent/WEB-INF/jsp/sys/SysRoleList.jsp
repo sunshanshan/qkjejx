@@ -14,7 +14,7 @@
 	<div class="main">
 		<div class="dq_step">
 			<a href="/manager/default">首页</a>&nbsp;&gt;&nbsp;系统角色列表
-			<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="role_load"><s:param name="viewFlag">add</s:param></s:url>">添加系统角色</a></span>
+			<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="role_load"><s:param name="viewFlag">add</s:param></s:url>">提交系统角色</a></span>
 		</div>
 		<div class="tab_warp">
 	 		<table>
@@ -22,7 +22,7 @@
 				    <th class="td1">编号</th>
 					<th class="td1">角色名称</th>
 					<th class="td2">角色描述</th>
-					<th class="td3">添加时间</th>
+					<th class="td3">提交时间</th>
 					<th class="td4">操作</th>
 					<th class="td0">查看</th>
 				</tr>

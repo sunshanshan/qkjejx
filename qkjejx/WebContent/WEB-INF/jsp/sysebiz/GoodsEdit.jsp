@@ -88,11 +88,11 @@ ul.showImgList .rightinfo {display: block;clear: both;margin-top: 5px;}
 					</div>
 					<s:if test="'add' != viewFlag">
 						<div class="label_hang clear">
-					       <div class="label_ltit">添加人:</div>
+					       <div class="label_ltit">提交人:</div>
 					       <div class="label_rwbenx">${goods.add_user_name}<s:hidden name="goods.add_user" /></div>
 						</div>
 						<div class="label_hang">
-					       <div class="label_ltit">添加时间:</div>
+					       <div class="label_ltit">提交时间:</div>
 					       <div class="label_rwbenx"><s:date name="goods.add_time" format="yyyy-MM-dd HH:mm:ss" /></div>
 						</div>
 						<div class="label_hang">
@@ -139,7 +139,7 @@ ul.showImgList .rightinfo {display: block;clear: both;margin-top: 5px;}
 					       	<div class="label_rwbenx">
 					       		<s:if test="'add' == viewFlag">
 									<s:textfield name="goodsInfo.column_2" title="酒坛位置编号前缀" cssClass="validate[required]" />
-									<span class="message_prompt">添加藏酒时,自动生成藏酒编号,此项目不能修改,请慎重填写!</span>
+									<span class="message_prompt">提交藏酒时,自动生成藏酒编号,此项目不能修改,请慎重填写!</span>
 								</s:if>
 								<s:elseif test="null != goods && 'mdy' == viewFlag">
 									${goodsInfo.column_2}<s:hidden name="goodsInfo.column_2" />

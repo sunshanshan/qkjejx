@@ -121,14 +121,14 @@
 		 <div class="label_main">
 		 	<!--
 		 	<p class="lb_yjtit bn">
-			<a href="<s:url namespace="/sysvip" action="memberAddress_load"><s:param name="viewFlag">add</s:param><s:param name="memberAddress.member_id" value="member.uuid" /></s:url>" >添加收货地址</a>
+			<a href="<s:url namespace="/sysvip" action="memberAddress_load"><s:param name="viewFlag">add</s:param><s:param name="memberAddress.member_id" value="member.uuid" /></s:url>" >提交收货地址</a>
 		 	</p>
 		 	-->
 			<s:if test="%{user.uuid!=null}">
-				<a href="<s:url namespace="/sys" action="user_dept_load"><s:param name="viewFlag">add</s:param><s:param name="userDept.user_id" value="user.uuid"></s:param></s:url>" >添加部门及权限</a>
+				<a href="<s:url namespace="/sys" action="user_dept_load"><s:param name="viewFlag">add</s:param><s:param name="userDept.user_id" value="user.uuid"></s:param></s:url>" >提交部门及权限</a>
 				</s:if>
 				<s:else>
-				<font color="red">请先保存基本信息再添加权限</font>
+				<font color="red">请先保存基本信息再提交权限</font>
 				</s:else>
         </div>
 		
@@ -138,7 +138,7 @@
 		 <div class="label_main">
 		 	<!--
 		 	<p class="lb_yjtit bn">
-			<a href="<s:url namespace="/sysvip" action="memberAddress_load"><s:param name="viewFlag">add</s:param><s:param name="memberAddress.member_id" value="member.uuid" /></s:url>" >添加收货地址</a>
+			<a href="<s:url namespace="/sysvip" action="memberAddress_load"><s:param name="viewFlag">add</s:param><s:param name="memberAddress.member_id" value="member.uuid" /></s:url>" >提交收货地址</a>
 		 	</p>
 		 	-->
 			<table width="100%" cellpadding="0" cellspacing="0" border="0" class="lb_jpin">
@@ -148,7 +148,7 @@
 				<th>部门管理权限</th>
 				<th>子部门管理权限</th>
 				<th>更新时间</th>
-				<th><a href="<s:url namespace="/sys" action="user_dept_load"><s:param name="viewFlag">add</s:param><s:param name="userDept.user_id" value="user.uuid"></s:param></s:url>" >添加部门及权限</a></th>
+				<th><a href="<s:url namespace="/sys" action="user_dept_load"><s:param name="viewFlag">add</s:param><s:param name="userDept.user_id" value="user.uuid"></s:param></s:url>" >提交部门及权限</a></th>
 			</tr>
 			<s:iterator value="userDepts" status="sta">
 			  <tr class="<s:if test="#sta.odd == true">oddStyle</s:if><s:else>evenStyle</s:else>">

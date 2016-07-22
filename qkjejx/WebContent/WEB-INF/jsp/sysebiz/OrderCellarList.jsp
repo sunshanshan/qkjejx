@@ -64,7 +64,7 @@
 			<span class="cellar_goods_storage_value">${it:formatDate(item.storage_date,"yyyy-MM-dd")}</span> | 
 			<span class="cellar_goods_pnum">已配货:</span>
 			<span class="cellar_goods_pnum_value">0</span> |
-			<span class="cellar_goods_operate"><a href="javascript:;" onclick="openAddDialog(${item.uuid},${item.goods_id},'${it:formatDate(item.storage_date,'yyyy-MM-dd')}');">点此添加藏酒</a></span>
+			<span class="cellar_goods_operate"><a href="javascript:;" onclick="openAddDialog(${item.uuid},${item.goods_id},'${it:formatDate(item.storage_date,'yyyy-MM-dd')}');">点此提交藏酒</a></span>
 		</div>
 		<ul id="cellar_list_${item.uuid}"></ul>
 	</div>
@@ -82,7 +82,7 @@
 </div>
 <div>
 </div>
-<div id="AddCellars" title="添加藏酒">
+<div id="AddCellars" title="提交藏酒">
 <form id="AddCellarsForm" action="<c:url value="/sysebiz/orderCellar_add" />">
 <div id="AddCellarsList"></div>
 <div id="AddCellarsSubmit" class="dialog_button">
@@ -218,7 +218,7 @@ function reserveCellar() {
 		}
 	});
 	
-	//添加点击时间
+	//提交点击时间
 	$("div[id^='cellar_'][class='cellar_list'] li").unbind().bind({
 		click : function(){
 			/*<c:if test="${viewFlag!='view'}">*/

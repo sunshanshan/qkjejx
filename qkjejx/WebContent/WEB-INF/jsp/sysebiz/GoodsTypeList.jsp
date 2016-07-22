@@ -14,7 +14,7 @@
 	<div class="tab_warp main">
 	<div class="dq_step">
 		${path}
-		<span class="opb lb op-area"><a href="<s:url namespace="/sysebiz" action="goodsType_load"><s:param name="viewFlag">add</s:param></s:url>" >添加商品类型</a></span>
+		<span class="opb lb op-area"><a href="<s:url namespace="/sysebiz" action="goodsType_load"><s:param name="viewFlag">add</s:param></s:url>" >提交商品类型</a></span>
 	</div>
 	<div class="tab_warp">
  		<table id="table1">

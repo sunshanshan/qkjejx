@@ -21,9 +21,6 @@ cursor: pointer;
  	<div class="tab_warp main" >
 		<div class="dq_step">
 			${path}
-			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"><s:param name="viewFlag">add</s:param><s:param name="vardic.check_ym">${vardic.check_yms}</s:param></s:url>">导出考核</a></span>
-			</c:if>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="report_listjx" method="get" namespace="/qkjmanager" theme="simple">
 			<div class="label_con">

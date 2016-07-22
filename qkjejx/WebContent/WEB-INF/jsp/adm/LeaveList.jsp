@@ -23,7 +23,7 @@ max-width: 650px !important;
  	<div class="dq_step">
 		${path}
 		<c:if test="${it:checkPermit('QKJ_ADM_LEAVE_ADD',null)==true}">
-			<span class="opb lb op-area"><a href="javascript:;" id="AddLeaveLink">添加申请单</a></span>
+			<span class="opb lb op-area"><a href="javascript:;" id="AddLeaveLink">提交申请单</a></span>
 		</c:if>
 	</div>
  	<s:form id="serachForm" name="serachForm" action="leave_list"  method="get" namespace="/adm" theme="simple">

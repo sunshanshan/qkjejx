@@ -34,9 +34,17 @@ cursor: pointer;
 			</div>	
 			<div class="label_hang">
 				<div class="label_ltit">部门:</div>
-					<div class="label_rwben">
-						${vardic.acheck_deptname }
-					</div>
+					<div class="label_rwben" id="adt">${vardic.acheck_deptname }
+							
+							<input id="ad" type="hidden" value="${vardic.acheck_usercode}">
+							<script type="text/javascript">
+															$(function(){
+																var au=$('#ad').val();
+																ads(au);
+																
+															});
+							</script>
+							</div>
 			</div>	
 			</s:if>
 			<s:else>
@@ -44,7 +52,7 @@ cursor: pointer;
 				<div class="label_ltit">考核年月:</div>
 					<div class="label_rwben">
 					${it:formatDate(check.ym,'yyyy-MM')}
-						<input type="hidden" name="vardic.check_ym" value="${check.uuid}">
+						<input type="hidden" id="ck" name="vardic.check_ym" value="${check.uuid}">
 					</div>
 			</div>
 			<div class="label_hang">
@@ -191,7 +199,7 @@ cursor: pointer;
 								<font color="red"><span id="messages"></span></font>
 								
 									<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-										<button id="btnzhuce" class="input-blue" onclick="add();">添加</button>
+										<button id="btnzhuce" class="input-blue" onclick="add();">提交</button>
 									</c:if>
 							</div>
 						</div>
@@ -232,22 +240,30 @@ cursor: pointer;
 								<td class="nw" width="100px;">${check_goal}</td>
 								</s:else>
 								
-								
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
-								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-								<s:if test="isdept==1">
+								
 								<td class="longnote" title="${correctly}">
 								<c:if test="${it:checkb(uuid)==true}">
+								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
+								<s:if test="isdept==1&&dtype==1">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
+								</s:if>
+								
+								<s:elseif test="%{typea==0&&dtype==1}">横向考核</s:elseif>
+								<s:elseif test="%{dtype==3}">取班组分数</s:elseif>
+								<s:else>
+									取部门分数
+								</s:else>
+								</c:if>	
 								</c:if>
 								</td>
-								</s:if>
+								
 								<s:else>
 								<td class="longnote" title="${correctly}"></td>
 								</s:else>
-								</c:if>			
+										
 							</tr>
 						</s:iterator>
 						<tr>
@@ -400,7 +416,22 @@ function mdy(uuid,so){
 	var sp=document.getElementById(sid).value;
 	var gp=document.getElementById(gid).value;
 	window.location.href="/qkjmanager/varticDetail_saveDept?vd.uuid="+uuid+"&vd.check_score="+sp+"&vd.check_goal="+gp+"&vd.score_id="+so;
-}
+};
+var ads= function(ad){
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var l = $(data).length;
+				if(l==1){
+					$('#adt').html($(data)[0].dept_cname);
+				}
+				
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "SYS_SELECT_DEPT_LISTBYDEPT");
+	ajax.addParameter("parameters", "dept_code=" + encodeURI(ad));
+	ajax.sendAjax2();
+};
 
 </script>
 </body>

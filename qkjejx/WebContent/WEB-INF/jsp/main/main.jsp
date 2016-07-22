@@ -16,7 +16,7 @@
 <div class="tab_right">
 	<div class="tab_warp">
 	<p class="dq_step"><a href="">首页</a>&nbsp;&gt;&nbsp;工时申请单列表
-		<span class="opb lb op-area"><a href="">添加申请单</a></span>
+		<span class="opb lb op-area"><a href="">提交申请单</a></span>
 		<span class="opb lb op-area"><a href="javascript:;" onclick="showCookie(wCo);" style="float: right;">测试dialog</a></span>
 	</p>
     <form id="serachForm" name="serachForm" action="/adm/leave_list" method="get">
