@@ -1,2 +1,35 @@
+<<<<<<< HEAD
 /org
 /com
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+/com
+/log4j.xml
+/org
+/sql-map-config.xml
+/sql-map-config02.xml
+/struts.properties
+/struts.xml
+/xwork-conversion.properties
+=======
+<<<<<<< HEAD
+>>>>>>> 285409dccd1e34c6bdb9cb28a3c06809520c0478
+/com/
+/log4j.xml
+/org/
+/sql-map-config.xml
+/sql-map-config02.xml
+/struts.properties
+/struts.xml
+/xwork-conversion.properties
+<<<<<<< HEAD
+=======
+=======
+/org
+/com
+>>>>>>> b885e44db8fa8d4a2f05c40aedf7ed3b3b6aa0d8
+>>>>>>> f3612a8b4cd8486ee22432e331573d1b32bc5fe2
+>>>>>>> 285409dccd1e34c6bdb9cb28a3c06809520c0478
+>>>>>>> 880af2d7375010972661fec86161d2a4d428191d

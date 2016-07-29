@@ -79,13 +79,13 @@ cursor: pointer;
 						<td class="td1 nw">${uuid}</td>
 						<td class="td1 nw">${add_username}</td>
 						<td class="td1 nw">${add_deptname}</td>
-						<td class="td1 nw">${it:formatDate(plan_date,'yyyy-MM')}</td>
+						<td class="td2 nw">${it:formatDate(plan_date,'yyyy-MM')}</td>
 						<td class="td2 nw" title="${project}">${it:subString(project,18)}</td>
-						<td class="td1 nw">
+						<td class="td2 nw">
 						<s:if test="type==1">常规</s:if>
 						<s:else>临时</s:else>
 						</td>
-						<td class="td2 nw">${it:formatDate(start_time,'yyyy-MM-dd')}</td>
+						<td class="td3 nw">${it:formatDate(start_time,'yyyy-MM-dd')}</td>
 						<td class="td3 nw">${it:formatDate(end_time,'yyyy-MM-dd')}</td>
 						<td class="td3 nw">${it:formatDate(f_time,'yyyy-MM-dd')}</td>
 						<td class="td4 op-area">

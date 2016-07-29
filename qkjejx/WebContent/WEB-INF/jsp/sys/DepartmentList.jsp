@@ -414,7 +414,7 @@ function addtab(ct) {
 	};
 	ajax.addParameter("privilege_id", "SYS_MANAGER_DEPT_ADDKPI");
 	ajax.addParameter("work","update");
-	ajax.addParameter("parameters", "dept_code=" + dept_code+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+count_way
+	ajax.addParameter("parameters", "dept_code=" + dept_code+"&kpi="+encodeURI(kpi)+"&weight="+weight+"&count_way="+encodeURI(count_way)
 			+"&definition="+encodeURI(definition)+"&correctly="+encodeURI(correctly)+"&check_deptcode="+encodeURI(check_deptcode)+"&check_post="+encodeURI(check_post)
 			+"&isdept="+encodeURI(isdept)+"&type="+encodeURI(type)+"&cyc="+encodeURI(cyc)+"&position_dept="+encodeURI(position_dept));
 	ajax.sendAjax2();
