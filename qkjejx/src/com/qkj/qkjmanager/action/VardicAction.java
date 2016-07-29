@@ -147,6 +147,10 @@ public class VardicAction extends ActionSupport {
 			//查询打开的审核日期
 			CheckDao c=new CheckDao();
 			List<Check> checks=new ArrayList();
+			map.clear();
+			map.put("state", 0);//状态打开的审核日期
+			checks=c.list(map);
+			
 			map.put("typea", "1");
 			map.put("check_userh", ContextHelper.getUserLoginUuid());
 			if(checks.size()>0){//只查询打开的已考核记录
@@ -159,9 +163,7 @@ public class VardicAction extends ActionSupport {
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
-			map.clear();
-			map.put("state", 0);//状态打开的审核日期
-			checks=c.list(map);
+			
 			if(checks.size()>0){
 				Check check=new Check();
 				check=checks.get(0);
@@ -182,13 +184,22 @@ public class VardicAction extends ActionSupport {
 				uds=ulf.getUds();
 				List<String> dlistall = new ArrayList<>();
 				Set<String> dsetall = new HashSet<>();
+				Set<String> dall = new HashSet<>();
 				if(uds.size()>0){
 					for(int s=0;s<uds.size();s++){
 						dsetall.add(uds.get(s).getDept_code());
+						if(uds.get(s).getRoles().contains("2016072516956868")){//部门考核权限
+							dall.add(uds.get(s).getDept_code());
+						}
 					}
 					if (dsetall.size() > 0) {
 						dlistall.addAll(dsetall);
 						map.put("parent_dept", dlistall);//多权限可查询多个子部门
+					}
+					if(dall.size()>0){
+						List<String> dlall = new ArrayList<>();
+						dlall.addAll(dall);
+						map.put("chdept", dlall);
 					}
 				}
 				//linshid=dao.Checklistbydept(map);//所有可考核部门

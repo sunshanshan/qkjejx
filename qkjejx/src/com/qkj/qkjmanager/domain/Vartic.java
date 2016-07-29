@@ -11,6 +11,7 @@ public class Vartic {
 	private Date lm_time;// (datetime)最后修改时间
 	private Integer check_ym;// 考核管理表考核打开的年月
 	private Double check_score=0.0;// 总得分 （横向/纵）
+	private Integer jltype;
 	
 	private Double ay_totelScore;//总得分 （横向+纵）
 	
@@ -43,6 +44,14 @@ public class Vartic {
 	
 	private Integer finish;//部门是否考核完成，，用于取班组分数时判断是否班组考核完成
 	
+	public Integer getJltype() {
+		return jltype;
+	}
+
+	public void setJltype(Integer jltype) {
+		this.jltype = jltype;
+	}
+
 	public Integer getFinish() {
 		return finish;
 	}

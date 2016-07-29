@@ -16,14 +16,41 @@ public class VarticDetail {
 	private Double weight;//权重
 	private String definition;//定义
 	private String correctly;//标准
-	private Integer typea;//0横向1纵向 
+	private Integer typea;//0横向1纵向  
+	private String depttype;//是否取部门分数
+	private String position_dept;//取哪个部门
 	
 	private String check_user;// 考核人
 	private String check_usercode;// 考核人部门
 	private Integer kpi_id;
 	private Integer isdept;
 	private Integer dtype;
+	private String auser;
 	
+	public String getAuser() {
+		return auser;
+	}
+
+	public void setAuser(String auser) {
+		this.auser = auser;
+	}
+
+	public String getPosition_dept() {
+		return position_dept;
+	}
+
+	public void setPosition_dept(String position_dept) {
+		this.position_dept = position_dept;
+	}
+	
+	public String getDepttype() {
+		return depttype;
+	}
+
+	public void setDepttype(String depttype) {
+		this.depttype = depttype;
+	}
+
 	public Integer getDtype() {
 		return dtype;
 	}

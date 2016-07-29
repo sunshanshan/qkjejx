@@ -61,7 +61,9 @@
 	 			<tr id="coltr">
 	              <th  class="td1">用户名</th>
 	              <th  class="td1">姓名</th>
-	              <th  class="td2">部门</th>
+	              <th  class="td2">一级部门</th>
+	              <th  class="td2">二级部门</th>
+	              <th  class="td2">三级部门</th>
 	              <th  class="td2">职务</th>
 	              <th  class="td3">联系方式</th>
 	              <th  class="td4">状态</th>
@@ -73,7 +75,9 @@
 				<tr id="showtr${uuid}">
 	              <td class="td1">${title}</td>
 	              <td class="td1">${user_name}</td>
-	              <td class="td2">(${pparname}:${pardname})${dept_cname}</td>
+	              <td class="td2">${pparname}</td>
+	              <td class="td2">${pardname}</td>
+	              <td class="td2">${dept_cname}</td>
 	              <td class="td2">${position_name}</td>
 	              <td class="td3">${mobile}</td>
 	              <td class="td4">

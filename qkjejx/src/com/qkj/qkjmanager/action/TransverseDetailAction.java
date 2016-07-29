@@ -403,6 +403,11 @@ public class TransverseDetailAction extends ActionSupport {
 						vd.setCheck_user(ContextHelper.getUserLoginUuid());
 						vd.setCheck_usercode(ContextHelper.getUserLoginDept());
 						vd.setTypea(0);//横向
+						KpiDAO k=new KpiDAO();
+						IndexDetail id=new IndexDetail();
+						id=(IndexDetail) k.get(vd.getCheck_index());
+						vd.setDepttype(id.getType());
+						vd.setPosition_dept(id.getPosition_dept());
 						sum=sum+Double.parseDouble(arr[3]);
 						//vd.setCheck_index(Double.parseDouble(arr[0]));
 						dao.add(vd);
@@ -494,6 +499,12 @@ public class TransverseDetailAction extends ActionSupport {
 						vd.setCheck_usercode(ContextHelper.getUserLoginDept());
 						vd.setTypea(0);//横向
 						sum=sum+Double.parseDouble(arr[3]);
+						KpiDAO k=new KpiDAO();
+						IndexDetail id=new IndexDetail();
+						id=(IndexDetail) k.get(vd.getCheck_index());
+						vd.setDepttype(id.getType());
+						vd.setPosition_dept(id.getPosition_dept());
+						vd.setKpi(id.getKpi());
 						//vd.setCheck_index(Double.parseDouble(arr[0]));
 						dao.add(vd);
 					}
@@ -530,16 +541,6 @@ public class TransverseDetailAction extends ActionSupport {
 			dao.save(vd);
 			
 			/**
-			 * 修改主表分数横加纵
-			 */
-			//修改横向向总分
-			zdao.saveBycheck(vardic.getUuid().toString());
-			
-			Vartic c=new Vartic();
-			c=(Vartic) zdao.get(vardic.getUuid());
-			Double sum=c.getCheck_score();
-			//查询部门横向考核分数 修改横+纵总分
-			/**
 			 * 修改总分数 横+纵的部门
 			 */
 			zdao.saveBycheck(vardic.getUuid().toString());
@@ -553,7 +554,92 @@ public class TransverseDetailAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
-
+	
+	public String saveD() throws Exception {
+		//ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_MDY");
+		try {
+			dao.startTransaction();
+			this.setVardic((Vartic) zdao.get(vd.getScore_id()));
+			dao.save(vd);
+			/**
+			 * 修改主表分数横加纵
+			 */
+			zdao.saveBycheck(vardic.getUuid().toString());
+			//查询修改的kpi
+			VarticDetail vds=new VarticDetail();
+			vds=(VarticDetail) dao.get(vd.getUuid());
+			//查询取此部门分数的sonscore
+			if(vardic.getAcheck_usercode()!=null && vardic.getCheck_ym()!=null && vd.getKpi()!=null){
+				map.clear();
+				map.put("depttype", "2");
+				map.put("kpi", vds.getKpi());
+				map.put("position_dept", vardic.getAcheck_usercode());
+				map.put("check_ym", vardic.getCheck_ym());
+				List<VarticDetail> des=new ArrayList<>();
+				des=dao.listmdy(map);
+				if(des.size()>0){
+					for(int i=0;i<des.size();i++){
+						VarticDetail v=new VarticDetail();
+						v=des.get(i);
+						Double w=v.getCheck_goal()/v.getCheck_score();//权重
+						v.setCheck_score(vd.getCheck_score());
+						v.setCheck_goal(vd.getCheck_score()*w);
+						dao.save(v);
+						zdao.saveBycheck(v.getScore_id().toString());
+					}
+				}
+			}
+			
+			
+			//查询取班组的分数的人
+			if(vardic.getAcheck_usercode()!=null && vardic.getCheck_ym()!=null){
+			map.clear();
+			map.put("depttype", "3");
+			map.put("type3", vardic.getAcheck_usercode());
+			map.put("check_ym", vardic.getCheck_ym());
+			
+			List<VarticDetail> desu=new ArrayList<>();
+			desu=dao.listmdy(map);
+			if(desu.size()>0){
+				for(int i=0;i<desu.size();i++){
+					VarticDetail v=new VarticDetail();
+					v=desu.get(i);
+					Double w=v.getCheck_goal()/v.getCheck_score();//权重
+					//查询此人所有部门的成绩
+					map.clear();
+					map.put("userid", v.getAuser());
+					map.put("check_ym", vardic.getCheck_ym());
+					List<VarticDetail> v3=new ArrayList<>();
+					v3=dao.scorebykpibydept(map);
+					Double score=0.00;
+					if(v3.size()>1){
+						for(int j=0;j<v3.size();j++){
+							score=score+v3.get(j).getCheck_score()*(w/v3.size());
+						}
+					}else{
+						if(v3.size()>0){
+							score=(score+v3.get(0).getCheck_score())*w;
+						}
+					}
+					v.setCheck_score(score/w);
+					v.setCheck_goal(score);
+					dao.save(v);
+					zdao.saveBycheck(v.getScore_id().toString());
+				}
+			}
+			}
+			//修改经理级分数
+			//zdao.savejl(vardic);
+			dao.commitTransaction();
+		} catch (Exception e) {
+			log.error(this.getClass().getName() + "!save 数据更新失败:", e);
+			throw new Exception(this.getClass().getName() + "!save 数据更新失败:", e);
+		}
+		finally {
+			dao.endTransaction();
+		}
+		return SUCCESS;
+	}
 	public String del() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_HORILIST_DEL");
 		try {

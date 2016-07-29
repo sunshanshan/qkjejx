@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>报表管理--<s:text name="APP_NAME" /></title>
+<title>绩效反馈--<s:text name="APP_NAME" /></title>
 <s:action name="ref_head" namespace="/manager" executeResult="true" />
 </head>
 <style type="text/css">
@@ -57,6 +57,34 @@ cursor: pointer;
 					<th class="td1">操作</th>
 				</tr>
 				<s:iterator value="vardics" status="sta">
+					<tr id="showtr${uuid}">
+						<td class="td1 nw">${uuid}</td>
+						<td class="td1 nw">${it:formatDate(cym,'yyyy-MM')}</td>
+						<td class="td1 nw">${acheck_username}</td>
+						<td class="td1 nw">${acheck_deptname}</td>
+						<td class="td2 nw">${it:formatDate(check_date,'yyyy-MM-dd')}</td>
+						<td class="td2 nw">
+						${check_score}
+						</td>
+						<td class="td2 nw">
+						<s:if test="cstate==0">
+						打开
+						</s:if>
+						<s:elseif test="cstate==1">关闭</s:elseif>
+						<s:elseif test="cstate==2">已审核</s:elseif>
+						</td>
+						<td class="td1 nw">
+						<s:if test="%{acheck_username==null}">
+							<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_loadDept"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">查看</a>
+							</s:if>
+							<s:else>
+							<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">查看</a>
+							</s:else>
+						</td>
+					</tr>
+				</s:iterator>
+				
+				<s:iterator value="vardicsbyd" status="sta">
 					<tr id="showtr${uuid}">
 						<td class="td1 nw">${uuid}</td>
 						<td class="td1 nw">${it:formatDate(cym,'yyyy-MM')}</td>

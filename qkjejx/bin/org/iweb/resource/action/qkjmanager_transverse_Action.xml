@@ -57,7 +57,7 @@
 			<result>/WEB-INF/jsp/qkjmanager/transverseUserDetailList.jsp</result>
 		</action>
 		
-		<action name="transverseDetail_save" class="com.qkj.qkjmanager.action.TransverseDetailAction" method="save">
+		<action name="transverseDetail_save" class="com.qkj.qkjmanager.action.TransverseDetailAction" method="saveD">
 			<result type="redirectAction">
 				<param name="actionName">transverseDetail_load</param>
 				<param name="viewFlag">mdy</param>

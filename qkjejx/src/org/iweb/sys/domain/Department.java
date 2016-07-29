@@ -13,9 +13,36 @@ public class Department {
 	private String parent_dept;
 
 	private Integer type;
+	private Double check_score;
+	private String z;
+	private String remark;
 
 	public Integer getType() {
 		return type;
+	}
+
+	public Double getCheck_score() {
+		return check_score;
+	}
+
+	public void setCheck_score(Double check_score) {
+		this.check_score = check_score;
+	}
+
+	public String getZ() {
+		return z;
+	}
+
+	public void setZ(String z) {
+		this.z = z;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 	public void setType(Integer type) {

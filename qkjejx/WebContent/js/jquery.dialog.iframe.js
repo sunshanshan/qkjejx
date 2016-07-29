@@ -272,6 +272,9 @@ var loadPosition = function(dept_code, curr_apply_user, b_m){
 	else if(encodeURI(dept_code).substring(0,7)=="1020403"){
 		ajax.addParameter("parameters", "dept_code3=" + encodeURI("1020403")+"&dept_code2="+encodeURI(dept_code));
 	}
+	else if(encodeURI(dept_code).substring(0,5)=="10601"){
+		ajax.addParameter("parameters", "dept_code3=" + encodeURI("10601")+"&dept_code2="+encodeURI(dept_code));
+	}
 	else{
 		ajax.addParameter("parameters", "dept_code2=" + encodeURI(dept_code));
 	}

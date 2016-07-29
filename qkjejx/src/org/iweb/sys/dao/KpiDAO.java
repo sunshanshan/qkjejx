@@ -1,5 +1,6 @@
 package org.iweb.sys.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,11 @@ public class KpiDAO extends AbstractDAO {
 		return super.list("flagDept", map);
 	}
 	
+	public Object get(Object uuid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("uuid", uuid);
+		return super.get("sys_getDeptsKpi", map);
+	}
 	
 	
 	public int getResultCount() {

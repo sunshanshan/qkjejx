@@ -7,14 +7,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,15 +24,19 @@ import org.apache.struts2.ServletActionContext;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.ExcelUtil;
 import org.iweb.sys.Parameters;
+import org.iweb.sys.domain.Department;
+import org.iweb.sys.domain.User;
+import org.iweb.sys.domain.UserDept;
+import org.iweb.sys.domain.UserLoginInfo;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.basics.dao.CheckDao;
+import com.qkj.basics.domain.Check;
 import com.qkj.qkjmanager.dao.VardicDao;
 import com.qkj.qkjmanager.dao.reportDao;
 import com.qkj.qkjmanager.domain.Score;
 import com.qkj.qkjmanager.domain.Vartic;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class ReportAction extends ActionSupport {
 	private reportDao dao = new reportDao();
@@ -45,8 +51,59 @@ public class ReportAction extends ActionSupport {
 		this.vardic = vardic;
 	}
 	private List<Vartic> vardics;
+	private List<Vartic> vardicsbyd;
 	private List<Vartic> vardicsc;
 	private List<Vartic> vardicsb;
+	private List<Vartic> vardicwillu;
+	private List<Vartic> vardicswilld;
+	private List<Department> hzds;
+	private List<User> hzus;
+	private List<Department> bgs;
+	private List<User> bgus;
+	private User user;
+	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public List<User> getBgus() {
+		return bgus;
+	}
+	public void setBgus(List<User> bgus) {
+		this.bgus = bgus;
+	}
+	public List<Department> getBgs() {
+		return bgs;
+	}
+	public void setBgs(List<Department> bgs) {
+		this.bgs = bgs;
+	}
+	public List<User> getHzus() {
+		return hzus;
+	}
+	public void setHzus(List<User> hzus) {
+		this.hzus = hzus;
+	}
+	public List<Department> getHzds() {
+		return hzds;
+	}
+	public void setHzds(List<Department> hzds) {
+		this.hzds = hzds;
+	}
+	public List<Vartic> getVardicwillu() {
+		return vardicwillu;
+	}
+	public void setVardicwillu(List<Vartic> vardicwillu) {
+		this.vardicwillu = vardicwillu;
+	}
+	public List<Vartic> getVardicswilld() {
+		return vardicswilld;
+	}
+	public void setVardicswilld(List<Vartic> vardicswilld) {
+		this.vardicswilld = vardicswilld;
+	}
 	public List<Vartic> getVardicsb() {
 		return vardicsb;
 	}
@@ -113,6 +170,12 @@ public class ReportAction extends ActionSupport {
 	public void setCurrPage(int currPage) {
 		this.currPage = currPage;
 	}
+	public List<Vartic> getVardicsbyd() {
+		return vardicsbyd;
+	}
+	public void setVardicsbyd(List<Vartic> vardicsbyd) {
+		this.vardicsbyd = vardicsbyd;
+	}
 	public String list() throws Exception {
 		ContextHelper.isPermit("SYS_QKJMANAGER_REPORT");
 		try {
@@ -131,6 +194,17 @@ public class ReportAction extends ActionSupport {
 	        }
 			this.setVardics(dao.list(map));
 			this.setRecCount(dao.getResultCount());
+			//查询打开的审核日期
+			CheckDao c=new CheckDao();
+			List<Check> checks=new ArrayList();
+			map.clear();
+			map.put("state", 0);//状态打开的审核日期
+			checks=c.list(map);
+			if(checks.size()>0){
+				map.put("check_ym", checks.get(0).getUuid());
+			}
+			this.setVardicwillu(dao.listwillu(map));
+			this.setVardicswilld(dao.listwilld(map));
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!list 读取数据错误:", e);
@@ -139,23 +213,138 @@ public class ReportAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	public String listhz() throws Exception{
+		//查询考核部门
+		map.clear();
+		//查询打开的考核日期
+				if (vardic == null) {
+					Check cs=new Check();
+					VardicDao vd=new VardicDao();
+					cs=vd.check_cym();
+					vardic=new Vartic();
+					vardic.setCym(cs.getYm());
+				}else{
+					ContextHelper.SimpleSearchMap4Page(null, map, vardic, viewFlag);
+				}
+				
+		ActionContext context = ActionContext.getContext();  
+		HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);  
+		HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);  
+		UserLoginInfo ulf = new UserLoginInfo();
+		ulf=(UserLoginInfo) request.getSession().getAttribute(Parameters.UserLoginInfo_Session_Str);
+		List<UserDept> uds=new ArrayList<>();
+		uds=ulf.getUds();
+		List<String> dlistall = new ArrayList<>();
+		Set<String> dsetall = new HashSet<>();
+		Set<String> dall = new HashSet<>();
+		if(uds.size()>0){
+			for(int s=0;s<uds.size();s++){
+				if(uds.get(s).getRoles().contains("2016060815212623")){
+					dsetall.add(uds.get(s).getDept_code());
+				}
+				if(uds.get(s).getRoles().contains("2016072516956868")){//部门考核权限
+					dall.add(uds.get(s).getDept_code());
+				}
+			}
+			if (dsetall.size() > 0) {
+				dlistall.addAll(dsetall);
+				map.put("parent_dept", dlistall);//多权限可查询多个子部门
+			}
+			if(dall.size()>0){
+				List<String> dlall = new ArrayList<>();
+				dlall.addAll(dall);
+				map.put("chdept", dlall);
+			}
+		}
+		this.setHzds(dao.listhzd(map));
+		map.clear();
+		map.put("parent_user", ContextHelper.getUserLoginUuid());
+		this.setHzus(dao.listhzu(map));
+		return SUCCESS;
+	}
+	
+	public String listbg() throws Exception{
+		//查询考核部门
+		map.clear();
+		//查询打开的考核日期
+				if (vardic == null) {
+					Check cs=new Check();
+					VardicDao vd=new VardicDao();
+					cs=vd.check_cym();
+					vardic=new Vartic();
+					vardic.setCym(cs.getYm());
+				}
+		this.setBgs(dao.listhbg(map));
+		return SUCCESS;
+	}
+	
+	public String listbgu() throws Exception{
+		//查询考核部门
+		map.clear();
+		//查询打开的考核日期
+		if(vardic!=null){
+			if(vardic.getCym()!=null){
+				SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM" );
+			    String str = sdf.format(vardic.getCym());
+				map.put("cym", str);
+			}
+			if(vardic.getAcheck_usercode()!=null){
+				map.put("dept_code", vardic.getAcheck_usercode());
+			}
+			this.setBgus(dao.listhbgu(map));
+		}
+		return SUCCESS;
+	}
+	
 	public String listjx() throws Exception {
 		try {
+			//查询打开的审核日期
+			CheckDao c=new CheckDao();
+			List<Check> checks=new ArrayList();
+			map.clear();
+			map.put("state", 0);//状态打开的审核日期
+			checks=c.list(map);
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
-			ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_CHECKLIST", map, "apply_depts", "apply_user");
+			//ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_CHECKLIST", map, "apply_depts", "apply_user");
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_CHECKLIST", map, vardic, viewFlag);
-			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
+			//this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
 	        if(map.get("cym")!=null){
 	        	SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
 		        String d = sdf.format(vardic.getCym());
 		        map.remove("cym");
 		        map.put("cym", d);
 	        }
-			this.setVardics(dao.list(map));
-			this.setRecCount(dao.getResultCount());
+	        
+			if(checks.size()>0){//只查询打开的已考核记录
+				map.put("check_ym", checks.get(0).getUuid());
+			}
+			UserLoginInfo ulf = new UserLoginInfo();
+			ActionContext context = ActionContext.getContext();
+			HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);  
+			HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);
+			ulf=(UserLoginInfo) request.getSession().getAttribute(Parameters.UserLoginInfo_Session_Str);
+			List<UserDept> uds=new ArrayList<>();
+			uds=ulf.getUds();
+			Set<String> dall = new HashSet<>();
+			if(uds.size()>0){
+				for(int s=0;s<uds.size();s++){
+					if(uds.get(s).getRoles().contains("2016072516956868") || uds.get(s).getDepsubover()==1){//部门考核权限
+						dall.add(uds.get(s).getDept_code());
+					}
+				}
+				if(dall.size()>0){
+					List<String> dlall = new ArrayList<>();
+					dlall.addAll(dall);
+					map.put("apply_depts", dlall);
+				}
+			}
+			map.put("apply_userDouble", ContextHelper.getUserLoginUuid());
+			this.setVardics(dao.listU(map));
+			this.setVardicsbyd(dao.listD(map));
+			//this.setRecCount(dao.getResultCount());
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!list 读取数据错误:", e);

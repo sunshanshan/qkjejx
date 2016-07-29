@@ -3,7 +3,6 @@ package org.iweb.sys.domain;
 import java.util.Date;
 
 public class User {
-
 	private String uuid;
 	private String title;
 	private String passwords;
@@ -21,9 +20,6 @@ public class User {
 	private String mobile;
 	private Integer is_mobile_check;
 	private String position;
-	// private String position_grade;
-	// private String position_attribute;
-	// private String position_note;
 	private String senior;// 上级人员(汇报对象)
 	private String descriptions;
 	private Integer status;
@@ -42,12 +38,10 @@ public class User {
 	private String is_sub_dept;
 	private Integer type;
 	private String parent_user; //汇报人e 
-	
 	private String pd; 
 	private Double w;
 	private Integer id_uid;//kpi编号
 	private String kpi;
-
 
 	// 以下为查询专用字段
 	private String[] positions;
@@ -55,11 +49,37 @@ public class User {
 	private String parent_user_name;
 	private String p_dname;
 	private String p_code;
-	
 	private String dept_codelist;
 	private String pardname; 
 	private String pparname;
+	private Double check_score;
+	private String z;
+	private String remark;
 	
+	public Double getCheck_score() {
+		return check_score;
+	}
+
+	public void setCheck_score(Double check_score) {
+		this.check_score = check_score;
+	}
+
+	public String getZ() {
+		return z;
+	}
+
+	public void setZ(String z) {
+		this.z = z;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	public String getPparname() {
 		return pparname;
 	}

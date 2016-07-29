@@ -3,6 +3,8 @@
 <sqlMap>
 	<typeAlias alias="score" type="com.qkj.qkjmanager.domain.Score" />
 	<typeAlias alias="vartic" type="com.qkj.qkjmanager.domain.Vartic" />
+	<typeAlias alias="dept" type="org.iweb.sys.domain.Department" />
+	<typeAlias alias="user" type="org.iweb.sys.domain.User" />
 	<select id="qkjmanager_getVarticsReport" resultClass="vartic" parameterClass="java.util.Map">
 		<![CDATA[ 
 			select DISTINCT c.uuid,c.*,achecku.user_name acheck_username,mdyu.USER_NAME lm_username,acheckd.dept_cname acheck_deptname,df.dept_cname df_name,
@@ -46,4 +48,167 @@
 			</isEmpty>
 		</dynamic>
 	</select>
+	<!-- 汇总 -->
+	<select id="qkjmanager_getVarticsHZD" resultClass="dept" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select * from s_sys_department d 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ d.uuid=#uuid# ]]></isNotNull>
+			<isNotEmpty prepend="AND" property="parent_dept" open="(" close=")">
+			<![CDATA[  d.parent_dept In ]]>
+			<iterate property="parent_dept" open="(" close=")" conjunction=" , "> #parent_dept[]#</iterate>
+			<isNotEmpty prepend="OR" property="chdept">
+				<![CDATA[ d.dept_code In ]]>
+				<iterate property="chdept" open="(" close=")" conjunction=" , "> #chdept[]#</iterate>
+			</isNotEmpty> 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="parent_dept">
+			<![CDATA[EXISTS(select 1 from qkj_t_indexdetail id where d.dept_code=id.dept_code and ISNULL(id.dept_code, '0')<>'0') ]]>	
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	<select id="qkjmanager_getVarticsHZU" resultClass="user" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select * from s_sys_user u
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ u.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="parent_user"><![CDATA[ u.parent_user=#parent_user# ]]></isNotNull>
+			<isNotNull prepend="AND" property="parent_user">
+			<![CDATA[EXISTS(select 1 from qkj_t_indexdetail id join s_cfg_position p on (id.position_id=p.uuid) where  u.[POSITION]=p.uuid and ISNULL(id.position_id, '0')<>'0') ]]>	
+			</isNotNull>
+		</dynamic>
+	</select>
+	<!-- 根据人和部门 月份查询分数 -->
+	<select id="qkjmanager_getScore" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select s.check_score,s.remark,c.ym cym from qkj_r_score s 
+			join qkj_r_check c on (s.check_ym=c.uuid)
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="acheck_user"><![CDATA[ s.acheck_user=#acheck_user# ]]></isNotNull>
+			<isNotNull prepend="AND" property="cym"><![CDATA[ c.ym like #cym# +'%' ]]></isNotNull>
+			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[ s.acheck_usercode=#acheck_usercode# and ISNULL(s.acheck_user, '0')='0' ]]></isNotNull>
+		</dynamic>
+	</select>
+	
+	
+	<!-- 报告 -->
+	<select id="qkjmanager_getVarticsBG" resultClass="dept" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select d.dept_code,d.dept_cname,d.parent_dept
+			from s_sys_department d 
+			
+			where ((d.parent_dept in 
+			(
+			select ud.dept_code from s_sys_userdept ud 
+			join s_cfg_position p on (ud.[position]=p.uuid) where  p.groupT=1
+			) 
+			and LEN(d.dept_code)>3) or d.dept_code in
+			(
+			select ud.dept_code from s_sys_userdept ud 
+			left join s_cfg_position p on (ud.[position]=p.uuid) where  ud.roles like '%2016072516956868%'
+			)) order by d.parent_dept
+		]]>
+		
+	</select>
+	
+	<select id="qkjmanager_getVarticsBGU" resultClass="user" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select u.UUID,u.USER_NAME,p.POSITION_NAME position_name,d.dept_cname dept_cname
+			from s_sys_user u
+			join s_cfg_position p on (u.[POSITION]=p.uuid)
+			join s_sys_department d on (u.DEPT_CODE=d.dept_code)
+			left join qkj_r_score s on (u.UUID=s.acheck_user)
+			where  1=1 
+		]]>
+		<isNotNull prepend="AND" property="dept_code"><![CDATA[ u.dept_code like #dept_code# +'%' ]]></isNotNull>
+	</select>
+	
+	<select id="qkjmanager_getVarticsFKbyU" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select DISTINCT c.uuid,c.*,achecku.user_name acheck_username,mdyu.USER_NAME lm_username,acheckd.dept_cname acheck_deptname,df.dept_cname df_name,
+			acd.dept_cname acd_cname,chec.ym cym,chec.state cstate
+			from qkj_r_score c 
+			left join qkj_r_sonscore ss on(ss.score_id=c.uuid)
+			left join s_sys_user achecku on(c.acheck_user=achecku.uuid)
+			left join s_sys_user mdyu on(c.lm_user=mdyu.uuid)
+			left join s_sys_user cuser on(cuser.UUID=ss.check_user)
+			left join s_sys_department acheckd on(acheckd.dept_code=c.acheck_usercode)
+			LEFT JOIN s_sys_department df on (df.dept_code=acheckd.parent_dept)
+			left JOIN s_sys_department acd on(acd.dept_code=c.acheck_dept)
+			left join qkj_t_indexdetail id on(id.uuid=ss.check_index)
+			left join qkj_r_check chec on (chec.uuid=c.check_ym)
+			
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_ym"><![CDATA[  c.check_ym=#check_ym# ]]></isNotNull>
+			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# and ISNULL(c.acheck_user, '0')='0']]></isNotNull>
+			<isNotNull prepend="AND" property="cym"><![CDATA[  chec.ym like #cym# +'%' ]]></isNotNull>
+			
+			<isNotNull prepend="AND" property="apply_userDouble" open="(" close=")">
+				<![CDATA[ c.acheck_user=#apply_userDouble# ]]>
+			</isNotNull>
+			
+ 		</dynamic>
+	</select>
+	
+	<select id="qkjmanager_getVarticsFKbyD" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select DISTINCT c.uuid,c.*,achecku.user_name acheck_username,mdyu.USER_NAME lm_username,acheckd.dept_cname acheck_deptname,df.dept_cname df_name,
+			acd.dept_cname acd_cname,chec.ym cym,chec.state cstate
+			from qkj_r_score c 
+			left join qkj_r_sonscore ss on(ss.score_id=c.uuid)
+			left join s_sys_user achecku on(c.acheck_user=achecku.uuid)
+			left join s_sys_user mdyu on(c.lm_user=mdyu.uuid)
+			left join s_sys_user cuser on(cuser.UUID=ss.check_user)
+			left join s_sys_department acheckd on(acheckd.dept_code=c.acheck_usercode)
+			LEFT JOIN s_sys_department df on (df.dept_code=acheckd.parent_dept)
+			left JOIN s_sys_department acd on(acd.dept_code=c.acheck_dept)
+			left join qkj_t_indexdetail id on(id.uuid=ss.check_index)
+			left join qkj_r_check chec on (chec.uuid=c.check_ym)
+			
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_ym"><![CDATA[  c.check_ym=#check_ym# ]]></isNotNull>
+			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# and ISNULL(c.acheck_user, '0')='0']]></isNotNull>
+			<isNotNull prepend="AND" property="cym"><![CDATA[  chec.ym like #cym# +'%' ]]></isNotNull>
+			
+			<isNotEmpty prepend="AND" property="apply_depts" open="(" close=")">
+			<![CDATA[ c.acheck_usercode In ]]>
+			<iterate property="apply_depts" open="(" close=")" conjunction=" , "> #apply_depts[]#</iterate>
+			<![CDATA[ and ISNULL(c.acheck_user, '0')='0' ]]>
+			</isNotEmpty>
+ 		</dynamic>
+	</select>
+	
+	<!--查询未考核人及 部门 -->
+	<select id="qkjmanager_getCheckWillbyd" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select DISTINCT d.dept_code d,d.dept_cname acheck_deptname from s_sys_department d
+			join qkj_t_indexdetail id on (d.dept_code=id.dept_code)
+			where
+			not EXISTS(
+			select 1 from qkj_r_score s where s.acheck_usercode=d.dept_code and ISNULL(s.acheck_user, '0')='0' and 
+			s.check_ym=#check_ym#
+			)
+
+		]]>
+	</select>
+	<select id="qkjmanager_getCheckWillbyu" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select DISTINCT u.UUID d,u.USER_NAME acheck_username from s_sys_user u 
+			join s_cfg_position p on (u.[POSITION]=p.uuid)
+			join qkj_t_indexdetail d on (p.uuid=d.position_id)
+			where
+			not EXISTS(
+			select 1 from qkj_r_score s where s.acheck_user=u.uuid and ISNULL(s.acheck_user, '0')!='0' and 
+			s.check_ym=#check_ym#
+			)
+		]]>
+	</select>
+	
 </sqlMap>

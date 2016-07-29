@@ -88,9 +88,9 @@
 			) newp) a on u.[POSITION]=a.uuid
  
 			LEFT JOIN qkj_t_indexdetail id on (a.uuid=id.position_id)
+			left join s_cfg_position pp on(pp.uuid=u.[POSITION])
 
-
-			where  not exists (select * from qkj_r_score s 
+			where pp.POSITION_GRADE<>4 and  not exists (select * from qkj_r_score s 
 			left JOIN qkj_r_sonscore sd on(sd.score_id=s.uuid)
 			left join qkj_r_check k on(s.check_ym=k.uuid)
 			where s.acheck_user=u.uuid 
@@ -174,7 +174,7 @@
 			where  not exists (select * from qkj_r_score s 
 			left JOIN qkj_r_sonscore sd on(sd.score_id=s.uuid)
 			left join qkj_r_check k on(s.check_ym=k.uuid)
-			where s.acheck_usercode=d.dept_code 
+			where s.acheck_usercode=d.dept_code and ISNULL(s.acheck_user, '0')='0'
 		]]>
 		
 		<isNotNull prepend="AND" property="check_ym"><![CDATA[  k.uuid=#check_ym# ]]></isNotNull>
@@ -187,7 +187,17 @@
 			<isNotEmpty prepend="AND" property="parent_dept" open="(" close=")">
 			<![CDATA[  d.parent_dept In ]]>
 			<iterate property="parent_dept" open="(" close=")" conjunction=" , "> #parent_dept[]#</iterate>
+			<isNotEmpty prepend="OR" property="chdept">
+				<![CDATA[ d.dept_code In ]]>
+				<iterate property="chdept" open="(" close=")" conjunction=" , "> #chdept[]#</iterate>
+			</isNotEmpty> 
 			</isNotEmpty>
+			<isEmpty  property="parent_dept">
+				<isNotEmpty prepend="AND" property="chdept">
+					<![CDATA[ d.dept_code In ]]>
+				<iterate property="chdept" open="(" close=")" conjunction=" , "> #chdept[]#</iterate>
+				</isNotEmpty>
+			</isEmpty>
 			
 		</isEqual>
 		<isEqual property="isdept" compareValue="0"><!-- 横向 -->
@@ -213,8 +223,8 @@
 
 	<insert id="qkjmanager_addVartics" parameterClass="vartic">
 		<![CDATA[ 
-			insert into qkj_r_score(check_ym,acheck_user,acheck_usercode,check_score,check_date,lm_user,lm_time,ay_totelScore,acheck_dept,bscore,remark,hremark)
-			VALUES(#check_ym#,#acheck_user#,#acheck_usercode#,#check_score#,#check_date#,#lm_user#,#lm_time#,0.00,#acheck_dept#,#bscore#,#remark#,#hremark#);
+			insert into qkj_r_score(check_ym,acheck_user,acheck_usercode,check_score,check_date,lm_user,lm_time,ay_totelScore,acheck_dept,bscore,remark,hremark,jltype)
+			VALUES(#check_ym#,#acheck_user#,#acheck_usercode#,#check_score#,#check_date#,#lm_user#,#lm_time#,0.00,#acheck_dept#,#bscore#,#remark#,#hremark#,#jltype#);
 		]]>
 		
 		
@@ -281,6 +291,15 @@
 			from qkj_r_sonscore where score_id=#value#
 			)
 			Where uuid=#value#
+			
+		]]>
+	</update>
+	
+	<update id="qkjmanager_mdyCheckjl" parameterClass="vartic">
+		<![CDATA[
+				Update qkj_r_score
+			Set check_score=#check_score#
+			Where jltype=4 and check_ym=#check_ym# and acheck_usercode=#acheck_usercode# and ISNULL(acheck_user, '0')<>'0'
 			
 		]]>
 	</update>
@@ -353,6 +372,24 @@
 		</dynamic>
 	</select>
 	
+	<select id="scorebymdy" resultClass="varticdetail" parameterClass="java.util.Map">
+		<![CDATA[ 
+				Select s.*,ss.acheck_user auser
+			From qkj_r_sonscore s
+			left join qkj_r_score ss on (s.score_id=ss.uuid)
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="depttype"><![CDATA[  s.depttype=#depttype#]]></isNotNull>
+			<isNotNull prepend="AND" property="position_dept"><![CDATA[ s.position_dept=#position_dept# ]]></isNotNull>
+			<isNotNull prepend="AND" property="kpi"><![CDATA[ s.kpi=#kpi# ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_ym"><![CDATA[ ss.check_ym=#check_ym# ]]></isNotNull>
+			<isNotNull prepend="AND" property="type3"><![CDATA[ EXISTS(
+			select * from s_sys_userdept ud where ud.user_id=ss.acheck_user and ud.dept_code=#type3#
+			
+			) ]]></isNotNull>
+		</dynamic>
+	</select>
+	
 	<select id="scorebykpibydept" resultClass="varticdetail" parameterClass="java.util.Map">
 		<![CDATA[ 
 			Select ss.*
@@ -366,8 +403,8 @@
 
 	<insert id="qkjmanager_addVarticDetails" parameterClass="varticdetail">
 		<![CDATA[ 
-			insert into qkj_r_sonscore(score_id,check_index,check_score,check_goal,check_date,check_user,check_usercode,typea)
-			VALUES(#score_id#,#check_index#,#check_score#,#check_goal#,#check_date#,#check_user#,#check_usercode#,#typea#);
+			insert into qkj_r_sonscore(score_id,check_index,check_score,check_goal,check_date,check_user,check_usercode,typea,depttype,position_dept,kpi)
+			VALUES(#score_id#,#check_index#,#check_score#,#check_goal#,#check_date#,#check_user#,#check_usercode#,#typea#,#depttype#,#position_dept#,#kpi#);
 		]]>
 		
 		

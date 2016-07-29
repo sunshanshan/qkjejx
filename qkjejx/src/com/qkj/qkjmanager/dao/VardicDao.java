@@ -69,6 +69,9 @@ public class VardicDao extends AbstractDAO {
 		super.save("qkjmanager_mdyCheckCord", uuid);
 	}
 	
+	public void savejl(Object parameters) {
+		super.save("qkjmanager_mdyCheckjl", parameters);
+	}
 	
 	public List listByPosition(Map<String, Object> map) {
 		return super.list("qkjmanager_getVarticsByPosition", map);

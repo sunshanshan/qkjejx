@@ -89,6 +89,19 @@ cursor: pointer;
 			</table>
 		</div>
 		<div id="listpage" class="pagination"></div>
+		
+		<fieldset class="clear">
+			<legend>未考核部门</legend>
+			<s:iterator value="vardicswilld" status="sta">
+			${acheck_deptname }&nbsp;&nbsp;
+			</s:iterator>
+		</fieldset>
+		<fieldset class="clear">
+			<legend>未考核人员</legend>
+			<s:iterator value="vardicwillu" status="sta">
+			${acheck_username}&nbsp;&nbsp;
+			</s:iterator>
+		</fieldset>
 	</div>
 </div>
 

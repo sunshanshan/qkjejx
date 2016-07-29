@@ -86,7 +86,7 @@
 			</result>
 		</action>
 		
-		<action name="varticDetail_saveDept" class="com.qkj.qkjmanager.action.VardicDetailAction" method="save">
+		<action name="varticDetail_saveDept" class="com.qkj.qkjmanager.action.VardicDetailAction" method="saveD">
 			<result type="redirectAction">
 				<param name="actionName">varticDetail_loadDept</param>
 				<param name="viewFlag">mdy</param>

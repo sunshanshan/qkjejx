@@ -21,9 +21,6 @@ cursor: pointer;
  	<div class="tab_warp main" >
 		<div class="dq_step">
 			${path}
-			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="vartic_load"><s:param name="viewFlag">add</s:param></s:url>">提交考核</a></span>
-			</c:if>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="vartic_list" method="get" namespace="/qkjmanager" theme="simple">
 			<div class="label_con">
@@ -86,6 +83,7 @@ cursor: pointer;
 						<th class="td1">主键</th>
 						<th class="td1">考核年月</th>
 						<th class="td1">被考核人</th>
+						<th class="td2">职务</th>
 						<th class="td1">被考核人部门</th>
 						<th class="td2">考核完成时间</th>
 						<th class="td2">总分数</th>
@@ -97,6 +95,7 @@ cursor: pointer;
 							<td class="td1 nw">${uuid}</td>
 							<td class="td1 nw">${it:formatDate(cym,'yyyy-MM')}</td>
 							<td class="td1 nw" id="aut${uuid }"><input id="au${uuid }" type="hidden" value="${acheck_user}">
+							<s:if test="acheck_user!=null">
 							<script type="text/javascript">
 															$(function(){
 																var uuid=${uuid };
@@ -105,7 +104,9 @@ cursor: pointer;
 																
 															});
 							</script>
+							</s:if>
 							</td>
+							<td class="td2 nw" id="aup${uuid }"></td>
 							<td class="td1 nw" id="adt${uuid }"><input id="ad${uuid }" type="hidden" value="${acheck_usercode}">
 							<script type="text/javascript">
 															$(function(){
@@ -124,14 +125,12 @@ cursor: pointer;
 							</s:if>
 							<s:else>
 							<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">修改</a>
-							<s:if test="cstate==0"><!-- 开启状态下 -->
 								<c:if test="${it:checktalk(uuid)==true}">
 								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="talk_load"><s:param name="viewFlag">add</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">面谈</a>
 								</c:if>
 								<c:if test="${it:checktalk(uuid)==false}">
 								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="talk_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">面谈</a>
 								</c:if>
-							</s:if>
 							</s:else>
 									
 						    	<%-- <c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_DEL',null)==true}">
@@ -162,7 +161,8 @@ cursor: pointer;
 			var l = $(data).length;
 					if(l==1){
 						$('#aut'+uuid).html($(data)[0].user_name);
-					}
+						$('#aup'+uuid).html($(data)[0].position_name);
+					};
 					
 		};
 		ajax.addParameter("work", "AutoComplete");
@@ -179,7 +179,7 @@ cursor: pointer;
 			var l = $(data).length;
 					if(l==1){
 						$('#adt'+uuid).html($(data)[0].dept_cname);
-					}
+					};
 					
 		};
 		ajax.addParameter("work", "AutoComplete");

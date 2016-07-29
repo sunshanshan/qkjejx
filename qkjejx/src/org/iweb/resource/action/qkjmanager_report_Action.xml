@@ -10,6 +10,15 @@
 		<action name="report_listjx" class="com.qkj.qkjmanager.action.ReportAction" method="listjx">
 			<result>/WEB-INF/jsp/qkjmanager/reportjxList.jsp</result>
 		</action>
+		<action name="report_listhz" class="com.qkj.qkjmanager.action.ReportAction" method="listhz">
+			<result>/WEB-INF/jsp/qkjmanager/reporthzList.jsp</result>
+		</action>
+		<action name="report_listbg" class="com.qkj.qkjmanager.action.ReportAction" method="listbg">
+			<result>/WEB-INF/jsp/qkjmanager/reportbgList.jsp</result>
+		</action>
+		<action name="report_listbgu" class="com.qkj.qkjmanager.action.ReportAction" method="listbgu">
+			<result>/WEB-INF/jsp/qkjmanager/reportbguList.jsp</result>
+		</action>
 		<action name="scoure_excle" class="com.qkj.qkjmanager.action.ReportAction" method="report">
 		</action>
 		

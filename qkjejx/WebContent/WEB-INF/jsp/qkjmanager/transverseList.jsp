@@ -21,9 +21,6 @@ cursor: pointer;
  	<div class="tab_warp main" >
 		<div class="dq_step">
 			${path}
-			<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_ADD',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="transverse_load"><s:param name="viewFlag">add</s:param></s:url>">提交考核</a></span>
-			</c:if>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="transverse_list" method="get" namespace="/qkjmanager" theme="simple">
 			<div class="label_con">
@@ -94,6 +91,7 @@ cursor: pointer;
 					<th class="td1">主键</th>
 					<th class="td1">考核年月</th>
 					<th class="td1">被考核人</th>
+					<th class="td2">职务</th>
 					<th class="td1">被考核部门</th>
 					<th class="td2">考核完成时间</th>
 					<th class="td4">操作</th>
@@ -104,6 +102,7 @@ cursor: pointer;
 						<td class="td1 nw">${uuid}</td>
 						<td class="td1 nw">${it:formatDate(cym,'yyyy-MM')}</td>						
 						<td class="td1 nw" id="aut${uuid }"><input id="au${uuid }" type="hidden" value="${acheck_user}">
+						<s:if test="acheck_user!=null">
 							<script type="text/javascript">
 															$(function(){
 																var uuid=${uuid };
@@ -112,7 +111,9 @@ cursor: pointer;
 																
 															});
 							</script>
+						</s:if>
 							</td>
+							<td class="td2 nw" id="aup${uuid }"></td>
 							<td class="td1 nw" id="adt${uuid }"><input id="ad${uuid }" type="hidden" value="${acheck_usercode}">
 							<script type="text/javascript">
 															$(function(){
@@ -159,7 +160,8 @@ var aus= function(uuid,au){
 		var l = $(data).length;
 				if(l==1){
 					$('#aut'+uuid).html($(data)[0].user_name);
-				}
+					$('#aup'+uuid).html($(data)[0].position_name);
+				};
 				
 	};
 	ajax.addParameter("work", "AutoComplete");
