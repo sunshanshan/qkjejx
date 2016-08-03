@@ -21,6 +21,15 @@ cursor: pointer;
  	<div class="tab_warp main" >
 		<div class="dq_step">
 			${path}
+			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
+				<span class="opb lb op-area">
+				<a onclick="reportp();">导出EXCEL</a>
+				</span>
+			</c:if>
+			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD1',null)==true}">
+				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"><s:param name="viewFlag">add</s:param><s:param name="vardic.cym">${vardic.cym}</s:param></s:url>">导出考核EXCEL</a>
+				</span>
+			</c:if>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="report_listhz" method="get" namespace="/qkjmanager" theme="simple">
 			<div class="label_con">
@@ -35,16 +44,13 @@ cursor: pointer;
 					<div class="label_hang tac">
 						<s:submit value="搜索" />
 						<s:reset value="重置" />
-						<%-- <c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_CHECKSURE',null)==true}">
-						<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="check_sure"></s:url>">审核考核成绩</a></span>
-						</c:if> --%>
 					</div>
 				</div>
 			</div>
 		</s:form>
 		<fieldset class="clear">
 			<legend>部门考核列表</legend>
-			<table>
+			<table id="adept">
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -80,7 +86,7 @@ cursor: pointer;
 		
 		<fieldset class="clear">
 			<legend>员工考核列表</legend>
-			<table>
+			<table id="auser">
 				<tr id="coltr">
 					<th class="td1">员工编号</th>
 					<th class="td1">姓名</th>
@@ -135,16 +141,34 @@ cursor: pointer;
 			</table>
 		</fieldset>
 		
+		<s:form id="printE" action="print_excel" method="post" namespace="/qkjmanager" theme="simple">
+		<input id="adepts" type="hidden" name="adept">
+		<input id="ausers" type="hidden" name="auser">
+		<input id="cymprint" type="hidden" name="cymprint">
+		</s:form>
 	</div>
 </div>
 
 <s:action name="ref_foot" namespace="/manager" executeResult="true" />
 <script type="text/javascript" src="<s:url value="/js/DatePicker.js" />"></script>
+<script type="text/javascript" src="<s:url value="/js/jquery.tabletojson.js" />"></script>
 <script type="text/javascript">
 $(function(){
 	printPagination("listpage",'${currPage}','${recCount}','${pageSize}');
  });
 
+	
+function reportp(){
+	 var table = $('#adept').tableToJSON(); // Convert the table into a javascript object
+	  var table1 = $('#auser').tableToJSON(); // Convert the table into a javascript object
+	  var cym=$('#begintime').val();
+	  $('#adepts').val(JSON.stringify(table));
+	  $('#ausers').val(JSON.stringify(table1));
+	  $('#cymprint').val(cym);
+	  $("#printE").submit();
+	  
+}
+ 
 var ads= function(dept,cym){
 	
 	var ajax = new Common_Ajax('ajax_member_message');

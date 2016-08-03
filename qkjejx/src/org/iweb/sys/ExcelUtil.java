@@ -1,7 +1,9 @@
 package org.iweb.sys;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -107,5 +109,117 @@ public class ExcelUtil {
                    }
         return wb;
     }
+    
+	public static Workbook createWorkBookPrint(JSONArray adept,
+			JSONArray auser, String[] columnNames,String cym) {
+		// TODO Auto-generated method stub
+		 // 创建excel工作簿
+        Workbook wb = new HSSFWorkbook();
+        // 创建第一个sheet（页），并命名
+        Sheet sheet = wb.createSheet("统计");
+        
+        // 创建第一行
+        Row row = sheet.createRow((short) 0);
+
+        // 创建两种单元格格式
+        CellStyle cs = wb.createCellStyle();
+        CellStyle cs2 = wb.createCellStyle();
+
+        // 创建两种字体
+        Font f = wb.createFont();
+        Font f2 = wb.createFont();
+
+        // 创建第一种字体样式（用于列名）
+        f.setFontHeightInPoints((short) 10);
+        f.setColor(IndexedColors.BLACK.getIndex());
+        f.setBoldweight(Font.BOLDWEIGHT_BOLD);
+
+        // 创建第二种字体样式（用于值）
+        f2.setFontHeightInPoints((short) 10);
+        f2.setColor(IndexedColors.BLACK.getIndex());
+
+//        Font f3=wb.createFont();
+//        f3.setFontHeightInPoints((short) 10);
+//        f3.setColor(IndexedColors.RED.getIndex());
+
+        // 设置第一种单元格的样式（用于列名）
+        cs.setFont(f);
+        cs.setBorderLeft(CellStyle.BORDER_THIN);
+        cs.setBorderRight(CellStyle.BORDER_THIN);
+        cs.setBorderTop(CellStyle.BORDER_THIN);
+        cs.setBorderBottom(CellStyle.BORDER_THIN);
+        cs.setAlignment(CellStyle.ALIGN_CENTER);
+
+        // 设置第二种单元格的样式（用于值）
+        cs2.setFont(f2);
+        cs2.setBorderLeft(CellStyle.BORDER_THIN);
+        cs2.setBorderRight(CellStyle.BORDER_THIN);
+        cs2.setBorderTop(CellStyle.BORDER_THIN);
+        cs2.setBorderBottom(CellStyle.BORDER_THIN);
+        cs2.setAlignment(CellStyle.ALIGN_CENTER);
+        //设置列名
+        for(int i=0;i<columnNames.length;i++){
+            Cell cell = row.createCell(i);
+            cell.setCellValue(columnNames[i]);
+            cell.setCellStyle(cs);
+        }
+        //设置每行每列的值
+        SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM");
+        SimpleDateFormat sim1=new SimpleDateFormat("yyyy-MM-dd");
+        for (short i = 0; i < adept.size(); i++) {
+            // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
+            // 创建一行，在页sheet上
+            Row row1 = sheet.createRow((short) i+1);
+            // 在row行上创建一个方格
+                Cell cell1 = row1.createCell(0);
+                Cell cell2 = row1.createCell(4);
+                Cell cell3 =row1.createCell(5);
+                Cell cell4 = row1.createCell(6);
+                Cell cell5 =row1.createCell(7);
+                Cell cell6 =row1.createCell(8);
+                
+                Cell cymt=row1.createCell(1);
+                cymt.setCellValue(cym);
+                JSONObject a1=JSONObject.fromObject(adept.get(i).toString());
+                cell1.setCellValue(a1.getString("部门编号"));
+                cell2.setCellValue(a1.getString("部门").toString());
+                cell3.setCellValue(a1.getString("本月得分").toString());
+                cell4.setCellValue(a1.getString("本月评级").toString());
+                cell5.setCellValue(a1.getString("本月系数").toString());
+                cell6.setCellValue(a1.getString("备注").toString());
+           
+                   }
+        
+        for (short i = 0; i < auser.size(); i++) {
+            // Row 行,Cell 方格 , Row 和 Cell 都是从0开始计数的
+            // 创建一行，在页sheet上
+            Row row1 = sheet.createRow((short) i+1);
+            // 在row行上创建一个方格
+                Cell cell1 = row1.createCell(0);
+                Cell cell2 = row1.createCell(4);
+                Cell cell3 =row1.createCell(5);
+                Cell cell4 = row1.createCell(6);
+                Cell cell5 =row1.createCell(7);
+                Cell cell6 =row1.createCell(8);
+                
+                Cell cell7 = row1.createCell(2);
+                Cell cell8 = row1.createCell(3);
+                Cell cymt=row1.createCell(1);
+                cymt.setCellValue(cym);
+                JSONObject a1=JSONObject.fromObject(auser.get(i).toString());
+                cell1.setCellValue(a1.getString("员工编号").toString());
+                cell7.setCellValue(a1.getString("姓名").toString());
+                cell8.setCellValue(a1.getString("岗位").toString());
+                
+                cell2.setCellValue(a1.getString("部门").toString());
+                cell3.setCellValue(a1.getString("本月得分").toString());
+                cell4.setCellValue(a1.getString("本月评级").toString());
+                cell5.setCellValue(a1.getString("本月系数").toString());
+                cell6.setCellValue(a1.getString("备注").toString());
+           
+                   }
+           System.out.println("111111111111");
+        return wb;
+	}
 
 }

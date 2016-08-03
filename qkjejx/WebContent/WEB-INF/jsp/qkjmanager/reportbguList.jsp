@@ -152,7 +152,14 @@ var aus= function(u,cym){
 						$('#p'+u).html("D");
 						$('#x'+u).html("0.8");
 					};
-					$('#z'+u).html("已考核");
+					if($(data)[0].cstate==2){
+						$('#z'+u).html("已审核");
+					}else if($(data)[0].cstate==1){
+						$('#z'+u).html("已关闭");
+					}
+					else if($(data)[0].cstate==0){
+						$('#z'+u).html("已考核");
+					}
 					$('#b'+u).html($(data)[0].remark.substring(0,8));
 					$('#b'+u).attr("title",$(data)[0].remark);
 				}else if(l<1){

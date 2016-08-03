@@ -36,6 +36,9 @@ cursor: pointer;
 					<div class="label_hang tac">
 						<s:submit value="搜索" />
 						<s:reset value="重置" />
+						<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_CHECKSURE',null)==true}">
+						<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="check_sure"></s:url>">审核考核成绩</a></span>
+						</c:if>
 					</div>
 				</div>
 			</div>
@@ -517,7 +520,15 @@ var ads= function(dept,cym){
 						$('#p'+dept).html("D");
 						$('#x'+dept).html("0.8");
 					};
-					$('#z'+dept).html("已考核");
+					
+					if($(data)[0].cstate==2){
+						$('#z'+dept).html("已审核");
+					}else if($(data)[0].cstate==1){
+						$('#z'+dept).html("已关闭");
+					}
+					else if($(data)[0].cstate==0){
+						$('#z'+dept).html("已考核");
+					}
 					$('#b'+dept).html($(data)[0].remark.substring(0,8));
 					$('#b'+dept).attr("title",$(data)[0].remark);
 				}else if(l<1){
@@ -534,42 +545,6 @@ var ads= function(dept,cym){
 	ajax.sendAjax2();
 };
 
-var aus= function(u,cym){
-	var ajax = new Common_Ajax('ajax_member_message');
-	ajax.config.action_url = ajax_url;
-	ajax.config._success = function(data, textStatus){
-		var l = $(data).length;
-				if(l==1){
-					$('#score'+u).html($(data)[0].check_score);
-					if($(data)[0].check_score>=90){
-						$('#p'+u).html("A");
-						$('#x'+u).html("1.3");
-					}else if($(data)[0].check_score>=80&&$(data)[0].check_score<90){
-						$('#p'+u).html("B");
-						$('#x'+u).html("1.1");
-					}else if($(data)[0].check_score>=60&&$(data)[0].check_score<80){
-						$('#p'+u).html("C");
-						$('#x'+u).html("1.0");
-					}else if($(data)[0].check_score<60){
-						$('#p'+u).html("D");
-						$('#x'+u).html("0.8");
-					};
-					$('#z'+u).html("已考核");
-					$('#b'+u).html($(data)[0].remark.substring(0,8));
-					$('#b'+u).attr("title",$(data)[0].remark);
-				}else if(l<1){
-					$('#score'+u).html(0.00);
-					$('#p'+u).html("0");
-					$('#x'+u).html("0");
-					$('#z'+u).html("未考核");
-				};
-				
-	};
-	ajax.addParameter("work", "AutoComplete");
-	ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_UORD");
-	ajax.addParameter("parameters", "acheck_user=" + encodeURI(u)+"&cym="+encodeURI(cym));
-	ajax.sendAjax2();
-};
 
 var adds= function(uuid,ad){
 	var ajax = new Common_Ajax('ajax_member_message');
