@@ -25,9 +25,16 @@ public class VardicDao extends AbstractDAO {
 	public List Checklist(Map<String, Object> map) {
 		return super.list("qkjmanager_getCheckVartics", map);
 	}
+	public List ChecklistTran(Map<String, Object> map) {
+		return super.list("qkjmanager_getCheckTrans", map);
+	}
 	
 	public List Checklistbydept(Map<String, Object> map) {
 		return super.list("qkjmanager_getCheckVarticsdept", map);
+	}
+	
+	public List ChecklistbydeptTran(Map<String, Object> map) {
+		return super.list("qkjmanager_getCheckTransdept", map);
 	}
 	
 	public List getHScore(Map<String, Object> map) {

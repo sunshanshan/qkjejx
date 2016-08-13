@@ -24,6 +24,7 @@ cursor: pointer;
 			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
 				<span class="opb lb op-area">
 				<a onclick="reportp();">导出EXCEL</a>
+				<a onclick="printx1();">打印</a>
 				</span>
 			</c:if>
 			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD1',null)==true}">
@@ -146,6 +147,11 @@ cursor: pointer;
 		<input id="ausers" type="hidden" name="auser">
 		<input id="cymprint" type="hidden" name="cymprint">
 		</s:form>
+		<s:form id="printx" action="print_view" method="post" namespace="/qkjmanager" theme="simple">
+		<input id="adepts1" type="hidden" name="adept">
+		<input id="ausers1" type="hidden" name="auser">
+		<input id="cymprint1" type="hidden" name="cymprint">
+		</s:form>
 	</div>
 </div>
 
@@ -166,6 +172,17 @@ function reportp(){
 	  $('#ausers').val(JSON.stringify(table1));
 	  $('#cymprint').val(cym);
 	  $("#printE").submit();
+	  
+}
+
+function printx1(){
+	 var table = $('#adept').tableToJSON(); // Convert the table into a javascript object
+	  var table1 = $('#auser').tableToJSON(); // Convert the table into a javascript object
+	  var cym=$('#begintime').val();
+	  $('#adepts1').val(JSON.stringify(table));
+	  $('#ausers1').val(JSON.stringify(table1));
+	  $('#cymprint1').val(cym);
+	  $("#printx").submit();
 	  
 }
  

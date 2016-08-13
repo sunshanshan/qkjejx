@@ -167,7 +167,7 @@ cursor: pointer;
 							<th>周期</th>
 							<th>定义</th>
 							<th>标准</th>		
-							<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">		
+							<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">		
 							<th>操作</th>
 							</c:if>
 						</tr>
@@ -182,10 +182,12 @@ cursor: pointer;
 								<td class="nw">${cyc }</td>
 								<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
-								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
+								<c:if test="${it:checkPermit('SYS_QKJMANAGER_HORILIST_MDY',null)==true}">
+								<c:if test="${it:checkb(uuid)==true}">
 								<td class="longnote" title="${correctly}">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
 								</td>
+								</c:if>
 								</c:if>			
 							</tr>
 						</s:iterator>

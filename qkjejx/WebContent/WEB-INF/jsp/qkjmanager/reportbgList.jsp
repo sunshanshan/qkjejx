@@ -44,9 +44,9 @@ cursor: pointer;
 			</div>
 		</s:form>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">信息中心总监</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;" colspan="5">信息中心总监</td></tr>
 				<tr id="coltr">
-					<th class="td1">部门编号</th>
+					<th class="td1"　w>部门编号</th>
 					<th class="td1">部门</th>
 					<th class="td1">本月得分</th>
 					<th class="td1">本月评级</th>
@@ -81,7 +81,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">副总经理兼后勤保障中心总监</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">副总经理兼后勤保障中心总监</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -118,7 +118,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">董秘</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">董秘</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -155,7 +155,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">工会主席</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">工会主席</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -192,7 +192,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">总经理助理</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">总经理助理</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -229,7 +229,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">技术质量中心总监</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">技术质量中心总监</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -266,7 +266,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">审计中心总监</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">审计中心总监</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -303,7 +303,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">设备动力部经理</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">设备动力部经理</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -340,7 +340,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">物流中心总监</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">物流中心总监</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -377,7 +377,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">财务中心总监</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">财务中心总监</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -414,7 +414,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">生产中心总监</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">生产中心总监</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -451,7 +451,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;">人力资源中心总监</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">人力资源中心总监</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>

@@ -183,8 +183,8 @@ public class TransverseAction extends ActionSupport{
 		        map.put("typea", 0);//成绩表中所有横向考核已经考核过的去掉
 				map.put("isdept", 0);//向横考核
 				
-				this.setCvardics(dao.Checklist(map));
-				this.setCvardicsd(dao.Checklistbydept(map));
+				this.setCvardics(dao.ChecklistTran(map));
+				this.setCvardicsd(dao.ChecklistbydeptTran(map));
 				
 				CheckDao cd =new CheckDao();
 				map.clear();

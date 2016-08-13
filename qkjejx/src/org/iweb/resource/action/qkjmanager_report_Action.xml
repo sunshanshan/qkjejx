@@ -21,6 +21,12 @@
 		
 		<action name="print_excel" class="com.qkj.qkjmanager.action.ReportAction" method="print">
 		</action>
+		<action name="print_view" class="com.qkj.qkjmanager.action.ReportAction" method="view1">
+		<result>/WEB-INF/jsp/qkjmanager/reporthzviewList.jsp</result>
+		</action>
+		
+		<action name="print_viewp" class="com.qkj.qkjmanager.action.ReportAction" method="view">
+		</action>
 		
 		<action name="check_sure" class="com.qkj.qkjmanager.action.ReportAction" method="check_sure">
 			<result type="redirectAction">

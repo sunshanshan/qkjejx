@@ -29,6 +29,10 @@ public class reportDao extends AbstractDAO{
 		//setCountMapid("basics_getCheckCounts");
 		return super.list("qkjmanager_getVarticsHZU", map);
 	}
+	
+	public List listview(Map<String, Object> map) {
+		return super.list("qkjmanager_getView", map);
+	}
 	/**
 	 * 绩效报告
 	 * @param map

@@ -367,10 +367,10 @@ public class TransverseDetailAction extends ActionSupport {
 				List<Vartic> vs=new ArrayList();
 				map.put("acheck_usercode", vardic.getAcheck_usercode());
 				map.put("isaunull", 0);
+				map.put("check_ym", vardic.getCheck_ym());
 				vs=zdao.list(map);
 				if(vs.size()>0){//说明本月此部门已经有考核记录
 					vardic=vs.get(0);//一个部门一个月考核主表记录数只有一条
-					
 				}else{
 					vardic.setCheck_date(new Date());
 					vardic.setLm_user(ContextHelper.getUserLoginUuid());
@@ -387,7 +387,7 @@ public class TransverseDetailAction extends ActionSupport {
 			 * 填加子表
 			 */
 			Double sum=0.00;
-			if(aArray!=null){
+			if(aArray!=null && vardic!=null && vardic.getUuid()!=null){
 				aArray=aArray.replace(" ", "");
 				String aa[]=aArray.split(";");
 				for(int i=0;i<aa.length;i++){
@@ -408,6 +408,7 @@ public class TransverseDetailAction extends ActionSupport {
 						id=(IndexDetail) k.get(vd.getCheck_index());
 						vd.setDepttype(id.getType());
 						vd.setPosition_dept(id.getPosition_dept());
+						vd.setKpi(id.getKpi());
 						sum=sum+Double.parseDouble(arr[3]);
 						//vd.setCheck_index(Double.parseDouble(arr[0]));
 						dao.add(vd);
@@ -464,6 +465,7 @@ public class TransverseDetailAction extends ActionSupport {
 				List<Vartic> vs=new ArrayList();
 				map.put("acheck_usercode", vardic.getAcheck_usercode());
 				map.put("acheck_user", vardic.getAcheck_user());
+				map.put("check_ym", vardic.getCheck_ym());
 				vs=zdao.list(map);
 				if(vs.size()>0){//说明本月此部门已经有考核记录
 					vardic=vs.get(0);//一个部门一个月考核主表记录数只有一条
@@ -482,7 +484,7 @@ public class TransverseDetailAction extends ActionSupport {
 			 * 填加子表
 			 */
 			Double sum=0.00;
-			if(aArray!=null){
+			if(aArray!=null && vardic!=null && vardic.getUuid()!=null){
 				aArray=aArray.replace(" ", "");
 				String aa[]=aArray.split(";");
 				for(int i=0;i<aa.length;i++){

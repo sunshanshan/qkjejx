@@ -102,7 +102,46 @@
 		<![CDATA[)]]>
 		<isNotNull property="isdept">
 		<isEqual property="isdept" compareValue="1"><!-- 纵向 -->
-			<isNotNull prepend="AND" property="parent_user"><![CDATA[ u.parent_user=#parent_user# and ISNULL(a.uuid, '0')!='0']]></isNotNull>
+			<isNotNull prepend="AND" property="parent_user"><![CDATA[ u.parent_user=#parent_user# and ISNULL(pp.uuid, '0')<>'0']]></isNotNull>
+		</isEqual>
+		
+		<isEqual property="isdept" compareValue="0"><!-- 横向  -->
+			<isNotNull prepend="AND" property="check_deptcode"><![CDATA[ id.check_deptcode = #check_deptcode#]]></isNotNull>
+			<isNotNull prepend="AND" property="check_post"><![CDATA[ id.check_post = #check_post# and id.type=1]]></isNotNull>
+		</isEqual>
+		</isNotNull>
+		
+	</select>
+	
+	<select id="qkjmanager_getCheckTrans" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select distinct u.uuid u_id,u.DEPT_CODE u_code,u.USER_NAME acheck_username,d.dept_cname acheck_deptname,df.dept_cname df_name
+			 from s_sys_user u  
+			LEFT JOIN s_sys_department d on (u.dept_code=d.dept_code)
+			LEFT JOIN s_sys_department df on (df.dept_code=d.parent_dept)
+			left join (
+			select newp.* from (
+				select p.uuid from s_cfg_position p 
+			where EXISTS  (select DISTINCT fid.position_id from qkj_t_indexdetail fid
+			 where fid.position_id=p.uuid and ISNULL(fid.position_id,'0')<>'0' )
+			) newp) a on u.[POSITION]=a.uuid
+ 
+			LEFT JOIN qkj_t_indexdetail id on (a.uuid=id.position_id)
+			left join s_cfg_position pp on(pp.uuid=u.[POSITION])
+
+			where pp.POSITION_GRADE<>4 and  not exists (select * from qkj_r_score s 
+			left JOIN qkj_r_sonscore sd on(sd.score_id=s.uuid)
+			left join qkj_r_check k on(s.check_ym=k.uuid)
+			where s.acheck_user=u.uuid
+		]]>
+		
+		<isNotNull prepend="AND" property="check_ym"><![CDATA[  k.uuid=#check_ym# ]]></isNotNull>
+		<isNotNull prepend="AND" property="typea"><![CDATA[  sd.typea=#typea#]]></isNotNull>
+		<isNotNull prepend="AND" property="check_user"><![CDATA[  sd.check_user=#check_user#]]></isNotNull>
+		<![CDATA[)]]>
+		<isNotNull property="isdept">
+		<isEqual property="isdept" compareValue="1"><!-- 纵向 -->
+			<isNotNull prepend="AND" property="parent_user"><![CDATA[ u.parent_user=#parent_user# and ISNULL(pp.uuid, '0')<>'0']]></isNotNull>
 		</isEqual>
 		
 		<isEqual property="isdept" compareValue="0"><!-- 横向  -->
@@ -168,6 +207,52 @@
 			and  ss2.check_ym=#check_ym#
 			)
 			 ) ) d
+		left JOIN s_sys_department pd on (d.parent_dept=pd.dept_code)
+
+			LEFT JOIN qkj_t_indexdetail id on (d.dept_code=id.dept_code)
+			where  not exists (select * from qkj_r_score s 
+			left JOIN qkj_r_sonscore sd on(sd.score_id=s.uuid)
+			left join qkj_r_check k on(s.check_ym=k.uuid)
+			where s.acheck_usercode=d.dept_code and ISNULL(s.acheck_user, '0')='0'
+		]]>
+		
+		<isNotNull prepend="AND" property="check_ym"><![CDATA[  k.uuid=#check_ym# ]]></isNotNull>
+		<isNotNull prepend="AND" property="typea"><![CDATA[  sd.typea=#typea#]]></isNotNull>
+		<isNotNull prepend="AND" property="check_user"><![CDATA[  sd.check_user=#check_user#]]></isNotNull>
+		<![CDATA[)]]>
+		<isNotNull prepend="AND" property="ex"><![CDATA[  EXISTS (SELECT 1 from qkj_t_indexdetail a where a.dept_code=d.dept_code)]]></isNotNull>
+		<isNotNull property="isdept">
+		<isEqual property="isdept" compareValue="1"><!-- 纵向 -->
+			<isNotEmpty prepend="AND" property="parent_dept" open="(" close=")">
+			<![CDATA[  d.parent_dept In ]]>
+			<iterate property="parent_dept" open="(" close=")" conjunction=" , "> #parent_dept[]#</iterate>
+			<isNotEmpty prepend="OR" property="chdept">
+				<![CDATA[ d.dept_code In ]]>
+				<iterate property="chdept" open="(" close=")" conjunction=" , "> #chdept[]#</iterate>
+			</isNotEmpty> 
+			</isNotEmpty>
+			<isEmpty  property="parent_dept">
+				<isNotEmpty prepend="AND" property="chdept">
+					<![CDATA[ d.dept_code In ]]>
+				<iterate property="chdept" open="(" close=")" conjunction=" , "> #chdept[]#</iterate>
+				</isNotEmpty>
+			</isEmpty>
+			
+		</isEqual>
+		<isEqual property="isdept" compareValue="0"><!-- 横向 -->
+			<isNotNull prepend="AND" property="check_deptcode"><![CDATA[ id.check_deptcode = #check_deptcode#]]></isNotNull>
+			<isNotNull prepend="AND" property="check_post"><![CDATA[ id.check_post = #check_post# and id.type=1]]></isNotNull>
+		</isEqual>
+		</isNotNull>
+	</select>
+	
+	<select id="qkjmanager_getCheckTransdept" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select distinct d.DEPT_CODE d_code,d.dept_cname acheck_deptname,d.parent_dept parent_dept,pd.dept_cname df_name from (
+			select d.dept_code,d.dept_cname,d.parent_dept from s_sys_department d
+			where 
+			EXISTS (select 1 from qkj_t_indexdetail fid where fid.dept_code=d.dept_code)
+			 ) d
 		left JOIN s_sys_department pd on (d.parent_dept=pd.dept_code)
 
 			LEFT JOIN qkj_t_indexdetail id on (d.dept_code=id.dept_code)
@@ -367,6 +452,7 @@
 			<isNotNull prepend="AND" property="kpiid"><![CDATA[ s.check_index=#kpiid# ]]></isNotNull>
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[  ss.check_ym=#check_ym#]]></isNotNull>
 			<isNotNull prepend="AND" property="dept_code"><![CDATA[ ss.acheck_usercode=#dept_code# and isnull(ss.acheck_user,'0')='0' and ISNULL(ss.acheck_usercode, '0')<>'0' ]]></isNotNull>
+			<isNotNull prepend="AND" property="par_dept"><![CDATA[ ss.acheck_usercode=(select ds.parent_dept from s_sys_department ds  where ds.dept_code=#par_dept#) and isnull(ss.acheck_user,'0')='0' and ISNULL(ss.acheck_usercode, '0')<>'0' ]]></isNotNull>
 			<isNotNull prepend="AND" property="userid"><![CDATA[ ss.acheck_usercode in (select ud.dept_code from s_sys_userdept ud where ud.user_id=#userid#) and isnull(ss.acheck_user,'0')='0' and ISNULL(ss.acheck_usercode, '0')<>'0' ]]></isNotNull>
 			<isNotNull prepend="AND" property="kpi"><![CDATA[ i.kpi=#kpi# ]]></isNotNull>
 		</dynamic>

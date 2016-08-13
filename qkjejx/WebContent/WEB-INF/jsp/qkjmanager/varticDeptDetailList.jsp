@@ -87,7 +87,7 @@ cursor: pointer;
 						<s:iterator value="ids" status="sta">
 							<tr id="showtr${uuid}">
 								<td class="nw">${uuid }</td>
-								<td class="nw" id="kpi${uuid }">${kpi }</td>
+								<td class="nw" id="kpi${uuid }">${kpi}</td>
 								<td class="nw">${weight }<input id="w${uuid }" name="weight" type="hidden"  value="${weight }"></td>
 								<s:if test="isdept==1&&type==1">
 									<!-- kpi 横向的部门职务对上 -->
@@ -136,7 +136,7 @@ cursor: pointer;
 												<script type="text/javascript">
 													$(function(){
 														var uuid=${uuid };
-														
+														var d=$('#ck').val();
 														var ajax = new Common_Ajax('ajax_member_message');
 														ajax.config.action_url = ajax_url;
 														ajax.config._success = function(data, textStatus){
@@ -151,7 +151,7 @@ cursor: pointer;
 														};
 														ajax.addParameter("work", "AutoComplete");
 														ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_KPI");
-														ajax.addParameter("parameters", "kpiid=" + encodeURI(uuid));
+														ajax.addParameter("parameters", "kpiid=" + encodeURI(uuid)+"&check_ym="+encodeURI(d));
 														ajax.sendAjax2();
 													});
 														
@@ -228,7 +228,7 @@ cursor: pointer;
 						<s:iterator value="vds" status="sta">
 							<tr id="showtr${uuid}">
 								<td class="nw">${uuid }</td>
-								<td class="nw">${kpi }</td>
+								<td class="nw">${kpi}</td>
 								<td class="nw">${weight }<input id="w${uuid }" type="hidden" name="weight" value="${weight }"></td>
 								<s:if test="isdept==1">
 									<!-- kpi 横向的部门职务对上 -->

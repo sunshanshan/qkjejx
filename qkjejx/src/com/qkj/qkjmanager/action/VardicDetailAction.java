@@ -286,6 +286,7 @@ public class VardicDetailAction extends ActionSupport {
 			/**
 			 * 填加主表
 			 */
+			cym();//查询考核日期
 			if(vardic.getAcheck_user()==null){//部门考核
 				//考核时如果本月此部门已经有考核记录则不在添加主表只添加子表
 				if(vardic!=null){
@@ -317,7 +318,6 @@ public class VardicDetailAction extends ActionSupport {
 				}
 			}else{//人员考核
 				//vardic.setCheck_user(ContextHelper.getUserLoginUuid());
-				cym();//查询考核日期
 				if(check!=null){
 					List<Vartic> vs=new ArrayList();
 			        map.remove("check_ym");
@@ -345,7 +345,7 @@ public class VardicDetailAction extends ActionSupport {
 			 * 填加子表
 			 */
 			Double sum=0.00;
-			if(aArray!=null){
+			if(aArray!=null && vardic!=null && vardic.getUuid()!=null){
 				aArray=aArray.replace(" ", "");
 				String aa[]=aArray.split(";");
 				for(int i=0;i<aa.length;i++){

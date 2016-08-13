@@ -51,6 +51,18 @@
 							</script>
 							</div>
 						</div>
+						
+						<div class="label_hang">
+							<div class="label_ltit">职务:</div>
+							<div class="label_rwben" id="pouser">
+								<script type="text/javascript">
+									$(function(){
+										var au=$('#au').val();
+										aps(au);
+									});
+								</script>
+							</div>
+						</div>
 
 						<div class="label_hang">
 							<div class="label_ltit">部门:</div>
@@ -80,15 +92,27 @@
 						<div class="label_hang">
 							<div class="label_ltit">姓名:</div>
 							<div class="label_rwben">
-								${user.user_name } <input type="hidden"
+								${user.user_name } <input id="au2" type="hidden"
 									name="vardic.acheck_user" value="${user.uuid}">
 							</div>
 						</div>
-
+						
+						<div class="label_hang">
+							<div class="label_ltit">职务:</div>
+							<div class="label_rwben" id="pouser">
+								<script type="text/javascript">
+									$(function(){
+										var au=$('#au2').val();
+										aps(au);
+									});
+								</script>
+							</div>
+						</div>
+						
 						<div class="label_hang">
 							<div class="label_ltit">部门:</div>
 							<div class="label_rwben">
-								${user.dept_cname } <input type="hidden"
+								${user.dept_cname } <input id="u_dept" type="hidden"
 									name="vardic.acheck_usercode" value="${user.dept_code}">
 							</div>
 						</div>
@@ -130,7 +154,10 @@
 										<s:else>
 											<s:if test="type==2">
 												<td class="nw" title="取部门分数"><input id="s${uuid }"
-													type="text" readonly="readonly"></td>
+													type="text" readonly="readonly">
+													<input id="pdept${uuid }" 
+											type="hidden" value="${position_dept}">
+													</td>
 												<td class="nw"><input id="g${uuid }" type="text"
 													readonly="readonly"></td>
 												<script type="text/javascript">
@@ -138,25 +165,20 @@
 														var uuid=${uuid };
 														var kpi=$('#kpi'+uuid).text();
 														var d=$('#ck').val();
-														var dept=${position_dept};
-														var ajax = new Common_Ajax('ajax_member_message');
-														ajax.config.action_url = ajax_url;
-														ajax.config._success = function(data, textStatus){
-															var l = $(data).length;
-																	$.each(data, function(i, n){
-																		var sid="s"+uuid;
-																		var gid="g"+uuid;
-																		var w="w"+uuid;
-																		 
-																		document.getElementById(sid).value=n.check_score;
-																		document.getElementById(gid).value=n.check_score*document.getElementById(w).value;
-																	});
-																	
-														};
-														ajax.addParameter("work", "AutoComplete");
-														ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_KPI");
-														ajax.addParameter("parameters", "dept_code=" + encodeURI(dept)+"&check_ym="+encodeURI(d)+"&kpi="+encodeURI(kpi));
-														ajax.sendAjax2();
+														var dept=$('#pdept'+uuid).val();
+														var au=$('#ad').val();
+														var u_dept=$('#u_dept').val();
+														
+														if(dept.substring(dept.length-1,dept.length)=="%"){
+															if(u_dept!=null){
+																kpibydept2(uuid,u_dept,d,kpi);
+															}else{
+																kpibydept2(uuid,au,d,kpi);
+															}
+														}else{
+															kpibydept(uuid,sdept,d,kpi);
+														}
+														
 													});
 													
 													
@@ -200,7 +222,7 @@
 												<script type="text/javascript">
 													$(function(){
 														var uuid=${uuid };
-														
+														var d=$('#ck').val();
 														var ajax = new Common_Ajax('ajax_member_message');
 														ajax.config.action_url = ajax_url;
 														ajax.config._success = function(data, textStatus){
@@ -215,7 +237,7 @@
 														};
 														ajax.addParameter("work", "AutoComplete");
 														ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_KPI");
-														ajax.addParameter("parameters", "kpiid=" + encodeURI(uuid));
+														ajax.addParameter("parameters", "kpiid=" + encodeURI(uuid)+"&check_ym="+encodeURI(d));
 														ajax.sendAjax2();
 													});
 														
@@ -470,6 +492,48 @@ function mdy(uuid,so){
 	window.location.href="/qkjmanager/varticDetail_save?vd.uuid="+uuid+"&vd.check_score="+sp+"&vd.check_goal="+gp+"&vd.score_id="+so;
 }
 
+var kpibydept=function(uuid,dept,d,kpi){
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var l = $(data).length;
+				$.each(data, function(i, n){
+					var sid="s"+uuid;
+					var gid="g"+uuid;
+					var w="w"+uuid;
+					 
+					document.getElementById(sid).value=n.check_score;
+					document.getElementById(gid).value=n.check_score*document.getElementById(w).value;
+				});
+				
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_KPI");
+	ajax.addParameter("parameters", "dept_code=" + encodeURI(dept)+"&check_ym="+encodeURI(d)+"&kpi="+encodeURI(kpi));
+	ajax.sendAjax2();
+}
+
+var kpibydept2=function(uuid,dept,d,kpi){
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var l = $(data).length;
+				$.each(data, function(i, n){
+					var sid="s"+uuid;
+					var gid="g"+uuid;
+					var w="w"+uuid;
+					 
+					document.getElementById(sid).value=n.check_score;
+					document.getElementById(gid).value=n.check_score*document.getElementById(w).value;
+				});
+				
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_KPI");
+	ajax.addParameter("parameters", "par_dept=" + encodeURI(dept)+"&check_ym="+encodeURI(d)+"&kpi="+encodeURI(kpi));
+	ajax.sendAjax2();
+}
+
 var kpibys = function(uuid,kpi,d,userid){
 	var ajax = new Common_Ajax('ajax_member_message');
 	ajax.config.action_url = ajax_url;
@@ -533,6 +597,22 @@ var ads= function(ad){
 	ajax.addParameter("work", "AutoComplete");
 	ajax.addParameter("privilege_id", "SYS_SELECT_DEPT_LISTBYDEPT");
 	ajax.addParameter("parameters", "dept_code=" + encodeURI(ad));
+	ajax.sendAjax2();
+};
+
+var aps= function(ad){
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var l = $(data).length;
+				if(l==1){
+					$('#pouser').html($(data)[0].position_name);
+				};
+				
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_POSBYID");
+	ajax.addParameter("parameters", "u_id=" + encodeURI(ad));
 	ajax.sendAjax2();
 };
 </script>

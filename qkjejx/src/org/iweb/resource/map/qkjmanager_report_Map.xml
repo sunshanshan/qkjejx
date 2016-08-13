@@ -5,6 +5,7 @@
 	<typeAlias alias="vartic" type="com.qkj.qkjmanager.domain.Vartic" />
 	<typeAlias alias="dept" type="org.iweb.sys.domain.Department" />
 	<typeAlias alias="user" type="org.iweb.sys.domain.User" />
+	<typeAlias alias="view" type="com.qkj.qkjmanager.domain.VarticView" />
 	<select id="qkjmanager_getVarticsReport" resultClass="vartic" parameterClass="java.util.Map">
 		<![CDATA[ 
 			select DISTINCT c.uuid,c.*,achecku.user_name acheck_username,mdyu.USER_NAME lm_username,acheckd.dept_cname acheck_deptname,df.dept_cname df_name,
@@ -93,7 +94,6 @@
 		</dynamic>
 	</select>
 	
-	
 	<!-- 报告 -->
 	<select id="qkjmanager_getVarticsBG" resultClass="dept" parameterClass="java.util.Map">
 		<![CDATA[ 
@@ -116,7 +116,7 @@
 	
 	<select id="qkjmanager_getVarticsBGU" resultClass="user" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select u.UUID,u.USER_NAME,p.POSITION_NAME position_name,d.dept_cname dept_cname
+			select DISTINCT u.UUID,u.USER_NAME,p.POSITION_NAME position_name,d.dept_cname dept_cname
 			from s_sys_user u
 			join s_cfg_position p on (u.[POSITION]=p.uuid)
 			join s_sys_department d on (u.DEPT_CODE=d.dept_code)
@@ -210,5 +210,21 @@
 			)
 		]]>
 	</select>
+	
+	<!-- 查询打印详细-->
+	<select id="qkjmanager_getView" resultClass="view" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select id.kpi kpi,id.weight weight,ss.check_score score,ss.check_goal gold,s.bscore bscore from qkj_r_sonscore ss 
+			join qkj_r_score s on (ss.score_id=s.uuid)
+			join qkj_r_check c on (s.check_ym=c.uuid)
+			join qkj_t_indexdetail id on (id.uuid=ss.check_index)
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="acheck_user"><![CDATA[ s.acheck_user=#acheck_user# ]]></isNotNull>
+			<isNotNull prepend="AND" property="cym"><![CDATA[ c.ym like #cym# +'%' ]]></isNotNull>
+			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[ s.acheck_usercode=#acheck_usercode# and ISNULL(s.acheck_user, '0')='0' ]]></isNotNull>
+		</dynamic>
+	</select>
+	
 	
 </sqlMap>

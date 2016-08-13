@@ -30,9 +30,6 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.struts2.ServletActionContext;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.ExcelUtil;
@@ -50,22 +47,15 @@ import com.qkj.qkjmanager.dao.VardicDao;
 import com.qkj.qkjmanager.dao.reportDao;
 import com.qkj.qkjmanager.domain.Score;
 import com.qkj.qkjmanager.domain.Vartic;
+import com.qkj.qkjmanager.domain.VarticView;
 
 public class ReportAction extends ActionSupport {
 	private reportDao dao = new reportDao();
 	private static Log log = LogFactory.getLog(ReportAction.class);
 	private Map<String, Object> map = new HashMap<String, Object>();
 	private List<Score> score;
+	private List<VarticView> vvs;
 	private Vartic vardic;
-
-	public Vartic getVardic() {
-		return vardic;
-	}
-
-	public void setVardic(Vartic vardic) {
-		this.vardic = vardic;
-	}
-
 	private List<Vartic> vardics;
 	private List<Vartic> vardicsbyd;
 	private List<Vartic> vardicsc;
@@ -80,7 +70,42 @@ public class ReportAction extends ActionSupport {
 	private String adept;
 	private String auser;
 	private String cymprint;
+	private static String adeptview;
+	private static String auserview;
 	
+	
+	public static String getAdeptview() {
+		return adeptview;
+	}
+
+	public static void setAdeptview(String adeptview) {
+		ReportAction.adeptview = adeptview;
+	}
+
+	public static String getAuserview() {
+		return auserview;
+	}
+
+	public static void setAuserview(String auserview) {
+		ReportAction.auserview = auserview;
+	}
+
+	public Vartic getVardic() {
+		return vardic;
+	}
+
+	public void setVardic(Vartic vardic) {
+		this.vardic = vardic;
+	}
+	
+	public List<VarticView> getVvs() {
+		return vvs;
+	}
+
+	public void setVvs(List<VarticView> vvs) {
+		this.vvs = vvs;
+	}
+
 	public String getCymprint() {
 		return cymprint;
 	}
@@ -479,7 +504,106 @@ public class ReportAction extends ActionSupport {
 
 		return SUCCESS;
 	}
+	
+	public String view1() throws Exception {
+		this.setAdeptview(null);
+		this.setAuserview(null);
+		this.setAdeptview(this.getAdept());
+		this.setAuserview(this.getAuser());
+		String cym = this.getCymprint();
+		JSONArray adepts = JSONArray.fromObject(this.getAdeptview());
+		JSONArray ausers = JSONArray.fromObject(this.getAuserview());
+		vvs=new ArrayList<>();
+		if (adepts.size()>0 || adepts.size()>0) {
+			for (short i = 0; i < adepts.size(); i++) {
+				// 创建一行，在页sheet上
+				JSONObject a1 = JSONObject.fromObject(adepts.get(i).toString());
+				String dept_code=a1.getString("部门编号").substring(0,a1.getString("部门编号").indexOf("$")).trim();
+				VarticView vv=new VarticView();
+				vv.setD_code(dept_code);
+				vv.setDeptname(a1.getString("部门"));
+				vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
+				vv.setRemark(a1.getString("备注"));
+				vvs.add(vv);
+				
+			}
+			
+			for (short i = 0; i < ausers.size(); i++) {
+				// 创建一行，在页sheet上
+				JSONObject a1 = JSONObject.fromObject(ausers.get(i).toString());
+				String uuid=a1.getString("员工编号").substring(0,a1.getString("员工编号").indexOf("$")).trim();
+				VarticView vv=new VarticView();
+				vv.setU_id(uuid);
+				vv.setUsername(a1.getString("姓名"));
+				vv.setPname(a1.getString("岗位"));
+				vv.setDeptname(a1.getString("部门"));
+				vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
+				vv.setRemark(a1.getString("备注"));
+				vvs.add(vv);
+			}
 
+		}
+		return SUCCESS;
+	}
+
+	public void view() throws Exception {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String cym = this.getCymprint();
+		JSONArray adepts = JSONArray.fromObject(this.getAdeptview());
+		JSONArray ausers = JSONArray.fromObject(this.getAuserview());
+		vvs=new ArrayList<>();
+		if (adepts.size()>0 || adepts.size()>0) {
+			for (short i = 0; i < adepts.size(); i++) {
+				// 创建一行，在页sheet上
+				JSONObject a1 = JSONObject.fromObject(adepts.get(i).toString());
+				String dept_code=a1.getString("部门编号").substring(0,a1.getString("部门编号").indexOf("$")).trim();
+				VarticView vv=new VarticView();
+				map.clear();
+				map.put("acheck_usercode", dept_code);
+				map.put("cym", cym);
+				List<VarticView> ls=new ArrayList();
+				ls=dao.listview(map);
+				if(ls.size()>0){
+					for(int j=0;j<ls.size();j++){
+						vv=ls.get(j);
+						vv.setD_code(dept_code);
+						vv.setDeptname(a1.getString("部门"));
+						vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
+						vv.setRemark(a1.getString("备注"));
+						vvs.add(vv);
+					}
+				}
+				
+			}
+			
+			for (short i = 0; i < ausers.size(); i++) {
+				// 创建一行，在页sheet上
+				JSONObject a1 = JSONObject.fromObject(ausers.get(i).toString());
+				String uuid=a1.getString("员工编号").substring(0,a1.getString("员工编号").indexOf("$")).trim();
+				VarticView vv=new VarticView();
+				map.clear();
+				map.put("acheck_user", uuid);
+				map.put("cym", cym);
+				List<VarticView> ls=new ArrayList();
+				ls=dao.listview(map);
+				for(int j=0;j<ls.size();j++){
+					vv=ls.get(j);
+					vv.setU_id(uuid);
+					vv.setUsername(a1.getString("姓名"));
+					vv.setPname(a1.getString("岗位"));
+					vv.setDeptname(a1.getString("部门"));
+					vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
+					vv.setRemark(a1.getString("备注"));
+					vvs.add(vv);
+				}
+			}
+
+		}
+		JSONArray jsonArray = JSONArray.fromObject(this.getVvs());
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("text/html;charset=UTF-8");
+		response.getWriter().print(jsonArray);
+	}
 
 	public String print() throws Exception {
 		HttpServletResponse response = ServletActionContext.getResponse();
