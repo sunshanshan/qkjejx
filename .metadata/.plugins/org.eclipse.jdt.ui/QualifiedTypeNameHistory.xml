@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="org.iweb.sys.domain.IndexDetail"/>
 <fullyQualifiedTypeName name="com.opensymphony.xwork2.ActionSupport"/>
@@ -28,3 +29,6 @@
 <fullyQualifiedTypeName name="org.iweb.sys.dao.DepartmentDAO"/>
 <fullyQualifiedTypeName name="org.iweb.sys.domain.Department"/>
 </qualifiedTypeNameHistroy>
+=======
+<qualifiedTypeNameHistroy/>
+>>>>>>> ed58ddf1575816c4852cd74c68c610b443940488
