@@ -476,6 +476,16 @@ pu.USER_NAME  parent_user_name,pud.dept_cname p_dname,pud.dept_code p_code,par.d
 		]]>
 	</update>
 	
+	<update id="sys_mdyUserp" parameterClass="user">
+		<![CDATA[
+			Update s_sys_user
+			Set 
+				parent_user=#parent_user#
+		]]>
+		<![CDATA[ Where uuid In ]]>
+		<iterate property="uuids" open="(" close=")" conjunction=" , "> #uuids[]#</iterate>
+	</update>
+	
 	<update id="sys_mdyUserMDept" parameterClass="user">
 		<![CDATA[
 			Update s_sys_user

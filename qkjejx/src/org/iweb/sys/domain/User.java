@@ -1,6 +1,7 @@
 package org.iweb.sys.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class User {
 	private String uuid;
@@ -28,6 +29,7 @@ public class User {
 	private String user_sign; // 用户个性签名链接
 	private String lm_user;
 	private Date lm_time;
+	private List<String> uuids;
 
 	// 以下为非数据库字段
 	private String dept_cname;
@@ -56,6 +58,15 @@ public class User {
 	private String z;
 	private String remark;
 	
+
+	public List<String> getUuids() {
+		return uuids;
+	}
+
+	public void setUuids(List<String> uuids) {
+		this.uuids = uuids;
+	}
+
 	public Double getCheck_score() {
 		return check_score;
 	}

@@ -71,11 +71,24 @@
 	</select>
 	<select id="qkjmanager_getVarticsHZU" resultClass="user" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select * from s_sys_user u
+			select DISTINCT u.uuid,u.USER_NAME,d.dept_cname dept_cname,p.POSITION_NAME position_name from s_sys_user u
+			join s_sys_department d on (u.DEPT_CODE=d.dept_code)
+			join s_cfg_position p on (u.[POSITION]=p.uuid)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ u.uuid=#uuid# ]]></isNotNull>
-			<isNotNull prepend="AND" property="parent_user"><![CDATA[ u.parent_user=#parent_user# ]]></isNotNull>
+			<isNotNull prepend="AND" property="parent_user">
+			<![CDATA[ u.parent_user=#parent_user# ]]>
+			<isNotEmpty prepend="OR" property="parent_dept" open="(" close=")">
+			<![CDATA[  d.parent_dept In ]]>
+			<iterate property="parent_dept" open="(" close=")" conjunction=" , "> #parent_dept[]#</iterate>
+			<isNotEmpty prepend="OR" property="chdept">
+				<![CDATA[ u.dept_code In ]]>
+				<iterate property="chdept" open="(" close=")" conjunction=" , "> #chdept[]#</iterate>
+			</isNotEmpty> 
+			</isNotEmpty>
+			
+			</isNotNull>
 			<isNotNull prepend="AND" property="parent_user">
 			<![CDATA[EXISTS(select 1 from qkj_t_indexdetail id join s_cfg_position p on (id.position_id=p.uuid) where  u.[POSITION]=p.uuid and ISNULL(id.position_id, '0')<>'0') ]]>	
 			</isNotNull>

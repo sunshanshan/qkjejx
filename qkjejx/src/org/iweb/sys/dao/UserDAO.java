@@ -24,6 +24,10 @@ public class UserDAO extends AbstractDAO {
 		super.save("sys_mdyUser", parameters);
 	}
 	
+	public void savep(Object parameters) {
+		super.save("sys_mdyUserp", parameters);
+	}
+	
 	public void saveDept(Object parameters) {
 		super.save("sys_mdyUserMDept", parameters);
 	}

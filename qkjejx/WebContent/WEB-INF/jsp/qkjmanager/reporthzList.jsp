@@ -112,23 +112,10 @@ cursor: pointer;
 						</td>
 						<td class="td1 nw">${user_name}</td>
 						<td class="td2 nw" id="po${uuid }">
-						<script type="text/javascript">
-							$(function(){
-									var p=${position};
-									var u=${uuid}
-									aps(u,p);
-							});
-						</script>
+						${position_name}
 						</td>
 						<td class="td2 nw" id="d${uuid}">
-						<script type="text/javascript">
-															$(function(){
-																var uuid=${uuid };
-																var d=${dept_code};
-																adds(uuid,d);
-																
-															});
-							</script>
+						${dept_cname }
 						</td>
 						<td class="td1 nw" id="score${uuid }">
 						</td>
@@ -261,7 +248,7 @@ var aus= function(u,cym){
 	ajax.sendAjax2();
 };
 
-var adds= function(uuid,ad){
+/* var adds= function(uuid,ad){
 	var ajax = new Common_Ajax('ajax_member_message');
 	ajax.config.action_url = ajax_url;
 	ajax.config._success = function(data, textStatus){
@@ -291,7 +278,7 @@ var aps= function(uuid,ad){
 	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_POSBYID");
 	ajax.addParameter("parameters", "uuid=" + encodeURI(ad));
 	ajax.sendAjax2();
-};
+}; */
 </script>
 </body>
 </html>

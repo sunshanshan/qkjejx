@@ -44,6 +44,15 @@ public class VardicAction extends ActionSupport {
 	private int pageSize;
 	private int currPage;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核管理";
+	private Check check;
+
+	public Check getCheck() {
+		return check;
+	}
+
+	public void setCheck(Check check) {
+		this.check = check;
+	}
 
 	public List<Vartic> getCvardicsd() {
 		return cvardicsd;
@@ -140,33 +149,24 @@ public class VardicAction extends ActionSupport {
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
-			
-			//ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_VERTICLIST", map, "apply_depts", "apply_user");
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_VERTICLIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
-			//查询打开的审核日期
-			CheckDao c=new CheckDao();
-			List<Check> checks=new ArrayList();
-			map.clear();
-			map.put("state", 0);//状态打开的审核日期
-			checks=c.list(map);
-			
+			check=dao.check_cym();
+			if(check!=null){//只查询打开的已考核记录
+				map.put("check_ym", check.getUuid());
+			}
 			map.put("typea", "1");
 			map.put("check_userh", ContextHelper.getUserLoginUuid());
-			if(checks.size()>0){//只查询打开的已考核记录
-				map.put("check_ym", checks.get(0).getUuid());
-			}
-			vardics=dao.list(map);//已经考核的记录
+			this.setVardics(dao.list(map));
 			this.setRecCount(dao.getResultCount());
+			
 			//需要考核的人员
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
 			
-			if(checks.size()>0){
-				Check check=new Check();
-				check=checks.get(0);
+			if(check!=null){
 		        map.put("check_ym", check.getUuid());
 		        map.put("typea", 1);//成绩表中所有纵向向考核已经考核过的去掉
 				map.put("isdept", 1);//纵向考核

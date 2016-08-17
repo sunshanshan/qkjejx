@@ -144,6 +144,14 @@
 				<param name="viewFlag">mdy</param>
 			</result>
 		</action>
+		
+		<action name="user_saveP" class="org.iweb.sys.action.UserAction" method="savep">
+			<result type="redirectAction">
+				<param name="actionName">user_list</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
 		<action name="user_saveDept" class="org.iweb.sys.action.UserAction" method="saveDept">
 			<result type="redirectAction">
 				<param name="actionName">user_DeptList</param>

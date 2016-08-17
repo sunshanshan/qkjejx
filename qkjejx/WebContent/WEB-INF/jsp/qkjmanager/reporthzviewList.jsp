@@ -19,8 +19,10 @@ background-color: #fff;border:solid 1px #add9c0;
 height: 60px;
 }
 .dkss{
-height: 30px;
+height: 10px;
 }
+
+ .PageNext{page-break-after: always;}
 </style>
 <body>
 	<!-- 顶部和左侧菜单导航 -->
@@ -28,12 +30,12 @@ height: 30px;
 	<div class="tab_right">
 		<div class="tab_warp main">
 			<div class="dq_step noprint">
-				<a href="javascript:;" onclick="window.print();">打印本页</a>
+				<a href="javascript:;" onclick="window.focus();window.print();">打印本页</a>
 			</div>
 			<input id="begintime" type="hidden" value="${cymprint}">
-			<table id="adept">
+			<table id="adept" class="PageNext">
 			<s:iterator value="vvs" status="sta">
-				<tr id="rone" style="height: 100px;">
+				<tr id="rone">
 					<td rowspan="2" style="width:120px;">名称
 					</td>
 					<td rowspan="2" style="width:120px;" id="dept${sta.index+1}">岗位</td>
@@ -42,14 +44,14 @@ height: 30px;
 					<td rowspan="2"  style="width:120px;">备注</td>
 				</tr>
 				<s:if test="%{d_code!=null}">
-				<tr id="rtwo${d_code }" style="height: 50px;">
+				<tr id="rtwo${d_code }">
 				</tr>
 				</s:if>
 				<s:else>
-				<tr id="rtwo${u_id }" style="height: 50px;">
+				<tr id="rtwo${u_id }">
 				</tr>
 				</s:else>
-				<tr id="rthree" style="height: 60px;">
+				<tr id="rthree">
 					<td rowspan="2">
 					<s:if test="%{u_id!=null}">${username }
 					<script type="text/javascript">
@@ -78,12 +80,30 @@ height: 30px;
 					<td rowspan="2">${remark}</td>
 				</tr>
 				<s:if test="%{d_code!=null}">
-				<tr id="rthfour${d_code }" style="height: 60px;">
+				<tr id="rthfour${d_code }">
 				</tr>
+				<script type="text/javascript">
+							$(function(){
+									var d=${sta.index+1};
+									var dept=${d_code};
+									if(d%4==0){
+										$("#rthfour"+dept).after("<tr id='fy' style='height: 10px;'></tr>");
+									}
+							});
+				</script>
 				</s:if>
 				<s:else>
-				<tr id="rthfour${u_id }" style="height: 60px;">
+				<tr id="rthfour${u_id }">
 				</tr>
+					<script type="text/javascript">
+							$(function(){
+									var d=${sta.index+1};
+									var dept=${u_id };
+									if(d%4==0){
+										$("#rthfour"+dept).after("<tr id='fy' 'height: 10px;'></tr>");
+									}
+							});
+				</script>
 				</s:else>
 				<tr id="fy" class="dkss"></tr>
 			</s:iterator>
@@ -95,6 +115,8 @@ height: 30px;
 </body>
 
 <script type="text/javascript">
+window.onload=func;
+
 var ads= function(dept,cym,af){
 	var ajax = new Common_Ajax('ajax_member_message');
 	ajax.config.action_url = ajax_url;
@@ -102,7 +124,7 @@ var ads= function(dept,cym,af){
 		var l = $(data).length;
 		if(l>0){
 			$.each(data, function(i, n){
-				$("#dept"+af).after("<td style='width:100px;'>"+n.kpi+"</td>");
+				$("#dept"+af).after("<td>"+n.kpi+"</td>");
 				$("#rtwo"+dept).append("<td>"+n.weight+"</td>");
 				$("#deptv"+af).after("<td>"+n.score+"</td>");
 				$("#rthfour"+dept).append("<td>"+n.gold+"</td>");
@@ -139,13 +161,13 @@ var aus= function(u,cym,af){
 	ajax.sendAjax2();
 };
 
-function  tastingprint(){
-	$("#fy").removeClass("dkss");
-	$("#fy").addClass("kss"); //添加样式
-	window.print();
-	$("#fy").removeClass("kss");
-	$("#fy").addClass("dkss"); //添加样式
-}
+function func() {
+	  factory.printing.portrait = true;    //true为纵向打印，flase为横向打印
+	  factory.printing.leftMargin = 1.0; //左页边距
+	  factory.printing.topMargin = 1.0;    //上页边距
+	  factory.printing.rightMargin = 1.0;//右页边距
+	  factory.printing.bottomMargin = 1.0; //下页边距
+	}
 </script>
 
 

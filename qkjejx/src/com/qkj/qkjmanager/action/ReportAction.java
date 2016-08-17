@@ -329,7 +329,7 @@ public class ReportAction extends ActionSupport {
 			}
 		}
 		this.setHzds(dao.listhzd(map));
-		map.clear();
+		//map.clear();
 		map.put("parent_user", ContextHelper.getUserLoginUuid());
 		this.setHzus(dao.listhzu(map));
 		return SUCCESS;

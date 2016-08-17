@@ -377,6 +377,32 @@ public class UserAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
+	
+	public String savep() throws Exception {
+		try {
+			List<String> dlistall = new ArrayList<>();
+			Set<String> dsetall = new HashSet<>();
+			if(user!=null&&user.getUuid()!=null){
+				String[] u=user.getUuid().split(",");
+				if(u.length>0){
+					for(int i=0;i<u.length;i++){
+						dsetall.add(u[i].trim());
+					}
+					dlistall.addAll(dsetall);
+				}
+				if(dlistall.size()>0){
+					user.setUuids(dlistall);
+					dao.savep(user);
+				}
+				
+			}
+		} catch (Exception e) {
+			log.error(this.getClass().getName() + "!save 数据更新失败:" + ToolsUtil.getStackTrace(e));
+			throw new Exception(this.getClass().getName() + "!save 数据更新失败:" + ToolsUtil.getStackTraceHTML(e));
+		}
+		return SUCCESS;
+	}
+
 
 	public String saveDept() {
 		user.setUuid(ContextHelper.getUserLoginUuid());

@@ -245,19 +245,19 @@ cursor: pointer;
 								<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
 								
 								<td class="longnote" title="${correctly}">
+								
+								<s:if test="isdept==1&&dtype==1">
 								<c:if test="${it:checkb(uuid)==true}">
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-								<s:if test="isdept==1&&dtype==1">
 								<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
+								</c:if>	
+								</c:if>
 								</s:if>
-								
 								<s:elseif test="%{typea==0&&dtype==1}">横向考核</s:elseif>
 								<s:elseif test="%{dtype==3}">取班组分数</s:elseif>
 								<s:else>
 									取部门分数
 								</s:else>
-								</c:if>	
-								</c:if>
 								</td>
 								
 								<s:else>

@@ -27,22 +27,23 @@
 			<s:form id="editForm" name="editForm" cssClass="validForm"
 				action="varticDetail_add" namespace="/qkjmanager" method="post"
 				theme="simple">
-				
+
 				<div class="label_main">
-					
-					<s:if test="'mdy' == viewFlag"><s:hidden name="vardic.uuid" value="%{vardic.uuid}"></s:hidden>
+
+					<s:if test="'mdy' == viewFlag">
+						<s:hidden name="vardic.uuid" value="%{vardic.uuid}"></s:hidden>
 						<div class="label_hang">
 							<div class="label_ltit">考核年月:</div>
 							<div class="label_rwben">
-								${it:formatDate(vardic.cym,'yyyy-MM')}
-							</div>
+								${it:formatDate(vardic.cym,'yyyy-MM')}</div>
 						</div>
-						
+
 						<div class="label_hang">
 							<div class="label_ltit">姓名:</div>
-							<div class="label_rwben" id="aut"><input id="au" type="hidden" value="${vardic.acheck_user}">
-							
-							<script type="text/javascript">
+							<div class="label_rwben" id="aut">
+								<input id="au" type="hidden" value="${vardic.acheck_user}">
+
+								<script type="text/javascript">
 															$(function(){
 																var au=$('#au').val();
 																aus(au);
@@ -51,7 +52,7 @@
 							</script>
 							</div>
 						</div>
-						
+
 						<div class="label_hang">
 							<div class="label_ltit">职务:</div>
 							<div class="label_rwben" id="pouser">
@@ -67,9 +68,9 @@
 						<div class="label_hang">
 							<div class="label_ltit">部门:</div>
 							<div class="label_rwben" id="adt">${vardic.acheck_deptname }
-							
-							<input id="ad" type="hidden" value="${vardic.acheck_usercode}">
-							<script type="text/javascript">
+
+								<input id="ad" type="hidden" value="${vardic.acheck_usercode}">
+								<script type="text/javascript">
 															$(function(){
 																var au=$('#ad').val();
 																ads(au);
@@ -81,14 +82,13 @@
 					</s:if>
 					<s:else>
 						<div class="label_hang">
-						<div class="label_ltit">考核年月:</div>
-						<div class="label_rwben">
-							${it:formatDate(check.ym,'yyyy-MM')}<input id="ck" type="hidden"
-								name="vardic.check_ym"
-								value="${check.uuid}">
+							<div class="label_ltit">考核年月:</div>
+							<div class="label_rwben">
+								${it:formatDate(check.ym,'yyyy-MM')}<input id="ck" type="hidden"
+									name="vardic.check_ym" value="${check.uuid}">
 							</div>
 						</div>
-							
+
 						<div class="label_hang">
 							<div class="label_ltit">姓名:</div>
 							<div class="label_rwben">
@@ -96,7 +96,7 @@
 									name="vardic.acheck_user" value="${user.uuid}">
 							</div>
 						</div>
-						
+
 						<div class="label_hang">
 							<div class="label_ltit">职务:</div>
 							<div class="label_rwben" id="pouser">
@@ -108,7 +108,7 @@
 								</script>
 							</div>
 						</div>
-						
+
 						<div class="label_hang">
 							<div class="label_ltit">部门:</div>
 							<div class="label_rwben">
@@ -142,8 +142,8 @@
 									<tr id="showtr${uuid}">
 										<td class="nw">${uuid }</td>
 										<td class="nw" id="kpi${uuid}">${kpi }</td>
-										<td class="nw">${weight }<input id="w${uuid }" name="weight"
-											type="hidden" value="${weight }"></td>
+										<td class="nw">${weight }<input id="w${uuid }"
+											name="weight" type="hidden" value="${weight }"></td>
 										<s:if test="isdept==1&&type==1">
 											<td class="nw" width="100px;"><input id="s${uuid }"
 												type="text" onblur="kpi('${uuid}');"
@@ -154,10 +154,9 @@
 										<s:else>
 											<s:if test="type==2">
 												<td class="nw" title="取部门分数"><input id="s${uuid }"
-													type="text" readonly="readonly">
-													<input id="pdept${uuid }" 
-											type="hidden" value="${position_dept}">
-													</td>
+													type="text" readonly="readonly"> <input
+													id="pdept${uuid }" type="hidden" value="${position_dept}">
+												</td>
 												<td class="nw"><input id="g${uuid }" type="text"
 													readonly="readonly"></td>
 												<script type="text/javascript">
@@ -176,7 +175,7 @@
 																kpibydept2(uuid,au,d,kpi);
 															}
 														}else{
-															kpibydept(uuid,sdept,d,kpi);
+															kpibydept(uuid,dept,d,kpi);
 														}
 														
 													});
@@ -190,8 +189,8 @@
 													type="text" readonly="readonly"></td>
 												<td class="nw" width="100px;"><input id="g${uuid }"
 													type="text" readonly="readonly"></td>
-													<s:if test="%{user.uuid!=null}">
-														<script type="text/javascript">
+												<s:if test="%{user.uuid!=null}">
+													<script type="text/javascript">
 															$(function(){
 																var uuid=${uuid };
 																var kpi=$('#kpi'+uuid).text();
@@ -201,9 +200,9 @@
 																
 															});
 														</script>
-													</s:if>
-													<s:else>
-														<script type="text/javascript">
+												</s:if>
+												<s:else>
+													<script type="text/javascript">
 															$(function(){
 																var uuid=${uuid };
 																var kpi=${kpi};
@@ -213,8 +212,8 @@
 																
 															});
 														</script>
-													</s:else>
-											
+												</s:else>
+
 											</s:elseif>
 											<s:else>
 												<td class="nw" title="横向分数：" id="s1${uuid }"></td>
@@ -251,23 +250,18 @@
 										<%-- <td class="longnote"  id="c${uuid }" >${check_deptcode}</td>	 --%>
 									</tr>
 								</s:iterator>
-							<tr>
-							<td>加扣分项</td>
-							<td class="nw" style="width:150px;">
-							<s:textfield name="vardic.bscore" title=""
-									/>
-							</td>
-							<td colspan="8">*分值范围是-30至10分</td>
-							</tr>
-							
-							<tr>
-							<td>合计
-							</td>
-							<td>总分：${vardic.check_score}
-							</td>
-							<td id="sumC"  colspan="8">总权重：
-							</td>
-							</tr>
+								<tr>
+									<td>加扣分项</td>
+									<td class="nw" style="width: 150px;"><s:textfield
+											name="vardic.bscore" title="" /></td>
+									<td colspan="8">*分值范围是-30至10分</td>
+								</tr>
+
+								<tr>
+									<td>合计</td>
+									<td>总分：${vardic.check_score}</td>
+									<td id="sumC" colspan="8">总权重：</td>
+								</tr>
 							</table>
 						</fieldset>
 					</div>
@@ -275,7 +269,8 @@
 						<div class="label_hang">
 							<div class="label_ltit">备注:</div>
 							<div class="label_rwbenx">
-									<s:textarea name="vardic.remark" title="备注" cssClass="label_hang_linput inputNote validate[maxSize[65535]]" />
+								<s:textarea name="vardic.remark" title="备注"
+									cssClass="label_hang_linput inputNote validate[maxSize[65535]]" />
 							</div>
 						</div>
 					</div>
@@ -287,106 +282,100 @@
 
 								<c:if
 									test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-									<button  id="btnzhuce" class="input-blue" onclick="add();">提交</button>
+									<button id="btnzhuce" class="input-blue" onclick="add();">提交</button>
 								</c:if>
 							</div>
 						</div>
 					</div>
 				</s:if>
-			
-			<s:if test="'mdy' == viewFlag">
-				<div class="label_main">
-					<fieldset class="clear">
-						<legend>指标</legend>
-						<table id="t" width="100%" cellpadding="0" cellspacing="0"
-							border="0" class="lb_jpin">
-							<tr>
-								<th>编号</th>
-								<th>kpi</th>
-								<th>权重</th>
-								<th>评分</th>
-								<th>得分</th>
-								<th>周期</th>
-								<th>定义</th>
-								<th>标准</th>
-								<c:if
-									test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-									<th>操作</th>
-								</c:if>
-							</tr>
-							<!-- lading.promotions -->
-							<s:iterator value="vds" status="sta">
-								<tr id="showtr${uuid}">
-									<td class="nw">${uuid }</td>
-									<td class="nw">${kpi }</td>
-									<td class="nw">${weight }<input id="w${uuid }" name="weight"
-										type="hidden" value="${weight }"></td>
-									<td class="nw" width="100px;"><input id="s${uuid }"
-										type="text" onblur="kpi('${uuid}');"
-										class="validate[required]" value="${check_score }" /></td>
-									<td class="nw" width="100px;"><input id="g${uuid }"
-										type="text" readonly="readonly" class="validate[required]"
-										value="${check_goal }" /></td>
-									<td class="nw">${cyc }</td>
-									<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
-									<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
+
+				<s:if test="'mdy' == viewFlag">
+					<div class="label_main">
+						<fieldset class="clear">
+							<legend>指标</legend>
+							<table id="t" width="100%" cellpadding="0" cellspacing="0"
+								border="0" class="lb_jpin">
+								<tr>
+									<th>编号</th>
+									<th>kpi</th>
+									<th>权重</th>
+									<th>评分</th>
+									<th>得分</th>
+									<th>周期</th>
+									<th>定义</th>
+									<th>标准</th>
 									<c:if
 										test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-										<c:if test="${it:checkb(uuid)==true}">
-											
-											<td>
-											<s:if test="%{typea==1&&dtype==1}">
-											<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
-											</s:if>
-											<s:elseif test="%{typea==0&&dtype==1}">横向考核</s:elseif>
-											<s:elseif test="%{dtype==2}">取部门分数</s:elseif>
-											<s:else>
-											取班组分数
-											</s:else>
-											</td>
-										</c:if>
+										<th>操作</th>
 									</c:if>
 								</tr>
-							</s:iterator>
-							<tr>
-							<td>加扣分项</td>
-							<td class="nw" style="width:150px;">
-							<s:textfield name="vardic.bscore" title=""
-									/>
-							</td>
-							<td colspan="8">*分值范围是-30至10分</td>
-							</tr>
-							
-							<tr>
-							<td>合计
-							</td>
-							<td>总分：${vardic.check_score}
-							</td>
-							<td id="sumC"  colspan="8">总权重：
-							</td>
-							</tr>
-						</table>
-						
-					</fieldset>
-				</div>
-				<div class="label_main">
-			<div class="label_hang">
-				<div class="label_ltit">备注:</div>
-				<div class="label_rwbenx">
-						<s:textarea name="vardic.remark" title="备注" cssClass="label_hang_linput inputNote validate[maxSize[65535]]" />
-				</div>
-			</div>
-		</div>
-		
-		<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
-			<s:submit id="save" name="save" value="保存备注及加扣分项" action="varticD_save" cssClass="input-blue" />
-		</c:if>
-			</s:if>
-			
-		</s:form>
+								<!-- lading.promotions -->
+								<s:iterator value="vds" status="sta">
+									<tr id="showtr${uuid}">
+										<td class="nw">${uuid }</td>
+										<td class="nw">${kpi }</td>
+										<td class="nw">${weight }<input id="w${uuid }"
+											name="weight" type="hidden" value="${weight }"></td>
+										<td class="nw" width="100px;"><input id="s${uuid }"
+											type="text" onblur="kpi('${uuid}');"
+											class="validate[required]" value="${check_score }" /></td>
+										<td class="nw" width="100px;"><input id="g${uuid }"
+											type="text" readonly="readonly" class="validate[required]"
+											value="${check_goal }" /></td>
+										<td class="nw">${cyc }</td>
+										<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
+										<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
+
+										<td><s:if test="%{typea==1&&dtype==1}">
+												<c:if
+													test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
+													<c:if test="${it:checkb(uuid)==true}">
+														<a class="input-blue" onclick="mdy(${uuid},${score_id })">保存</a>
+													</c:if>
+												</c:if>
+											</s:if> <s:elseif test="%{typea==0&&dtype==1}">横向考核</s:elseif> <s:elseif
+												test="%{dtype==2}">取部门分数</s:elseif> <s:else>
+											取班组分数
+											</s:else></td>
+									</tr>
+								</s:iterator>
+								<tr>
+									<td>加扣分项</td>
+									<td class="nw" style="width: 150px;"><s:textfield
+											name="vardic.bscore" title="" /></td>
+									<td colspan="8">*分值范围是-30至10分</td>
+								</tr>
+
+								<tr>
+									<td>合计</td>
+									<td>总分：${vardic.check_score}</td>
+									<td id="sumC" colspan="8">总权重：</td>
+								</tr>
+							</table>
+
+						</fieldset>
+					</div>
+					<div class="label_main">
+						<div class="label_hang">
+							<div class="label_ltit">备注:</div>
+							<div class="label_rwbenx">
+								<s:textarea name="vardic.remark" title="备注"
+									cssClass="label_hang_linput inputNote validate[maxSize[65535]]" />
+							</div>
+						</div>
+					</div>
+
+					<c:if
+						test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
+						<s:submit id="save" name="save" value="保存备注及加扣分项"
+							action="varticD_save" cssClass="input-blue" />
+					</c:if>
+				</s:if>
+
+			</s:form>
 		</div>
 	</div>
-	
+
 	<s:action name="ref_foot" namespace="/manager" executeResult="true" />
 	<script type="text/javascript"
 		src="<s:url value="/js/DatePicker.js" />"></script>

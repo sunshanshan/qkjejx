@@ -571,7 +571,7 @@ public class TransverseDetailAction extends ActionSupport {
 			VarticDetail vds=new VarticDetail();
 			vds=(VarticDetail) dao.get(vd.getUuid());
 			//查询取此部门分数的sonscore
-			if(vardic.getAcheck_usercode()!=null && vardic.getCheck_ym()!=null && vd.getKpi()!=null){
+			if(vardic.getAcheck_usercode()!=null && vardic.getCheck_ym()!=null && vds.getKpi()!=null){
 				map.clear();
 				map.put("depttype", "2");
 				map.put("kpi", vds.getKpi());

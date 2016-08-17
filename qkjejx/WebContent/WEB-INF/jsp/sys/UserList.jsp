@@ -56,6 +56,7 @@
 	        </div>
 		</div>
 		</s:form>
+		<s:form id="formEdit" name="form1" cssClass="validForm" action="user_add" namespace="/sys" onsubmit="return validator(this);" method="post" theme="simple">
 		<div class="tab_warp">
 	 		<table id="table1">
 	 			<tr id="coltr">
@@ -73,7 +74,7 @@
 	            <s:set name="_status" value="#{0:'初始',1:'正常',2:'冻结','10000':'测试'}" />
 				<s:iterator value="users" status="sta">
 				<tr id="showtr${uuid}">
-	              <td class="td1">${title}</td>
+	              <td class="td1"><input name="user.uuid" type="checkbox" value="<s:property value="uuid" />" />${title}</td>
 	              <td class="td1">${user_name}</td>
 	              <td class="td2">${pparname}</td>
 	              <td class="td2">${pardname}</td>
@@ -97,6 +98,29 @@
 	         </table>
 	      </div>
 	      <div id="listpage" class="pagination"></div>
+	     <div class="label_hang">
+		       <div class="label_ltit">汇报人部门:</div>
+		       <div class="label_rwben2">
+		       		<span class="label_rwb">
+					<s:textfield title="部门名称" id="p_name" name="user.p_dname" readonly="true" />
+					<s:hidden title="部门代码" id="p_code" name="user.p_code" readonly="true" />
+					</span>
+					<span class="lb nw">
+					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('p_code','p_name',true);" />
+					</span>
+		       </div>
+			</div>
+			
+			<div class="label_hang">
+		       <div class="label_ltit">汇报人:</div>
+		       <div class="label_rwbenx">
+		       <%-- <s:select name="user.position" list="positions" listKey="uuid" listValue="position_name" headerKey="" headerValue="--请选择--" cssClass="validate[required]"/> --%>
+		       <s:select id="membermanagerid" cssClass="selectKick" name="user.parent_user" list="#{}" headerKey="" headerValue="--请选择--"/>
+		       </div>
+			</div>
+			
+			<s:submit id="save" name="save" value="保存" action="user_saveP" cssClass="input-blue"/>
+		</s:form>
 	      <div class="tab_warp"><span id="message"><s:property value="message" /></span></div>
 	</div>
 </div>

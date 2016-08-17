@@ -452,7 +452,9 @@
 			<isNotNull prepend="AND" property="kpiid"><![CDATA[ s.check_index=#kpiid# ]]></isNotNull>
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[  ss.check_ym=#check_ym#]]></isNotNull>
 			<isNotNull prepend="AND" property="dept_code"><![CDATA[ ss.acheck_usercode=#dept_code# and isnull(ss.acheck_user,'0')='0' and ISNULL(ss.acheck_usercode, '0')<>'0' ]]></isNotNull>
-			<isNotNull prepend="AND" property="par_dept"><![CDATA[ ss.acheck_usercode=(select ds.parent_dept from s_sys_department ds  where ds.dept_code=#par_dept#) and isnull(ss.acheck_user,'0')='0' and ISNULL(ss.acheck_usercode, '0')<>'0' ]]></isNotNull>
+			<isNotNull prepend="AND" property="par_dept"><![CDATA[ (ss.acheck_usercode=(select ds.parent_dept from s_sys_department ds  where ds.dept_code=#par_dept#)
+or ss.acheck_usercode=#par_dept#
+) and isnull(ss.acheck_user,'0')='0' and ISNULL(ss.acheck_usercode, '0')<>'0' ]]></isNotNull>
 			<isNotNull prepend="AND" property="userid"><![CDATA[ ss.acheck_usercode in (select ud.dept_code from s_sys_userdept ud where ud.user_id=#userid#) and isnull(ss.acheck_user,'0')='0' and ISNULL(ss.acheck_usercode, '0')<>'0' ]]></isNotNull>
 			<isNotNull prepend="AND" property="kpi"><![CDATA[ i.kpi=#kpi# ]]></isNotNull>
 		</dynamic>
