@@ -7,12 +7,17 @@
 <title><s:text name="APP_NAME" /></title>
 <s:action name="ref_head" namespace="/manager" executeResult="true" />
 <style type="text/css">
-body {background-color: #363636;}
 .print_prepare {width: 0;height: 0;position: absolute;left: -9999px;top: -9999px;}
+hr{border:7px solid #CF2E2A;width: 100%}
+.imgb{float: right;width: 40%}
+.imgt{width:27%;}
 </style>
 </head>
 <body>
-<div class="main lg_main">
+<div>
+<img  class="imgt" src="<s:url value="/images/logo.png" />" />
+</div>
+<div class="main lg_main" style="margin: 3% 1% 7% 55%">
 	<div class="lg_title">绩效系统登录</div>
 	<div class="lg_input">
 		<s:form id="mainForm" cssClass="validForm" name="mainForm" action="check_login" namespace="/manager" method="post" theme="simple">
@@ -31,6 +36,10 @@ body {background-color: #363636;}
         </div>
         </s:form>
 	</div>
+</div>
+<div>
+<img class="imgb" src="<s:url value="/images/title.png" />" />
+<hr/>
 </div>
 <!-- 提前加载图片 -->
 <div>
