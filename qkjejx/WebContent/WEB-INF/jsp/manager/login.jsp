@@ -40,6 +40,11 @@ hr{border:7px solid #CF2E2A;width: 100%}
 </div>
 <div>
 
+
+
+
+
+
 <img class="imgb" src="<s:url value="/images/title.png" />" />
 <hr/>
 </div>
