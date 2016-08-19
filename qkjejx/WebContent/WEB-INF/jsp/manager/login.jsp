@@ -22,6 +22,7 @@ hr{border:7px solid #CF2E2A;width: 100%}
 	<div class="lg_input">
 		<s:form id="mainForm" cssClass="validForm" name="mainForm" action="check_login" namespace="/manager" method="post" theme="simple">
         <div class="label_singlecol">
+        
             <div class="label_singletitle">用户名:</div>
             <div class="label_singlecon"><s:textfield title="用户名" name="user.title" cssClass="validate[required]" nullable="false" /></div>
         </div>
