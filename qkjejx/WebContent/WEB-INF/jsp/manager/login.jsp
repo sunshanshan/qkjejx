@@ -17,7 +17,7 @@ hr{border:7px solid #CF2E2A;width: 100%}
 <div>
 <img  class="imgt" src="<s:url value="/images/logo.png" />" />
 </div>
-<div class="main lg_main" style="margin: 3% 2% 7% 55%">
+<div class="main lg_main" style="margin: 3% 1% 7% 55%">
 	<div class="lg_title">绩效系统登录</div>
 	<div class="lg_input">
 		<s:form id="mainForm" cssClass="validForm" name="mainForm" action="check_login" namespace="/manager" method="post" theme="simple">
@@ -39,12 +39,6 @@ hr{border:7px solid #CF2E2A;width: 100%}
 	</div>
 </div>
 <div>
-
-
-
-
-
-
 <img class="imgb" src="<s:url value="/images/title.png" />" />
 <hr/>
 </div>
