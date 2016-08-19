@@ -136,7 +136,7 @@ cursor: pointer;
 		</s:form>
 		<s:form id="printx" action="print_view" method="post" namespace="/qkjmanager" theme="simple">
 		<input id="adepts1" type="hidden" name="adept">
-		<input id="ausers1" type="text" name="auser">
+		<input id="ausers1" type="hidden" name="auser">
 		<input id="cymprint1" type="hidden" name="cymprint">
 		</s:form>
 	</div>
