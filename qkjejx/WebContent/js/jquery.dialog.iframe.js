@@ -278,6 +278,12 @@ var loadPosition = function(dept_code, curr_apply_user, b_m){
 	else if(encodeURI(dept_code).substring(0,5)=="10312"){
 		ajax.addParameter("parameters", "dept_code3=" + encodeURI("10312")+"&dept_code2="+encodeURI(dept_code));
 	}
+	else if(encodeURI(dept_code).substring(0,5)=="10311"){
+		ajax.addParameter("parameters", "dept_code3=" + encodeURI("10311")+"&dept_code2="+encodeURI(dept_code));
+	}
+	else if(encodeURI(dept_code).substring(0,5)=="10310"){
+		ajax.addParameter("parameters", "dept_code3=" + encodeURI("10310")+"&dept_code2="+encodeURI(dept_code));
+	}
 	else{
 		ajax.addParameter("parameters", "dept_code2=" + encodeURI(dept_code));
 	}

@@ -514,7 +514,7 @@ public class ReportAction extends ActionSupport {
 		JSONArray adepts = JSONArray.fromObject(this.getAdeptview());
 		JSONArray ausers = JSONArray.fromObject(this.getAuserview());
 		vvs=new ArrayList<>();
-		if (adepts.size()>0 || adepts.size()>0) {
+		if (adepts.size()>0 || ausers.size()>0) {
 			for (short i = 0; i < adepts.size(); i++) {
 				// 创建一行，在页sheet上
 				JSONObject a1 = JSONObject.fromObject(adepts.get(i).toString());
