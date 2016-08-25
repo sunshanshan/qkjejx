@@ -27,10 +27,7 @@ cursor: pointer;
 				<a onclick="printx1();">打印</a>
 				</span>
 			</c:if>
-			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD1',null)==true}">
-				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"><s:param name="viewFlag">add</s:param><s:param name="vardic.cym">${vardic.cym}</s:param></s:url>">导出考核EXCEL</a>
-				</span>
-			</c:if>
+			
 		</div>
 		<s:form id="serachForm" name="serachForm" action="report_listhz" method="get" namespace="/qkjmanager" theme="simple">
 			<div class="label_con">
@@ -60,6 +57,7 @@ cursor: pointer;
 					<th class="td2">本月系数</th>
 					<th class="td1">本月状态</th>
 					<th class="td2">备注</th>
+					<th class="td3">人员成绩汇总</th>
 				</tr>
 				<s:iterator value="hzds" status="sta">
 					<tr id="showtr${dept_code}">
@@ -69,6 +67,7 @@ cursor: pointer;
 									var d=${dept_code};
 									var cym=$('#begintime').val();
 									ads(d,cym);
+									leaves(d,cym);
 							});
 						</script>
 						</td>
@@ -79,6 +78,7 @@ cursor: pointer;
 						<td class="td2 nw" id="x${dept_code }"></td>
 						<td class="td1 nw" id="z${dept_code }"></td>
 						<td class="td2 nw" id="b${dept_code }"></td>
+						<td class="td2 nw" id="leave${dept_code }"></td>
 					</tr>
 				</s:iterator>
 				
@@ -207,6 +207,23 @@ var ads= function(dept,cym){
 	};
 	ajax.addParameter("work", "AutoComplete");
 	ajax.addParameter("privilege_id", "SYS_SELECT_SCORE_UORD");
+	ajax.addParameter("parameters", "acheck_usercode=" + encodeURI(dept)+"&cym="+encodeURI(cym));
+	ajax.sendAjax2();
+};
+
+var leaves= function(dept,cym){
+	
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var l = $(data).length;
+				if(l==1){
+					$('#leave'+dept).html("A:"+$(data)[0].leavea+"个;B:"+$(data)[0].leaveb+"个;C:"+$(data)[0].leavec+"个;D:"+$(data)[0].leaved+"个");
+				}
+				
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_LEAVE");
 	ajax.addParameter("parameters", "acheck_usercode=" + encodeURI(dept)+"&cym="+encodeURI(cym));
 	ajax.sendAjax2();
 };

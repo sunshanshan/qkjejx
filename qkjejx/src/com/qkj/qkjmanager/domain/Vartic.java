@@ -20,6 +20,7 @@ public class Vartic {
 	private String lm_username;
 	private String check_deptname;
 	private String acheck_deptname;
+	private String position_name;
 	private String u_id;  
 	private String u_code;
 	
@@ -42,8 +43,43 @@ public class Vartic {
 	private Integer cstate;
 	private Double ss_goal;
 	
+	private Date starcym;
+	private Date clocym;
+	
+	private Double aveu;
+	private Double aved;
 	private Integer finish;//部门是否考核完成，，用于取班组分数时判断是否班组考核完成
 	
+	private Integer leavea;
+	private Integer leaveb;
+	private Integer leavec;
+	private Integer leaved;
+	
+
+	public String getPosition_name() {
+		return position_name;
+	}
+
+	public void setPosition_name(String position_name) {
+		this.position_name = position_name;
+	}
+
+	public Double getAveu() {
+		return aveu;
+	}
+
+	public void setAveu(Double aveu) {
+		this.aveu = aveu;
+	}
+
+	public Double getAved() {
+		return aved;
+	}
+
+	public void setAved(Double aved) {
+		this.aved = aved;
+	}
+
 	public Integer getJltype() {
 		return jltype;
 	}
@@ -336,6 +372,54 @@ public class Vartic {
 		this.remark = remark;
 	}
 
+	public Date getStarcym() {
+		return starcym;
+	}
 
+	public void setStarcym(Date starcym) {
+		this.starcym = starcym;
+	}
+
+	public Date getClocym() {
+		return clocym;
+	}
+
+	public Integer getLeavea() {
+		return leavea;
+	}
+
+	public void setLeavea(Integer leavea) {
+		this.leavea = leavea;
+	}
+
+	public Integer getLeaveb() {
+		return leaveb;
+	}
+
+	public void setLeaveb(Integer leaveb) {
+		this.leaveb = leaveb;
+	}
+
+	public Integer getLeavec() {
+		return leavec;
+	}
+
+	public void setLeavec(Integer leavec) {
+		this.leavec = leavec;
+	}
+
+	public Integer getLeaved() {
+		return leaved;
+	}
+
+	public void setLeaved(Integer leaved) {
+		this.leaved = leaved;
+	}
+
+	public void setClocym(Date clocym) {
+		this.clocym = clocym;
+	}
+
+	
 	
 }

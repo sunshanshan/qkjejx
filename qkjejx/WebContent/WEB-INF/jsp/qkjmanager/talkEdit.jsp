@@ -30,7 +30,16 @@
 						<th class="td1">备注</th>
 					</tr>
 						<tr>
-							<td class="td1 nw">${vardic.acheck_username}</td>
+							<td class="td1 nw" id="aut">
+							<input id="au" type="hidden" value="${vardic.acheck_user}">
+							<script type="text/javascript">
+															$(function(){
+																var au=$('#au').val();
+																aus(au);
+																
+															});
+							</script>
+							</td>
 							<td class="td1 nw">${vardic.check_score }</td>
 							<td class="td1 nw">
 							<s:if test="vardic.check_score>=90">
@@ -160,6 +169,22 @@
 			$("#messages").text("请先保存后才能做其他操作!");
 		});
 	});
+	
+	var aus= function(au){
+		var ajax = new Common_Ajax('ajax_member_message');
+		ajax.config.action_url = ajax_url;
+		ajax.config._success = function(data, textStatus){
+			var l = $(data).length;
+					if(l==1){
+						$('#aut').html($(data)[0].user_name);
+					}
+					
+		};
+		ajax.addParameter("work", "AutoComplete");
+		ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_USERBYID");
+		ajax.addParameter("parameters", "uuid=" + encodeURI(au));
+		ajax.sendAjax2();
+	};
 </script>
 <script type="text/javascript" src="<s:url value="/include/jQuery/jquery.ui.datepicker-zh.js" />"></script>
 <script type="text/javascript" src="<s:url value="/js/DatePicker.js" />"></script>

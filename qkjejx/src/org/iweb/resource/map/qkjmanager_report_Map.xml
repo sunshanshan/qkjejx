@@ -161,6 +161,9 @@
 			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# and ISNULL(c.acheck_user, '0')='0']]></isNotNull>
 			<isNotNull prepend="AND" property="cym"><![CDATA[  chec.ym like #cym# +'%' ]]></isNotNull>
 			
+			<isNotEmpty prepend="AND" property="starcym"><![CDATA[ chec.ym>=#starcym# ]]></isNotEmpty>
+			<isNotEmpty prepend="AND" property="clocym"><![CDATA[ chec.ym<=#clocym#]]></isNotEmpty>
+			
 			<isNotNull prepend="AND" property="apply_userDouble" open="(" close=")">
 				<![CDATA[ c.acheck_user=#apply_userDouble# ]]>
 			</isNotNull>
@@ -189,6 +192,9 @@
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[  c.check_ym=#check_ym# ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# and ISNULL(c.acheck_user, '0')='0']]></isNotNull>
 			<isNotNull prepend="AND" property="cym"><![CDATA[  chec.ym like #cym# +'%' ]]></isNotNull>
+			
+			<isNotEmpty prepend="AND" property="starcym"><![CDATA[ chec.ym>=#starcym# ]]></isNotEmpty>
+			<isNotEmpty prepend="AND" property="clocym"><![CDATA[ chec.ym<=#clocym#]]></isNotEmpty>
 			
 			<isNotEmpty prepend="AND" property="apply_depts" open="(" close=")">
 			<![CDATA[ c.acheck_usercode In ]]>
@@ -239,5 +245,33 @@
 		</dynamic>
 	</select>
 	
+	
+	<select id="qkjmanage_getleave" resultClass="score" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select MAX(aa.a) leavea,MAX(aa.b) leaveb, MAX(aa.c) leavec, MAX(aa.d) leaved from (
+			select COUNT(*) a,null b,null c,null d from qkj_r_score s 
+			join qkj_r_check c on (s.check_ym=c.uuid)
+			where s.check_score>=90 and c.ym like #cym# +'%' and s.acheck_usercode=#acheck_usercode# and ISNULL(s.acheck_user, '0')!='0'
+			
+			UNION All
+			
+			select null a,COUNT(*) b,null c,null d from qkj_r_score s 
+			join qkj_r_check c on (s.check_ym=c.uuid)
+			where s.check_score>=80 and s.check_score<90 and c.ym like #cym# +'%' and s.acheck_usercode=#acheck_usercode# and ISNULL(s.acheck_user, '0')!='0'
+			
+			UNION All
+			
+			select null a,null b,COUNT(*) c,null d from qkj_r_score s 
+			join qkj_r_check c on (s.check_ym=c.uuid)
+			where s.check_score>=60 and s.check_score<80 and c.ym like #cym# +'%' and s.acheck_usercode=#acheck_usercode# and ISNULL(s.acheck_user, '0')!='0'
+			
+			UNION All
+			
+			select null a,null b,null c,COUNT(*) d from qkj_r_score s 
+			join qkj_r_check c on (s.check_ym=c.uuid)
+			where s.check_score<60 and c.ym like #cym# +'%' and s.acheck_usercode=#acheck_usercode# and ISNULL(s.acheck_user, '0')!='0'
+			) aa
+		]]>
+	</select>
 	
 </sqlMap>

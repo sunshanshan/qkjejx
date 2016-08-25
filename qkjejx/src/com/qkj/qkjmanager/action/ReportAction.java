@@ -62,6 +62,8 @@ public class ReportAction extends ActionSupport {
 	private List<Vartic> vardicsb;
 	private List<Vartic> vardicwillu;
 	private List<Vartic> vardicswilld;
+	private List<Vartic> leaves;
+	private Score leave;
 	private List<Department> hzds;
 	private List<User> hzus;
 	private List<Department> bgs;
@@ -74,6 +76,16 @@ public class ReportAction extends ActionSupport {
 	private static String auserview;
 	
 	
+	
+
+	public Score getLeave() {
+		return leave;
+	}
+
+	public void setLeave(Score leave) {
+		this.leave = leave;
+	}
+
 	public static String getAdeptview() {
 		return adeptview;
 	}
@@ -203,6 +215,14 @@ public class ReportAction extends ActionSupport {
 	}
 
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;考核报表";
+
+	public List<Vartic> getLeaves() {
+		return leaves;
+	}
+
+	public void setLeaves(List<Vartic> leaves) {
+		this.leaves = leaves;
+	}
 
 	public List<Vartic> getVardics() {
 		return vardics;
@@ -364,6 +384,12 @@ public class ReportAction extends ActionSupport {
 				map.put("dept_code", vardic.getAcheck_usercode());
 			}
 			this.setBgus(dao.listhbgu(map));
+			/*this.setLeaves(dao.listleave(map));
+			if(leaves.size()>0){
+			this.setLeave(leaves.get(0));
+			}*/
+			this.setLeave((Score) dao.getleave(map));
+			System.out.println(leave.getLeaveb());
 		}
 		return SUCCESS;
 	}
@@ -379,22 +405,32 @@ public class ReportAction extends ActionSupport {
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
-			}
-			// ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_CHECKLIST",
-			// map, "apply_depts", "apply_user");
-			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_CHECKLIST", map,
-					vardic, viewFlag);
-			// this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
-			if (map.get("cym") != null) {
+				if (checks.size() > 0) {// 只查询打开的已考核记录
+					vardic.setCym(checks.get(0).getYm());
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+					String d = sdf.format(vardic.getCym());
+					map.remove("cym");
+					map.put("cym", d);
+				}
+			}else{
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 				String d = sdf.format(vardic.getCym());
 				map.remove("cym");
 				map.put("cym", d);
+				if(vardic.getStarcym()!=null){
+					String star=sdf.format(vardic.getStarcym());
+					map.put("starcym", star+"-01");
+				}
+				if(vardic.getClocym()!=null){
+					String close=sdf.format(vardic.getClocym());
+					map.put("clocym", close+"-31");
+				}
+				
+			}
+			if (map.get("starcym") != null || map.get("clocym") != null) {//如果时间段不为空则按时间段取值
+				map.remove("cym");
 			}
 
-			if (checks.size() > 0) {// 只查询打开的已考核记录
-				map.put("check_ym", checks.get(0).getUuid());
-			}
 			UserLoginInfo ulf = new UserLoginInfo();
 			ActionContext context = ActionContext.getContext();
 			HttpServletRequest request = (HttpServletRequest) context
@@ -421,7 +457,22 @@ public class ReportAction extends ActionSupport {
 			}
 			map.put("apply_userDouble", ContextHelper.getUserLoginUuid());
 			this.setVardics(dao.listU(map));
+			if(vardics.size()>0){
+				Double totle=0.00;
+				for(int i=0;i<vardics.size();i++){
+					totle+=vardics.get(i).getCheck_score();
+				}
+				vardic.setAveu(totle/vardics.size());
+			}
 			this.setVardicsbyd(dao.listD(map));
+			
+			if(vardicsbyd.size()>0){
+				Double totle=0.00;
+				for(int i=0;i<vardicsbyd.size();i++){
+					totle+=vardicsbyd.get(i).getCheck_score();
+				}
+				vardic.setAved(totle/vardicsbyd.size());
+			}
 			// this.setRecCount(dao.getResultCount());
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;纵向考核列表";
 		} catch (Exception e) {
@@ -432,77 +483,107 @@ public class ReportAction extends ActionSupport {
 	}
 
 	public String report() throws Exception {
-		if (vardic != null && vardic.getCym() != null) {
-			SimpleDateFormat sim = new SimpleDateFormat("yyyy-MM");
-			vardic.setCheck_yms(sim.format(vardic.getCym()));
-			map.put("cym", vardic.getCheck_yms());
-		}
-		ContextHelper.setSearchDeptPermit4Search("SYS_QKJMANAGER_CHECKLIST",
-				map, "apply_depts", "apply_user");
-		ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_CHECKLIST", map,
-				vardic, viewFlag);
-		ActionContext context = ActionContext.getContext();
-		HttpServletRequest request = (HttpServletRequest) context
-				.get(ServletActionContext.HTTP_REQUEST);
-		HttpServletResponse response = (HttpServletResponse) context
-				.get(ServletActionContext.HTTP_RESPONSE);
-		String fileName = "汇总表格";
-		Vartic v1 = new Vartic();
-		int count = 0;
-
-		this.setVardics(dao.list(map));
-		String columnNames[] = { "主键", "考核年月", "被考核人", "被考核人部门", "考核完成时间", "分数" };
-		String keys[] = { "uuid", "check_ym", "acheck_username",
-				"acheck_deptname", "check_date", "ay_totelScore" };
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		try {
-			ExcelUtil.createWorkBook(vardics, keys, columnNames).write(os);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		byte[] content = os.toByteArray();
-		InputStream is = new ByteArrayInputStream(content);
-		// 设置response参数，可以打开下载页面
-		response.reset();
-		response.setContentType("application/vnd.ms-excel;charset=utf-8");
-
-		ServletOutputStream out = null;
-		try {
+		
+HttpServletResponse response = ServletActionContext.getResponse();
+        
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String cym = this.getCymprint();
+		JSONArray adepts = JSONArray.fromObject(this.getAdept());
+		JSONArray ausers = JSONArray.fromObject(this.getAuser());
+		map.clear();
+		String fileName = ContextHelper.getUserLoginName()+"汇总表格";
+		if (adepts.size()>0 || adepts.size()>0) {
+			WritableWorkbook wwb = null;
+			// 设这输出的类型和文件格式
+			response.setContentType("application/vnd.ms-excel;charset=UTF-8");
 			response.setHeader("Content-Disposition", "attachment;filename="
 					+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
-			out = response.getOutputStream();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		BufferedInputStream bis = null;
-		BufferedOutputStream bos = null;
-		try {
-			bis = new BufferedInputStream(is);
-			bos = new BufferedOutputStream(out);
-			byte[] buff = new byte[2048];
-			int bytesRead;
-			// Simple read/write loop.
-			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-				bos.write(buff, 0, bytesRead);
-			}
-		} catch (final IOException e) {
-			throw e;
-		} finally {
-			if (bis != null)
-				try {
-					bis.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			if (bos != null)
-				try {
-					bos.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		}
+			// 设置文件名和并且解决中文名不能下载
+			OutputStream os = response.getOutputStream();
+			// 创建可写入的Excel工作簿
+			wwb = Workbook.createWorkbook(os);
+			// 创建工作表
+			WritableSheet ws = wwb.createSheet(ContextHelper.getUserLoginName()
+					+ "汇总", 0);
 
-		return SUCCESS;
+			ws.setColumnView(0, 15);
+			ws.setColumnView(1, 25);
+			ws.setColumnView(2, 15);
+			ws.setColumnView(3, 25);
+			ws.setColumnView(4, 25);
+			ws.setColumnView(5, 25);
+			ws.setColumnView(7, 25);
+			ws.setColumnView(8, 35);
+			WritableFont font1 = new WritableFont(WritableFont.ARIAL, 11);
+
+			WritableCellFormat cellFormat1 = new WritableCellFormat(font1);
+
+			// 查询数据库中所有的数据
+			map.clear();
+			map.put("notype", 1);
+			// 要插入到的Excel表格的行号，默认从0开始
+			Label labelId = new Label(0, 0, "姓名", cellFormat1);// 表示第1列1个
+			Label labelName = new Label(1, 0, "职务", cellFormat1);// 第2列1个
+			Label labelMeName = new Label(2, 0, "部门", cellFormat1);// 第五列1 行
+			Label labelMeName2 = new Label(3, 0, "人员编号", cellFormat1);// 第五列1 行
+			Label labelDate = new Label(4, 0, "部门编号", cellFormat1);// 第五列1 行
+			Label labelDa = new Label(5, 0, "分数", cellFormat1);// 第五列1 行
+			Label labelSt = new Label(6, 0, "考核日期", cellFormat1);// 第五列1 行
+			Label labelBa = new Label(7, 0, "烤鹅年月编号", cellFormat1);// 第五列1 行
+			Label labelBa2 = new Label(8, 0, "备注", cellFormat1);// 第五列1 行
+			Label labelBa3 = new Label(9, 0, "可扣分项", cellFormat1);// 第五列1 行
+			Label labelBa4 = new Label(10, 0, "类型", cellFormat1);// 第五列1 行
+
+			ws.addCell(labelId);
+			ws.addCell(labelName);
+			ws.addCell(labelMeName);
+			ws.addCell(labelMeName2);
+			ws.addCell(labelDate);
+			ws.addCell(labelDa);
+			ws.addCell(labelSt);
+			ws.addCell(labelBa);
+			ws.addCell(labelBa2);
+			ws.addCell(labelBa3);
+			ws.addCell(labelBa4);
+
+			for (short i = 0; i < vardics.size(); i++) {
+				// 创建一行，在页sheet上
+				Label au = new Label(0, i, vardics.get(i).getAcheck_user()==null?"无":vardics.get(i).getAcheck_user());
+				Label ap = new Label(1, i, vardics.get(i).getPosition_name()==null?"无":vardics.get(i).getPosition_name());
+				Label ad = new Label(2, i, vardics.get(i).getAcheck_deptname());
+				Label auuid = new Label(3, i, vardics.get(i).getAcheck_user()==null?"无":vardics.get(i).getAcheck_user());
+				Label acode = new Label(4, i, vardics.get(i).getAcheck_usercode());
+				Label score = new Label(5, i, vardics.get(i).getCheck_score().toString());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String str = sdf.format(vardics.get(i).getCheck_date());
+				
+				Label checkdate = new Label(6, i, str);
+				Label checkym = new Label(7, i, vardics.get(i).getCheck_ym().toString());
+				Label remark = new Label(8, i, vardics.get(i).getRemark()==null?"无":vardics.get(i).getRemark());
+				Label bscor = new Label(9, i, vardics.get(i).getBscore()==null?"无":vardics.get(i).getBscore().toString());
+				Label jtype = new Label(10, i, vardics.get(i).getJltype()==null?"无":vardics.get(i).getJltype().toString());
+				ws.addCell(au);
+				ws.addCell(ap);
+				ws.addCell(ad);
+				ws.addCell(auuid);
+				ws.addCell(acode);
+				ws.addCell(score);
+				ws.addCell(checkdate);
+				ws.addCell(checkym);
+				ws.addCell(remark);
+				ws.addCell(bscor);
+				ws.addCell(jtype);
+				
+			}
+
+			// 写进文档
+			wwb.write();
+			// 关闭Excel工作簿对象
+			wwb.close();
+			os.close();
+			response.flushBuffer();
+		}
+		return null;
 	}
 	
 	public String view1() throws Exception {

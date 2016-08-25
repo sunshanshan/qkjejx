@@ -25,8 +25,10 @@ import com.opensymphony.xwork2.ActionContext;
 import com.qkj.basics.dao.CheckDao;
 import com.qkj.basics.domain.Check;
 import com.qkj.qkjmanager.dao.TalkDao;
+import com.qkj.qkjmanager.dao.VardicDao;
 import com.qkj.qkjmanager.dao.VardicDetailDao;
 import com.qkj.qkjmanager.domain.Talk;
+import com.qkj.qkjmanager.domain.Vartic;
 import com.qkj.qkjmanager.domain.VarticDetail;
 
 /**
@@ -740,6 +742,38 @@ public class ContextHelper {
 			return false;
 		}
 	    
+	}
+	
+	public static boolean checkPermitAppr(String user,String dept){
+		VardicDao vdd=new VardicDao();
+		Check ck=new Check();
+		ck=vdd.check_cym();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.clear();
+		SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM");
+        String str = sdf.format(ck.getYm());
+		if(user!=null){
+			map.put("cym", str);
+			map.put("acheck_user", user);
+			List<Vartic> vts=new ArrayList();
+			vts=vdd.list(map);
+			if(vts.size()>0){
+				return false;
+			}else{
+				return true;
+			}
+		}else{
+			map.put("cym", str);
+			map.put("acheck_usercode2", dept);
+			List<Vartic> vts=new ArrayList();
+			vts=vdd.list(map);
+			if(vts.size()>0){
+				return false;
+			}else{
+				return true;
+			}
+		}
+		
 	}
 	
 }

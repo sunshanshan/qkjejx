@@ -354,22 +354,24 @@ public class VardicDetailAction extends ActionSupport {
 					String index=aa[i];
 					String arr[] = index.split(",");
 					if(index.length()>=11){
-						if(arr[1]!=null && arr[1]!="")vd.setCheck_index(Integer.parseInt(arr[1]));
-						if(arr[2]!=null && arr[2]!="")vd.setCheck_score(Double.parseDouble(arr[2]));
-						if(arr[3]!=null && arr[3]!="")vd.setCheck_goal(Double.parseDouble(arr[3]));
-						vd.setCheck_date(new Date());
-						vd.setCheck_user(ContextHelper.getUserLoginUuid());
-						vd.setCheck_usercode(ContextHelper.getUserLoginDept());
-						sum=sum+Double.parseDouble(arr[3]);
-						vd.setTypea(1);
-						KpiDAO k=new KpiDAO();
-						IndexDetail id=new IndexDetail();
-						id=(IndexDetail) k.get(vd.getCheck_index());
-						vd.setDepttype(id.getType());
-						vd.setPosition_dept(id.getPosition_dept());
-						vd.setKpi(id.getKpi());
-						//vd.setCheck_index(Double.parseDouble(arr[0]));
-						dao.add(vd);
+						if(dao.repeatKpi(vd.getScore_id(), Integer.parseInt(arr[1]))==true){
+							if(arr[1]!=null && arr[1]!="")vd.setCheck_index(Integer.parseInt(arr[1]));
+							if(arr[2]!=null && arr[2]!="")vd.setCheck_score(Double.parseDouble(arr[2]));
+							if(arr[3]!=null && arr[3]!="")vd.setCheck_goal(Double.parseDouble(arr[3]));
+							vd.setCheck_date(new Date());
+							vd.setCheck_user(ContextHelper.getUserLoginUuid());
+							vd.setCheck_usercode(ContextHelper.getUserLoginDept());
+							sum=sum+Double.parseDouble(arr[3]);
+							vd.setTypea(1);
+							KpiDAO k=new KpiDAO();
+							IndexDetail id=new IndexDetail();
+							id=(IndexDetail) k.get(vd.getCheck_index());
+							vd.setDepttype(id.getType());
+							vd.setPosition_dept(id.getPosition_dept());
+							vd.setKpi(id.getKpi());
+							//vd.setCheck_index(Double.parseDouble(arr[0]));
+							dao.add(vd);
+						}
 					}
 					
 				}

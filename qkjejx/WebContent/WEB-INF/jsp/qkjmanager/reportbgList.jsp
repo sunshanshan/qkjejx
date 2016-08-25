@@ -21,7 +21,10 @@ cursor: pointer;
  	<div class="tab_warp main" >
 		<div class="dq_step">
 			${path}
-			
+			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD1',null)==true}">
+				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"></s:url>">导出所有考核EXCEL</a>
+				</span>
+			</c:if>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="report_listbg" method="get" namespace="/qkjmanager" theme="simple">
 			<div class="label_con">

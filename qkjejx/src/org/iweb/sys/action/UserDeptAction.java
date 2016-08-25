@@ -236,6 +236,9 @@ public class UserDeptAction extends ActionSupport {
 			if(userDept.getDepsubover()==null){
 				userDept.setDepsubover(0);
 			}
+			if(userDept.getIscheckdept()==null){
+				userDept.setIscheckdept(0);
+			}
 			dao.add(userDept);
 		} catch (Exception e) {
 			// setMessage("数据更新失败!" + e.getMessage());

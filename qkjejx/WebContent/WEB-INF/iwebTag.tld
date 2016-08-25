@@ -48,6 +48,12 @@
 	</function>
 	
 	<function>
+		<name>checkPermitAppr</name>
+		<function-class>org.iweb.sys.ContextHelper</function-class>
+		<function-signature>boolean checkPermitAppr(java.lang.String,java.lang.String)</function-signature>
+	</function>
+	
+	<function>
 		<name>checkb</name>
 		<function-class>org.iweb.sys.ContextHelper</function-class>
 		<function-signature>boolean checkb(java.lang.Integer)</function-signature>

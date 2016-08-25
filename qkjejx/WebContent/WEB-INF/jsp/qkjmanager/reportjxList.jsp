@@ -31,7 +31,17 @@ cursor: pointer;
 							<input id="begintime" name="vardic.cym" value="${it:formatDate(vardic.cym,'yyyy-MM')}" type="text" onclick="setmonth(this)" readonly="readonly"/>
 						</div>
 					</div>
-							
+					
+					<div class="label_hang">
+						<div class="label_ltit">时间段</div>
+						<div class="label_rwben">
+							<input name="vardic.starcym" value="${it:formatDate(vardic.starcym,'yyyy-MM')}" type="text" onclick="setmonth(this)" readonly="readonly"/>
+						</div>
+						至
+						<div class="label_rwben">
+							<input  name="vardic.clocym" value="${it:formatDate(vardic.clocym,'yyyy-MM')}" type="text" onclick="setmonth(this)" readonly="readonly"/>
+						</div>
+					</div>
 					<div class="label_hang tac">
 						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
 						<label for="search_mcondition"></label>更多条件
@@ -76,10 +86,17 @@ cursor: pointer;
 							</s:if>
 							<s:else>
 							<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">查看</a>
+								<c:if test="${it:checktalk(uuid)==true}">
+								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="talk_load"><s:param name="viewFlag">add</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">面谈</a>
+								</c:if>
+								<c:if test="${it:checktalk(uuid)==false}">
+								<a class="input-blue" href="<s:url namespace="/qkjmanager" action="talk_load"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">面谈</a>
+								</c:if>
 							</s:else>
 						</td>
 					</tr>
 				</s:iterator>
+				<tr><td>平均分:${vardic.aveu }</td></tr>
 				
 				<s:iterator value="vardicsbyd" status="sta">
 					<tr id="showtr${uuid}">
@@ -108,6 +125,8 @@ cursor: pointer;
 						</td>
 					</tr>
 				</s:iterator>
+				
+				<tr><td>平均分:${vardic.aved }</td></tr>
 			</table>
 		</div>
 		<div id="listpage" class="pagination"></div>
@@ -117,13 +136,11 @@ cursor: pointer;
 <s:action name="ref_foot" namespace="/manager" executeResult="true" />
 <script type="text/javascript" src="<s:url value="/js/DatePicker.js" />"></script>
 <script type="text/javascript">
-$(function(){
+/* $(function(){
 	printPagination("listpage",'${currPage}','${recCount}','${pageSize}');
  });
  
- 
-
-
+  */
 function savee(date){
 	
 	alert($("#begintime").val())

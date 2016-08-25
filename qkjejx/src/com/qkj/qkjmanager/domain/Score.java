@@ -15,6 +15,38 @@ public class Score {
 	private Date lm_time;
 	private int typea;
 	private double ay_totelScore;
+	
+	private String leavea;
+	private String leaveb;
+	private String leavec;
+	private String leaved;
+	
+	
+	
+	public String getLeavea() {
+		return leavea;
+	}
+	public void setLeavea(String leavea) {
+		this.leavea = leavea;
+	}
+	public String getLeaveb() {
+		return leaveb;
+	}
+	public void setLeaveb(String leaveb) {
+		this.leaveb = leaveb;
+	}
+	public String getLeavec() {
+		return leavec;
+	}
+	public void setLeavec(String leavec) {
+		this.leavec = leavec;
+	}
+	public String getLeaved() {
+		return leaved;
+	}
+	public void setLeaved(String leaved) {
+		this.leaved = leaved;
+	}
 	public Integer getUuid() {
 		return uuid;
 	}

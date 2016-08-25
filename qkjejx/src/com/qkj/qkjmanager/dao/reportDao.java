@@ -1,5 +1,6 @@
 package com.qkj.qkjmanager.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,15 @@ public class reportDao extends AbstractDAO{
 	public List listhbgu(Map<String, Object> map) {
 		//setCountMapid("basics_getCheckCounts");
 		return super.list("qkjmanager_getVarticsBGU", map);
+	}
+	
+	public List listleave(Map<String, Object> map) {
+		//setCountMapid("basics_getCheckCounts");
+		return super.list("qkjmanage_getleave", map);
+	}
+	
+	public Object getleave(Map<String, Object> map) {
+		return super.get("qkjmanage_getleave", map);
 	}
 	
 	

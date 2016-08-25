@@ -58,6 +58,8 @@ public class User {
 	private String z;
 	private String remark;
 	
+	
+	
 
 	public List<String> getUuids() {
 		return uuids;
@@ -450,5 +452,6 @@ public class User {
 	public void setParent_user_name(String parent_user_name) {
 		this.parent_user_name = parent_user_name;
 	}
+
 
 }

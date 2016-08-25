@@ -44,6 +44,27 @@ cursor: pointer;
 			</div>
 		</s:form>
 			<table>
+			
+			<tr>
+			<td>A
+			<script type="text/javascript">
+							$(function(){
+									var d=${vardic.acheck_usercode};
+									var cym=$('#begintime').val();
+									leaves(d,cym);
+							});
+						</script>
+			</td>
+			<td id="a">${leave.leavea}</td>
+			<td>B</td>
+			<td id="b">${leave.leaveb}</td>
+			<td>C</td>
+			<td id="c">${leave.leavec}</td>
+			<td>D</td>
+			<td  id="d">${leave.leaved}</td>
+			</tr>
+			</table>
+			<table>
 				<tr id="coltr">
 					<th class="td1">员工编号</th>
 					<th class="td1">姓名</th>
@@ -207,6 +228,27 @@ var aps= function(uuid,ad){
 	ajax.addParameter("parameters", "uuid=" + encodeURI(ad));
 	ajax.sendAjax2();
 };
+
+var leaves= function(dept,cym){
+	
+	var ajax = new Common_Ajax('ajax_member_message');
+	ajax.config.action_url = ajax_url;
+	ajax.config._success = function(data, textStatus){
+		var l = $(data).length;
+				if(l==1){
+					$('#a').html($(data)[0].leavea+"个");
+					$('#b').html($(data)[0].leaveb+"个");
+					$('#c').html($(data)[0].leavec+"个");
+					$('#d').html($(data)[0].leaved+"个");
+				}
+				
+	};
+	ajax.addParameter("work", "AutoComplete");
+	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_LEAVE");
+	ajax.addParameter("parameters", "acheck_usercode=" + encodeURI(dept)+"&cym="+encodeURI(cym));
+	ajax.sendAjax2();
+};
+
 </script>
 </body>
 </html>

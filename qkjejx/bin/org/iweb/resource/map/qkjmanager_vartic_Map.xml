@@ -12,7 +12,11 @@
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[  c.check_ym=#check_ym# ]]></isNotNull>
+			<isNotNull prepend="AND" property="cym"><![CDATA[ chec.ym like #cym# +'%' ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_usercode"><![CDATA[  c.acheck_usercode=#acheck_usercode# ]]></isNotNull>
+			
+			<isNotNull prepend="AND" property="acheck_usercode2"><![CDATA[  c.acheck_usercode=#acheck_usercode2# and ISNULL(c.acheck_user, '0')='0']]></isNotNull>
+			
 			<isNotNull prepend="AND" property="isaunull"><![CDATA[  ISNULL(c.acheck_user, '0')='0' ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_user"><![CDATA[  c.acheck_user=#acheck_user# ]]></isNotNull>
 			<isNotNull prepend="AND" property="typea">
@@ -20,26 +24,18 @@
 				select 1 from qkj_r_sonscore ss where ss.score_id=c.uuid and ss.typea=#typea# and ss.check_user=#check_userh#
 			) ]]>
 			</isNotNull>
-			<!-- <isNotEmpty prepend="AND" property="apply_depts" open="(" close=")">
-			<![CDATA[ c.acheck_usercode In ]]>
-			<iterate property="apply_depts" open="(" close=")" conjunction=" , "> #apply_depts[]#</iterate>
-			<isNotEmpty prepend="OR" property="apply_perdepts">
-				<![CDATA[ c.acheck_usercode In ]]>
-				<iterate property="apply_perdepts" open="(" close=")" conjunction=" , "> #apply_perdepts[]#</iterate>
-				<isNotEmpty prepend="AND" property="apply_userDouble"><![CDATA[ c.acheck_user=#apply_userDouble# ]]></isNotEmpty>
-			</isNotEmpty> 
-			</isNotEmpty>
-			<isEmpty  property="apply_depts">
-				<isNotEmpty prepend="AND" property="apply_perdepts">
-					<![CDATA[ c.acheck_usercode In ]]>
-					<iterate property="apply_perdepts" open="(" close=")" conjunction=" , "> #apply_perdepts[]#</iterate>
-					<isNotEmpty prepend="AND" property="apply_userDouble"><![CDATA[ c.acheck_user=#apply_userDouble# ]]></isNotEmpty>
-				</isNotEmpty>
-			</isEmpty> -->
-<!-- 			<isNotNull prepend="AND" property="check_userh">
-				<![CDATA[cuser.UUID=#check_userh#]]>
-			</isNotNull>
- -->		</dynamic>
+	</dynamic>
+	</select>
+	
+	<select id="qkjmanager_getPrint" resultClass="vartic" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select u.USER_NAME acheck_username,d.dept_cname acheck_deptname,p.POSITION_NAME position_name,s.uuid,s.acheck_user,s.acheck_usercode,s.check_score,s.check_date,s.lm_user,s.lm_time,
+			s.check_ym,s.remark,s.bscore,s.hremark,s.jltype
+			 from qkj_r_score s
+			left join s_sys_user u on (s.acheck_user=u.UUID)
+			left join s_cfg_position p on (u.[POSITION]=p.uuid)
+			left JOIN s_sys_department d on (s.acheck_usercode=d.dept_code)
+		]]>
 	</select>
 	<!-- 2016-07-16查询待考核人 -->
 	<select id="qkjmanager_getCheckVartics" resultClass="vartic" parameterClass="java.util.Map">
@@ -48,7 +44,7 @@
 			 from s_sys_user u  
 			LEFT JOIN s_sys_department d on (u.dept_code=d.dept_code)
 			LEFT JOIN s_sys_department df on (df.dept_code=d.parent_dept)
-			left join (
+			 join (
 			select newp.* from (
 				select p.uuid from s_cfg_position p 
 			where not EXISTS  (select DISTINCT fid.position_id from qkj_t_indexdetail fid
@@ -151,37 +147,6 @@
 		</isNotNull>
 		
 	</select>
-	<!-- 查询可以考核人 -->
-	<!-- <select id="qkjmanager_getCheckVartics" resultClass="vartic" parameterClass="java.util.Map">
-		<![CDATA[ 
-			select distinct u.uuid u_id,u.DEPT_CODE u_code,u.USER_NAME acheck_username,d.dept_cname acheck_deptname,df.dept_cname df_name
-			 from s_sys_user u  
-			LEFT JOIN s_sys_department d on (u.dept_code=d.dept_code)
-			LEFT JOIN s_sys_department df on (df.dept_code=d.parent_dept)
-			left join s_cfg_position p on(u.[POSITION]=p.uuid)
-			LEFT JOIN qkj_t_indexdetail id on (p.uuid=id.position_id)
-			where  not exists (select * from qkj_r_score s 
-			left JOIN qkj_r_sonscore sd on(sd.score_id=s.uuid)
-			left join qkj_r_check k on(s.check_ym=k.uuid)
-			where s.acheck_user=u.uuid 
-		]]>
-		
-		<isNotNull prepend="AND" property="check_ym"><![CDATA[  k.uuid=#check_ym# ]]></isNotNull>
-		<isNotNull prepend="AND" property="typea"><![CDATA[  sd.typea=#typea#]]></isNotNull>
-		<isNotNull prepend="AND" property="check_user"><![CDATA[  sd.check_user=#check_user#]]></isNotNull>
-		<![CDATA[)]]>
-		<isNotNull property="isdept">
-		<isEqual property="isdept" compareValue="1">纵向
-			<isNotNull prepend="AND" property="parent_user"><![CDATA[ u.parent_user=#parent_user#]]></isNotNull>
-		</isEqual>
-		
-		<isEqual property="isdept" compareValue="0">横向 
-			<isNotNull prepend="AND" property="check_deptcode"><![CDATA[ id.check_deptcode = #check_deptcode#]]></isNotNull>
-			<isNotNull prepend="AND" property="check_post"><![CDATA[ id.check_post = #check_post#]]></isNotNull>
-		</isEqual>
-		</isNotNull>
-		
-	</select> -->
 	
 	<!-- 查询可以考核部门 -->
 	<select id="qkjmanager_getCheckVarticsdept" resultClass="vartic" parameterClass="java.util.Map">
@@ -430,6 +395,7 @@
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
 			<isNotNull prepend="AND" property="score_id"><![CDATA[  c.score_id=#score_id# ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_index"><![CDATA[  c.check_index=#check_index# ]]></isNotNull>
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[  ch.uuid=#check_ym# ]]></isNotNull>
 			<isNotNull prepend="AND" property="kpiid"><![CDATA[  d.kpi=#kpiid# ]]></isNotNull>
 			<isNotNull prepend="AND" property="kid"><![CDATA[  d.uuid=#kid# ]]></isNotNull>

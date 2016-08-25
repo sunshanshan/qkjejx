@@ -666,7 +666,7 @@ left join s_sys_department d on (d.dept_code=p.dept_code)
 	
 	<insert id="sys_addUserDept" parameterClass="userDept">
 		<![CDATA[ 
-			INSERT INTO s_sys_userdept (user_id,dept_code,position,depsubover,subover,roles,prvgs,lm_time) VALUES(#user_id#,#dept_code#,#position#,#depsubover#,#subover#,#roles#,#prvgs#,#lm_time#)
+			INSERT INTO s_sys_userdept (user_id,dept_code,position,depsubover,subover,roles,prvgs,lm_time,ischeckdept) VALUES(#user_id#,#dept_code#,#position#,#depsubover#,#subover#,#roles#,#prvgs#,#lm_time#,#ischeckdept#)
 		]]>
 	</insert>
 	
@@ -679,7 +679,8 @@ left join s_sys_department d on (d.dept_code=p.dept_code)
 				subover = #subover#,
 				roles = #roles#,
 				prvgs = #prvgs#,
-				lm_time = #lm_time#
+				lm_time = #lm_time#,
+				ischeckdept=#ischeckdept#
 			Where uuid = #uuid#
 		]]>
 	</update>

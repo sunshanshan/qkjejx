@@ -22,6 +22,10 @@ public class VardicDao extends AbstractDAO {
 		return super.list("qkjmanager_getVartics", map);
 	}
 	
+	public List listPrint(Map<String, Object> map) {
+		return super.list("qkjmanager_getPrint", map);
+	}
+	
 	public List Checklist(Map<String, Object> map) {
 		return super.list("qkjmanager_getCheckVartics", map);
 	}
