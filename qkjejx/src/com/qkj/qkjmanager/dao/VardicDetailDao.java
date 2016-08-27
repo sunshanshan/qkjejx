@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.iweb.common.dao.CommonDAO;
 import org.iweb.sys.AbstractDAO;
+import org.iweb.sys.dao.KpiDAO;
+import org.iweb.sys.domain.IndexDetail;
 
+import com.qkj.qkjmanager.domain.Vartic;
 import com.qkj.qkjmanager.domain.VarticDetail;
 
 public class VardicDetailDao extends AbstractDAO {
@@ -83,6 +85,63 @@ public class VardicDetailDao extends AbstractDAO {
 			flag=false;
 		}
 		return flag;
+	}
+	
+	
+	/**
+	 * 修改关联分数
+	 * @return
+	 */
+	public void updatescore(Vartic v1){
+		Map<String, Object> map = new HashMap<String, Object>();
+		VardicDao zdao=new VardicDao();
+		//查询取班组的分数的人
+		if(v1.getAcheck_usercode()!=null && v1.getCheck_ym()!=null){
+		map.clear();
+		map.put("depttype", "3");
+		map.put("type3", v1.getAcheck_usercode());
+		map.put("check_ym", v1.getCheck_ym());
+		
+		List<VarticDetail> desu=new ArrayList<>();
+		desu=listmdy(map);
+		if(desu.size()>0){
+			for(int i=0;i<desu.size();i++){
+				VarticDetail v=new VarticDetail();
+				v=desu.get(i);
+				//查询权重
+				KpiDAO kpidao=new KpiDAO();
+				IndexDetail indexdetail=new IndexDetail();
+				indexdetail=(IndexDetail) kpidao.get(v.getCheck_index());
+				Double w=indexdetail.getWeight();//权重
+				//查询此人所有部门的成绩
+				map.clear();
+				map.put("userid", v.getAuser());
+				map.put("check_ym", v1.getCheck_ym());
+				List<VarticDetail> v3=new ArrayList<>();
+				v3=scorebykpibydept(map);
+				Double score=0.00;
+				if(v3.size()>1){
+					for(int j=0;j<v3.size();j++){
+						score=score+v3.get(j).getCheck_score()*(w/v3.size());
+					}
+				}else{
+					if(v3.size()>0){
+						score=(score+v3.get(0).getCheck_score())*w;
+					}
+				}
+				v.setCheck_score(score/w);
+				v.setCheck_goal(score);
+				save(v);
+				zdao.saveBycheck(v.getScore_id().toString());
+				//查询取这个部门分数据是否还是部门如果还是部门就要悠这个部门也面的人员或部门
+				Vartic v2=new Vartic();
+				v1=(Vartic) zdao.get(v.getScore_id());
+				if(v2!=null && v2.getAcheck_user()==null){//说明是部门
+					updatescore(v2);
+				}
+			}
+		}
+		}
 	}
 
 	public int getResultCount() {

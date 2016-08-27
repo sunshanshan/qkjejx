@@ -486,14 +486,19 @@ var kpibydept=function(uuid,dept,d,kpi){
 	ajax.config.action_url = ajax_url;
 	ajax.config._success = function(data, textStatus){
 		var l = $(data).length;
+		var sid="s"+uuid;
+		var gid="g"+uuid;
+		var w="w"+uuid;
+		 
 				$.each(data, function(i, n){
-					var sid="s"+uuid;
-					var gid="g"+uuid;
-					var w="w"+uuid;
-					 
 					document.getElementById(sid).value=n.check_score;
 					document.getElementById(gid).value=n.check_score*document.getElementById(w).value;
 				});
+				
+				if(l<1){
+					document.getElementById(sid).value=0;
+					document.getElementById(gid).value=0;
+				}
 				
 	};
 	ajax.addParameter("work", "AutoComplete");
@@ -507,14 +512,17 @@ var kpibydept2=function(uuid,dept,d,kpi){
 	ajax.config.action_url = ajax_url;
 	ajax.config._success = function(data, textStatus){
 		var l = $(data).length;
+		var sid="s"+uuid;
+		var gid="g"+uuid;
+		var w="w"+uuid;
 				$.each(data, function(i, n){
-					var sid="s"+uuid;
-					var gid="g"+uuid;
-					var w="w"+uuid;
-					 
 					document.getElementById(sid).value=n.check_score;
 					document.getElementById(gid).value=n.check_score*document.getElementById(w).value;
 				});
+				if(l<1){
+					document.getElementById(sid).value=0;
+					document.getElementById(gid).value=0;
+				}
 				
 	};
 	ajax.addParameter("work", "AutoComplete");

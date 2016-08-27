@@ -47,40 +47,8 @@
 			 join (
 			select newp.* from (
 				select p.uuid from s_cfg_position p 
-			where not EXISTS  (select DISTINCT fid.position_id from qkj_t_indexdetail fid
-			 where fid.position_id=p.uuid and ISNULL(fid.position_id,'0')<>'0' and (fid.type=2 or fid.type=3))
-
-			union all 
-			select p2.uuid from s_cfg_position p2 
-			where p2.uuid
-				IN  (select DISTINCT fid.position_id from qkj_t_indexdetail fid
-			 where ISNULL(fid.position_id,'0')<>'0' and fid.type=2
-				and EXISTS(
-				select * from qkj_r_sonscore s2
-				left join qkj_r_score ss2 on (s2.score_id=ss2.uuid)
-				join qkj_t_indexdetail i2 on(s2.check_index=i2.uuid)
-				 where i2.kpi=fid.kpi and fid.position_dept=i2.dept_code
-				and ss2.check_ym=#check_ym#
-
-				)
-			)
-
-			union all 
-			select p3.uuid from s_cfg_position p3 
-			where p3.uuid
-				IN  (select DISTINCT fid.position_id from qkj_t_indexdetail fid
-			 where ISNULL(fid.position_id,'0')<>'0' and fid.type=3
-			and EXISTS(
-			
-			select 1 from (select count(*) as s from s_sys_userdept ud where ud.[position]=fid.position_id and ISNULL(ud.dept_code, '0')<>'0') a
-			where a.s=(select count(*) a from s_sys_userdept ud 
-			join qkj_r_score ss3 on (ud.dept_code=ss3.acheck_usercode)
-			where ud.[position]=fid.position_id
-			and ISNULL(ss3.acheck_user, '0')='0' and ss3.check_ym=5 and ss3.finish=2 and ss3.check_ym=#check_ym#)
-			
-			
-			)
-			)
+			where  EXISTS  (select DISTINCT fid.position_id from qkj_t_indexdetail fid
+			 where fid.position_id=p.uuid and ISNULL(fid.position_id,'0')<>'0')
 			) newp) a on u.[POSITION]=a.uuid
  
 			LEFT JOIN qkj_t_indexdetail id on (a.uuid=id.position_id)
@@ -152,26 +120,12 @@
 	<select id="qkjmanager_getCheckVarticsdept" resultClass="vartic" parameterClass="java.util.Map">
 		<![CDATA[ 
 			select distinct d.DEPT_CODE d_code,d.dept_cname acheck_deptname,d.parent_dept parent_dept,pd.dept_cname df_name from (
-			select d.dept_code,d.dept_cname,d.parent_dept from s_sys_department d
-			where d.dept_code
-				not  IN  (select DISTINCT fid.dept_code from qkj_t_indexdetail fid
-			 where ISNULL(fid.dept_code,'0')<>'0' and (fid.type=2 or fid.type=3))
-			
-			union all 
-			
-			select d.dept_code,d.dept_cname,d.parent_dept from s_sys_department d
-			where d.dept_code
-				IN  (select DISTINCT fid.dept_code from qkj_t_indexdetail fid
-			 where ISNULL(fid.dept_code,'0')<>'0' and fid.type=2
-			 and EXISTS(
-				select 1 from qkj_r_sonscore s2
-				left join qkj_r_score ss2 on (s2.score_id=ss2.uuid)
-				join qkj_t_indexdetail i2 on(s2.check_index=i2.uuid)
-				 where i2.kpi=fid.kpi and fid.position_dept=i2.dept_code
-
-			and  ss2.check_ym=#check_ym#
-			)
-			 ) ) d
+		select d.dept_code,d.dept_cname,d.parent_dept from s_sys_department d
+			where EXISTS
+			 (select 1 from qkj_t_indexdetail fid
+			 where ISNULL(fid.dept_code,'0')<>'0'
+		
+			 ) )d
 		left JOIN s_sys_department pd on (d.parent_dept=pd.dept_code)
 
 			LEFT JOIN qkj_t_indexdetail id on (d.dept_code=id.dept_code)
