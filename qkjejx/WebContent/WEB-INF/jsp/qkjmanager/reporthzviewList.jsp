@@ -22,7 +22,14 @@ height: 60px;
 height: 10px;
 }
 
- .PageNext{page-break-after: always;}
+ 
+ @media print{
+ 
+ div{min-height: 30%;overflow:auto;max-height: 30%;overflow: auto;
+    position: relative;}
+ .kd{height: 50px;}
+ .qianming{width: 9.9%;}
+ }
 </style>
 <body>
 	<!-- 顶部和左侧菜单导航 -->
@@ -31,17 +38,25 @@ height: 10px;
 		<div class="tab_warp main">
 			<div class="dq_step noprint">
 				<a href="javascript:;" onclick="window.focus();window.print();">打印本页</a>
+				<!-- <a href="javascript:;" onclick="Print();">打印本页</a> -->
 			</div>
 			<input id="begintime" type="hidden" value="${cymprint}">
-			<table id="adept" class="PageNext">
+			<font size="3px;" style="margin:0 0 0 70%;">考核日期:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${cymprint }</font>
 			<s:iterator value="vvs" status="sta">
+			<div id="pd${sta.index+1 }" 
+			<s:if test="(#sta.index+1)%5==0">style="page-break-after: always;"</s:if>
+			>
+			<table id="adept${sta.index+1 }" 
+			
+					>
 				<tr id="rone">
-					<td rowspan="2" style="width:120px;">名称
+					<td rowspan="2" >名称
 					</td>
-					<td rowspan="2" style="width:120px;" id="dept${sta.index+1}">岗位</td>
+					<td rowspan="2" >岗位</td>
+					<td rowspan="2" id="dept${sta.index+1}">部门</td>
 					<td rowspan="2">合计</td>
 					<td rowspan="2">签名</td>
-					<td rowspan="2"  style="width:120px;">备注</td>
+					<td rowspan="2">备注</td>
 				</tr>
 				<s:if test="%{d_code!=null}">
 				<tr id="rtwo${d_code }">
@@ -74,9 +89,10 @@ height: 10px;
 					</script>
 					</s:if>
 					</td>
-					<td rowspan="2" id="deptv${sta.index+1}">${pname }</td>
+					<td rowspan="2">${pname }</td>
+					<td rowspan="2" id="deptv${sta.index+1}">${deptname }</td>
 					<td rowspan="2" id="z${sta.index+1}">${check_score }</td>
-					<td rowspan="2"></td>
+					<td rowspan="2" class="qianming"></td>
 					<td rowspan="2">${remark}</td>
 				</tr>
 				<s:if test="%{d_code!=null}">
@@ -86,8 +102,8 @@ height: 10px;
 							$(function(){
 									var d=${sta.index+1};
 									var dept=${d_code};
-									if(d%4==0){
-										$("#rthfour"+dept).after("<tr id='fy' style='height: 10px;'></tr>");
+									if(d%5==0){
+										$("#rthfour"+dept).after("<tr id='fy' class='kd'></tr></div>");
 									}
 							});
 				</script>
@@ -99,23 +115,25 @@ height: 10px;
 							$(function(){
 									var d=${sta.index+1};
 									var dept=${u_id };
-									if(d%4==0){
-										$("#rthfour"+dept).after("<tr id='fy' 'height: 10px;'></tr>");
+									if(d%5==0){
+										$("#rthfour"+dept).after("<tr id='fy' class='kd'></tr></div>");
 									}
 							});
 				</script>
 				</s:else>
 				<tr id="fy" class="dkss"></tr>
+				</table>
+				</div>
 			</s:iterator>
 
-			</table>
+			
 		</div>
 	</div>
+	
 	<s:action name="ref_foot" namespace="/manager" executeResult="true" />
 </body>
 
 <script type="text/javascript">
-window.onload=func;
 
 var ads= function(dept,cym,af){
 	var ajax = new Common_Ajax('ajax_member_message');
@@ -146,12 +164,22 @@ var aus= function(u,cym,af){
 		var l = $(data).length;
 		if(l>0){
 			$.each(data, function(i, n){
-				$("#dept"+af).after("<td style='width:100px;'>"+n.kpi+"</td>");
-				$("#rtwo"+u).append("<td>"+n.weight+"</td>");
-				$("#deptv"+af).after("<td style='height: 30px;'>"+n.score+"</td>");
-				$("#rthfour"+u).append("<td style='height: 30px;'>"+n.gold+"</td>");
+				if(n.kpi==null||n.kpi==""){
+					$("#dept"+af).after("<td>"+"取部门分数"+"</td>");
+					$("#rtwo"+u).append("<td>"+1+"</td>");
+				}else{
+					$("#dept"+af).after("<td>"+n.kpi+"</td>");
+					$("#rtwo"+u).append("<td>"+n.weight+"</td>");
+				}
+				
+				$("#deptv"+af).after("<td>"+n.score+"</td>");
+				$("#rthfour"+u).append("<td>"+n.gold+"</td>");
 			});
 		}else{
+			$("#dept"+af).after("<td>"+"0"+"</td>");
+			$("#rtwo"+u).append("<td>"+0+"</td>");
+			$("#dept"+af).after("<td>"+0+"</td>");
+			$("#rtwo"+u).append("<td>"+0+"</td>");
 			$("#z"+af).html("未考核");
 		};		
 	};
@@ -161,15 +189,42 @@ var aus= function(u,cym,af){
 	ajax.sendAjax2();
 };
 
-function func() {
-	  factory.printing.portrait = true;    //true为纵向打印，flase为横向打印
-	  factory.printing.leftMargin = 1.0; //左页边距
-	  factory.printing.topMargin = 1.0;    //上页边距
-	  factory.printing.rightMargin = 1.0;//右页边距
-	  factory.printing.bottomMargin = 1.0; //下页边距
-	}
+
 </script>
 
+
+<script language="javascript">  
+//打印代码  
+   function Print()     
+    {      
+		var size=${vvs.size()};
+        var printStr = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'><style type='text/css'> tr td{background-color: #fff;border:solid 1px #add9c0;"
+        +" table{border:solids; border-width:1px 0px 0px 1px;} } .kss{ height: 60px;}.dkss{ height: 10px; } div{min-height: 27%;overflow:auto;max-height: 27%;overflow: auto; position: relative;}</style></head><body > ";  
+        var content = "";  
+        for(var i = 1;i <= size; i++) {
+        	if(i==1){
+        		var str = document.getElementById("pd1").innerHTML;     //获取需要打印的页面元素 ，page1元素设置样式page-break-after:always，意思是从下一行开始分割。  
+     	        content = content + str; 
+        	}else if(i%5==0){
+        		var a="pd"+i;
+            	
+        		var str = document.getElementById(a).innerHTML;     //获取需要打印的页面元素 ，page1元素设置样式page-break-after:always，意思是从下一行开始分割。  
+     	        content = content + str; 
+        	}
+        		 
+        	
+        }
+
+      
+       
+          
+        printStr = printStr+content+"</body></html>";                                                
+        var pwin=window.open("Print.htm","print"); //如果是本地测试，需要先新建Print.htm，如果是在域中使用，则不需要  
+        pwin.document.write(printStr);  
+        pwin.document.close();                   //这句很重要，没有就无法实现    
+        pwin.print();      
+    }  
+</script>  
 
 
 </html>

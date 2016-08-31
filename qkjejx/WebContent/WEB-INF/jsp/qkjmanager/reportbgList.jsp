@@ -23,6 +23,7 @@ cursor: pointer;
 			${path}
 			<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD1',null)==true}">
 				<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="scoure_excle"></s:url>">导出所有考核EXCEL</a>
+				<a href="<s:url namespace="/sys" action="kpi_print"></s:url>">导出所有指标</a>
 				</span>
 			</c:if>
 		</div>

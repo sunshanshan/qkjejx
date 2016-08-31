@@ -389,7 +389,12 @@ public class VardicDetailAction extends ActionSupport {
 										KpiDAO kpidao=new KpiDAO();
 										IndexDetail indexdetail=new IndexDetail();
 										indexdetail=(IndexDetail) kpidao.get(v.getCheck_index());
-										Double w=indexdetail.getWeight();//权重
+										Double w=0.00;//权重
+										if(indexdetail==null){
+											w=1.00;//权重
+										}else{
+											w=indexdetail.getWeight();//权重
+										}
 										
 										v.setCheck_score(vd.getCheck_score());
 										v.setCheck_goal(vd.getCheck_score()*w);
@@ -486,7 +491,13 @@ public class VardicDetailAction extends ActionSupport {
 						KpiDAO kpidao=new KpiDAO();
 						IndexDetail indexdetail=new IndexDetail();
 						indexdetail=(IndexDetail) kpidao.get(v.getCheck_index());
-						Double w=indexdetail.getWeight();//权重
+						Double w=0.00;
+						if(indexdetail==null){
+							w=1.00;//权重
+						}else{
+							w=indexdetail.getWeight();//权重
+						}
+						
 						//查询此人所有部门的成绩
 						map.clear();
 						map.put("userid", v.getAuser());

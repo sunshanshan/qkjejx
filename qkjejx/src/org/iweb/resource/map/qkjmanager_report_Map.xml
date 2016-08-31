@@ -9,10 +9,11 @@
 	<select id="qkjmanager_getVarticsReport" resultClass="vartic" parameterClass="java.util.Map">
 		<![CDATA[ 
 			select DISTINCT c.uuid,c.*,achecku.user_name acheck_username,mdyu.USER_NAME lm_username,acheckd.dept_cname acheck_deptname,df.dept_cname df_name,
-			acd.dept_cname acd_cname,chec.ym cym,chec.state cstate
+			acd.dept_cname acd_cname,chec.ym cym,chec.state cstate,p.POSITION_NAME position_name
 			from qkj_r_score c 
 			left join qkj_r_sonscore ss on(ss.score_id=c.uuid)
 			left join s_sys_user achecku on(c.acheck_user=achecku.uuid)
+			left join s_cfg_position p on (achecku.[POSITION]=p.UUID)
 			left join s_sys_user mdyu on(c.lm_user=mdyu.uuid)
 			left join s_sys_user cuser on(cuser.UUID=ss.check_user)
 			left join s_sys_department acheckd on(acheckd.dept_code=c.acheck_usercode)
@@ -236,7 +237,7 @@
 			select id.kpi kpi,id.weight weight,ss.check_score score,ss.check_goal gold,s.bscore bscore from qkj_r_sonscore ss 
 			join qkj_r_score s on (ss.score_id=s.uuid)
 			join qkj_r_check c on (s.check_ym=c.uuid)
-			join qkj_t_indexdetail id on (id.uuid=ss.check_index)
+			left join qkj_t_indexdetail id on (id.uuid=ss.check_index)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="acheck_user"><![CDATA[ s.acheck_user=#acheck_user# ]]></isNotNull>

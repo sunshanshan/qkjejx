@@ -187,10 +187,10 @@ public class VardicAction extends ActionSupport {
 				Set<String> dall = new HashSet<>();
 				if(uds.size()>0){
 					for(int s=0;s<uds.size();s++){
-						if(uds.get(s).getIscheckdept()!=null&&uds.get(s).getIscheckdept()==1){
+						if(uds.get(s).getIscheckdept()!=null&& uds.get(s).getIscheckdept()!=null&&uds.get(s).getIscheckdept()==1){
 							dsetall.add(uds.get(s).getDept_code());
 						}else{
-							dsetall.add("0");
+							dsetall.add("o");
 						}
 						if(uds.get(s).getRoles().contains("2016072516956868")){//部门考核权限
 							dall.add(uds.get(s).getDept_code());

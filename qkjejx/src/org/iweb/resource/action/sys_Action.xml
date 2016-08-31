@@ -13,6 +13,8 @@
 				<param name="message">${message}</param>
 			</result>
 		</action>
+		<action name="kpi_print" class="org.iweb.sys.action.KpiAction" method="report">
+		</action>
 		<action name="privilege_save" class="org.iweb.sys.action.UserPrivilegeAction" method="save">
 			<result type="redirectAction">
 				<param name="actionName">privilege_list</param>

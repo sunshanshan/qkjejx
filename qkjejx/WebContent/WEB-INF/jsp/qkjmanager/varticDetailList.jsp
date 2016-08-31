@@ -148,7 +148,7 @@
 											<td class="nw" width="100px;"><input id="s${uuid }"
 												type="text" onblur="kpi('${uuid}');"
 												class="validate[required]" /></td>
-											<td class="nw" width="100px;"><input id="g${uuid }"
+											<td class="nw" width="100px;"><input id="g${uuid }" name="gpr"
 												type="text" readonly="readonly" class="validate[required]" /></td>
 										</s:if>
 										<s:else>
@@ -157,7 +157,7 @@
 													type="text" readonly="readonly"> <input
 													id="pdept${uuid }" type="hidden" value="${position_dept}">
 												</td>
-												<td class="nw"><input id="g${uuid }" type="text"
+												<td class="nw"><input id="g${uuid }" type="text" name="gpr"
 													readonly="readonly"></td>
 												<script type="text/javascript">
 													$(function(){
@@ -187,7 +187,7 @@
 											<s:elseif test="type==3">
 												<td class="nw" title="取班组分数："><input id="s${uuid }"
 													type="text" readonly="readonly"></td>
-												<td class="nw" width="100px;"><input id="g${uuid }"
+												<td class="nw" width="100px;"><input id="g${uuid }" name="gpr"
 													type="text" readonly="readonly"></td>
 												<s:if test="%{user.uuid!=null}">
 													<script type="text/javascript">
@@ -259,7 +259,7 @@
 
 								<tr>
 									<td>合计</td>
-									<td>总分：${vardic.check_score}</td>
+									<td id="totle">总分：${vardic.check_score}</td>
 									<td id="sumC" colspan="8">总权重：</td>
 								</tr>
 							</table>
@@ -312,14 +312,25 @@
 								<!-- lading.promotions -->
 								<s:iterator value="vds" status="sta">
 									<tr id="showtr${uuid}">
-										<td class="nw">${uuid }</td>
-										<td class="nw">${kpi }</td>
-										<td class="nw">${weight }<input id="w${uuid }"
+										<td class="nw">${uuid }
+										</td>
+										<td class="nw">
+										<s:if test="%{check_index==0}">取部门分数</s:if>
+										<s:else>
+										${kpi }
+										</s:else>
+										</td>
+										<td class="nw">
+										<s:if test="%{check_index==0}">1</s:if>
+										<s:else>
+										${weight }
+										</s:else>
+										<input id="w${uuid }"
 											name="weight" type="hidden" value="${weight }"></td>
 										<td class="nw" width="100px;"><input id="s${uuid }"
 											type="text" onblur="kpi('${uuid}');"
 											class="validate[required]" value="${check_score }" /></td>
-										<td class="nw" width="100px;"><input id="g${uuid }"
+										<td class="nw" width="100px;"><input id="g${uuid }" name="gpr"
 											type="text" readonly="readonly" class="validate[required]"
 											value="${check_goal }" /></td>
 										<td class="nw">${cyc }</td>
@@ -348,7 +359,7 @@
 
 								<tr>
 									<td>合计</td>
-									<td>总分：${vardic.check_score}</td>
+									<td id="totle">总分：${vardic.check_score}</td>
 									<td id="sumC" colspan="8">总权重：</td>
 								</tr>
 							</table>
@@ -380,9 +391,7 @@
 	<script type="text/javascript"
 		src="<s:url value="/js/DatePicker.js" />"></script>
 	<script type="text/javascript">
-
 var checkSubmitFlg = false;
-
 $(function(){
 	var sum=0;
 	var a=$("#sumC").text();
@@ -396,6 +405,20 @@ $(function(){
 	$("#sumC").text(sum+"%");
 });
 
+function totle(){
+	var totle=0;
+	var b="总分：";
+	$("input[name='gpr']").each(
+			function() {
+				if($(this).val()!=null && $(this).val()!=""){
+					var t=$(this).val();
+					totle=Number(Number(t)+Number(totle)).toFixed(3);
+				}
+			}
+			);
+	$("#totle").text(b+totle);
+}
+
 function kpi(uuid){
 	var sid="s"+uuid;
 	var gid="g"+uuid;
@@ -403,6 +426,7 @@ function kpi(uuid){
 	var sp=document.getElementById(sid).value;
 	var wp=document.getElementById(wid).value;
 	document.getElementById(gid).value=sp*wp;
+	totle();
 }
 
 function add(){

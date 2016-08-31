@@ -57,9 +57,25 @@ public class User {
 	private Double check_score;
 	private String z;
 	private String remark;
+	private Integer depttype; //部门类型
+	private Integer partype;//父部门类型
 	
-	
-	
+
+	public Integer getPartype() {
+		return partype;
+	}
+
+	public void setPartype(Integer partype) {
+		this.partype = partype;
+	}
+
+	public Integer getDepttype() {
+		return depttype;
+	}
+
+	public void setDepttype(Integer depttype) {
+		this.depttype = depttype;
+	}
 
 	public List<String> getUuids() {
 		return uuids;

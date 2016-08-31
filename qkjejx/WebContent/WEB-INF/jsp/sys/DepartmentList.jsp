@@ -74,7 +74,7 @@
 							<div class="label_hang">
 								<div class="label_ltit">部门类型:</div>
 								<div class="label_rwbenx">
-								<s:select id="dept.type" name="dept.type" cssClass="selectKick" list="#{0:'普通',1:'机构',2:'职务'}" />
+								<s:select id="dept.type" name="dept.type" cssClass="selectKick" list="#{0:'部门',1:'班组',2:'组'}" />
 								</div>
 							</div>
 							<div class="label_hang clear">

@@ -92,13 +92,13 @@ cursor: pointer;
 								<s:if test="isdept==1&&type==1">
 									<!-- kpi 横向的部门职务对上 -->
 									<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
-									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
+									<td class="nw" width="100px;"><input id="g${uuid }" name="gpr" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
 								</s:if>
 								<s:else>
 											<s:if test="type==2">
 												<td class="nw" title="取部门分数"><input id="s${uuid }"
 													type="text" readonly="readonly"></td>
-												<td class="nw"><input id="g${uuid }" type="text"
+												<td class="nw"><input id="g${uuid }" type="text" name="gpr"
 													readonly="readonly"></td>
 												<script type="text/javascript">
 													$(function(){
@@ -179,7 +179,7 @@ cursor: pointer;
 							<tr>
 							<td>合计
 							</td>
-							<td>总分：${vardic.check_score}
+							<td id="totle">总分：${vardic.check_score}
 							</td>
 							<td id="sumC"  colspan="8">总权重：
 							</td>
@@ -236,7 +236,7 @@ cursor: pointer;
 								<s:if test="isdept==1">
 									<!-- kpi 横向的部门职务对上 -->
 									<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
-									<td class="nw" width="100px;"><input id="g${uuid }" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
+									<td class="nw" width="100px;"><input id="g${uuid }" name="gpr" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
 								</s:if>
 								<s:else>
 								<td class="nw" width="100px;">${check_score}</td>
@@ -280,7 +280,7 @@ cursor: pointer;
 							<tr>
 							<td>合计
 							</td>
-							<td>总分：${vardic.check_score}
+							<td id="totle">总分：${vardic.check_score}
 							</td>
 							<td id="sumC"  colspan="8">总权重：
 							</td>
@@ -323,7 +323,22 @@ $(function(){
 			);
 	sum=a+sum;
 	$("#sumC").text(sum+"%");
+	/* totle(); */
 });
+
+function totle(){
+	var totle=0;
+	var b="总分：";
+	$("input[name='gpr']").each(
+			function() {
+				if($(this).val()!=null && $(this).val()!=""){
+					var t=$(this).val();
+					totle=Number(Number(t)+Number(totle)).toFixed(3);
+				}
+			}
+			);
+	$("#totle").text(b+totle);
+}
 function kpi(uuid){
 	var sid="s"+uuid;
 	var gid="g"+uuid;
@@ -331,6 +346,7 @@ function kpi(uuid){
 	var sp=document.getElementById(sid).value;
 	var wp=document.getElementById(wid).value;
 	document.getElementById(gid).value=sp*wp;
+	totle();
 }
 
 function add(){

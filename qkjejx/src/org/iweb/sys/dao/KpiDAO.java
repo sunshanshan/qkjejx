@@ -12,6 +12,10 @@ public class KpiDAO extends AbstractDAO {
 		return super.list("sys_getDeptsKpi", map);
 	}
 	
+	public List listPrint(Map<String, Object> map) {
+		return super.list("sys_getDeptsKpiPrint", map);
+	}
+	
 	
 	public List listbyp(Map<String, Object> map) {
 		return super.list("sys_getDeptsKpiByp", map);

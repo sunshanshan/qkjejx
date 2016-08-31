@@ -16,6 +16,17 @@ public class Department {
 	private Double check_score;
 	private String z;
 	private String remark;
+	
+	private String pardname;
+	
+
+	public String getPardname() {
+		return pardname;
+	}
+
+	public void setPardname(String pardname) {
+		this.pardname = pardname;
+	}
 
 	public Integer getType() {
 		return type;

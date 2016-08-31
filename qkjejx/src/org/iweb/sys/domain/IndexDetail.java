@@ -21,6 +21,65 @@ public class IndexDetail {
 	private Double score;
 	private String acheck_user;
 	private String code;
+	
+	private String pdname;
+	private String dname;
+	private String postion;
+	private String isdeptname;
+	private String typename;
+	private String po_deptname;
+	private String checkde;
+	private String checkp;
+	
+	
+	public String getPo_deptname() {
+		return po_deptname;
+	}
+	public void setPo_deptname(String po_deptname) {
+		this.po_deptname = po_deptname;
+	}
+	public String getCheckde() {
+		return checkde;
+	}
+	public void setCheckde(String checkde) {
+		this.checkde = checkde;
+	}
+	public String getCheckp() {
+		return checkp;
+	}
+	public void setCheckp(String checkp) {
+		this.checkp = checkp;
+	}
+	public String getIsdeptname() {
+		return isdeptname;
+	}
+	public void setIsdeptname(String isdeptname) {
+		this.isdeptname = isdeptname;
+	}
+	public String getTypename() {
+		return typename;
+	}
+	public void setTypename(String typename) {
+		this.typename = typename;
+	}
+	public String getPdname() {
+		return pdname;
+	}
+	public void setPdname(String pdname) {
+		this.pdname = pdname;
+	}
+	public String getDname() {
+		return dname;
+	}
+	public void setDname(String dname) {
+		this.dname = dname;
+	}
+	public String getPostion() {
+		return postion;
+	}
+	public void setPostion(String postion) {
+		this.postion = postion;
+	}
 	public int getUuid() {
 		return uuid;
 	}

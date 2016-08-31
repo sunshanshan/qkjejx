@@ -1,11 +1,5 @@
 package com.qkj.qkjmanager.action;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,8 +25,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.iweb.sys.ContextHelper;
-import org.iweb.sys.ExcelUtil;
 import org.iweb.sys.Parameters;
+import org.iweb.sys.dao.DepartmentDAO;
+import org.iweb.sys.dao.UserDAO;
 import org.iweb.sys.domain.Department;
 import org.iweb.sys.domain.User;
 import org.iweb.sys.domain.UserDept;
@@ -331,7 +325,7 @@ public class ReportAction extends ActionSupport {
 		Set<String> dall = new HashSet<>();
 		if (uds.size() > 0) {
 			for (int s = 0; s < uds.size(); s++) {
-				if (uds.get(s).getRoles().contains("2016060815212623")) {
+				if (uds.get(s).getRoles().contains("2016060815212623")&& uds.get(s).getIscheckdept()!=null && uds.get(s).getIscheckdept()==1) {
 					dsetall.add(uds.get(s).getDept_code());
 				}
 				if (uds.get(s).getRoles().contains("2016072516956868")) {// 部门考核权限
@@ -341,12 +335,22 @@ public class ReportAction extends ActionSupport {
 			if (dsetall.size() > 0) {
 				dlistall.addAll(dsetall);
 				map.put("parent_dept", dlistall);// 多权限可查询多个子部门
+			}else{
+				dsetall.add("o");
+				dlistall.addAll(dsetall);
+				map.put("parent_dept", dlistall);
 			}
 			if (dall.size() > 0) {
 				List<String> dlall = new ArrayList<>();
 				dlall.addAll(dall);
 				map.put("chdept", dlall);
+			}else{
+				dall.add("o");
+				dlistall.addAll(dall);
+				map.put("parent_dept", dlistall);
 			}
+		}else{
+			map.put("parent_dept", 0);
 		}
 		this.setHzds(dao.listhzd(map));
 		//map.clear();
@@ -444,12 +448,19 @@ public class ReportAction extends ActionSupport {
 			Set<String> dall = new HashSet<>();
 			if (uds.size() > 0) {
 				for (int s = 0; s < uds.size(); s++) {
-					if (uds.get(s).getRoles().contains("2016072516956868")
-							|| uds.get(s).getDepsubover() == 1) {// 部门考核权限
+					if (uds.get(s).getRoles().contains("2016060815212623") &&uds.get(s).getIscheckdept()!=null && uds.get(s).getIscheckdept()==1) {
+						dall.add(uds.get(s).getDept_code());
+					}
+					if (uds.get(s).getRoles().contains("2016072516956868")) {// 部门考核权限
 						dall.add(uds.get(s).getDept_code());
 					}
 				}
 				if (dall.size() > 0) {
+					List<String> dlall = new ArrayList<>();
+					dlall.addAll(dall);
+					map.put("apply_depts", dlall);
+				}else{
+					dall.add("o");
 					List<String> dlall = new ArrayList<>();
 					dlall.addAll(dall);
 					map.put("apply_depts", dlall);
@@ -487,12 +498,9 @@ public class ReportAction extends ActionSupport {
 HttpServletResponse response = ServletActionContext.getResponse();
         
 		HttpServletRequest request = ServletActionContext.getRequest();
-		String cym = this.getCymprint();
-		JSONArray adepts = JSONArray.fromObject(this.getAdept());
-		JSONArray ausers = JSONArray.fromObject(this.getAuser());
 		map.clear();
+		this.setVardics(dao.list(null));
 		String fileName = ContextHelper.getUserLoginName()+"汇总表格";
-		if (adepts.size()>0 || adepts.size()>0) {
 			WritableWorkbook wwb = null;
 			// 设这输出的类型和文件格式
 			response.setContentType("application/vnd.ms-excel;charset=UTF-8");
@@ -507,12 +515,12 @@ HttpServletResponse response = ServletActionContext.getResponse();
 					+ "汇总", 0);
 
 			ws.setColumnView(0, 15);
-			ws.setColumnView(1, 25);
+			ws.setColumnView(1, 15);
 			ws.setColumnView(2, 15);
-			ws.setColumnView(3, 25);
-			ws.setColumnView(4, 25);
-			ws.setColumnView(5, 25);
-			ws.setColumnView(7, 25);
+			ws.setColumnView(3, 15);
+			ws.setColumnView(4, 15);
+			ws.setColumnView(5, 15);
+			ws.setColumnView(7, 15);
 			ws.setColumnView(8, 35);
 			WritableFont font1 = new WritableFont(WritableFont.ARIAL, 11);
 
@@ -529,7 +537,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 			Label labelDate = new Label(4, 0, "部门编号", cellFormat1);// 第五列1 行
 			Label labelDa = new Label(5, 0, "分数", cellFormat1);// 第五列1 行
 			Label labelSt = new Label(6, 0, "考核日期", cellFormat1);// 第五列1 行
-			Label labelBa = new Label(7, 0, "烤鹅年月编号", cellFormat1);// 第五列1 行
+			Label labelBa = new Label(7, 0, "考核年月编号", cellFormat1);// 第五列1 行
 			Label labelBa2 = new Label(8, 0, "备注", cellFormat1);// 第五列1 行
 			Label labelBa3 = new Label(9, 0, "可扣分项", cellFormat1);// 第五列1 行
 			Label labelBa4 = new Label(10, 0, "类型", cellFormat1);// 第五列1 行
@@ -548,20 +556,20 @@ HttpServletResponse response = ServletActionContext.getResponse();
 
 			for (short i = 0; i < vardics.size(); i++) {
 				// 创建一行，在页sheet上
-				Label au = new Label(0, i, vardics.get(i).getAcheck_user()==null?"无":vardics.get(i).getAcheck_user());
-				Label ap = new Label(1, i, vardics.get(i).getPosition_name()==null?"无":vardics.get(i).getPosition_name());
-				Label ad = new Label(2, i, vardics.get(i).getAcheck_deptname());
-				Label auuid = new Label(3, i, vardics.get(i).getAcheck_user()==null?"无":vardics.get(i).getAcheck_user());
-				Label acode = new Label(4, i, vardics.get(i).getAcheck_usercode());
-				Label score = new Label(5, i, vardics.get(i).getCheck_score().toString());
+				Label au = new Label(0, i+1, vardics.get(i).getAcheck_user()==null?"无":vardics.get(i).getAcheck_username());
+				Label ap = new Label(1, i+1, vardics.get(i).getPosition_name()==null?"无":vardics.get(i).getPosition_name());
+				Label ad = new Label(2, i+1, vardics.get(i).getAcheck_deptname());
+				Label auuid = new Label(3, i+1, vardics.get(i).getAcheck_user()==null?"无":vardics.get(i).getAcheck_user());
+				Label acode = new Label(4, i+1, vardics.get(i).getAcheck_usercode());
+				Label score = new Label(5, i+1, vardics.get(i).getCheck_score().toString());
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String str = sdf.format(vardics.get(i).getCheck_date());
 				
-				Label checkdate = new Label(6, i, str);
-				Label checkym = new Label(7, i, vardics.get(i).getCheck_ym().toString());
-				Label remark = new Label(8, i, vardics.get(i).getRemark()==null?"无":vardics.get(i).getRemark());
-				Label bscor = new Label(9, i, vardics.get(i).getBscore()==null?"无":vardics.get(i).getBscore().toString());
-				Label jtype = new Label(10, i, vardics.get(i).getJltype()==null?"无":vardics.get(i).getJltype().toString());
+				Label checkdate = new Label(6, i+1, str);
+				Label checkym = new Label(7, i+1, vardics.get(i).getCheck_ym().toString());
+				Label remark = new Label(8, i+1, vardics.get(i).getRemark()==null?"无":vardics.get(i).getRemark());
+				Label bscor = new Label(9, i+1, vardics.get(i).getBscore()==null?"无":vardics.get(i).getBscore().toString());
+				Label jtype = new Label(10, i+1, vardics.get(i).getJltype()==null?"无":vardics.get(i).getJltype().toString());
 				ws.addCell(au);
 				ws.addCell(ap);
 				ws.addCell(ad);
@@ -582,7 +590,6 @@ HttpServletResponse response = ServletActionContext.getResponse();
 			wwb.close();
 			os.close();
 			response.flushBuffer();
-		}
 		return null;
 	}
 	
@@ -600,27 +607,67 @@ HttpServletResponse response = ServletActionContext.getResponse();
 				// 创建一行，在页sheet上
 				JSONObject a1 = JSONObject.fromObject(adepts.get(i).toString());
 				String dept_code=a1.getString("部门编号").substring(0,a1.getString("部门编号").indexOf("$")).trim();
+				map.clear();
+				map.put("dept_code", dept_code);
+				DepartmentDAO dd=new DepartmentDAO();
+				List<Department> d=new ArrayList();
+				d=dd.list(map);
+				String parname=null;
+				if(d.size()>0&&d.get(0).getType()!=null&&d.get(0).getType()==1){
+					parname=d.get(0).getPardname();
+				}
 				VarticView vv=new VarticView();
 				vv.setD_code(dept_code);
-				vv.setDeptname(a1.getString("部门"));
+				if(parname!=null){
+					vv.setDeptname("("+parname+")"+a1.getString("部门"));
+				}else{
+					vv.setDeptname(a1.getString("部门"));
+				}
 				vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
 				vv.setRemark(a1.getString("备注"));
 				vvs.add(vv);
 				
 			}
 			
+			UserDAO ud=new UserDAO();
+			List<User> us=new ArrayList();
+			map.clear();
+			map.put("parent_user", ContextHelper.getUserLoginUuid());
+			us=ud.list(map);
+			String parname=null;
 			for (short i = 0; i < ausers.size(); i++) {
 				// 创建一行，在页sheet上
 				JSONObject a1 = JSONObject.fromObject(ausers.get(i).toString());
 				String uuid=a1.getString("员工编号").substring(0,a1.getString("员工编号").indexOf("$")).trim();
-				VarticView vv=new VarticView();
-				vv.setU_id(uuid);
-				vv.setUsername(a1.getString("姓名"));
-				vv.setPname(a1.getString("岗位"));
-				vv.setDeptname(a1.getString("部门"));
-				vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
-				vv.setRemark(a1.getString("备注"));
-				vvs.add(vv);
+				Boolean flag=false;
+				if(us.size()>0){
+					for(int j=0;j<us.size();j++){
+						if(us.get(j).getUuid()!=null && us.get(j).getUuid().equals(uuid)){
+							if(us.get(j).getDepttype()!=null&&us.get(j).getDepttype()==1){
+								parname=us.get(j).getPardname();
+							}else if(us.get(j).getDepttype()!=null&&us.get(j).getDepttype()==2){
+								parname=us.get(j).getPparname();
+							}
+							flag=true;
+							break;
+						}
+					}
+				}
+				if(flag==true){
+					VarticView vv=new VarticView();
+					vv.setU_id(uuid);
+					vv.setUsername(a1.getString("姓名"));
+					vv.setPname(a1.getString("岗位"));
+					if(parname!=null){
+						vv.setDeptname("("+parname+")"+a1.getString("部门"));
+					}else{
+						vv.setDeptname(a1.getString("部门"));
+					}
+					vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
+					vv.setRemark(a1.getString("备注"));
+					vvs.add(vv);
+				}
+				
 			}
 
 		}

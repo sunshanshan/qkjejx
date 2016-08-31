@@ -229,18 +229,19 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 	<typeAlias alias="dept" type="org.iweb.sys.domain.Department" />
 	<select id="sys_getDepts" resultClass="dept" parameterClass="java.util.Map">
 		<![CDATA[ 
-			Select * From s_sys_department
+			Select d.*,pd.dept_cname pardname From s_sys_department d
+LEFT JOIN s_sys_department pd on (d.parent_dept=pd.dept_code)
 			Where 1=1
 		]]>
-		<isNotNull prepend="AND" property="uuid"><![CDATA[ uuid=#uuid# ]]></isNotNull>
-		<isNotNull prepend="AND" property="type"><![CDATA[ type=#type# ]]></isNotNull>
-		<isNotNull prepend="AND" property="dept_code"><![CDATA[ dept_code=#dept_code# ]]></isNotNull>
+		<isNotNull prepend="AND" property="uuid"><![CDATA[ d.uuid=#uuid# ]]></isNotNull>
+		<isNotNull prepend="AND" property="type"><![CDATA[ d.type=#type# ]]></isNotNull>
+		<isNotNull prepend="AND" property="dept_code"><![CDATA[ d.dept_code=#dept_code# ]]></isNotNull>
 		<isNotEmpty prepend="AND" property="dept_codes">
-			<![CDATA[ dept_code In ]]>
+			<![CDATA[ d.dept_code In ]]>
 			<iterate property="dept_codes" open="(" close=")" conjunction=","> #dept_codes[]#</iterate>
 		</isNotEmpty>
-		<isNotNull prepend="AND" property="check_code"><![CDATA[ dept_code Like #check_code#+'%') ]]></isNotNull>
-		<![CDATA[ ORDER BY DEPT_CODE ]]>
+		<isNotNull prepend="AND" property="check_code"><![CDATA[ d.dept_code Like #check_code#+'%') ]]></isNotNull>
+		<![CDATA[ ORDER BY d.DEPT_CODE ]]>
 	</select>
 	
 		<delete id="sys_delkpi" parameterClass="java.util.Map">
@@ -272,6 +273,30 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 		<isNotNull prepend="AND" property="kpi"><![CDATA[ i.kpi=#kpi# ]]></isNotNull>
 		<isNotNull prepend="AND" property="check_deptcode"><![CDATA[ i.check_deptcode=#check_deptcode# ]]></isNotNull>
 		<isNotNull prepend="AND" property="check_post"><![CDATA[ i.check_post=#check_post# ]]></isNotNull>
+	</select>
+	
+	<select id="sys_getDeptsKpiPrint" resultClass="kpi" parameterClass="java.util.Map">
+		<![CDATA[ 
+			Select DISTINCT i.uuid,d.dept_cname dname,p.POSITION_NAME postion,pd.dept_cname pdname,position_dept.dept_cname po_deptname, checkde.dept_cname checkde,checkp.POSITION_NAME checkp,
+			CASE i.isdept
+			when 1 then '纵向'
+			when 0 then '横向'
+			end as isdeptname,
+			case i.type
+			when 1 then '无'
+			when 2 then '取部门同项kpi'
+			when 3 then '取部门总分' end as typename,
+			i.dept_code,i.kpi,i.cyc,i.weight,i.isdept,i.position_id,i.type,i.position_dept,i.count_way,i.definition,i.correctly From qkj_t_indexdetail i
+			LEFT JOIN s_sys_department d on(i.dept_code=d.dept_code)
+			LEFT JOIN s_sys_department pd on(i.position_dept=pd.dept_code)
+			left join s_cfg_position p on (i.position_id=p.uuid)
+			left join s_sys_department position_dept on (p.dept_code=position_dept.dept_code)
+			left join s_sys_department checkde on(i.check_deptcode=checkde.dept_code)
+			left join s_cfg_position checkp on (i.check_post=checkp.UUID)
+			Where 1=1
+		]]>
+		<isNotNull prepend="AND" property="position"><![CDATA[ ISNULL(i.dept_code, '0')='0' and ISNULL(i.position_id, '0')<>'0' ]]></isNotNull>
+		<isNotNull prepend="AND" property="dept"><![CDATA[ ISNULL(i.dept_code, '0')<>'0' and ISNULL(i.position_id, '0')='0' ]]></isNotNull>
 	</select>
 	
 	<!-- 考核人员用的 -->
@@ -361,7 +386,7 @@ VALUES ( #positionid#, #kpi#,#weight#,#count_way#, #correctly#,#definition#, #ch
 	<typeAlias alias="user" type="org.iweb.sys.domain.User" />
 	<select id="sys_getUser" resultClass="user" parameterClass="java.util.Map">
 		<![CDATA[ 
-			SELECT DISTINCT u.uuid,u.*,r.ROLE_NAME TYPE_NAME,d.DEPT_CNAME,u2.USER_NAME AS senior_name,p.POSITION_NAME,
+		SELECT DISTINCT u.uuid,u.*,r.ROLE_NAME TYPE_NAME,d.DEPT_CNAME,d.type depttype,par.type partype,u2.USER_NAME AS senior_name,p.POSITION_NAME,
 pu.USER_NAME  parent_user_name,pud.dept_cname p_dname,pud.dept_code p_code,par.dept_cname pardname,ppar.dept_cname pparname
 			FROM s_sys_user u
 			LEFT JOIN s_sys_department d ON (u.dept_code = d.dept_code)
@@ -376,6 +401,7 @@ pu.USER_NAME  parent_user_name,pud.dept_cname p_dname,pud.dept_code p_code,par.d
 			Where 1=1
 		]]>
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ u.uuid=#uuid# ]]></isNotNull>
+		<isNotNull prepend="AND" property="parent_user"><![CDATA[ u.parent_user=#parent_user# ]]></isNotNull>
 		<isNotNull prepend="AND" property="title"><![CDATA[ u.title=#title# ]]></isNotNull>
 		<isNotNull prepend="AND" property="user_name"><![CDATA[ u.user_name like #user_name# ]]></isNotNull>
 		<isNotNull prepend="AND" property="email"><![CDATA[ u.email like #email# ]]></isNotNull>
