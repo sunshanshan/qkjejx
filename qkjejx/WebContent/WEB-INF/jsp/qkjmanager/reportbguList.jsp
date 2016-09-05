@@ -47,13 +47,13 @@ cursor: pointer;
 			
 			<tr>
 			<td>A
-			<script type="text/javascript">
+			<%-- <script type="text/javascript">
 							$(function(){
 									var d=${vardic.acheck_usercode};
 									var cym=$('#begintime').val();
 									leaves(d,cym);
 							});
-						</script>
+						</script> --%>
 			</td>
 			<td id="a">${leave.leavea}</td>
 			<td>B</td>
@@ -230,11 +230,12 @@ var aps= function(uuid,ad){
 };
 
 var leaves= function(dept,cym){
-	
 	var ajax = new Common_Ajax('ajax_member_message');
 	ajax.config.action_url = ajax_url;
-	ajax.config._success = function(data, textStatus){
+	
+	ajax.config._success = function(data, textStatus){alert(1);
 		var l = $(data).length;
+		alert(l);
 				if(l==1){
 					$('#a').html($(data)[0].leavea+"个");
 					$('#b').html($(data)[0].leaveb+"个");
@@ -245,7 +246,7 @@ var leaves= function(dept,cym){
 	};
 	ajax.addParameter("work", "AutoComplete");
 	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_LEAVE");
-	ajax.addParameter("parameters", "acheck_usercode=" + encodeURI(dept)+"&cym="+encodeURI(cym));
+	ajax.addParameter("parameters", "dept_code=" + encodeURI(dept)+"&cym="+encodeURI(cym));
 	ajax.sendAjax2();
 };
 

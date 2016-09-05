@@ -224,7 +224,7 @@ var leaves= function(dept,cym){
 	};
 	ajax.addParameter("work", "AutoComplete");
 	ajax.addParameter("privilege_id", "QKJCJ_SYS_AJAXLOAD_LEAVE");
-	ajax.addParameter("parameters", "acheck_usercode=" + encodeURI(dept)+"&cym="+encodeURI(cym));
+	ajax.addParameter("parameters", "dept_code=" + encodeURI(dept)+"&cym="+encodeURI(cym));
 	ajax.sendAjax2();
 };
 

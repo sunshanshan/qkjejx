@@ -252,25 +252,25 @@
 			select MAX(aa.a) leavea,MAX(aa.b) leaveb, MAX(aa.c) leavec, MAX(aa.d) leaved from (
 			select COUNT(*) a,null b,null c,null d from qkj_r_score s 
 			join qkj_r_check c on (s.check_ym=c.uuid)
-			where s.check_score>=90 and c.ym like #cym# +'%' and s.acheck_usercode=#acheck_usercode# and ISNULL(s.acheck_user, '0')!='0'
+			where s.check_score>=90 and c.ym like #cym# +'%' and s.acheck_usercode like #dept_code# +'%'  and ISNULL(s.acheck_user, '0')!='0'
 			
 			UNION All
 			
 			select null a,COUNT(*) b,null c,null d from qkj_r_score s 
 			join qkj_r_check c on (s.check_ym=c.uuid)
-			where s.check_score>=80 and s.check_score<90 and c.ym like #cym# +'%' and s.acheck_usercode=#acheck_usercode# and ISNULL(s.acheck_user, '0')!='0'
+			where s.check_score>=80 and s.check_score<90 and c.ym like #cym# +'%' and s.acheck_usercode like #dept_code# +'%' and ISNULL(s.acheck_user, '0')!='0'
 			
 			UNION All
 			
 			select null a,null b,COUNT(*) c,null d from qkj_r_score s 
 			join qkj_r_check c on (s.check_ym=c.uuid)
-			where s.check_score>=60 and s.check_score<80 and c.ym like #cym# +'%' and s.acheck_usercode=#acheck_usercode# and ISNULL(s.acheck_user, '0')!='0'
+			where s.check_score>=60 and s.check_score<80 and c.ym like #cym# +'%' and s.acheck_usercode like #dept_code# +'%' and ISNULL(s.acheck_user, '0')!='0'
 			
 			UNION All
 			
 			select null a,null b,null c,COUNT(*) d from qkj_r_score s 
 			join qkj_r_check c on (s.check_ym=c.uuid)
-			where s.check_score<60 and c.ym like #cym# +'%' and s.acheck_usercode=#acheck_usercode# and ISNULL(s.acheck_user, '0')!='0'
+			where s.check_score<60 and c.ym like #cym# +'%' and s.acheck_usercode like #dept_code# +'%' and ISNULL(s.acheck_user, '0')!='0'
 			) aa
 		]]>
 	</select>
