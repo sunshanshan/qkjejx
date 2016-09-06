@@ -23,6 +23,11 @@ public class VardicDetailDao extends AbstractDAO {
 		return super.list("qkjmanager_getVarticDetails", map);
 	}
 	
+	public List listh(Map<String, Object> map) {
+		//setCountMapid("basics_getCheckCounts");
+		return super.list("qkjmanager_getVarticDetailsh", map);
+	}
+	
 	public List Checklist(Map<String, Object> map) {
 		//setCountMapid("basics_getCheckCounts");
 		return super.list("qkjmanager_getCheckVarticDetails", map);

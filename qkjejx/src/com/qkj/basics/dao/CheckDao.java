@@ -17,6 +17,10 @@ public class CheckDao extends AbstractDAO {
 		//setCountMapid("basics_getCheckCounts");
 		return super.list("basics_getChecks", map);
 	}
+	
+	public Object gettop1() {
+		return super.get("basics_top1", null);
+	}
 
 	public Object get(Object uuid) {
 		Map<String, Object> map = new HashMap<String, Object>();

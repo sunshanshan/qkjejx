@@ -27,6 +27,54 @@ public class VarticDetail {
 	private Integer dtype;
 	private String auser;
 	
+	private String check_user_name;
+	private String acheck_user_name;
+	private String position_name;
+	private String dept_name;
+	private String ym;
+	
+	
+	
+	public String getCheck_user_name() {
+		return check_user_name;
+	}
+
+	public void setCheck_user_name(String check_user_name) {
+		this.check_user_name = check_user_name;
+	}
+
+	public String getAcheck_user_name() {
+		return acheck_user_name;
+	}
+
+	public void setAcheck_user_name(String acheck_user_name) {
+		this.acheck_user_name = acheck_user_name;
+	}
+
+	public String getPosition_name() {
+		return position_name;
+	}
+
+	public void setPosition_name(String position_name) {
+		this.position_name = position_name;
+	}
+
+	public String getDept_name() {
+		return dept_name;
+	}
+
+	public void setDept_name(String dept_name) {
+		this.dept_name = dept_name;
+	}
+
+	public String getYm() {
+		return ym;
+	}
+
+	public void setYm(String ym) {
+		this.ym = ym;
+	}
+
 	public String getAuser() {
 		return auser;
 	}

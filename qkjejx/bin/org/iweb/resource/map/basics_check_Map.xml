@@ -17,6 +17,13 @@
 			<isNotNull prepend="AND" property="e"><![CDATA[ #e# between c.echeck_startdate and c.echeck_closedate  ]]></isNotNull>
 		</dynamic>
 	</select>
+	
+	<select id="basics_top1" resultClass="check" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select top 1 * from qkj_r_check order by uuid DESC
+		]]>
+	</select>
+	
 	<insert id="basics_addCheck" parameterClass="check">
 		<![CDATA[ 
 			insert into qkj_r_check(ym,state,acheck_startdate,acheck_closedate,dcheck_startdate,dcheck_closedate,echeck_startdate,echeck_closedate,add_user,add_time,lm_user,lm_time)

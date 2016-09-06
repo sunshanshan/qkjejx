@@ -19,6 +19,9 @@
 		<action name="scoure_excle" class="com.qkj.qkjmanager.action.ReportAction" method="report">
 		</action>
 		
+		<action name="hscoure_excle" class="com.qkj.qkjmanager.action.ReportAction" method="hreport">
+		</action>
+		
 		<action name="print_excel" class="com.qkj.qkjmanager.action.ReportAction" method="print">
 		</action>
 		<action name="print_view" class="com.qkj.qkjmanager.action.ReportAction" method="view1">

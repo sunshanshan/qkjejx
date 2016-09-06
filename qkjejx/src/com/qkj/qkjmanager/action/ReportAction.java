@@ -38,9 +38,11 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.basics.dao.CheckDao;
 import com.qkj.basics.domain.Check;
 import com.qkj.qkjmanager.dao.VardicDao;
+import com.qkj.qkjmanager.dao.VardicDetailDao;
 import com.qkj.qkjmanager.dao.reportDao;
 import com.qkj.qkjmanager.domain.Score;
 import com.qkj.qkjmanager.domain.Vartic;
+import com.qkj.qkjmanager.domain.VarticDetail;
 import com.qkj.qkjmanager.domain.VarticView;
 
 public class ReportAction extends ActionSupport {
@@ -49,6 +51,7 @@ public class ReportAction extends ActionSupport {
 	private Map<String, Object> map = new HashMap<String, Object>();
 	private List<Score> score;
 	private List<VarticView> vvs;
+	private List<VarticDetail> vvsd;
 	private Vartic vardic;
 	private List<Vartic> vardics;
 	private List<Vartic> vardicsbyd;
@@ -68,9 +71,14 @@ public class ReportAction extends ActionSupport {
 	private String cymprint;
 	private static String adeptview;
 	private static String auserview;
-	
-	
-	
+
+	public List<VarticDetail> getVvsd() {
+		return vvsd;
+	}
+
+	public void setVvsd(List<VarticDetail> vvsd) {
+		this.vvsd = vvsd;
+	}
 
 	public Score getLeave() {
 		return leave;
@@ -365,8 +373,8 @@ public class ReportAction extends ActionSupport {
 		// 查询打开的考核日期
 		if (vardic == null) {
 			Check cs = new Check();
-			VardicDao vd = new VardicDao();
-			cs = vd.check_cym();
+			CheckDao cdd=new CheckDao();
+			cs = (Check) cdd.gettop1();
 			vardic = new Vartic();
 			vardic.setCym(cs.getYm());
 		}
@@ -492,6 +500,112 @@ public class ReportAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
+	
+	public String hreport() throws Exception {
+		
+		HttpServletResponse response = ServletActionContext.getResponse();
+		        
+				HttpServletRequest request = ServletActionContext.getRequest();
+				VardicDetailDao dd =new VardicDetailDao();
+				map.clear();
+				map.put("typea", 0);
+				this.setVvsd(dd.listh(map));
+				String fileName = ContextHelper.getUserLoginName()+"汇总表格";
+					WritableWorkbook wwb = null;
+					// 设这输出的类型和文件格式
+					response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+					response.setHeader("Content-Disposition", "attachment;filename="
+							+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+					// 设置文件名和并且解决中文名不能下载
+					OutputStream os = response.getOutputStream();
+					// 创建可写入的Excel工作簿
+					wwb = Workbook.createWorkbook(os);
+					// 创建工作表
+					WritableSheet ws = wwb.createSheet(ContextHelper.getUserLoginName()
+							+ "汇总", 0);
+
+					ws.setColumnView(0, 15);
+					ws.setColumnView(1, 15);
+					ws.setColumnView(2, 15);
+					ws.setColumnView(3, 15);
+					ws.setColumnView(4, 15);
+					ws.setColumnView(5, 15);
+					ws.setColumnView(7, 15);
+					ws.setColumnView(8, 35);
+					WritableFont font1 = new WritableFont(WritableFont.ARIAL, 11);
+
+					WritableCellFormat cellFormat1 = new WritableCellFormat(font1);
+
+					// 查询数据库中所有的数据
+					map.clear();
+					map.put("notype", 1);
+					// 要插入到的Excel表格的行号，默认从0开始
+					Label labelId = new Label(0, 0, "姓名", cellFormat1);// 表示第1列1个
+					Label labelName = new Label(1, 0, "职务", cellFormat1);// 第2列1个
+					Label labelMeName = new Label(2, 0, "部门", cellFormat1);// 第五列1 行
+					Label labelMeName2 = new Label(3, 0, "考核人", cellFormat1);// 第五列1 行
+					Label labelDate = new Label(4, 0, "评分", cellFormat1);// 第五列1 行
+					Label labelDa = new Label(5, 0, "得分", cellFormat1);// 第五列1 行
+					Label labelSt = new Label(6, 0, "考核日期", cellFormat1);// 第五列1 行
+					Label labelBa = new Label(7, 0, "考核年月编号", cellFormat1);// 第五列1 行
+					Label labelBa2 = new Label(8, 0, "kpi", cellFormat1);// 第五列1 行
+					Label labelBa3 = new Label(9, 0, "权重", cellFormat1);// 第五列1 行
+					Label labelBa4 = new Label(10, 0, "主表编号", cellFormat1);// 第五列1 行
+
+					ws.addCell(labelId);
+					ws.addCell(labelName);
+					ws.addCell(labelMeName);
+					ws.addCell(labelMeName2);
+					ws.addCell(labelDate);
+					ws.addCell(labelDa);
+					ws.addCell(labelSt);
+					ws.addCell(labelBa);
+					ws.addCell(labelBa2);
+					ws.addCell(labelBa3);
+					ws.addCell(labelBa4);
+
+					for (short i = 0; i < vvsd.size(); i++) {
+						// 创建一行，在页sheet上
+						Label au = new Label(0, i+1, vvsd.get(i).getAcheck_user_name()==null?"无":vvsd.get(i).getAcheck_user_name());
+						Label ap = new Label(1, i+1, vvsd.get(i).getPosition_name()==null?"无":vvsd.get(i).getPosition_name());
+						Label ad = new Label(2, i+1, vvsd.get(i).getDept_name());
+						Label auuid = new Label(3, i+1, vvsd.get(i).getCheck_user_name()==null?"无":vvsd.get(i).getCheck_user_name());
+						Label acode = new Label(4, i+1, Double.toString(vvsd.get(i).getCheck_score()));
+						Label score = new Label(5, i+1, Double.toString(vvsd.get(i).getCheck_goal()));
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						String str = sdf.format(vvsd.get(i).getCheck_date());
+						
+						Label checkdate = new Label(6, i+1, str);
+						SimpleDateFormat sc = new SimpleDateFormat("yyyy-MM");
+						String strym = sc.format(vvsd.get(i).getYm());
+						Label checkym = new Label(7, i+1, strym);
+						
+						Label remark = new Label(8, i+1, vvsd.get(i).getKpi()==null?"无":vvsd.get(i).getKpi());
+						Double a=vvsd.get(i).getCheck_goal()/vvsd.get(i).getCheck_score();
+						Label bscor = new Label(9, i+1, Double.toString(a));
+						Label jtype = new Label(10, i+1, vvsd.get(i).getScore_id().toString());
+						ws.addCell(au);
+						ws.addCell(ap);
+						ws.addCell(ad);
+						ws.addCell(auuid);
+						ws.addCell(acode);
+						ws.addCell(score);
+						ws.addCell(checkdate);
+						ws.addCell(checkym);
+						ws.addCell(remark);
+						ws.addCell(bscor);
+						ws.addCell(jtype);
+						
+					}
+
+					// 写进文档
+					wwb.write();
+					// 关闭Excel工作簿对象
+					wwb.close();
+					os.close();
+					response.flushBuffer();
+				return null;
+			}
 
 	public String report() throws Exception {
 		
