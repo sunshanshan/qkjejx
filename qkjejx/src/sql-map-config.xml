@@ -20,4 +20,7 @@
 	<sqlMap resource="org/iweb/resource/map/qkjmanager_vartic_Map.xml" />
 	<sqlMap resource="org/iweb/resource/map/qkjmanager_Talk_Map.xml" />
 	<sqlMap resource="org/iweb/resource/map/qkjmanager_report_Map.xml" />
+	<sqlMap resource="org/iweb/resource/map/qkj_qkjmanage_EntertMap.xml" />
+	<sqlMap resource="org/iweb/resource/map/qkj_qkjmanage_ProductMap.xml" />
+	<sqlMap resource="org/iweb/resource/map/qkj_qkjmanage_ProTypeMap.xml" />
 </sqlMapConfig>

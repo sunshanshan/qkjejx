@@ -20,6 +20,11 @@ import org.iweb.sys.domain.UserPrivilege;
 import org.iweb.sys.encrypt.EncryptAES;
 import org.iweb.sys.encrypt.EncryptFactory;
 
+import com.qkj.qkjmanager.dao.ProTypeDAO;
+import com.qkj.qkjmanager.dao.ProductDAO;
+import com.qkj.qkjmanager.domain.ProType;
+import com.qkj.qkjmanager.domain.Product;
+
 
 /**
  * 缓存数据库中的数据到内存,全部采用JSON形式存储
@@ -126,7 +131,7 @@ public final class SysDBCacheLogic extends SysCacheLogic {
 	public final static String CACHE_PRODTREE_PREFIX = "prodtree-";
 
 	// 产品树缓存
-	/*public synchronized void cacheProdTree(boolean delFlag) {
+	public synchronized void cacheProdTree(boolean delFlag) {
 		// 是否需要先清空原缓存
 		if (delFlag) {
 			log.info("开始清空原产品树缓存数据");
@@ -183,11 +188,12 @@ public final class SysDBCacheLogic extends SysCacheLogic {
 				typenode[i].deleteCharAt(typenode[i].length() - 1).insert(0, "[").insert(typenode[i].length(), "]");
 				fnode.append("var zNodes").append(s_mapping[i]).append("=").append(typenode[i]).append(";");
 				// 生成独立JSON
-				cache.put(CACHE_PRODTREE_PREFIX + s_mapping[i], aes.encrypt(typenode[i].toString()));
+				//cache.put(CACHE_PRODTREE_PREFIX + s_mapping[i], aes.encrypt(typenode[i].toString()));
+				cache.put(CACHE_PRODTREE_PREFIX + s_mapping[i], typenode[i].toString());
 			}
 			log.info("缓存产品树数据完成");
 		} else {
 			log.info("缓存产品树数据完成:还没有产品");
 		}
-	}*/
+	}
 }
