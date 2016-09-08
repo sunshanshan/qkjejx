@@ -9,7 +9,7 @@
 <title>产品列表--<s:text name="APP_NAME" /></title>
 <s:action name="ref_head" namespace="/manager" executeResult="true" />
 </head>
-<body>
+<body onload="type();">
 <!-- 顶部和左侧菜单导航 -->
 <s:action name="nav" namespace="/manage" executeResult="true" />
 <div class="tab_right">
@@ -27,7 +27,15 @@
 	<s:form id="serachForm" name="serachForm" action="entert_report"  method="get" namespace="/qkjmanage" theme="simple">
  	<div class="label_con">
  	<div class="label_main">
-        <div class="label_hang">
+	 	<div class="label_hang">
+	 		 <div class="label_ltit">查询维度:</div>
+	 		 <div class="label_rwben label_rwb">
+            	<s:select id="report_type" name="entert.report_type" cssClass="selectKick" list="#{0:'原始维度',1:'部门维度',2:'产品维度'}"/>
+            </div>
+	 	</div>
+ 	</div>
+ 	<div class="label_main">
+        <div class="label_hang" id="dept">
             <div class="label_ltit">申请部门:</div>
             <div class="label_rwben2">
             	<span class="label_rwb">
@@ -42,6 +50,15 @@
             </div>
         </div>
         
+        <div class="label_hang" id="product">
+            <div class="label_ltit">产品名称:</div>
+            <div class="label_rwben2">
+            	<span class="label_rwb">
+				<s:textfield name="entert.ptitle"/>
+				</span>
+            </div>
+        </div>
+        
         <div class="label_hang label_button tac">
         	<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
 			<label for="search_mcondition"></label>更多条件
@@ -52,17 +69,30 @@
  	</s:form>
 		<div class="tab_warp">
  		<table>
- 		<tr id="coltr">
-	    <th class="td1">部门</th>
+ 		<tr  id="a1">
+ 		<th class="td1">部门</th>
 		<th class="td2">产品</th>
-		<th class="td1">数量</th>
+		<th class="td1">瓶数</th>
+		<th class="td1">件数</th>
+		<th class="td0">查看</th>
+	  	</tr>
+	  	<tr  id="a2">
+ 		<th class="td1">部门</th>
+		<th class="td1">瓶数</th>
+		<th class="td0">查看</th>
+	  	</tr>
+	  	<tr id="a3">
+		<th class="td2">产品</th>
+		<th class="td1">瓶数</th>
+		<th class="td1">件数</th>
 		<th class="td0">查看</th>
 	  	</tr>
 	  	<s:iterator value="entertProducts" status="sta">
 	  	<tr id="showtr${uuid}">
-		    <td class="td1 nw"><%-- <a href="<s:url namespace="/qkjmanager" action="entert_reportu"><s:param name="apply_dept" value="apply_dept"></s:param></s:url>"> --%>${apply_dept_name}<!-- </a> --></td>
-			<td class="td2 nw">${product_name}</td>
-			<td class="td1 nw">${proNum}/${proNum/case_spec }件</td>
+		   <s:if test="%{apply_dept_name!=null}"> <td class="td1 nw"><%-- <a href="<s:url namespace="/qkjmanager" action="entert_reportu"><s:param name="apply_dept" value="apply_dept"></s:param></s:url>"> --%>${apply_dept_name}<!-- </a> --></td></s:if>
+			<s:if test="%{product_name!=null}"><td class="td2 nw">${product_name}</td></s:if>
+			<td class="td1 nw">${proNum}</td>
+			<s:if test="%{case_spec!=null}"><td class="td1 nw">${proNum/case_spec }件</td></s:if>
 		    <td class="td0 op-area"><a onclick="showDetail('showtr${uuid}');" href="javascript:;" class="input-nostyle">查看</a></td>
 	  	</tr>
 	  	</s:iterator>
@@ -84,7 +114,39 @@ $(function(){
 		required:false
 	});
 	printPagination("listpage",'${currPage}','${recCount}','${pageSize}');
+	typea();
  });
+ 
+ function typea(){
+	var p1=$("#report_type").val();
+	 if(p1==0){
+		 $("#product").hide();
+		 $("#dept").show();
+		 $("#a1").show();
+		 $("#a2").hide();
+		 $("#a3").hide();
+	 }else if(p1==1){
+		 $("#product").hide();
+		 $("#dept").show();
+		 $("#a2").show();
+		 $("#a1").hide();
+		 $("#a3").hide();
+	 }else if (p1==2){
+		 $("#product").show();
+		 $("#dept").hide();
+		 $("#a3").show();
+		 $("#a1").hide();
+		 $("#a2").hide();
+	 }
+ }
+ 
+function type(){
+	$('#report_type').change(function(){ 
+	 var p1=$(this).children('option:selected').val();//这就是selected的值 
+	 document.getElementById("serachForm").action="/qkjmanage/entert_report";
+	 document.getElementById("serachForm").submit();
+	});
+}
 </script>
 </body>
 </html>

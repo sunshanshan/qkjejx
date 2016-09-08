@@ -54,7 +54,7 @@
 				</div>
 				<div class="label_hang">
 				       <div class="label_ltit">档次:</div>
-				       <div class="label_rwben"><s:select name="product.grade" title="档次" cssClass="validate[required]" headerKey="" headerValue="--请选择--" list="#{1:'低端',2:'中端',3:'中高端',4:'高端'}" /></div>
+				       <div class="label_rwben"><s:select name="product.grade" title="档次" cssClass="validate[required]" headerKey="" headerValue="--请选择--" list="#{1:'低档',2:'中档',3:'中高档',4:'高档',5:'次高端',6:'次高档',7:'超高档'}" /></div>
 				</div>
 				<%-- <div class="label_hang">
 				       <div class="label_ltit">条形码:</div>

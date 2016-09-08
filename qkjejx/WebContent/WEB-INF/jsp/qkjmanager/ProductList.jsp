@@ -30,7 +30,7 @@
 				<div class="label_hang">
 				       <div class="label_ltit">档次:</div>
 				       <div class="label_rwben">
-				       			<s:select name="product.grade" title="档次" headerKey="" headerValue="--请选择--"  list="#{1:'低端',2:'中端',3:'中高端',4:'高端'}" />
+				       			<s:select name="product.grade" title="档次" headerKey="" headerValue="--请选择--"  list="#{1:'低档',2:'中档',3:'中高档',4:'高档',5:'次高端',6:'次高档',7:'超高档'}" />
 				       </div>
 				</div>
 				<div class="label_hang label_button tac">
@@ -63,7 +63,9 @@
 						<td class="td2">${title}</td>
 						<td class="td5">${spec}</td>
 						<td class="td1">${case_spec}</td>
-						<td class="td3"><s:if test='1==grade'>低端</s:if><s:if test='2==grade'>中端</s:if><s:if test='3==grade'>中高端</s:if><s:if test='4==grade'>高端</s:if></td>
+						<td class="td3"><s:if test='1==grade'>低档</s:if><s:if test='2==grade'>中档</s:if><s:if test='3==grade'>中高档</s:if><s:if test='4==grade'>高档</s:if>
+						<s:if test='5==grade'>次高端</s:if><s:if test='6==grade'>次高档</s:if><s:if test='7==grade'>超高档</s:if>
+						</td>
 						<td class="td3">${market_price}</td>
 						<td class="td3">${group_price}</td>
 						<td class="td3">${dealer_price}</td>

@@ -19,6 +19,16 @@ public class EntertProductDAO extends AbstractDAO {
 	public List listReport(Map<String, Object> map){
 		return super.list("qkjmanage_getEntertsReport", map);
 	}
+	
+	public List listReportD(Map<String, Object> map){
+		return super.list("qkjmanage_getEntertsReportByD", map);
+	}
+
+	public List listReportP(Map<String, Object> map){
+		return super.list("qkjmanage_getEntertsReportByP", map);
+	}
+	
+	
 
 	public Object add(Object parameters) {
 		return super.add("qkjmanage_addEntertProduct", parameters);

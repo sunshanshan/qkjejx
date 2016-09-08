@@ -21,8 +21,21 @@ public class Entertain {
 	private Integer proNum;
 	
 	private Integer state;
+	private Integer report_type;
+	private String ptitle;
 	
-	
+	public String getPtitle() {
+		return ptitle;
+	}
+	public void setPtitle(String ptitle) {
+		this.ptitle = ptitle;
+	}
+	public Integer getReport_type() {
+		return report_type;
+	}
+	public void setReport_type(Integer report_type) {
+		this.report_type = report_type;
+	}
 	public Integer getState() {
 		return state;
 	}

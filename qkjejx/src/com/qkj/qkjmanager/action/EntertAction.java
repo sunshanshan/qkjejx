@@ -160,7 +160,22 @@ public class EntertAction extends ActionSupport{
 			map.clear();
 			if (entert == null) entert = new Entertain();
 			ContextHelper.SimpleSearchMap4Page("QKJ_QKJMANAGE_ENTERTAI", map, entert, viewFlag);
-			this.setEntertProducts(pdao.listReport(map));
+			
+			this.setPageSize(ContextHelper.getPageSize(map));
+			this.setCurrPage(ContextHelper.getCurrPage(map));
+			if(entert!=null&& entert.getReport_type()!=null){
+				if(entert.getReport_type()==0){
+					this.setEntertProducts(pdao.listReport(map));//原始维度
+				}else if(entert.getReport_type()==1){
+					this.setEntertProducts(pdao.listReportD(map));//部门维度
+				}else if(entert.getReport_type()==2){
+					this.setEntertProducts(pdao.listReportP(map));//产品维度
+				}
+			}else{
+				this.setEntertProducts(pdao.listReport(map));//原始维度
+			}
+			
+			this.setRecCount(pdao.getResultCount());
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;列表";
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!list 读取数据错误:", e);
@@ -206,11 +221,12 @@ public class EntertAction extends ActionSupport{
 			// 要插入到的Excel表格的行号，默认从0开始
 			Label labelId = new Label(0, 0, "部门", cellFormat1);// 表示第1列1个
 			Label labelName = new Label(1, 0, "品名", cellFormat1);// 第2列1个
-			Label labelMeName = new Label(2, 0, "数量", cellFormat1);// 第五列1 行
-			Label labelMeName1 = new Label(3, 0, "申请日期", cellFormat1);// 第五列1 行
-			Label labelMeName2 = new Label(4, 0, "编号", cellFormat1);// 第五列1 行
-			Label labelMeName3 = new Label(5, 0, "申请人", cellFormat1);// 第五列1 行
-			Label labelMeName4 = new Label(6, 0, "状态", cellFormat1);// 第五列1 行
+			Label labelMeName = new Label(2, 0, "瓶数", cellFormat1);// 第五列1 行
+			Label labelMeName5 = new Label(3, 0, "件数", cellFormat1);// 第五列1 行
+			Label labelMeName1 = new Label(4, 0, "申请日期", cellFormat1);// 第五列1 行
+			Label labelMeName2 = new Label(5, 0, "编号", cellFormat1);// 第五列1 行
+			Label labelMeName3 = new Label(6, 0, "申请人", cellFormat1);// 第五列1 行
+			Label labelMeName4 = new Label(7, 0, "状态", cellFormat1);// 第五列1 行
 			ws.addCell(labelId);
 			ws.addCell(labelName);
 			ws.addCell(labelMeName);
@@ -218,19 +234,27 @@ public class EntertAction extends ActionSupport{
 			ws.addCell(labelMeName2);
 			ws.addCell(labelMeName3);
 			ws.addCell(labelMeName4);
+			ws.addCell(labelMeName5);
 
 			for (short i = 0; i < entertProducts.size(); i++) {
 				// 创建一行，在页sheet上
-				Label labelres_i = new Label(0, i + 2, entertProducts.get(i).getApply_dept_name()==null?"无":entertProducts.get(i).getApply_dept_name());
-				Label labelres_c = new Label(1, i + 2, entertProducts.get(i).getProduct_name()==null?"无": entertProducts.get(i).getProduct_name());
+				Label labelres_i = new Label(0, i + 1, entertProducts.get(i).getApply_dept_name()==null?"无":entertProducts.get(i).getApply_dept_name());
+				Label labelres_c = new Label(1, i + 1, entertProducts.get(i).getProduct_name()==null?"无": entertProducts.get(i).getProduct_name());
 				Double t=(double) (entertProducts.get(i).getNum()/entertProducts.get(i).getCase_spec());
-				Label labelres_d = new Label(2, i + 2, Double.toString(entertProducts.get(i).getNum())+"/"+Double.toString(t)+"件");
+				//Label labelres_d = new Label(2, i + 1, Double.toString(entertProducts.get(i).getNum()));
+				
+				jxl.write.NumberFormat nf = new jxl.write.NumberFormat("#");    //设置数字格式
+				jxl.write.WritableCellFormat wcfN = new jxl.write.WritableCellFormat(nf); //设置表单格式    
+				jxl.write.Number labelres_d = new jxl.write.Number(2, i+1, entertProducts.get(i).getNum(), wcfN); //格式化数值
+				
+				
+				Label labelres_d5 = new Label(3, i + 1, Double.toString(t)+"件");
 				
 				SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM-dd");
 				String str = sdf.format(entertProducts.get(i).getApply_date());
-				Label labelres_d1 = new Label(3, i + 2, str);
-				Label labelres_d2 = new Label(4, i + 2, entertProducts.get(i).getEnter_id()==null?"无": entertProducts.get(i).getEnter_id());
-				Label labelres_d3 = new Label(5, i + 2, entertProducts.get(i).getApply_user_name()==null?"无": entertProducts.get(i).getApply_user_name());
+				Label labelres_d1 = new Label(4, i + 1, str);
+				Label labelres_d2 = new Label(5, i + 1, entertProducts.get(i).getEnter_id()==null?"无": entertProducts.get(i).getEnter_id());
+				Label labelres_d3 = new Label(6, i + 1, entertProducts.get(i).getApply_user_name()==null?"无": entertProducts.get(i).getApply_user_name());
 				String st="";
 				if(entertProducts.get(i)!=null && entertProducts.get(i).getEstate()!=null){
 					if(entertProducts.get(i).getEstate()==1){
@@ -242,7 +266,9 @@ public class EntertAction extends ActionSupport{
 					st="未出库";
 					
 				}
-				Label labelres_d4 = new Label(6, i + 2, st);
+				
+				
+				Label labelres_d4 = new Label(7, i + 1, st);
 				ws.addCell(labelres_i);
 				ws.addCell(labelres_c);
 				ws.addCell(labelres_d);
@@ -250,6 +276,7 @@ public class EntertAction extends ActionSupport{
 				ws.addCell(labelres_d2);
 				ws.addCell(labelres_d3);
 				ws.addCell(labelres_d4);
+				ws.addCell(labelres_d5);
 			}
 			
 

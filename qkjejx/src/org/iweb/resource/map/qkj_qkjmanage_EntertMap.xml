@@ -116,6 +116,38 @@
 		</isNotEmpty>
 		<![CDATA[ GROUP BY e.apply_dept,p.product_id,pro.title,pro.case_spec,d.dept_cname ]]>
 	</select>
+	
+	<select id="qkjmanage_getEntertsReportByD" resultClass="entertpro" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select sum(p.num) proNum,d.dept_cname apply_dept_name from qkj_t_entertain_product p 
+			join qkj_t_entertain e on (p.enter_id=e.uuid)
+			left join qkj_t_product pro on (pro.uuid=p.product_id)
+			left join s_sys_department d on (e.apply_dept=d.dept_code)
+			where 1=1
+		]]>
+		
+		<isNotEmpty prepend="AND" property="apply_dept">
+			<isNotEqual property="is_sub_dept" compareValue="true"><![CDATA[ e.apply_dept=#apply_dept#]]></isNotEqual>
+			<isEqual property="is_sub_dept" compareValue="true"><![CDATA[ e.apply_dept like #apply_dept# +'%' ]]></isEqual>
+		</isNotEmpty>
+		<![CDATA[ GROUP BY e.apply_dept,d.dept_cname ]]>
+	</select>
+	
+	<select id="qkjmanage_getEntertsReportByP" resultClass="entertpro" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select sum(p.num) proNum,pro.title product_name,pro.case_spec case_spec from qkj_t_entertain_product p 
+			join qkj_t_entertain e on (p.enter_id=e.uuid)
+			left join qkj_t_product pro on (pro.uuid=p.product_id)
+			left join s_sys_department d on (e.apply_dept=d.dept_code)
+			where 1=1
+ 
+		]]>
+		
+		<isNotEmpty prepend="AND" property="ptitle">
+			<![CDATA[ pro.title like #ptitle# +'%' ]]>
+		</isNotEmpty>
+		<![CDATA[ GROUP BY p.product_id,pro.title,pro.case_spec ]]>
+	</select>
 
 	<insert id="qkjmanage_addEntertProduct" parameterClass="entertpro">
 		<![CDATA[ 
