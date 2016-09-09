@@ -161,6 +161,18 @@ public class EntertAction extends ActionSupport{
 			if (entert == null) entert = new Entertain();
 			ContextHelper.SimpleSearchMap4Page("QKJ_QKJMANAGE_ENTERTAI", map, entert, viewFlag);
 			
+			SimpleDateFormat sdf =   new SimpleDateFormat("yyyy-MM-dd");
+			if(entert!=null && entert.getPlan_start_begin()!=null){
+				map.remove("plan_start_begin");
+				String str = sdf.format(entert.getPlan_start_begin());
+				map.put("plan_start_begin", str);
+			}
+			if(entert!=null && entert.getPlan_start_end()!=null){
+				map.remove("plan_start_end");
+				String str = sdf.format(entert.getPlan_start_end());
+				map.put("plan_start_end", str);
+			}
+			
 			this.setPageSize(ContextHelper.getPageSize(map));
 			this.setCurrPage(ContextHelper.getCurrPage(map));
 			if(entert!=null&& entert.getReport_type()!=null){

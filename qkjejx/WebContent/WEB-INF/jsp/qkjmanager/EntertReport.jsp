@@ -59,6 +59,18 @@
             </div>
         </div>
         
+        <div class="label_hang">
+            <div class="label_ltit">申请日期:</div>
+            <div class="label_rwben2">
+            	<span class="label_rwb nw">
+				<input  class="datepicker iI iI-f" type="text" name="entert.plan_start_begin" title="从" value="${it:formatDate(entert.plan_start_begin,'yyyy-MM-dd')}" />
+				</span>
+				<span class="label_rwb nw">
+				<input  class="datepicker iI iI-t" type="text" name="entert.plan_start_end" title="到" value="${it:formatDate(entert.plan_start_end,'yyyy-MM-dd')}" />
+            	</span>
+            </div>
+        </div>
+        
         <div class="label_hang label_button tac">
         	<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
 			<label for="search_mcondition"></label>更多条件

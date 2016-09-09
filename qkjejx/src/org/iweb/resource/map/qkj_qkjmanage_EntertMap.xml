@@ -104,7 +104,7 @@
 	
 	<select id="qkjmanage_getEntertsReport" resultClass="entertpro" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select sum(p.num) proNum,e.apply_dept,pro.title product_name,pro.case_spec case_spec,d.dept_cname apply_dept_name from qkj_t_entertain_product p 
+			select sum(p.num) proNum,e.apply_dept,pro.title product_name,pro.case_spec case_spec,d.dept_cname apply_dept_name,pro.spec spec from qkj_t_entertain_product p 
 			join qkj_t_entertain e on (p.enter_id=e.uuid)
 			left join qkj_t_product pro on (pro.uuid=p.product_id)
 			left join s_sys_department d on (e.apply_dept=d.dept_code)
@@ -115,7 +115,9 @@
 			<isNotEqual property="is_sub_dept" compareValue="true"><![CDATA[ e.apply_dept=#apply_dept#]]></isNotEqual>
 			<isEqual property="is_sub_dept" compareValue="true"><![CDATA[ e.apply_dept like #apply_dept# +'%' ]]></isEqual>
 		</isNotEmpty>
-		<![CDATA[ GROUP BY e.apply_dept,p.product_id,pro.title,pro.case_spec,d.dept_cname ]]>
+		<isNotEmpty prepend="AND" property="plan_start_begin"><![CDATA[ e.apply_date>=#plan_start_begin# ]]></isNotEmpty>
+			<isNotEmpty prepend="AND" property="plan_start_end"><![CDATA[ e.apply_date<=#plan_start_end# ]]></isNotEmpty>
+		<![CDATA[ GROUP BY e.apply_dept,p.product_id,pro.title,pro.case_spec,d.dept_cname,pro.spec ]]>
 	</select>
 	
 	<select id="qkjmanage_getEntertsReportByD" resultClass="entertpro" parameterClass="java.util.Map">
@@ -130,9 +132,9 @@
 		<isNotEmpty prepend="AND" property="apply_dept">
 			<isNotEqual property="is_sub_dept" compareValue="true"><![CDATA[ e.apply_dept=#apply_dept#]]></isNotEqual>
 			<isEqual property="is_sub_dept" compareValue="true"><![CDATA[ e.apply_dept like #apply_dept# +'%' ]]></isEqual>
-			<isNotEmpty prepend="AND" property="plan_start_begin"><![CDATA[ e.apply_date>=#plan_start_begin# ]]></isNotEmpty>
-			<isNotEmpty prepend="AND" property="plan_start_end"><![CDATA[ e.apply_date<=#plan_start_end# ]]></isNotEmpty>
 		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="plan_start_begin"><![CDATA[ e.apply_date>=#plan_start_begin# ]]></isNotEmpty>
+			<isNotEmpty prepend="AND" property="plan_start_end"><![CDATA[ e.apply_date<=#plan_start_end# ]]></isNotEmpty>
 		<![CDATA[ GROUP BY e.apply_dept,d.dept_cname ]]>
 	</select>
 	
@@ -143,12 +145,12 @@
 			left join qkj_t_product pro on (pro.uuid=p.product_id)
 			left join s_sys_department d on (e.apply_dept=d.dept_code)
 			where 1=1
- 
 		]]>
-		
 		<isNotEmpty prepend="AND" property="ptitle">
 			<![CDATA[ pro.title like #ptitle# +'%' ]]>
 		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="plan_start_begin"><![CDATA[ e.apply_date>=#plan_start_begin# ]]></isNotEmpty>
+		<isNotEmpty prepend="AND" property="plan_start_end"><![CDATA[ e.apply_date<=#plan_start_end# ]]></isNotEmpty>
 		<![CDATA[ GROUP BY p.product_id,pro.title,pro.case_spec,pro.spec ]]>
 	</select>
 
