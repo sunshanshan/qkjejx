@@ -10,7 +10,15 @@
 <title>--<s:text name="APP_NAME" /></title>
 <s:action name="ref_head" namespace="/manager" executeResult="true" />
 </head>
-
+<style type="text/css">
+#btnzhuce {
+   width:59px; height:29px;
+   border: 2px solid #dedede;
+   -moz-border-radius: 10px;      /* Gecko browsers */
+   -webkit-border-radius: 10px;   /* Webkit browsers */
+   border-radius:10px;            /* W3C syntax */
+}
+</style>
 <body>
 	<s:action name="nav" namespace="/manage" executeResult="true" />
 	<div class="tab_right">
@@ -139,12 +147,14 @@
 									<div class="lb_yjcon">
 										<table width="100%" cellpadding="0" cellspacing="0" border="0" class="lb_jpin">
 											<tr>
+												<th>公司</th>
 												<th>客户</th>
 												<th>说明</th>
 												<th>操作</th>
 											</tr>
 											<s:iterator value="entertMems" status="sta">
 												<tr>
+													<td>${com_name_name}</td>
 													<td><a href="javascript:;">${member_name}</a></td>
 													<td>${title}</td>
 													<td class="nw">
@@ -320,6 +330,16 @@
 				cssClass="validFormDialog" action="entertMem_add"
 				namespace="/qkjmanage" method="post" theme="simple">
 				<div class="label_main">
+					
+					
+					<div class="label_hang">
+						<div class="label_ltit">公司名称:</div>
+						<div class="label_rwben label_rwb">
+							<s:hidden id="order_user_id" name="enterMem.com_name"></s:hidden>
+							<s:textfield id="order_user_name" name="entertMem.com_name_name" cssClass="validate[required,maxSize[85]]"/>
+						</div>
+					</div>
+					
 					<div class="label_hang">
 						<div class="label_ltit">客户名称:</div>
 						<div class="label_rwben label_rwb">
@@ -327,6 +347,7 @@
 								name="entertMem.member_name" />
 						</div>
 					</div>
+					
 					<div class="label_hang">
 						<div class="label_ltit">说明:</div>
 						<div class="label_rwben label_rwb">
@@ -337,7 +358,8 @@
 					
 					<div class="label_hang label_button tac">
 						<s:hidden name="entertMem.enter_id" value="%{entert.uuid}" />
-							<s:submit id="add" name="add" value="确定" action="entertMem_add" />
+							<%-- <s:submit id="add" name="add" value="确定" action="entertMem_add" /> --%>
+							<button id="btnzhuce"  onclick="addProMember();" style="background-color: #3476A1;color: white;">确定</button>
 					</div>
 				</div>
 			</s:form>
@@ -394,6 +416,11 @@
 		<s:action name="ref_foot" namespace="/manager" executeResult="true" />
 		<script type="text/javascript">
 		var curr_apply_dept = '${entert.apply_dept}';
+		function addProMember(){
+			$('#btnzhuce').hide();
+			document.getElementById("addMemberForm").submit();
+			  
+		}
 			function check() {
 				var n = $
 				{

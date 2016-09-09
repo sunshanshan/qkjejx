@@ -51,4 +51,12 @@ public class EntertProductDAO extends AbstractDAO {
 	public int deletemem(Object parameters) {
 		return super.delete("qkjmanage_delEntertmem", parameters);
 	}
+	
+	public List listMember(Map<String, Object> map){
+		return super.list("sysvip_getMembers", map);
+	}
+	
+	public Object addmember(Object parameters) {
+		return super.add("qkjmanage_addMember", parameters);
+	}
 }

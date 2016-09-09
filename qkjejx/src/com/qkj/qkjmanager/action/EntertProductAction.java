@@ -1,6 +1,6 @@
 package com.qkj.qkjmanager.action;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +14,7 @@ import com.qkj.qkjmanager.dao.EntertProductDAO;
 import com.qkj.qkjmanager.domain.EntertMember;
 import com.qkj.qkjmanager.domain.Entertain;
 import com.qkj.qkjmanager.domain.EntertainProduct;
+import com.qkj.qkjmanager.domain.Member;
 
 public class EntertProductAction extends ActionSupport{
 	private static final long serialVersionUID = 1L;
@@ -25,6 +26,7 @@ public class EntertProductAction extends ActionSupport{
 	private EntertainProduct entertProduct;
 	private List<EntertainProduct> entertProducts;
 	private EntertMember entertMem;
+	private Member member;
 	private List<EntertMember> entertMems;
 	private String message;
 	private String viewFlag;
@@ -33,8 +35,12 @@ public class EntertProductAction extends ActionSupport{
 	private int currPage;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;招待用酒列表";
 	
-	
-	
+	public Member getMember() {
+		return member;
+	}
+	public void setMember(Member member) {
+		this.member = member;
+	}
 	public int getCurrPage() {
 		return currPage;
 	}
@@ -151,10 +157,38 @@ public class EntertProductAction extends ActionSupport{
 	
 	public String addMem() throws Exception {
 		try {
-			dao.addmem(entertMem);
+			dao.startTransaction();
+			if(entertMem!=null){
+				if(entertMem.getCom_name()!=null && entertMem.getCom_name()>0){//会员编号大于0则说明是从下拉表里面选择的
+					dao.addmem(entertMem);	
+				}else{//自己填写的
+					//查询这个公司名称在会员表里是否存在
+					map.clear();
+					map.put("company_name", entertMem.getCom_name_name());
+					List<Member> ms=new ArrayList();
+					ms=dao.listMember(map);
+					if(ms.size()>0){//存在直接添加
+						entertMem.setCom_name(ms.get(0).getUuid());
+						dao.addmem(entertMem);	
+					}else{//不存在添加到会员表
+						member=new Member();
+						member.setCompany_name(entertMem.getCom_name_name());
+						dao.addmember(member);
+						entertMem.setCom_name(member.getUuid());
+						dao.addmem(entertMem);	
+					}
+					
+				}
+				
+			}
+			
+			
+			dao.commitTransaction();
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!add 数据添加失败:", e);
 			throw new Exception(this.getClass().getName() + "!add 数据添加失败:", e);
+		}finally {
+			dao.endTransaction();
 		}
 		return SUCCESS;
 	}

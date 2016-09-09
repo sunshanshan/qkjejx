@@ -5,6 +5,7 @@
 	<typeAlias alias="entert" type="com.qkj.qkjmanager.domain.Entertain" />
 	<typeAlias alias="entertpro" type="com.qkj.qkjmanager.domain.EntertainProduct" />
 	<typeAlias alias="entertmem" type="com.qkj.qkjmanager.domain.EntertMember" />
+	<typeAlias alias="member" type="com.qkj.qkjmanager.domain.Member" />
 	<select id="qkjmanage_getEnterts" resultClass="entert" parameterClass="java.util.Map">
 		<![CDATA[ 
 			SELECT a.*,d.dept_cname apply_dept_name, au.USER_NAME apply_user_name
@@ -169,7 +170,9 @@
 	
 	<select id="qkjmanage_getEntertMems" resultClass="entertmem" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select a.* FROM qkj_t_entertain_member a where 1=1
+			select a.*,m.company_name com_name_name FROM qkj_t_entertain_member a 
+			left join s_vip_member m on (a.com_name=m.uuid)
+			where 1=1
 		]]>
 		<isNotEmpty prepend="AND" property="uuid"><![CDATA[ a.uuid=#uuid# ]]></isNotEmpty>
 		<isNotEmpty prepend="AND" property="enter_id"><![CDATA[ a.enter_id=#enter_id# ]]></isNotEmpty>
@@ -178,8 +181,8 @@
 
 	<insert id="qkjmanage_addEntertMem" parameterClass="entertmem">
 		<![CDATA[ 
-			Insert Into qkj_t_entertain_member(enter_id,member_id,title,note,total_price,member_mobile,member_address,member_name)
-			Values (#enter_id#,#member_id#,#title#,#note#,#total_price#,#member_mobile#,#member_address#,#member_name#)
+			Insert Into qkj_t_entertain_member(enter_id,member_id,title,note,total_price,member_mobile,member_address,member_name,com_name)
+			Values (#enter_id#,#member_id#,#title#,#note#,#total_price#,#member_mobile#,#member_address#,#member_name#,#com_name#)
 		]]>
 		<selectKey resultClass="int" type="post" keyProperty="uuid" >     
        	 	select @@IDENTITY as value     
@@ -192,6 +195,24 @@
 		Delete From qkj_t_entertain_member Where uuid=#uuid#
 	]]>
 	</delete>
+	
+	<select id="sysvip_getMembers" resultClass="member" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select * from s_vip_member m where 1=1
+		]]>
+		<isNotEmpty prepend="AND" property="company_name"><![CDATA[ m.company_name=#company_name# ]]></isNotEmpty>
+		<isNotEmpty prepend="AND" property="company_namelike"><![CDATA[ m.company_name like '%' + #company_namelike# +'%' ]]></isNotEmpty>
+	</select>
+	
+	<insert id="qkjmanage_addMember" parameterClass="member">
+		<![CDATA[ 
+			Insert Into s_vip_member(company_name)
+			Values (#company_name#)
+		]]>
+		<selectKey resultClass="int" type="post" keyProperty="uuid" >     
+       	 	select @@IDENTITY as value     
+    	 </selectKey>   
+	</insert>
 
 	<!-- Active End -->
 </sqlMap>

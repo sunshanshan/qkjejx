@@ -12,9 +12,30 @@ public class EntertMember {
 	// 非数据库字段
 	private String member_name;
 	
+	private Integer com_name;
+	
+	private String com_name_name;
+	
+	
+	public String getCom_name_name() {
+		return com_name_name;
+	}
+
+	public void setCom_name_name(String com_name_name) {
+		this.com_name_name = com_name_name;
+	}
+
 	private Integer member_with_score;
 
 	
+	public Integer getCom_name() {
+		return com_name;
+	}
+
+	public void setCom_name(Integer com_name) {
+		this.com_name = com_name;
+	}
+
 	public String getEnter_id() {
 		return enter_id;
 	}

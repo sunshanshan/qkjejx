@@ -10,7 +10,17 @@
 <link rel="stylesheet" href="<s:url value="/css/zTreeStyle/zTreeStyle.css" />" />
 <script type="text/javascript" src="<s:url value="/js/zTreeJs/jquery.ztree.core-3.5.js" />"></script>
 <script type="text/javascript" src="<s:url value="/js/zTreeJs/product_v0.2.js" />"></script>
+<style type="text/css">
+#btnzhuce {
+   width:59px; height:29px;
+   border: 2px solid #dedede;
+   -moz-border-radius: 10px;      /* Gecko browsers */
+   -webkit-border-radius: 10px;   /* Webkit browsers */
+   border-radius:10px;            /* W3C syntax */
+}
+</style>
 </head>
+
 <body>
 <s:action name="nav" namespace="/manage" executeResult="true" />
 <div class="tab_right">
@@ -95,7 +105,7 @@
 	</div>
 	<div class="label_main">
 	<div class="label_hang label_button tar">
-			<input type="submit" value="确定" class="input-blue"/>
+			<button id="btnzhuce"  onclick="add();" style="background-color: #3476A1;color: white;">确定</button>
 			<input type="button" value="返回" onclick="linkurl('${backUrl}${uuidKey}=${uuidValue}');"  class="input-gray" />
 		 </div>
 	</div>
@@ -136,6 +146,13 @@ function setDataCase() {
 		$("#ladingItemnumCase").html('瓶/'+num+'件');
 	}
 }
+
+function add(){
+	$('#btnzhuce').hide();
+	document.getElementById("editForm").submit();
+	  
+}
+
 </script>
 </body>
 </html>

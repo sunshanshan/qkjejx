@@ -23,7 +23,7 @@ var LoadMemberAutoComplete = function(){
 				response($.map(cache[term], function(item){
 					return { order_user_id : item.uuid,
 					order_user_mobile : item.mobile,
-					order_user_name : item.member_name,
+					order_user_name : item.company_name,
 					value : item.uuid,
 					label : selfobj.boldColorTerm(item.uuid, request.term) };
 				}));
@@ -37,7 +37,7 @@ var LoadMemberAutoComplete = function(){
 				response($.map(data, function(item){
 					return { order_user_id : item.uuid,
 					order_user_mobile : item.mobile,
-					order_user_name : item.member_name,
+					order_user_name : item.company_name,
 					value : item.uuid,
 					label : selfobj.boldColorTerm(item.uuid, request.term) };
 				}));
@@ -64,7 +64,7 @@ var LoadMemberAutoComplete = function(){
 				response($.map(cache[term], function(item){
 					return { order_user_id : item.uuid,
 					order_user_mobile : item.mobile,
-					order_user_name : item.member_name,
+					order_user_name : item.company_name,
 					value : item.mobile,
 					label : selfobj.boldColorTerm(item.mobile, request.term) };
 				}));
@@ -78,7 +78,7 @@ var LoadMemberAutoComplete = function(){
 				response($.map(data, function(item){
 					return { order_user_id : item.uuid,
 					order_user_mobile : item.mobile,
-					order_user_name : item.member_name,
+					order_user_name : item.company_name,
 					value : item.mobile,
 					label : selfobj.boldColorTerm(item.mobile, request.term) };
 				}));
@@ -107,9 +107,9 @@ var LoadMemberAutoComplete = function(){
 					return { order_user_id : item.uuid,
 						
 					order_user_mobile : item.mobile,
-					order_user_name : item.member_name,
-					value : item.member_name,
-					label : selfobj.boldColorTerm(item.member_name, request.term)
+					order_user_name : item.company_name,
+					value : item.company_name,
+					label : selfobj.boldColorTerm(item.company_name, request.term)
 					};
 					
 				}));
@@ -123,13 +123,13 @@ var LoadMemberAutoComplete = function(){
 				response($.map(data, function(item){
 					return { order_user_id : item.uuid,
 					order_user_mobile : item.mobile,
-					order_user_name : item.member_name,
-					value : item.member_name,
-					label : selfobj.boldColorTerm(item.member_name, request.term) };
+					order_user_name : item.company_name,
+					value : item.company_name,
+					label : selfobj.boldColorTerm(item.company_name, request.term) };
 				}));
 			};
 			ajax.addParameter("work", "AutoComplete");
-			ajax.addParameter("parameters", "privilege_id=QKJCJ_SYSEBIZ_AJAXLOAD_MEMBER&member_name=" + encodeURI(request.term));
+			ajax.addParameter("parameters", "privilege_id=QKJCJ_SYSEBIZ_AJAXLOAD_MEMBER&company_namelike=" + encodeURI(request.term));
 			ajax.sendAjax();
 		},
 		minLength : 1,
@@ -154,9 +154,9 @@ var LoadMemberAutoComplete = function(){
 					return { order_user_id : item.uuid,
 						
 					order_user_mobile : item.mobile,
-					order_user_name : item.member_name,
-					value : item.member_name,
-					label : selfobj.boldColorTerm(item.member_name, request.term)
+					order_user_name : item.company_name,
+					value : item.company_name,
+					label : selfobj.boldColorTerm(item.company_name, request.term)
 					};
 					
 				}));
@@ -171,13 +171,13 @@ var LoadMemberAutoComplete = function(){
 				response($.map(data, function(item){
 					return { order_user_id : item.uuid,
 					order_user_mobile : item.mobile,
-					order_user_name : item.member_name,
-					value : item.member_name,
-					label : selfobj.boldColorTerm(item.member_name, request.term) };
+					order_user_name : item.company_name,
+					value : item.company_name,
+					label : selfobj.boldColorTerm(item.company_name, request.term) };
 				}));
 			};
 			ajax.addParameter("work", "AutoComplete");
-			ajax.addParameter("parameters", "privilege_id=QKJCJ_SYSEBIZ_AJAXLOAD_MEMBER_NOPERMISSION&member_name=" + encodeURI(request.term));
+			ajax.addParameter("parameters", "privilege_id=QKJCJ_SYSEBIZ_AJAXLOAD_MEMBER_NOPERMISSION&company_namelike=" + encodeURI(request.term));
 			ajax.sendAjax();
 		},
 		minLength : 1,
