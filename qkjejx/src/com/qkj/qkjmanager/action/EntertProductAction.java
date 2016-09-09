@@ -135,6 +135,27 @@ public class EntertProductAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	public String listbyd() throws Exception {
+		ContextHelper.isPermit("QKJ_QKJMANAGE_ENTERTAI");
+		try {
+			map.clear();
+			if (entert == null) entert = new Entertain();
+			//ContextHelper.setSearchDeptPermit4Search("QKJ_QKJMANAGE_ENTERTAI", map, "apply_depts", "apply_user");
+			ContextHelper.SimpleSearchMap4Page("QKJ_QKJMANAGE_ENTERTAI", map, entert, viewFlag);
+			this.setPageSize(ContextHelper.getPageSize(map));
+			this.setCurrPage(ContextHelper.getCurrPage(map));
+			this.setEntertProducts(dao.list(map));
+			this.setRecCount(dao.getResultCount());
+			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;列表";
+		} catch (Exception e) {
+			log.error(this.getClass().getName() + "!list 读取数据错误:", e);
+			throw new Exception(this.getClass().getName() + "!list 读取数据错误:", e);
+		}
+		
+		
+		return SUCCESS;
+	}
+	
 	public String add() throws Exception {
 		try {
 			dao.add(entertProduct);

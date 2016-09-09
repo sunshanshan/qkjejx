@@ -72,6 +72,7 @@
  		<tr  id="a1">
  		<th class="td1">部门</th>
 		<th class="td2">产品</th>
+		<th class="td1">规格</th>
 		<th class="td1">瓶数</th>
 		<th class="td1">件数</th>
 		<th class="td0">查看</th>
@@ -83,14 +84,16 @@
 	  	</tr>
 	  	<tr id="a3">
 		<th class="td2">产品</th>
+		<th class="td1">规格</th>
 		<th class="td1">瓶数</th>
 		<th class="td1">件数</th>
 		<th class="td0">查看</th>
 	  	</tr>
 	  	<s:iterator value="entertProducts" status="sta">
 	  	<tr id="showtr${uuid}">
-		   <s:if test="%{apply_dept_name!=null}"> <td class="td1 nw"><%-- <a href="<s:url namespace="/qkjmanager" action="entert_reportu"><s:param name="apply_dept" value="apply_dept"></s:param></s:url>"> --%>${apply_dept_name}<!-- </a> --></td></s:if>
+		   <s:if test="%{apply_dept_name!=null}"> <td class="td1 nw"><a href="javascript:;" onclick="openCustomerView(${apply_dept});">${apply_dept_name}</a></td></s:if>
 			<s:if test="%{product_name!=null}"><td class="td2 nw">${product_name}</td></s:if>
+			<s:if test="%{spec!=null}"><td class="td2 nw">${spec}</td></s:if>
 			<td class="td1 nw">${proNum}</td>
 			<s:if test="%{case_spec!=null}"><td class="td1 nw">${proNum/case_spec }件</td></s:if>
 		    <td class="td0 op-area"><a onclick="showDetail('showtr${uuid}');" href="javascript:;" class="input-nostyle">查看</a></td>
@@ -115,6 +118,7 @@ $(function(){
 	});
 	printPagination("listpage",'${currPage}','${recCount}','${pageSize}');
 	typea();
+	createCustomerView();
  });
  
  function typea(){
@@ -147,6 +151,28 @@ function type(){
 	 document.getElementById("serachForm").submit();
 	});
 }
+
+var sobj02;
+var createCustomerView = function() {
+	//http://localhost:8888/qkjmanage/customer_load?viewFlag=mdy&customer.uuid=3
+	var w_width = $(window).width();
+	var w_height = $(window).height();
+	sobj02 = new DialogIFrame({
+		src:'',
+		title:"查看",
+		width:w_width*0.65,
+		height:w_height*0.65
+	});
+	sobj02.selfAction = function(val1,val2) {};
+	sobj02.create();
+	//sobj02.open();
+};
+
+var openCustomerView = function(customer_uuid) {
+	var iframeId = sobj02.getConid() + "iframe";
+	$("#"+iframeId).attr("src","/qkjmanage/entert_reportbyd?entert.apply_dept=" + customer_uuid);
+	sobj02.open();
+};
 </script>
 </body>
 </html>

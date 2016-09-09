@@ -85,7 +85,7 @@
 	
 	<select id="qkjmanage_getEntertProducts" resultClass="entertpro" parameterClass="java.util.Map">
 		<![CDATA[ 
-			SELECT a.*,p.title product_name,p.case_spec case_spec,d.dept_cname apply_dept_name,e.apply_date apply_date,e.uuid euuid,u.USER_NAME apply_user_name,e.state estate
+			SELECT a.*,p.title product_name,p.case_spec case_spec,d.dept_cname apply_dept_name,e.apply_date apply_date,e.uuid euuid,u.USER_NAME apply_user_name,e.state estate,p.spec spec
 			FROM qkj_t_entertain_product a
 			left join qkj_t_product p on (a.product_id=p.uuid)
 			join qkj_t_entertain e on (a.enter_id=e.uuid)
@@ -120,7 +120,7 @@
 	
 	<select id="qkjmanage_getEntertsReportByD" resultClass="entertpro" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select sum(p.num) proNum,d.dept_cname apply_dept_name from qkj_t_entertain_product p 
+			select sum(p.num) proNum,d.dept_cname apply_dept_name,e.apply_dept apply_dept from qkj_t_entertain_product p 
 			join qkj_t_entertain e on (p.enter_id=e.uuid)
 			left join qkj_t_product pro on (pro.uuid=p.product_id)
 			left join s_sys_department d on (e.apply_dept=d.dept_code)
@@ -130,13 +130,15 @@
 		<isNotEmpty prepend="AND" property="apply_dept">
 			<isNotEqual property="is_sub_dept" compareValue="true"><![CDATA[ e.apply_dept=#apply_dept#]]></isNotEqual>
 			<isEqual property="is_sub_dept" compareValue="true"><![CDATA[ e.apply_dept like #apply_dept# +'%' ]]></isEqual>
+			<isNotEmpty prepend="AND" property="plan_start_begin"><![CDATA[ e.apply_date>=#plan_start_begin# ]]></isNotEmpty>
+			<isNotEmpty prepend="AND" property="plan_start_end"><![CDATA[ e.apply_date<=#plan_start_end# ]]></isNotEmpty>
 		</isNotEmpty>
 		<![CDATA[ GROUP BY e.apply_dept,d.dept_cname ]]>
 	</select>
 	
 	<select id="qkjmanage_getEntertsReportByP" resultClass="entertpro" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select sum(p.num) proNum,pro.title product_name,pro.case_spec case_spec from qkj_t_entertain_product p 
+			select sum(p.num) proNum,pro.title product_name,pro.case_spec case_spec,pro.spec spec from qkj_t_entertain_product p 
 			join qkj_t_entertain e on (p.enter_id=e.uuid)
 			left join qkj_t_product pro on (pro.uuid=p.product_id)
 			left join s_sys_department d on (e.apply_dept=d.dept_code)
@@ -147,7 +149,7 @@
 		<isNotEmpty prepend="AND" property="ptitle">
 			<![CDATA[ pro.title like #ptitle# +'%' ]]>
 		</isNotEmpty>
-		<![CDATA[ GROUP BY p.product_id,pro.title,pro.case_spec ]]>
+		<![CDATA[ GROUP BY p.product_id,pro.title,pro.case_spec,pro.spec ]]>
 	</select>
 
 	<insert id="qkjmanage_addEntertProduct" parameterClass="entertpro">

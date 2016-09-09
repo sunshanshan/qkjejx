@@ -19,7 +19,25 @@ public class EntertainProduct {
 	private Date apply_date;// (varchar)主题
 	private Integer euuid;// (int)主键ID
 	private Integer estate;
+	private String apply_dept;
+	private String spec;
 	
+	public String getSpec() {
+		return spec;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+
+	public String getApply_dept() {
+		return apply_dept;
+	}
+
+	public void setApply_dept(String apply_dept) {
+		this.apply_dept = apply_dept;
+	}
+
 	public Integer getEstate() {
 		return estate;
 	}

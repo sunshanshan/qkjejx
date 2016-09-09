@@ -11,6 +11,10 @@
 			<result name="success">/WEB-INF/jsp/qkjmanager/EntertProList.jsp</result>
 		</action>
 		
+		<action name="entert_reportbyd" class="com.qkj.qkjmanager.action.EntertProductAction" method="listbyd">
+			<result name="success">/WEB-INF/jsp/qkjmanager/EntertProByDList.jsp</result>
+		</action>
+		
 		<action name="entertProduct_add" class="com.qkj.qkjmanager.action.EntertProductAction" method="add">
 			<result type="redirectAction">
 				<param name="actionName">entert_load</param>
