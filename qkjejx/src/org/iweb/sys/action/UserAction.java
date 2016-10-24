@@ -392,7 +392,16 @@ public class UserAction extends ActionSupport {
 				}
 				if(dlistall.size()>0){
 					user.setUuids(dlistall);
-					dao.savep(user);
+					if(user.getParent_user()!=null&& !user.getParent_user().equals("")&& (user.getDept_code()==null || user.getDept_code().equals("")) ){
+						dao.savep(user);
+					}
+					
+					if(user.getDept_code()!=null&& !user.getDept_code().equals("")&&user.getParent_user()!=null&& !user.getParent_user().equals("")){
+						dao.savep(user);
+						dao.savedeptcode(user);
+						dao.savedeptcode2(user);
+					}
+					
 				}
 				
 			}

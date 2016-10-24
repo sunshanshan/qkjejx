@@ -119,6 +119,19 @@
 		       </div>
 			</div>
 			
+			<div class="label_hang">
+		       <div class="label_ltit">所属部门:</div>
+		       <div class="label_rwben2">
+		       		<span class="label_rwb">
+					<s:textfield title="部门名称" id="dept_cname" name="user.dept_cname" readonly="true" />
+					<s:hidden title="部门代码" id="dept_code" name="user.dept_code" readonly="true" />
+					</span>
+					<span class="lb nw">
+					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('dept_code','dept_cname',false);" />
+					</span>
+		       </div>
+			</div>
+			
 			<s:submit id="save" name="save" value="保存" action="user_saveP" cssClass="input-blue"/>
 		</s:form>
 	      <div class="tab_warp"><span id="message"><s:property value="message" /></span></div>

@@ -655,6 +655,8 @@ HttpServletResponse response = ServletActionContext.getResponse();
 			Label labelBa2 = new Label(8, 0, "备注", cellFormat1);// 第五列1 行
 			Label labelBa3 = new Label(9, 0, "可扣分项", cellFormat1);// 第五列1 行
 			Label labelBa4 = new Label(10, 0, "类型", cellFormat1);// 第五列1 行
+			Label labelBa5 = new Label(11, 0, "评级", cellFormat1);// 第五列1 行
+			Label labelBa6 = new Label(12, 0, "系数", cellFormat1);// 第五列1 行
 
 			ws.addCell(labelId);
 			ws.addCell(labelName);
@@ -666,7 +668,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 			ws.addCell(labelBa);
 			ws.addCell(labelBa2);
 			ws.addCell(labelBa3);
-			ws.addCell(labelBa4);
+			ws.addCell(labelBa4);ws.addCell(labelBa5);ws.addCell(labelBa6);
 
 			for (short i = 0; i < vardics.size(); i++) {
 				// 创建一行，在页sheet上
@@ -684,6 +686,23 @@ HttpServletResponse response = ServletActionContext.getResponse();
 				Label remark = new Label(8, i+1, vardics.get(i).getRemark()==null?"无":vardics.get(i).getRemark());
 				Label bscor = new Label(9, i+1, vardics.get(i).getBscore()==null?"无":vardics.get(i).getBscore().toString());
 				Label jtype = new Label(10, i+1, vardics.get(i).getJltype()==null?"无":vardics.get(i).getJltype().toString());
+				String p="";
+				String x="";
+				if(vardics.get(i).getCheck_score()>=90){
+					p="A";
+					x="1.3";
+				}else if(vardics.get(i).getCheck_score()>=80&&vardics.get(i).getCheck_score()<90){
+					p="B";
+					x="1.1";
+				}else if(vardics.get(i).getCheck_score()>=60&&vardics.get(i).getCheck_score()<80){
+					p="C";
+					x="1.0";
+				}else if(vardics.get(i).getCheck_score()<60){
+					p="D";
+					x="0.8";
+				};
+				Label pp = new Label(11, i+1, p);
+				Label xx = new Label(12, i+1, x);
 				ws.addCell(au);
 				ws.addCell(ap);
 				ws.addCell(ad);
@@ -695,6 +714,8 @@ HttpServletResponse response = ServletActionContext.getResponse();
 				ws.addCell(remark);
 				ws.addCell(bscor);
 				ws.addCell(jtype);
+				ws.addCell(pp);
+				ws.addCell(xx);
 				
 			}
 

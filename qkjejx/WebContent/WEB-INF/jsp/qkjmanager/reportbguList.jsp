@@ -91,7 +91,7 @@ cursor: pointer;
 						<td class="td2 nw" id="po${uuid }">
 						${position_name }
 						</td>
-						<td class="td2 nw" id="d${uuid}">
+						<td class="td2 nw">
 						${dept_cname}
 						</td>
 						<td class="td1 nw" id="score${uuid }">

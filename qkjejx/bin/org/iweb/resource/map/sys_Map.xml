@@ -512,6 +512,26 @@ pu.USER_NAME  parent_user_name,pud.dept_cname p_dname,pud.dept_code p_code,par.d
 		<iterate property="uuids" open="(" close=")" conjunction=" , "> #uuids[]#</iterate>
 	</update>
 	
+	<update id="sys_mdyUserdept_code" parameterClass="user">
+		<![CDATA[
+			Update s_sys_user
+			Set 
+				dept_code=#dept_code#
+		]]>
+		<![CDATA[ Where uuid In ]]>
+		<iterate property="uuids" open="(" close=")" conjunction=" , "> #uuids[]#</iterate>
+	</update>
+	
+	<update id="sys_mdyUserdept_code2" parameterClass="user">
+		<![CDATA[
+			Update s_sys_userdept
+			Set 
+				dept_code=#dept_code# 
+		]]>
+		<![CDATA[ where user_id In ]]>
+		<iterate property="uuids" open="(" close=")" conjunction=" , "> #uuids[]#</iterate>
+	</update>
+	
 	<update id="sys_mdyUserMDept" parameterClass="user">
 		<![CDATA[
 			Update s_sys_user

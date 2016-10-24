@@ -14,6 +14,7 @@
 .ship_info {
 	cursor: pointer;
 }
+a:hover{cursor:pointer}
 </style>
 <body>
 	<!-- 顶部和左侧菜单导航 -->

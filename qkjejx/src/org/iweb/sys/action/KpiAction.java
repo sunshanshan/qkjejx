@@ -150,21 +150,21 @@ public class KpiAction extends ActionSupport {
 		
 		for (short i = 0; i < inds.size(); i++) {
 			// 创建一行，在页sheet上
-			Label au = new Label(0, i + 1,
+			Label au = new Label(0, inps.size()+i + 1,
 					inds.get(i).getDname() == null ? "无" : inds.get(i).getDname());
-			Label ap = new Label(1, i + 1,"无");
-			Label ad = new Label(2, i + 1, inds.get(i).getPdname()==null?"无":inds.get(i).getPdname());
-			Label auuid = new Label(3, i + 1,inds.get(i).getTypename() == null ? "无" : inds.get(i).getTypename());
-			Label acode = new Label(4, i + 1, inds.get(i).getIsdeptname() == null ? "无" : inds.get(i).getIsdeptname());
-			Label score = new Label(5, i + 1, inds.get(i).getKpi()== null ? "无" : inds.get(i).getKpi());
-			Label checkdate = new Label(6, i + 1, inds.get(i).getCyc()== null ? "无" : inds.get(i).getCyc());
-			Label checkym = new Label(7, i + 1, Double.toString(inds.get(i).getWeight()));
-			Label remark = new Label(8, i + 1,inds.get(i).getCount_way() == null ? "无" : inds.get(i).getCount_way());
-			Label bscor = new Label(9, i + 1,inds.get(i).getDefinition() == null ? "无" : inds.get(i).getDefinition());
-			Label jtype = new Label(10, i + 1,inds.get(i).getCorrectly() == null ? "无" : inds.get(i).getCorrectly());
+			Label ap = new Label(1, inps.size()+i + 1,"无");
+			Label ad = new Label(2, inps.size()+i + 1, inds.get(i).getPdname()==null?"无":inds.get(i).getPdname());
+			Label auuid = new Label(3, inps.size()+i + 1,inds.get(i).getTypename() == null ? "无" : inds.get(i).getTypename());
+			Label acode = new Label(4, inps.size()+i + 1, inds.get(i).getIsdeptname() == null ? "无" : inds.get(i).getIsdeptname());
+			Label score = new Label(5, inps.size()+i + 1, inds.get(i).getKpi()== null ? "无" : inds.get(i).getKpi());
+			Label checkdate = new Label(6, inps.size()+i + 1, inds.get(i).getCyc()== null ? "无" : inds.get(i).getCyc());
+			Label checkym = new Label(7, inps.size()+i + 1, Double.toString(inds.get(i).getWeight()));
+			Label remark = new Label(8, inps.size()+i + 1,inds.get(i).getCount_way() == null ? "无" : inds.get(i).getCount_way());
+			Label bscor = new Label(9, inps.size()+i + 1,inds.get(i).getDefinition() == null ? "无" : inds.get(i).getDefinition());
+			Label jtype = new Label(10, inps.size()+i + 1,inds.get(i).getCorrectly() == null ? "无" : inds.get(i).getCorrectly());
 			
-			Label jtype1 = new Label(11, i + 1,inds.get(i).getCheckde() == null ? "无" : inds.get(i).getCheckde());
-			Label jtype2 = new Label(12, i + 1,inds.get(i).getCheckp() == null ? "无" : inds.get(i).getCheckp());
+			Label jtype1 = new Label(11, inps.size()+i + 1,inds.get(i).getCheckde() == null ? "无" : inds.get(i).getCheckde());
+			Label jtype2 = new Label(12, inps.size()+i + 1,inds.get(i).getCheckp() == null ? "无" : inds.get(i).getCheckp());
 			ws.addCell(au);
 			ws.addCell(ap);
 			ws.addCell(ad);

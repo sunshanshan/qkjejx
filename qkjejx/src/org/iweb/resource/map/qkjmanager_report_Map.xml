@@ -133,8 +133,8 @@
 			select DISTINCT u.UUID,u.USER_NAME,p.POSITION_NAME position_name,d.dept_cname dept_cname
 			from s_sys_user u
 			join s_cfg_position p on (u.[POSITION]=p.uuid)
-			join s_sys_department d on (u.DEPT_CODE=d.dept_code)
 			left join qkj_r_score s on (u.UUID=s.acheck_user)
+			left join s_sys_department d on (d.dept_code=s.acheck_usercode)
 			where  1=1 
 		]]>
 		<isNotNull prepend="AND" property="dept_code"><![CDATA[ u.dept_code like #dept_code# +'%' ]]></isNotNull>
