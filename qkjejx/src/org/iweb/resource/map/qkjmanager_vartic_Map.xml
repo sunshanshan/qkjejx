@@ -8,6 +8,7 @@
 			chec.ym cym
 			from qkj_r_score c 
 			join  qkj_r_check chec on (chec.uuid=c.check_ym)
+			left join s_sys_department d on (d.dept_code=c.acheck_usercode)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ c.uuid=#uuid# ]]></isNotNull>
@@ -19,11 +20,36 @@
 			
 			<isNotNull prepend="AND" property="isaunull"><![CDATA[  ISNULL(c.acheck_user, '0')='0' ]]></isNotNull>
 			<isNotNull prepend="AND" property="acheck_user"><![CDATA[  c.acheck_user=#acheck_user# ]]></isNotNull>
-			<isNotNull prepend="AND" property="typea">
+			<!-- <isNotNull prepend="AND" property="typea">
 			<![CDATA[  EXISTS(
 				select 1 from qkj_r_sonscore ss where ss.score_id=c.uuid and ss.typea=#typea# and ss.check_user=#check_userh#
 			) ]]>
+			</isNotNull> -->
+			
+			<isNotNull prepend="AND" property="userid" open="(" close=")">
+				<![CDATA[ c.acheck_user In ]]>
+				<iterate property="userid" open="(" close=")" conjunction=" , "> #userid[]#</iterate>
+				
+				<isNotEmpty prepend="OR" property="parent_dept" open="(" close=")">
+				<![CDATA[ISNULL(c.acheck_user, 0)='0' and  (d.parent_dept In ]]>
+				<iterate property="parent_dept" open="(" close=")" conjunction=" , "> #parent_dept[]#</iterate>
+				<isNotEmpty prepend="OR" property="chdept">
+						<![CDATA[ d.dept_code In ]]>
+						<iterate property="chdept" open="(" close=")" conjunction=" , "> #chdept[]#</iterate>
+				</isNotEmpty> 
+				<![CDATA[) ]]>
+				</isNotEmpty>
+				
+				<isEmpty  property="parent_dept">
+					<isNotEmpty prepend="OR" property="chdept" open="(" close=")">
+						<![CDATA[(ISNULL(c.acheck_user, 0)='0' and (d.dept_code In ]]>
+					<iterate property="chdept" open="(" close=")" conjunction=" , "> #chdept[]#</iterate>
+					</isNotEmpty>
+					<![CDATA[) ]]>
+				</isEmpty>
+			
 			</isNotNull>
+			
 	</dynamic>
 	</select>
 	
@@ -54,7 +80,7 @@
 			LEFT JOIN qkj_t_indexdetail id on (a.uuid=id.position_id)
 			left join s_cfg_position pp on(pp.uuid=u.[POSITION])
 
-			where pp.POSITION_GRADE<>4 and  not exists (select * from qkj_r_score s 
+			where pp.POSITION_GRADE<>4 and  not exists (select 1 from qkj_r_score s 
 			left JOIN qkj_r_sonscore sd on(sd.score_id=s.uuid)
 			left join qkj_r_check k on(s.check_ym=k.uuid)
 			where s.acheck_user=u.uuid 
@@ -62,7 +88,7 @@
 		
 		<isNotNull prepend="AND" property="check_ym"><![CDATA[  k.uuid=#check_ym# ]]></isNotNull>
 		<isNotNull prepend="AND" property="typea"><![CDATA[  sd.typea=#typea#]]></isNotNull>
-		<isNotNull prepend="AND" property="check_user"><![CDATA[  sd.check_user=#check_user#]]></isNotNull>
+		<!-- <isNotNull prepend="AND" property="check_user"><![CDATA[  sd.check_user=#check_user#]]></isNotNull> -->
 		<![CDATA[)]]>
 		<isNotNull property="isdept">
 		<isEqual property="isdept" compareValue="1"><!-- 纵向 -->

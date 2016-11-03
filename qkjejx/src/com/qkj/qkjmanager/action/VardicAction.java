@@ -16,6 +16,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
+import org.iweb.sys.dao.UserDAO;
+import org.iweb.sys.domain.User;
 import org.iweb.sys.domain.UserDept;
 import org.iweb.sys.domain.UserLoginInfo;
 
@@ -145,6 +147,13 @@ public class VardicAction extends ActionSupport {
 
 	public String list() throws Exception {
 		try {
+			//查询所有 直属下属
+			UserDAO ud=new UserDAO();
+			List<User> pus=new ArrayList();
+			map.clear();
+			map.put("parent_user", ContextHelper.getUserLoginUuid());
+			pus=ud.list(map);
+			
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
@@ -152,11 +161,26 @@ public class VardicAction extends ActionSupport {
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_VERTICLIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
 			check=dao.check_cym();
+			
+			
 			if(check!=null){//只查询打开的已考核记录
 				map.put("check_ym", check.getUuid());
 			}
-			map.put("typea", "1");
-			map.put("check_userh", ContextHelper.getUserLoginUuid());
+			/*map.put("typea", "1");
+			map.put("check_userh", ContextHelper.getUserLoginUuid());*/
+			//查询所有审核部门
+			List<String> dlistallo = new ArrayList<>();
+			Set<String> dsetallo = new HashSet<>();
+			if(pus.size()>0){
+				for(int s=0;s<pus.size();s++){
+					dsetallo.add(pus.get(s).getUuid());
+				}
+				if (dsetallo.size() > 0) {
+					dlistallo.addAll(dsetallo);
+					map.put("userid", dlistallo);//多权限可查询多个子部门
+				}
+			}
+			getManDept();
 			this.setVardics(dao.list(map));
 			this.setRecCount(dao.getResultCount());
 			
@@ -326,6 +350,42 @@ public class VardicAction extends ActionSupport {
 	}
 	
 	
-
+	/**
+	 * 查询管理的直属部门
+	 * @throws Exception
+	 */
+	public void getManDept()throws Exception{
+		ActionContext context = ActionContext.getContext();  
+		HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);  
+		HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);  
+		UserLoginInfo ulf = new UserLoginInfo();
+		ulf=(UserLoginInfo) request.getSession().getAttribute(Parameters.UserLoginInfo_Session_Str);
+		List<UserDept> uds=new ArrayList<>();
+		uds=ulf.getUds();
+		List<String> dlistall = new ArrayList<>();
+		Set<String> dsetall = new HashSet<>();
+		Set<String> dall = new HashSet<>();
+		if(uds.size()>0){
+			for(int s=0;s<uds.size();s++){
+				if(uds.get(s).getIscheckdept()!=null&& uds.get(s).getIscheckdept()!=null&&uds.get(s).getIscheckdept()==1){
+					dsetall.add(uds.get(s).getDept_code());
+				}else{
+					dsetall.add("o");
+				}
+				if(uds.get(s).getRoles().contains("2016072516956868")){//部门考核权限
+					dall.add(uds.get(s).getDept_code());
+				}
+			}
+			if (dsetall.size() > 0) {
+				dlistall.addAll(dsetall);
+				map.put("parent_dept", dlistall);//多权限可查询多个子部门
+			}
+			if(dall.size()>0){
+				List<String> dlall = new ArrayList<>();
+				dlall.addAll(dall);
+				map.put("chdept", dlall);
+			}
+		}
+	}
 	
 }
