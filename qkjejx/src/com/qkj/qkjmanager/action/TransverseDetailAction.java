@@ -416,7 +416,11 @@ public class TransverseDetailAction extends ActionSupport {
 							
 							//查询取此部门分数的sonscore
 							if(vardic.getAcheck_user()==null && vardic.getAcheck_usercode()!=null && vardic.getCheck_ym()!=null && vd.getKpi()!=null){
-								map.clear();
+								dao.updateScore(vardic.getCheck_ym(), vardic.getAcheck_usercode(),vd,2);//取部门分数
+								
+								
+								
+								/*map.clear();
 								map.put("depttype", "2");
 								map.put("kpi", vd.getKpi());
 								map.put("position_dept", vardic.getAcheck_usercode());
@@ -450,7 +454,7 @@ public class TransverseDetailAction extends ActionSupport {
 											dao.updatescore(v1);
 										}
 									}
-								}
+								}*/
 							}
 							
 						}
@@ -483,59 +487,8 @@ public class TransverseDetailAction extends ActionSupport {
 				zdao.saveFin(vardic);
 			}
 			
-			//查询取班组的分数的人
-			if(vardic.getAcheck_usercode()!=null && vardic.getCheck_ym()!=null){
-			map.clear();
-			map.put("depttype", "3");
-			map.put("type3", vardic.getAcheck_usercode());
-			map.put("check_ym", vardic.getCheck_ym());
+			dao.updateScore(vardic.getCheck_ym(), vardic.getAcheck_usercode(),vd,3);//取班组分数
 			
-			List<VarticDetail> desu=new ArrayList<>();
-			desu=dao.listmdy(map);
-			if(desu.size()>0){
-				for(int i=0;i<desu.size();i++){
-					VarticDetail v=new VarticDetail();
-					v=desu.get(i);
-					//查询权重
-					KpiDAO kpidao=new KpiDAO();
-					IndexDetail indexdetail=new IndexDetail();
-					indexdetail=(IndexDetail) kpidao.get(v.getCheck_index());
-					Double w=0.00;//权重
-					if(indexdetail==null){
-						w=1.00;//权重
-					}else{
-						w=indexdetail.getWeight();//权重
-					}
-					//查询此人所有部门的成绩
-					map.clear();
-					map.put("userid", v.getAuser());
-					map.put("check_ym", vardic.getCheck_ym());
-					List<VarticDetail> v3=new ArrayList<>();
-					v3=dao.scorebykpibydept(map);
-					Double score=0.00;
-					if(v3.size()>1){
-						for(int j=0;j<v3.size();j++){
-							score=score+v3.get(j).getCheck_score()*(w/v3.size());
-						}
-					}else{
-						if(v3.size()>0){
-							score=(score+v3.get(0).getCheck_score())*w;
-						}
-					}
-					v.setCheck_score(score/w);
-					v.setCheck_goal(score);
-					dao.save(v);
-					zdao.saveBycheck(v.getScore_id().toString());
-					
-					//查询取这个部门分数据是否还是部门如果还是部门就要悠这个部门也面的人员或部门
-					Vartic v1=new Vartic();
-					v1=(Vartic) zdao.get(v.getScore_id());
-					if(v1!=null && v1.getAcheck_user()==null){//说明是部门
-						dao.updatescore(v1);
-					}
-				}
-			}
-			}
 			dao.commitTransaction();
 			//addProcess("CLOSEORDER_ADD", "新增结案提货单", ContextHelper.getUserLoginUuid());
 		} catch (Exception e) {
@@ -656,94 +609,18 @@ public class TransverseDetailAction extends ActionSupport {
 	}
 	
 	public String saveD() throws Exception {
-		//ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_MDY");
 		try {
 			dao.startTransaction();
 			this.setVardic((Vartic) zdao.get(vd.getScore_id()));
 			dao.save(vd);
-			/**
-			 * 修改主表分数横加纵
-			 */
-			zdao.saveBycheck(vardic.getUuid().toString());
+			zdao.saveBycheck(vardic.getUuid().toString());//修改总分数
+			
 			//查询修改的kpi
 			VarticDetail vds=new VarticDetail();
 			vds=(VarticDetail) dao.get(vd.getUuid());
-			//查询取此部门分数的sonscore
-			if(vardic.getAcheck_usercode()!=null && vardic.getCheck_ym()!=null && vds.getKpi()!=null){
-				map.clear();
-				map.put("depttype", "2");
-				map.put("kpi", vds.getKpi());
-				map.put("position_dept", vardic.getAcheck_usercode());
-				map.put("check_ym", vardic.getCheck_ym());
-				List<VarticDetail> des=new ArrayList<>();
-				des=dao.listmdy(map);
-				if(des.size()>0){
-					for(int i=0;i<des.size();i++){
-						VarticDetail v=new VarticDetail();
-						v=des.get(i);
-						Double w=v.getCheck_goal()/v.getCheck_score();//权重
-						v.setCheck_score(vd.getCheck_score());
-						v.setCheck_goal(vd.getCheck_score()*w);
-						dao.save(v);
-						zdao.saveBycheck(v.getScore_id().toString());
-						
-						//查询取这个部门分数据是否还是部门如果还是部门就要悠这个部门也面的人员或部门
-						Vartic v1=new Vartic();
-						v1=(Vartic) zdao.get(v.getScore_id());
-						if(v1!=null && v1.getAcheck_user()==null){//说明是部门
-							dao.updatescore(v1);
-						}
-					}
-				}
-			}
 			
-			
-			//查询取班组的分数的人
-			if(vardic.getAcheck_usercode()!=null && vardic.getCheck_ym()!=null){
-			map.clear();
-			map.put("depttype", "3");
-			map.put("type3", vardic.getAcheck_usercode());
-			map.put("check_ym", vardic.getCheck_ym());
-			
-			List<VarticDetail> desu=new ArrayList<>();
-			desu=dao.listmdy(map);
-			if(desu.size()>0){
-				for(int i=0;i<desu.size();i++){
-					VarticDetail v=new VarticDetail();
-					v=desu.get(i);
-					Double w=v.getCheck_goal()/v.getCheck_score();//权重
-					//查询此人所有部门的成绩
-					map.clear();
-					map.put("userid", v.getAuser());
-					map.put("check_ym", vardic.getCheck_ym());
-					List<VarticDetail> v3=new ArrayList<>();
-					v3=dao.scorebykpibydept(map);
-					Double score=0.00;
-					if(v3.size()>1){
-						for(int j=0;j<v3.size();j++){
-							score=score+v3.get(j).getCheck_score()*(w/v3.size());
-						}
-					}else{
-						if(v3.size()>0){
-							score=(score+v3.get(0).getCheck_score())*w;
-						}
-					}
-					v.setCheck_score(score/w);
-					v.setCheck_goal(score);
-					dao.save(v);
-					zdao.saveBycheck(v.getScore_id().toString());
-					
-					//查询取这个部门分数据是否还是部门如果还是部门就要悠这个部门也面的人员或部门
-					Vartic v1=new Vartic();
-					v1=(Vartic) zdao.get(v.getScore_id());
-					if(v1!=null && v1.getAcheck_user()==null){//说明是部门
-						dao.updatescore(v1);
-					}
-				}
-			}
-			}
-			//修改经理级分数
-			//zdao.savejl(vardic);
+			dao.updateScore(vardic.getCheck_ym(), vardic.getAcheck_usercode(),vds,2);//取部门分数
+			dao.updateScore(vardic.getCheck_ym(), vardic.getAcheck_usercode(),vds,3);//取班组分数
 			dao.commitTransaction();
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!save 数据更新失败:", e);

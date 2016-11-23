@@ -33,6 +33,10 @@ public class VardicDao extends AbstractDAO {
 		return super.list("qkjmanager_getCheckTrans", map);
 	}
 	
+	public List UserChecked(Map<String, Object> map) {
+		return super.list("qkjmanager_getChecked", map);
+	}
+	
 	public List Checklistbydept(Map<String, Object> map) {
 		return super.list("qkjmanager_getCheckVarticsdept", map);
 	}

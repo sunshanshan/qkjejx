@@ -32,9 +32,26 @@ public class VarticDetail {
 	private String position_name;
 	private String dept_name;
 	private String ym;
+	private String df_code;
+	private String auser_code;
 	
 	
-	
+	public String getDf_code() {
+		return df_code;
+	}
+
+	public void setDf_code(String df_code) {
+		this.df_code = df_code;
+	}
+
+	public String getAuser_code() {
+		return auser_code;
+	}
+
+	public void setAuser_code(String auser_code) {
+		this.auser_code = auser_code;
+	}
+
 	public String getCheck_user_name() {
 		return check_user_name;
 	}

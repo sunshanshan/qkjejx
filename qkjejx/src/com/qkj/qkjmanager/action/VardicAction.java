@@ -154,21 +154,21 @@ public class VardicAction extends ActionSupport {
 			map.put("parent_user", ContextHelper.getUserLoginUuid());
 			pus=ud.list(map);
 			
+			//开始查询已考核记录逻辑
 			map.clear();
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_VERTICLIST", map, vardic, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
+			
+			//查询可以考核的年月
 			check=dao.check_cym();
-			
-			
 			if(check!=null){//只查询打开的已考核记录
 				map.put("check_ym", check.getUuid());
 			}
-			/*map.put("typea", "1");
-			map.put("check_userh", ContextHelper.getUserLoginUuid());*/
-			//查询所有审核部门
+			
+			//将下属放入map
 			List<String> dlistallo = new ArrayList<>();
 			Set<String> dsetallo = new HashSet<>();
 			if(pus.size()>0){
@@ -180,12 +180,14 @@ public class VardicAction extends ActionSupport {
 					map.put("userid", dlistallo);//多权限可查询多个子部门
 				}
 			}
-			getManDept();
+			
+			getManDept();//查询管理的部门
 			this.setVardics(dao.list(map));
 			this.setRecCount(dao.getResultCount());
 			
 			//需要考核的人员
 			map.clear();
+			map.put("userid", dlistallo);//多权限可查询多个子部门
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
@@ -195,10 +197,15 @@ public class VardicAction extends ActionSupport {
 		        map.put("typea", 1);//成绩表中所有纵向向考核已经考核过的去掉
 				map.put("isdept", 1);//纵向考核
 				map.put("parent_user", ContextHelper.getUserLoginUuid());//当前登录人
-				//map.put("parent_dept", ContextHelper.getUserLoginDept());
 				map.put("check_user", ContextHelper.getUserLoginUuid());
 				map.put("ex", 0);
-				this.setCvardics(dao.Checklist(map));
+				if(map.containsKey("userid") && map.get("userid")!=null && map.get("userid")!="" && dlistallo.size()>0){
+					getManUser();//查询已经考核的人员放入map
+					if(map.containsKey("checkedUser")){
+						this.setCvardics(dao.Checklist(map));
+					}
+				}
+				
 				ActionContext context = ActionContext.getContext();  
 				HttpServletRequest request = (HttpServletRequest) context.get(ServletActionContext.HTTP_REQUEST);  
 				HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);  
@@ -385,6 +392,30 @@ public class VardicAction extends ActionSupport {
 				dlall.addAll(dall);
 				map.put("chdept", dlall);
 			}
+		}
+	}
+	
+	/**
+	 * 查询已考核的下属
+	 * @throws Exception
+	 */
+	public void getManUser()throws Exception{
+		List<Vartic> vs=new ArrayList<Vartic>();
+		vs=dao.UserChecked(map);
+		List<String> dlistall = new ArrayList<>();
+		Set<String> dsetall = new HashSet<>();
+		if(vs.size()>0){
+			for(int i=0;i<vs.size();i++){
+				if(vs.get(i).getAcheck_user()!=null && vs.get(i).getAcheck_user()!=""){
+					dsetall.add(vs.get(i).getAcheck_user());
+				}
+			}
+			
+			if (dsetall.size() > 0) {
+				dlistall.addAll(dsetall);
+				map.put("checkedUser", dlistall);
+			}
+			
 		}
 	}
 	
