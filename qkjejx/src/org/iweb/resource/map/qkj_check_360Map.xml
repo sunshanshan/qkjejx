@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "sql-map-2.dtd">
+<sqlMap>
+	<typeAlias alias="index" type="com.qkj.check360.domain.Index" />
+	<select id="index_get360" resultClass="index" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select i.*,u.USER_NAME user_name from qkj_t_360index i
+			join s_sys_user u on (i.user_id=u.uuid)
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="user_id"><![CDATA[ i.user_id=#user_id# ]]></isNotNull>
+			<isNotNull prepend="AND" property="user_name"><![CDATA[  u.USER_NAME like #user_name# +'%'  ]]></isNotNull>
+		</dynamic>
+	</select>
+	
+	<insert id="index_addIndex" parameterClass="index">
+		<![CDATA[ 
+			insert into qkj_t_360index(user_id,kpi,cyc,definition,correctly,count_way,weight)
+			VALUES(#user_id#,#kpi#,#cyc#,#definition#,#correctly#,#count_way#,#weight#);
+		]]>
+		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
+       	 	select @@IDENTITY as value     
+    	 </selectKey>   
+	</insert>
+	
+	<update id="index_mdyIndex" parameterClass="index">
+		<![CDATA[
+			Update qkj_t_360index
+			Set kpi=#kpi#,
+				cyc=#cyc#,
+				definition=#definition#,
+				correctly=#correctly#,
+				count_way=#count_way#,
+				weight=#weight#
+			Where uuid=#uuid#
+		]]>
+	</update>
+	
+	<delete id="index_delIndex" parameterClass="index">
+		<![CDATA[
+			Delete From qkj_t_360index where uuid=#uuid#
+		]]>
+	</delete>
+	<delete id="index_delIndexs" parameterClass="index">
+		<![CDATA[
+			Delete From qkj_t_360index
+		]]>
+		<![CDATA[ Where uuid In ]]>
+		<iterate property="uuid" open="(" close=")" conjunction=" , "> #uuid[]#</iterate>
+	</delete>
+
+	
+	<typeAlias alias="indexCheck" type="com.qkj.check360.domain.IndexCheck" />
+	<select id="index_getIndexCheck" resultClass="indexCheck" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select i.*,u.USER_NAME check_user_name from qkj_t_360indexCheck i
+join s_sys_user u on (i.user_id=u.uuid)
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="user_id"><![CDATA[ i.user_id=#user_id# ]]></isNotNull>
+		</dynamic>
+	</select>
+	<insert id="user_id_addIndexChek" parameterClass="indexCheck">
+		<![CDATA[ 
+			insert into qkj_t_360indexCheck(user_id,check_user,weight,check_user_email,cuname)
+			VALUES(#user_id#,#check_user#,#weight#,#check_user_email#,#cuname#);
+		]]>
+		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
+       	 	select @@IDENTITY as value     
+    	 </selectKey>   
+	</insert>
+	<update id="user_id_mdyIndexChek" parameterClass="indexCheck">
+		<![CDATA[
+			Update qkj_t_360indexCheck
+			Set check_user=#check_user#,
+				weight=#weight#,
+				check_user_email=#check_user_email#,
+				cuname=#cuname#
+			Where uuid=#uuid#
+		]]>
+	</update>
+	<delete id="index_delIndexChek" parameterClass="indexCheck">
+		<![CDATA[
+			Delete From qkj_t_360indexCheck where uuid=#uuid#
+		]]>
+	</delete>
+	
+	<delete id="index_delIndexChecks" parameterClass="index">
+		<![CDATA[
+			Delete From qkj_t_360indexCheck
+		]]>
+		<![CDATA[ Where uuid In ]]>
+		<iterate property="uuid" open="(" close=")" conjunction=" , "> #uuid[]#</iterate>
+	</delete>
+	
+	
+	<typeAlias alias="index360" type="com.qkj.check360.domain.Index360" />
+	
+	<select id="index_getIndex360" resultClass="index360" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select i.* from qkj_r_check360 i
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="ym"><![CDATA[ i.ym=#ym# ]]></isNotNull>
+			<isNotNull prepend="AND" property="state"><![CDATA[ i.state=#state# ]]></isNotNull>
+		</dynamic>
+	</select>
+	<insert id="user_id_addIndex360" parameterClass="index360">
+		<![CDATA[ 
+			insert into qkj_r_check360(ym,state,add_user,add_time,lm_user,lm_time)
+			VALUES(#ym#,#state#,#add_user#,#add_time#,#lm_user#,#lm_time#);
+		]]>
+		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
+       	 	select @@IDENTITY as value     
+    	 </selectKey>   
+	</insert>
+	<update id="user_id_mdyIndex360" parameterClass="index360">
+		<![CDATA[
+			Update qkj_r_check360
+			Set ym=#ym#,
+				state=#state#,
+				lm_time=#lm_time#,
+				lm_user=#lm_user#
+			Where uuid=#uuid#
+		]]>
+	</update>
+	<delete id="index_delIndex360" parameterClass="index360">
+		<![CDATA[
+			Delete From qkj_r_check360 where uuid=#uuid#
+		]]>
+	</delete>
+	
+	
+	<typeAlias alias="score360" type="com.qkj.check360.domain.Score360" />
+	<select id="qkjmanager_getScores" resultClass="score360" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select i.* from qkj_r_360score i
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_user_id"><![CDATA[ i.check_user_id=#check_user_id# ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_ym"><![CDATA[ i.check_ym=#check_ym# ]]></isNotNull>
+		</dynamic>
+	</select>
+	
+	<select id="qkjmanager_getSumScores" resultClass="score360" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select ic.user_id user_id,u.USER_NAME user_name,s.check_ym,ch.ym ym,SUM(s.check_gold) sumscore from qkj_r_360score s 
+			join qkj_t_360indexCheck ic on (s.check_user_id=ic.uuid)
+			join s_sys_user u on (ic.user_id=u.uuid)
+			join qkj_r_check360 ch on (ch.uuid=s.check_ym)
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ s.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_user_id"><![CDATA[ s.check_user_id=#check_user_id# ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_ym"><![CDATA[ s.check_ym=#check_ym# ]]></isNotNull>
+			<isNotNull prepend="AND" property="ym"><![CDATA[ch.ym=#ym# ]]></isNotNull>
+			<isNotNull prepend="AND" property="user_id"><![CDATA[ ic.user_id=#user_id# ]]></isNotNull>
+			<isNotNull prepend="AND" property="user_name"><![CDATA[ u.user_name like '%'+#user_name# +'%' ]]></isNotNull>
+		</dynamic>
+		<![CDATA[ group by ic.user_id,s.check_ym,u.USER_NAME,ch.ym ORDER BY ch.ym desc]]>
+	</select>
+	
+	<insert id="qkjmanager_addScore" parameterClass="score360">
+		<![CDATA[ 
+			insert into qkj_r_360score(check_score,check_date,check_user_id,lm_user,lm_time,check_ym,remark,bscore,weight,check_gold)
+			VALUES(#check_score#,#check_date#,#check_user_id#,#lm_user#,#lm_time#,#check_ym#,#remark#,#bscore#,#weight#,#check_gold#);
+		]]>
+		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
+       	 	select @@IDENTITY as value     
+    	 </selectKey>   
+	</insert>
+	<update id="qkjmanager_mdyScores" parameterClass="score360">
+		<![CDATA[
+			Update qkj_r_360score
+			Set check_score=#check_score#,
+				check_gold=#check_gold#,
+				remark=#remark#,
+				bscore=#bscore#,
+				lm_time=#lm_time#,
+				lm_user=#lm_user#
+			Where uuid=#uuid#
+		]]>
+	</update>
+	<delete id="qkjmanager_delScore" parameterClass="score360">
+		<![CDATA[
+			Delete From qkj_r_360score where uuid=#uuid#
+		]]>
+	</delete>
+	
+	
+	<typeAlias alias="sonScore360" type="com.qkj.check360.domain.SonScore360" />
+	<select id="qkjmanager_getSonScores" resultClass="sonScore360" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select i.*,id.cyc,id.definition,id.correctly,id.count_way from qkj_r_360sonscore i 
+left join qkj_t_360index id on (i.check_index=id.uuid)
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="score_id"><![CDATA[ i.score_id=#score_id# ]]></isNotNull>
+		</dynamic>
+	</select>
+	
+	<select id="qkjmanager_getSonScoresView" resultClass="sonScore360" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select ic.cuname check_username,ic.check_user,s.check_score total,s.remark remark,s.check_gold,s.check_date,ss.* from qkj_r_360sonscore ss 
+			join qkj_r_360score s on (s.uuid=ss.score_id)
+			join qkj_t_360indexCheck ic on (ic.uuid=s.check_user_id)
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ s.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="check_ym"><![CDATA[ s.check_ym=#check_ym# ]]></isNotNull>
+			<isNotNull prepend="AND" property="user_id"><![CDATA[ ic.user_id=#user_id# ]]></isNotNull>
+		</dynamic>
+		<![CDATA[
+		order by ss.score_id
+		]]>
+	</select>
+	
+	<insert id="qkjmanager_addSonScore" parameterClass="sonScore360">
+		<![CDATA[ 
+			insert into qkj_r_360sonscore(score_id,check_index,check_score,kpi,goal,weight)
+			VALUES(#score_id#,#check_index#,#check_score#,#kpi#,#goal#,#weight#);
+		]]>
+		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
+       	 	select @@IDENTITY as value     
+    	 </selectKey>   
+	</insert>
+	<update id="qkjmanager_mdySonScores" parameterClass="sonScore360">
+		<![CDATA[
+			Update qkj_r_360sonscore
+			Set check_score=#check_score#,
+			goal=#goal#
+			Where uuid=#uuid#
+		]]>
+	</update>
+	<delete id="qkjmanager_delSonScore" parameterClass="sonScore360">
+		<![CDATA[
+			Delete From qkj_r_360sonscore where uuid=#uuid#
+		]]>
+	</delete>
+	
+	
+</sqlMap>

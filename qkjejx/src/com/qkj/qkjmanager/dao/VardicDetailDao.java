@@ -150,7 +150,17 @@ public class VardicDetailDao extends AbstractDAO {
 		if(Index==0){
 			w=1.00;//权重 经理取部门分
 		}else{
+			if((goal!=null && goal==0.00) || (score!=null && score==0.00)){
+				//查询权重
+				KpiDAO kpd=new KpiDAO();
+				IndexDetail ind=new IndexDetail();
+				ind=(IndexDetail) kpd.get(Index);
+				w=ind.getWeight();
+			}
+			else{
 			w=goal/score;
+			
+			}
 			DecimalFormat df = new DecimalFormat("#.###");    
 	        w=Double.valueOf(df.format(w));
 	        System.out.println("权重"+w); 

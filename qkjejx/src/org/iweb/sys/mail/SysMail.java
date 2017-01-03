@@ -1,25 +1,28 @@
 package org.iweb.sys.mail;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SysMail {
 	private static MailSenderInfo mail_sys;
 	static {
 		mail_sys = new MailSenderInfo();
-		mail_sys.setMailServerHost("smtp.51qkj.com");
+		mail_sys.setMailServerHost("smtp.qkj.com.cn");
 		mail_sys.setMailServerPort("25");
 		mail_sys.setValidate(true);
-		mail_sys.setUserName("service@51qkj.com");
-		mail_sys.setPassword("iloveqkj2646");// 您的邮箱密码
-		mail_sys.setFromAddress("service@51qkj.com");
+		mail_sys.setUserName("360appraisals@qkj.com.cn");
+		mail_sys.setPassword("Iloveqkj2646it");// 您的邮箱密码
+		mail_sys.setFromAddress("360appraisals@qkj.com.cn");
 	}
 
-	public static boolean sendHtml(String to_addr, String subject, String content) {
+	public static boolean sendHtml(List<String> to_addr, String subject, String content) {
 		mail_sys.setToAddress(to_addr);
 		mail_sys.setSubject(subject);
 		mail_sys.setContent(content);
 		return SimpleMailSender.sendHtmlMail(mail_sys);
 	}
 
-	public static boolean sendText(String to_addr, String subject, String content) {
+	public static boolean sendText(List<String> to_addr, String subject, String content) {
 		mail_sys.setToAddress(to_addr);
 		mail_sys.setSubject(subject);
 		mail_sys.setContent(content);
@@ -29,13 +32,16 @@ public class SysMail {
 	public static void main(String[] args) {
 		// 这个类主要是设置邮件
 		MailSenderInfo mailInfo = new MailSenderInfo();
-		mailInfo.setMailServerHost("smtp.51qkj.com");
+		mailInfo.setMailServerHost("smtp.qkj.com.cn");
 		mailInfo.setMailServerPort("25");
 		mailInfo.setValidate(true);
-		mailInfo.setUserName("kreo@51qkj.com");
-		mailInfo.setPassword("Jy02223856");// 您的邮箱密码
-		mailInfo.setFromAddress("kreo@51qkj.com");
-		mailInfo.setToAddress("kreo@qq.com");
+		mailInfo.setUserName("sunshanshan@qkj.com.cn");
+		mailInfo.setPassword("Sun786742");// 您的邮箱密码
+		mailInfo.setFromAddress("sunshanshan@qkj.com.cn");
+		List<String> toa=new ArrayList<String>();
+		toa.add("sunshanshan@qkj.com.cn");
+		toa.add("liuqianru@qkj.com.cn");
+		mailInfo.setToAddress(toa);
 		mailInfo.setSubject("测试文本邮件");
 
 		String c = "您有一个活动申请需要审核,活动申请号:S121212121212<br />";

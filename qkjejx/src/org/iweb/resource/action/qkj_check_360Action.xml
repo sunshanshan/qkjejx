@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="Check360" extends="default" namespace="/check360">
+	<!-- qkj_r_check Start -->
+		<action name="check_list360" class="com.qkj.check360.action.IndexAction" method="list">
+			<result>/WEB-INF/jsp/check360/checkList.jsp</result>
+		</action>
+		
+		<action name="check_load360" class="com.qkj.check360.action.IndexAction" method="load">
+			<result>/WEB-INF/jsp/check360/checkEdit.jsp</result>
+		</action>
+		
+		<action name="check_save360" class="com.qkj.check360.action.IndexAction" method="save">
+			<result type="redirectAction">
+				<param name="actionName">check_load360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="user.uuid">${index.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_add360" class="com.qkj.check360.action.IndexAction" method="add">
+			<result type="redirectAction">
+				<param name="actionName">check_load360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="user.uuid">${index.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="check_del360" class="com.qkj.check360.action.IndexAction" method="del">
+			<result type="redirectAction">
+				<param name="actionName">check_load360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="user.uuid">${user.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+	<!-- qkj_r_check end -->
+	
+	<action name="check_Checklist" class="com.qkj.check360.action.IndexAction" method="list">
+			<result>/WEB-INF/jsp/check360/checkList.jsp</result>
+		</action>
+		
+		<action name="check_Checkload" class="com.qkj.check360.action.IndexAction" method="load">
+			<result>/WEB-INF/jsp/check360/checkEdit.jsp</result>
+		</action>
+		
+		<action name="check_Checksave" class="com.qkj.check360.action.IndexAction" method="saveCheck">
+			<result type="redirectAction">
+				<param name="actionName">check_load360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="user.uuid">${indexCheck.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_Checkadd" class="com.qkj.check360.action.IndexAction" method="addCheck">
+			<result type="redirectAction">
+				<param name="actionName">check_load360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="user.uuid">${indexCheck.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="check_Checkdel" class="com.qkj.check360.action.IndexAction" method="delCheck">
+			<result type="redirectAction">
+				<param name="actionName">check_load360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="user.uuid">${user.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="send_email" class="com.qkj.check360.action.IndexAction" method="send_email">
+		</action>
+		
+		
+		<action name="check_360list" class="com.qkj.check360.action.CheckAction" method="list">
+			<result>/WEB-INF/jsp/check360/checkList.jsp</result>
+		</action>
+		
+		<action name="check_360load" class="com.qkj.check360.action.CheckAction" method="load">
+			<result>/WEB-INF/jsp/check360/check360Edit.jsp</result>
+		</action>
+		
+		<action name="check_360save" class="com.qkj.check360.action.CheckAction" method="save">
+			<result type="redirectAction">
+				<param name="actionName">check_360load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="check.uuid">${check.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_360add" class="com.qkj.check360.action.CheckAction" method="add">
+			<result type="redirectAction">
+				<param name="actionName">check_360load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="check.uuid">${check.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="check_360del" class="com.qkj.check360.action.CheckAction" method="del">
+			<result type="redirectAction">
+				<param name="actionName">check_360list</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_360ScoreLoad" class="com.qkj.check360.action.ScoreAction" method="load">
+			<result>/WEB-INF/jsp/check360/check360ScoreEdit.jsp</result>
+		</action>
+		
+		<action name="check_360ScoreList" class="com.qkj.check360.action.ScoreAction" method="list">
+			<result>/WEB-INF/jsp/check360/check360ScoreList.jsp</result>
+		</action>
+		
+		<action name="check_360ScoreView" class="com.qkj.check360.action.ScoreAction" method="view">
+			<result>/WEB-INF/jsp/check360/check360ScoreView.jsp</result>
+		</action>
+		
+		<action name="check_360ScoreAdd" class="com.qkj.check360.action.ScoreAction" method="add">
+		</action>
+		<action name="check_360ScoreSave" class="com.qkj.check360.action.ScoreAction" method="save">
+		</action>
+		
+	
+	</package>
+</struts>

@@ -15,7 +15,9 @@
 	<div class="tab_warp main">
 		<div class="dq_step">
 			<a href="/manager/default">首页</a>&nbsp;&gt;&nbsp;管理员列表
+			<c:if test="${it:checkPermit('SYS_MANAGER_USER_ADD',null)==true}">
 			<span class="opb lb op-area"><a href="<s:url namespace="/sys" action="user_load"><s:param name="viewFlag">add</s:param></s:url>" >提交管理员</a></span>
+			</c:if>
 			<span class="opb lb op-area">
 	<s:hidden id="marketimgid"></s:hidden>
 	</span>
@@ -89,8 +91,13 @@
 						<s:else>其他</s:else>
 	              </td>
 	              <td class="td5 op-area">
+	              <c:if test="${it:checkPermit('SYS_MANAGER_USER_MDY',null)==true}">
 	              		<a class="input-blue" href="<s:url namespace="/sys" action="user_load"><s:param name="viewFlag">mdy</s:param><s:param name="user.uuid" value="uuid"></s:param></s:url>">修改</a>
+	              </c:if>
+	              <c:if test="${it:checkPermit('SYS_MANAGER_USER_DEL',null)==true}">
 	    				<a class="input-red" href="<s:url namespace="/sys" action="user_del"><s:param name="user.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
+	    		  </c:if>
+	    				<a class="input-red" href="<s:url namespace="/check360" action="check_load360"><s:param name="user.uuid" value="uuid"></s:param><s:param name="viewFlag">mdy</s:param></s:url>">360考核指标</a>
 	              </td>
 	              <td  class="td0 op-area"><a onclick="showDetail('showtr${uuid}');" href="javascript:;" class="input-nostyle">查看</a></td>
 	            </tr>
@@ -98,6 +105,8 @@
 	         </table>
 	      </div>
 	      <div id="listpage" class="pagination"></div>
+	      
+	      <c:if test="${it:checkPermit('SYS_MANAGER_USER_MDY',null)==true}">
 	     <div class="label_hang">
 		       <div class="label_ltit">汇报人部门:</div>
 		       <div class="label_rwben2">
@@ -133,6 +142,7 @@
 			</div>
 			
 			<s:submit id="save" name="save" value="保存" action="user_saveP" cssClass="input-blue"/>
+			</c:if>
 		</s:form>
 	      <div class="tab_warp"><span id="message"><s:property value="message" /></span></div>
 	</div>

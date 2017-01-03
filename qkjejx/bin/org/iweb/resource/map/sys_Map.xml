@@ -403,7 +403,7 @@ pu.USER_NAME  parent_user_name,pud.dept_cname p_dname,pud.dept_code p_code,par.d
 		<isNotNull prepend="AND" property="uuid"><![CDATA[ u.uuid=#uuid# ]]></isNotNull>
 		<isNotNull prepend="AND" property="parent_user"><![CDATA[ u.parent_user=#parent_user# ]]></isNotNull>
 		<isNotNull prepend="AND" property="title"><![CDATA[ u.title=#title# ]]></isNotNull>
-		<isNotNull prepend="AND" property="user_name"><![CDATA[ u.user_name like #user_name# ]]></isNotNull>
+		<isNotNull prepend="AND" property="user_name"><![CDATA[ u.user_name like #user_name#  +'%']]></isNotNull>
 		<isNotNull prepend="AND" property="email"><![CDATA[ u.email like #email# ]]></isNotNull>
 		<isNotNull prepend="AND" property="mobile"><![CDATA[ u.mobile like #mobile# ]]></isNotNull>
 		<isNotNull prepend="AND" property="status"><![CDATA[ u.status=#status# ]]></isNotNull>

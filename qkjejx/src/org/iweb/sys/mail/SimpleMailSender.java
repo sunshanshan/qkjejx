@@ -1,6 +1,7 @@
 package org.iweb.sys.mail;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -28,10 +29,12 @@ public class SimpleMailSender {
 		Properties pro = mailInfo.getProperties();
 		if (mailInfo.isValidate()) {
 			// 如果需要身份认证，则创建一个密码验证器
-			authenticator = new MyAuthenticator(mailInfo.getUserName(), mailInfo.getPassword());
+			authenticator = new MyAuthenticator(mailInfo.getUserName(),
+					mailInfo.getPassword());
 		}
 		// 根据邮件会话属性和密码验证器构造一个发送邮件的session
-		Session sendMailSession = Session.getDefaultInstance(pro, authenticator);
+		Session sendMailSession = Session
+				.getDefaultInstance(pro, authenticator);
 		try {
 			// 根据session创建一个邮件消息
 			Message mailMessage = new MimeMessage(sendMailSession);
@@ -40,8 +43,23 @@ public class SimpleMailSender {
 			// 设置邮件消息的发送者
 			mailMessage.setFrom(from);
 			// 创建邮件的接收者地址，并设置到邮件消息中
-			Address to = new InternetAddress(mailInfo.getToAddress());
-			mailMessage.setRecipient(Message.RecipientType.TO, to);
+			//Address to = new InternetAddress(mailInfo.getToAddress());
+			//mailMessage.setRecipient(Message.RecipientType.TO, to);
+			
+			List<String> toAddress = null;
+			if (mailInfo.getToAddress().size() > 1) {
+				toAddress = mailInfo.getToAddress();
+				Address[] address = new InternetAddress[toAddress.size()];
+				for (int i = 0; i < toAddress.size(); i++) {
+					address[i] = new InternetAddress(toAddress.get(i));
+				}
+				mailMessage.setRecipients(Message.RecipientType.TO, address);
+			} else {
+				toAddress = mailInfo.getToAddress();
+				Address to = new InternetAddress(toAddress.get(0));
+				// Message.RecipientType.TO属性表示接收者的类型为TO
+				mailMessage.setRecipient(Message.RecipientType.TO, to);
+			}
 			// 设置邮件消息的主题
 			mailMessage.setSubject(mailInfo.getSubject());
 			// 设置邮件消息发送的时间
@@ -70,10 +88,12 @@ public class SimpleMailSender {
 		Properties pro = mailInfo.getProperties();
 		// 如果需要身份认证，则创建一个密码验证器
 		if (mailInfo.isValidate()) {
-			authenticator = new MyAuthenticator(mailInfo.getUserName(), mailInfo.getPassword());
+			authenticator = new MyAuthenticator(mailInfo.getUserName(),
+					mailInfo.getPassword());
 		}
 		// 根据邮件会话属性和密码验证器构造一个发送邮件的session
-		Session sendMailSession = Session.getDefaultInstance(pro, authenticator);
+		Session sendMailSession = Session
+				.getDefaultInstance(pro, authenticator);
 		try {
 			// 根据session创建一个邮件消息
 			Message mailMessage = new MimeMessage(sendMailSession);
@@ -82,9 +102,24 @@ public class SimpleMailSender {
 			// 设置邮件消息的发送者
 			mailMessage.setFrom(from);
 			// 创建邮件的接收者地址，并设置到邮件消息中
-			Address to = new InternetAddress(mailInfo.getToAddress());
+			// Address to = new InternetAddress(mailInfo.getToAddress());
+
+			List<String> toAddress = null;
+			if (mailInfo.getToAddress().size() > 1) {
+				toAddress = mailInfo.getToAddress();
+				Address[] address = new InternetAddress[toAddress.size()];
+				for (int i = 0; i < toAddress.size(); i++) {
+					address[i] = new InternetAddress(toAddress.get(i));
+				}
+				mailMessage.setRecipients(Message.RecipientType.TO, address);
+			} else {
+				toAddress = mailInfo.getToAddress();
+				Address to = new InternetAddress(toAddress.get(0));
+				// Message.RecipientType.TO属性表示接收者的类型为TO
+				mailMessage.setRecipient(Message.RecipientType.TO, to);
+			}
 			// Message.RecipientType.TO属性表示接收者的类型为TO
-			mailMessage.setRecipient(Message.RecipientType.TO, to);
+			// mailMessage.setRecipient(Message.RecipientType.TO, to);
 			// 设置邮件消息的主题
 			mailMessage.setSubject(mailInfo.getSubject());
 			// 设置邮件消息发送的时间

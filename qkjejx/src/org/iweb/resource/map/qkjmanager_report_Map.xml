@@ -18,7 +18,7 @@
 			left join s_sys_user cuser on(cuser.UUID=ss.check_user)
 			left join s_sys_department acheckd on(acheckd.dept_code=c.acheck_usercode)
 			LEFT JOIN s_sys_department df on (df.dept_code=acheckd.parent_dept)
-			left JOIN s_sys_department acd on(acd.dept_code=c.acheck_dept)
+			left JOIN s_sys_department acd on(acd.dept_code=df.parent_dept)
 			left join qkj_t_indexdetail id on(id.uuid=ss.check_index)
 			left join qkj_r_check chec on (chec.uuid=c.check_ym)
 			

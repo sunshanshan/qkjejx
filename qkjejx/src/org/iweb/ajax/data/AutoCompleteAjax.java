@@ -24,6 +24,7 @@ public class AutoCompleteAjax extends Ajax {
 
 	static {
 		sqlmap.put("QKJCJ_SYSEBIZ_AJAXLOAD_MEMBER", "sysvip_getMembers");
+		sqlmap.put("QKJCJ_SYSEBIZ_AJAXLOAD_USER", "sys_getUser");
 		sqlmap.put("QKJCJ_SYS_AJAXLOAD_USER", "sys_getUser");
 		//sqlmap.put("QKJCJ_SYS_AJAXLOAD_USER","sys_getUsesrDept");
 		sqlmap.put("QKJCJ_SYSEBIZ_AJAXLOAD_MEMBERCELLAR", "sysebiz_getMemberCellars4Add");
@@ -66,6 +67,11 @@ public class AutoCompleteAjax extends Ajax {
 				return new ArrayList<HashMap<String, Object>>();
 			} else {
 				if ("QKJCJ_SYSEBIZ_AJAXLOAD_MEMBER".equals(this.getPrivilege_id())) {
+					parameter.put("limitnum", 15);// 只列出15个
+					parameter4MemberLoad();
+				} 
+				
+				if ("QKJCJ_SYSEBIZ_AJAXLOAD_USER".equals(this.getPrivilege_id())) {
 					parameter.put("limitnum", 15);// 只列出15个
 					parameter4MemberLoad();
 				} 

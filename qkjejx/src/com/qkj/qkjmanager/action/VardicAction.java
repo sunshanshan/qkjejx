@@ -201,9 +201,7 @@ public class VardicAction extends ActionSupport {
 				map.put("ex", 0);
 				if(map.containsKey("userid") && map.get("userid")!=null && map.get("userid")!="" && dlistallo.size()>0){
 					getManUser();//查询已经考核的人员放入map
-					if(map.containsKey("checkedUser")){
-						this.setCvardics(dao.Checklist(map));
-					}
+					this.setCvardics(dao.Checklist(map));
 				}
 				
 				ActionContext context = ActionContext.getContext();  

@@ -646,20 +646,24 @@ HttpServletResponse response = ServletActionContext.getResponse();
 			// 要插入到的Excel表格的行号，默认从0开始
 			Label labelId = new Label(0, 0, "姓名", cellFormat1);// 表示第1列1个
 			Label labelName = new Label(1, 0, "职务", cellFormat1);// 第2列1个
-			Label labelMeName = new Label(2, 0, "部门", cellFormat1);// 第五列1 行
-			Label labelMeName2 = new Label(3, 0, "人员编号", cellFormat1);// 第五列1 行
-			Label labelDate = new Label(4, 0, "部门编号", cellFormat1);// 第五列1 行
-			Label labelDa = new Label(5, 0, "分数", cellFormat1);// 第五列1 行
-			Label labelSt = new Label(6, 0, "考核日期", cellFormat1);// 第五列1 行
-			Label labelBa = new Label(7, 0, "考核年月编号", cellFormat1);// 第五列1 行
-			Label labelBa2 = new Label(8, 0, "备注", cellFormat1);// 第五列1 行
-			Label labelBa3 = new Label(9, 0, "可扣分项", cellFormat1);// 第五列1 行
-			Label labelBa4 = new Label(10, 0, "类型", cellFormat1);// 第五列1 行
-			Label labelBa5 = new Label(11, 0, "评级", cellFormat1);// 第五列1 行
-			Label labelBa6 = new Label(12, 0, "系数", cellFormat1);// 第五列1 行
+			
+			Label oned = new Label(2, 0, "一级部门", cellFormat1);// 第五列1 行
+			Label twod = new Label(3, 0, "二级部门", cellFormat1);// 第五列1 行
+			
+			Label labelMeName = new Label(4, 0, "部门", cellFormat1);// 第五列1 行
+			Label labelMeName2 = new Label(5, 0, "人员编号", cellFormat1);// 第五列1 行
+			Label labelDate = new Label(6, 0, "部门编号", cellFormat1);// 第五列1 行
+			Label labelDa = new Label(7, 0, "分数", cellFormat1);// 第五列1 行
+			Label labelSt = new Label(8, 0, "考核日期", cellFormat1);// 第五列1 行
+			Label labelBa = new Label(9, 0, "考核年月编号", cellFormat1);// 第五列1 行
+			Label labelBa2 = new Label(10, 0, "备注", cellFormat1);// 第五列1 行
+			Label labelBa3 = new Label(11, 0, "可扣分项", cellFormat1);// 第五列1 行
+			Label labelBa4 = new Label(12, 0, "类型", cellFormat1);// 第五列1 行
+			Label labelBa5 = new Label(13, 0, "评级", cellFormat1);// 第五列1 行
+			Label labelBa6 = new Label(14, 0, "系数", cellFormat1);// 第五列1 行
 
 			ws.addCell(labelId);
-			ws.addCell(labelName);
+			ws.addCell(labelName);ws.addCell(oned);ws.addCell(twod);
 			ws.addCell(labelMeName);
 			ws.addCell(labelMeName2);
 			ws.addCell(labelDate);
@@ -674,18 +678,22 @@ HttpServletResponse response = ServletActionContext.getResponse();
 				// 创建一行，在页sheet上
 				Label au = new Label(0, i+1, vardics.get(i).getAcheck_user()==null?"无":vardics.get(i).getAcheck_username());
 				Label ap = new Label(1, i+1, vardics.get(i).getPosition_name()==null?"无":vardics.get(i).getPosition_name());
-				Label ad = new Label(2, i+1, vardics.get(i).getAcheck_deptname());
-				Label auuid = new Label(3, i+1, vardics.get(i).getAcheck_user()==null?"无":vardics.get(i).getAcheck_user());
-				Label acode = new Label(4, i+1, vardics.get(i).getAcheck_usercode());
-				Label score = new Label(5, i+1, vardics.get(i).getCheck_score().toString());
+				
+				Label adone = new Label(2, i+1, vardics.get(i).getAcd_cname()==null?"无":vardics.get(i).getAcd_cname());
+				Label adtwo = new Label(3, i+1, vardics.get(i).getDf_name()==null?"无":vardics.get(i).getDf_name());
+				
+				Label ad = new Label(4, i+1, vardics.get(i).getAcheck_deptname());
+				Label auuid = new Label(5, i+1, vardics.get(i).getAcheck_user()==null?"无":vardics.get(i).getAcheck_user());
+				Label acode = new Label(6, i+1, vardics.get(i).getAcheck_usercode());
+				Label score = new Label(7, i+1, vardics.get(i).getCheck_score().toString());
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String str = sdf.format(vardics.get(i).getCheck_date());
 				
-				Label checkdate = new Label(6, i+1, str);
-				Label checkym = new Label(7, i+1, vardics.get(i).getCheck_ym().toString());
-				Label remark = new Label(8, i+1, vardics.get(i).getRemark()==null?"无":vardics.get(i).getRemark());
-				Label bscor = new Label(9, i+1, vardics.get(i).getBscore()==null?"无":vardics.get(i).getBscore().toString());
-				Label jtype = new Label(10, i+1, vardics.get(i).getJltype()==null?"无":vardics.get(i).getJltype().toString());
+				Label checkdate = new Label(8, i+1, str);
+				Label checkym = new Label(9, i+1, vardics.get(i).getCheck_ym().toString());
+				Label remark = new Label(10, i+1, vardics.get(i).getRemark()==null?"无":vardics.get(i).getRemark());
+				Label bscor = new Label(11, i+1, vardics.get(i).getBscore()==null?"无":vardics.get(i).getBscore().toString());
+				Label jtype = new Label(12, i+1, vardics.get(i).getJltype()==null?"无":vardics.get(i).getJltype().toString());
 				String p="";
 				String x="";
 				if(vardics.get(i).getCheck_score()>=90){
@@ -701,10 +709,10 @@ HttpServletResponse response = ServletActionContext.getResponse();
 					p="D";
 					x="0.8";
 				};
-				Label pp = new Label(11, i+1, p);
-				Label xx = new Label(12, i+1, x);
+				Label pp = new Label(13, i+1, p);
+				Label xx = new Label(14, i+1, x);
 				ws.addCell(au);
-				ws.addCell(ap);
+				ws.addCell(ap);ws.addCell(adone);ws.addCell(adtwo);
 				ws.addCell(ad);
 				ws.addCell(auuid);
 				ws.addCell(acode);

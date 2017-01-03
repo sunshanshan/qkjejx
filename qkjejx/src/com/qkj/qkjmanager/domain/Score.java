@@ -1,7 +1,6 @@
 package com.qkj.qkjmanager.domain;
 
-import java.sql.Date;
-
+import java.util.Date;
 public class Score {
 	private Integer uuid;// (int)系统编号
 	private Date check_ym;

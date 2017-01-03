@@ -35,8 +35,8 @@ public class TestAction extends ActionSupport {
 		// SysMail mail = new SysMail();
 		for (int i = 0, n = l.size(); i < n; i++) {
 			Map tm = l.get(i);
-			if (SysMail.sendHtml((String) tm.get("email"), "【通知】 邮件迁移通知", getContent((String) tm.get("uname"), (String) tm.get("epwd")))) System.out.println(tm.get("email")
-					+ " 发送成功!");
+			/*if (SysMail.sendHtml((String) tm.get("email"), "【通知】 邮件迁移通知", getContent((String) tm.get("uname"), (String) tm.get("epwd")))) System.out.println(tm.get("email")
+					+ " 发送成功!");*/
 			// 0--:43:zhoujunyu@51qkj.com:zxcvbnm166:周骏宇:男
 			// System.out.println(i + "--:" + tm.get("uuid") + ":" + tm.get("email") + ":" + tm.get("epwd") + ":" + tm.get("uname") + ":" + tm.get("sex"));
 			// mail

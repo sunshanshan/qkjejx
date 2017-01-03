@@ -1,5 +1,6 @@
 package org.iweb.sys.mail;
 
+import java.util.List;
 import java.util.Properties;
 
 public class MailSenderInfo {
@@ -9,7 +10,8 @@ public class MailSenderInfo {
 	// 邮件发送者的地址
 	private String fromAddress;
 	// 邮件接收者的地址
-	private String toAddress;
+	//private String toAddress;
+	private List<String> toAddress; 
 	// 登陆邮件发送服务器的用户名和密码
 	private String userName;
 	private String password;
@@ -80,12 +82,13 @@ public class MailSenderInfo {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
 
-	public String getToAddress() {
+	public List<String> getToAddress() {
 		return toAddress;
 	}
 
-	public void setToAddress(String toAddress) {
+	public void setToAddress(List<String> toAddress) {
 		this.toAddress = toAddress;
 	}
 
