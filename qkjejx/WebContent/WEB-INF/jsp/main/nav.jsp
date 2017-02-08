@@ -25,7 +25,7 @@
 <footer><p class="botmsg">当前登录信息：${dept_name}&nbsp;&nbsp;${user_name}&nbsp;&nbsp;<a href="javascript:;" onclick="openUserDept();" style="color: #fff;">当前部门</a></p></footer>
 
 
-<script type="text/javascript">
+<%-- <script type="text/javascript">
 $(function(){
 	createUserDept();
  });
@@ -53,4 +53,4 @@ var openUserDept = function() {
 };
 
 
-</script>
+</script> --%>

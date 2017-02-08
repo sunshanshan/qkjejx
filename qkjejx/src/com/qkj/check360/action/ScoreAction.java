@@ -14,6 +14,8 @@ import org.apache.struts2.ServletActionContext;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
 import org.iweb.sys.ToolsUtil;
+import org.iweb.sys.dao.UserDAO;
+import org.iweb.sys.domain.User;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.check360.dao.CheckDao;
@@ -21,10 +23,14 @@ import com.qkj.check360.dao.IndexCheckDAO;
 import com.qkj.check360.dao.IndexDAO;
 import com.qkj.check360.dao.ScoreDao;
 import com.qkj.check360.dao.SonScoreDao;
+import com.qkj.check360.domain.Assess;
+import com.qkj.check360.domain.Capacity;
 import com.qkj.check360.domain.Index;
 import com.qkj.check360.domain.Index360;
 import com.qkj.check360.domain.IndexCheck;
+import com.qkj.check360.domain.Remark360;
 import com.qkj.check360.domain.Score360;
+import com.qkj.check360.domain.SonRemark360;
 import com.qkj.check360.domain.SonScore360;
 
 
@@ -33,44 +39,97 @@ public class ScoreAction extends ActionSupport {
 	private static Log log = LogFactory.getLog(ScoreAction.class);
 	private Map<String, Object> map = new HashMap<String, Object>();
 	private ScoreDao dao = new ScoreDao();
+	private IndexDAO indexdao=new IndexDAO();
 	private Score360 score;
 	private List<Score360> scores;
 	private SonScoreDao sondao = new SonScoreDao();
 	private SonScore360 sonScore;
 	private List<SonScore360> sonScores;
+	private List<SonRemark360> sonremarks;
 	private IndexCheck ic;
+	private List<IndexCheck> ics;
 	private Index360 index360;
 	private List<Index360> index360s;
 	
 	private IndexDAO id=new IndexDAO();
-	private Index kpi;
-	private List<Index> kpis;
+	private Assess ass;
+	private List<Assess> asses;
+	private List<Remark360> remark360s;
+	private User user;
 	
 	private String ic_uuid;
 	private String in_uuid;
 	private String kpiid;
-	private String checkkpis;
 	private String scorejson;
 	private String callback; 
 	private Integer checkeds=0;
-	private String sonweight;
 	private String remark;
-	private String goldjson;
+	private String remark_uuid;
+	private Capacity capa;
 	
 	private String message;
 	private String viewFlag;
 	private int recCount;
 	private int pageSize;
 	private int currPage;
+	private Double sumScore;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;360成绩管理";
 	
-	
-	public String getGoldjson() {
-		return goldjson;
+	public User getUser() {
+		return user;
 	}
 
-	public void setGoldjson(String goldjson) {
-		this.goldjson = goldjson;
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Capacity getCapa() {
+		return capa;
+	}
+
+	public void setCapa(Capacity capa) {
+		this.capa = capa;
+	}
+
+	public Double getSumScore() {
+		return sumScore;
+	}
+
+	public void setSumScore(Double sumScore) {
+		this.sumScore = sumScore;
+	}
+
+	public List<SonRemark360> getSonremarks() {
+		return sonremarks;
+	}
+
+	public void setSonremarks(List<SonRemark360> sonremarks) {
+		this.sonremarks = sonremarks;
+	}
+
+	public List<Remark360> getRemark360s() {
+		return remark360s;
+	}
+
+	public void setRemark360s(List<Remark360> remark360s) {
+		this.remark360s = remark360s;
+	}
+
+	public String getRemark_uuid() {
+		return remark_uuid;
+	}
+
+	public void setRemark_uuid(String remark_uuid) {
+		this.remark_uuid = remark_uuid;
+	}
+
+
+	public List<IndexCheck> getIcs() {
+		return ics;
+	}
+
+	public void setIcs(List<IndexCheck> ics) {
+		this.ics = ics;
 	}
 
 	public String getRemark() {
@@ -81,28 +140,12 @@ public class ScoreAction extends ActionSupport {
 		this.remark = remark;
 	}
 
-	public String getSonweight() {
-		return sonweight;
-	}
-
-	public void setSonweight(String sonweight) {
-		this.sonweight = sonweight;
-	}
-
 	public List<Index360> getIndex360s() {
 		return index360s;
 	}
 
 	public void setIndex360s(List<Index360> index360s) {
 		this.index360s = index360s;
-	}
-
-	public String getCheckkpis() {
-		return checkkpis;
-	}
-
-	public void setCheckkpis(String checkkpis) {
-		this.checkkpis = checkkpis;
 	}
 
 	public Integer getCheckeds() {
@@ -153,20 +196,20 @@ public class ScoreAction extends ActionSupport {
 		this.callback = callback;
 	}
 
-	public Index getKpi() {
-		return kpi;
+	public Assess getAss() {
+		return ass;
 	}
 
-	public void setKpi(Index kpi) {
-		this.kpi = kpi;
+	public void setAss(Assess ass) {
+		this.ass = ass;
 	}
 
-	public List<Index> getKpis() {
-		return kpis;
+	public List<Assess> getAsses() {
+		return asses;
 	}
 
-	public void setKpis(List<Index> kpis) {
-		this.kpis = kpis;
+	public void setAsses(List<Assess> asses) {
+		this.asses = asses;
 	}
 
 	public Index360 getIndex360() {
@@ -277,6 +320,11 @@ public class ScoreAction extends ActionSupport {
 			ContextHelper.SimpleSearchMap4Page("SYS_QKJMANAGER_SCORE360_LIST", map, score, viewFlag);
 			this.setPageSize(Integer.parseInt(map.get(Parameters.Page_Size_Str).toString()));
 			this.setScores(dao.sumlist(map));
+			
+			CheckDao checkdao = new CheckDao();
+			UserDAO ud=new UserDAO();
+			this.setIndex360s(checkdao.list(null));
+			
 			this.setRecCount(dao.getResultCount());
 			path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;成绩列表";
 		} catch (Exception e) {
@@ -321,6 +369,7 @@ public class ScoreAction extends ActionSupport {
 						map.clear();
 						map.put("score_id", scores.get(0).getUuid());
 						this.setSonScores(sondao.list(map));
+						this.setSonremarks(sondao.listremark(map));
 						
 						this.setCheckeds(2);
 					}else{
@@ -331,10 +380,14 @@ public class ScoreAction extends ActionSupport {
 					//查询考核人信息
 					IndexCheckDAO icd=new IndexCheckDAO();
 					ic=(IndexCheck) icd.get(ic.getUuid());
-					//查询kpi
+					//查询类型和考核人一致的考题
 					map.clear();
 					map.put("user_id", ic.getUser_id());
-					this.setKpis(id.list(map));
+					map.put("crit_id", capa.getCrit_id());
+					this.setAsses(indexdao.listAss(map));;
+					//查询主观考评
+					CheckDao chdao=new CheckDao();
+					this.setRemark360s(chdao.listremark(map));
 				}
 				
 			} else {
@@ -350,12 +403,20 @@ public class ScoreAction extends ActionSupport {
 	
 	
 	public String view() throws Exception{
-		if(sonScores==null){
+		if(score==null){
 			this.setScore(null);
 		}else{
-			map.putAll(ToolsUtil.getMapByBean(sonScores));
+			if(score.getCheck_ym()!=null&&score.getUser_id()!=null){
+				CheckDao checkdao = new CheckDao();
+				UserDAO ud=new UserDAO();
+				this.setIndex360s(checkdao.list(null));
+				//查询被考核人
+				this.setUser((User) ud.get(score.getUser_id()));
+			}
+			map.putAll(ToolsUtil.getMapByBean(score));
+			this.setScores(dao.list(map));
+			//this.setSonScores(sondao.listview(map));
 		}
-		this.setSonScores(sondao.listview(map));
 		return SUCCESS;
 	}
 	
@@ -387,29 +448,26 @@ public class ScoreAction extends ActionSupport {
 				log.info("初始化参数成功:" + kpiid);
 			}
 			
-			if (!ToolsUtil.isEmpty(checkkpis)) {
-				checkkpis = java.net.URLDecoder.decode(checkkpis, "UTF-8");
-				log.info("初始化参数成功:" + checkkpis);
-			}
-			
-			if (!ToolsUtil.isEmpty(sonweight)) {
-				sonweight = java.net.URLDecoder.decode(sonweight, "UTF-8");
-				log.info("初始化参数成功:" + sonweight);
-			}
 			if (!ToolsUtil.isEmpty(remark)) {
 				remark = java.net.URLDecoder.decode(remark, "UTF-8");
 				log.info("初始化参数成功:" + remark);
 			}
+			
+			if (!ToolsUtil.isEmpty(remark_uuid)) {
+				remark_uuid = java.net.URLDecoder.decode(remark_uuid, "UTF-8");
+				log.info("初始化参数成功:" + remark_uuid);
+			}
+			
 			dao.startTransaction();
 			//评分及kpi
 			String [] scoreds=scorejson.split(",");
 			String [] kpied=kpiid.split(",");
-			String [] kpieds=checkkpis.split(",");
-			String [] sonw=sonweight.split(",");
+			String [] rem=remark.split(",");
+			String [] rem_uuid=remark_uuid.split(",");
 			//总分
 			Double sum=0.00;
 			for(int i=0;i<scoreds.length;i++){
-				sum+=Double.parseDouble(scoreds[i])*Double.parseDouble(sonw[i]);
+				sum+=Double.parseDouble(scoreds[i]);
 			}
 			//查询考核人信息
 			IndexCheckDAO icd=new IndexCheckDAO();
@@ -417,12 +475,9 @@ public class ScoreAction extends ActionSupport {
 			//添加主表
 			score=new Score360();
 			score.setCheck_score(sum);
-			score.setCheck_gold(sum*ic.getWeight());
 			score.setCheck_date(new Date());
 			score.setCheck_user_id(Integer.parseInt(ic_uuid));
-			score.setWeight(ic.getWeight());
 			score.setCheck_ym(Integer.parseInt(in_uuid));
-			score.setRemark(remark);
 			dao.add(score);
 			//添加子表
 			for(int i=0;i<kpied.length;i++){
@@ -430,10 +485,19 @@ public class ScoreAction extends ActionSupport {
 				sonScore.setScore_id(score.getUuid());
 				sonScore.setCheck_index(Integer.parseInt(kpied[i]));
 				sonScore.setCheck_score(Double.parseDouble(scoreds[i]));
-				sonScore.setGoal(Double.parseDouble(scoreds[i])*Double.parseDouble(sonw[i]));
-				sonScore.setKpi(kpieds[i]);
-				sonScore.setWeight(Double.parseDouble(sonw[i]));
 				sondao.add(sonScore);
+			}
+			
+			for(int i=0;i<rem_uuid.length;i++){
+				SonRemark360 so=new SonRemark360();
+				so.setScore_id(score.getUuid());
+				if(rem!=null&&rem.length>0&&rem[i]!=null){
+					so.setRemark(rem[i]);
+				}else{
+					so.setRemark("");
+				}
+				so.setRemark_id(Integer.parseInt(rem_uuid[i]));
+				sondao.addremark(so);
 			}
 			dao.commitTransaction();
 			response.getWriter().print("0");
@@ -470,11 +534,6 @@ public class ScoreAction extends ActionSupport {
 				log.info("初始化参数成功:" + kpiid);
 			}
 			
-			if (!ToolsUtil.isEmpty(goldjson)) {//得分
-				goldjson = java.net.URLDecoder.decode(goldjson, "UTF-8");
-				log.info("初始化参数成功:" + goldjson);
-			}
-			
 			if (!ToolsUtil.isEmpty(remark)) {
 				remark = java.net.URLDecoder.decode(remark, "UTF-8");
 				log.info("初始化参数成功:" + remark);
@@ -485,21 +544,34 @@ public class ScoreAction extends ActionSupport {
 				log.info("初始化参数成功:" + in_uuid);
 			}
 			
+			if (!ToolsUtil.isEmpty(remark_uuid)) {
+				remark_uuid = java.net.URLDecoder.decode(remark_uuid, "UTF-8");
+				log.info("初始化参数成功:" + remark_uuid);
+			}
+			
 			//评分及kpi
 			String [] scoreds=scorejson.split(",");
 			String [] kpied=kpiid.split(",");
-			String [] goals=goldjson.split(",");
+			String [] rem=remark.split(",");
+			String [] rem_uuid=remark_uuid.split(",");
+			
 			Double sum=0.00;
+			for(int i=0;i<scoreds.length;i++){
+				sum+=Double.parseDouble(scoreds[i]);
+			}
 			dao.startTransaction();
 			for(int i=0;i<kpied.length;i++){
 				sonScore=new SonScore360();
 				sonScore.setUuid(Integer.parseInt(kpied[i]));;
 				sonScore.setCheck_score(Double.parseDouble(scoreds[i]));
-				sonScore.setGoal(Double.parseDouble(goals[i]));
-				sum+=Double.parseDouble(goals[i]);
 				sondao.save(sonScore);
 			}
-			
+			for(int i=0;i<rem_uuid.length;i++){
+				SonRemark360 so=new SonRemark360();
+				so.setUuid(Integer.parseInt(rem_uuid[i]));
+				so.setRemark(rem[i]);
+				sondao.saveremark(so);
+			}
 			//修改主表备注，及总评分，总得分
 			//查询考核人信息
 			IndexCheckDAO icd=new IndexCheckDAO();
@@ -507,8 +579,6 @@ public class ScoreAction extends ActionSupport {
 			score=new Score360();
 			score.setUuid(Integer.parseInt(in_uuid));
 			score.setCheck_score(sum);
-			score.setCheck_gold(sum*ic.getWeight());
-			score.setRemark(remark);
 			score.setLm_user(ContextHelper.getUserLoginUuid());
 			score.setLm_time(new Date());
 			dao.save(score);

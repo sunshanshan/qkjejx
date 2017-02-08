@@ -10,6 +10,10 @@ public class Index360 {
 	private Date add_time;// (datetime)添加时间
 	private String lm_user;// (varchar)最后修改人
 	private Date lm_time;// (datetime)最后修改时间
+	private Integer crit_id;
+	
+	private Integer typeUUID;
+	private String typeTitle;
 	
 	public Integer getUuid() {
 		return uuid;
@@ -52,6 +56,24 @@ public class Index360 {
 	}
 	public void setLm_time(Date lm_time) {
 		this.lm_time = lm_time;
+	}
+	public Integer getCrit_id() {
+		return crit_id;
+	}
+	public void setCrit_id(Integer crit_id) {
+		this.crit_id = crit_id;
+	}
+	public String getTypeTitle() {
+		return typeTitle;
+	}
+	public void setTypeTitle(String typeTitle) {
+		this.typeTitle = typeTitle;
+	}
+	public Integer getTypeUUID() {
+		return typeUUID;
+	}
+	public void setTypeUUID(Integer typeUUID) {
+		this.typeUUID = typeUUID;
 	}
 	
 	

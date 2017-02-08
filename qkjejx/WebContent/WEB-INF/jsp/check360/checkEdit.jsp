@@ -42,55 +42,6 @@ cursor: pointer;
 					</div>
 				</s:if>
 
-
-				<fieldset class="clear">
-					<legend>kpi列表</legend>
-					<!--<span class="shaddress">--------------------收货地址--------------------</span>-->
-					<div class="label_main">
-						<table width="100%" cellpadding="0" cellspacing="0" border="0"
-							class="lb_jpin">
-							<tr>
-								<th>kpi</th>
-								<th>周期</th>
-								<th>权重</th>
-								<th>计分方式</th>
-								<th>指标定义</th>
-								<th>指标标准</th>
-								<th><a
-									href="javascript:;" id="addkpi">添加指标</a></th>
-							</tr>
-							<s:iterator value="indexs" status="sta">
-								<tr
-									class="<s:if test="#sta.odd == true">oddStyle</s:if><s:else>evenStyle</s:else>">
-									<td>${kpi}</td>
-									<td>${cyc }</td>
-									<td>${weight }</td>
-									<td>${count_way }</td>
-									<td class="td2 longnote" title="${definition}">
-										${it:subString(definition,18)}</td>
-									<td class="td2 longnote" title="${correctly}">
-										${it:subString(correctly,18)}</td>
-									<td>[<a class="ship_info" data="${uuid}" >修改</a>]
-										[<a
-										href="<s:url namespace="/check360" action="check_del360"><s:param name="index.uuid" value="uuid" /><s:param name="user.uuid" value="user_id"/></s:url>"
-										onclick="return isDel();">删除</a>]
-										
-										<span class="ship_hidden_info" style="display:none;">
-										<span id="ship_no_${uuid}">${uuid}</span>
-										<span id="ship_cloud_${uuid }">${kpi}</span>
-										<span id="ship_type_${uuid}">${cyc}</span>
-										<span id="ship_date_${uuid}">${count_way}</span>
-										<span id="ship_phone_${uuid}">${definition}</span>
-										<span id="ship_status_${uuid}">${correctly}</span>
-										<span id="ship_w_${uuid}">${weight}</span>
-									</span>
-									</td>
-								</tr>
-							</s:iterator>
-						</table>
-					</div>
-				</fieldset>
-				
 				<fieldset class="clear">
 					<legend>考核人列表</legend>
 					<!--<span class="shaddress">--------------------收货地址--------------------</span>-->
@@ -101,7 +52,7 @@ cursor: pointer;
 								<th>考核人编号</th>
 								<th>考核姓名</th>
 								<th>邮箱</th>
-								<th>权重</th>
+								<th>类别</th>
 								<th><a href="javascript:;" id="addkpiUser">添加考核人邮箱</a></th>
 							</tr>
 							<s:iterator value="indexChecks" status="sta">
@@ -110,7 +61,7 @@ cursor: pointer;
 									<td>${check_user}</td>
 									<td>${cuname}</td>
 									<td>${check_user_email}</td>
-									<td>${weight }</td>
+									<td>${title }</td>
 									<td>[<a class="ship_info2" data="${uuid}" >修改</a>]
 										[<a
 										href="<s:url namespace="/check360" action="check_Checkdel"><s:param name="indexCheck.uuid" value="uuid" /><s:param name="user.uuid" value="user_id"/></s:url>"
@@ -121,7 +72,7 @@ cursor: pointer;
 											<span id="check_no_${uuid}">${uuid}</span>
 											<span id="check_user_${uuid }">${check_user}</span>
 											<span id="check_user_name${uuid }">${cuname}</span>
-											<span id="check_w_${uuid}">${weight}</span>
+											<span id="check_w_${uuid}">${ctuuid}</span>
 										</span>
 									</td>
 								</tr>
@@ -131,65 +82,6 @@ cursor: pointer;
 				</fieldset>
 			</s:form>
 		</div>
-	</div>
-	<div id="changePWDdiv" style="display: none;" title="添加kpi">
-		<s:form name="form2" cssClass="validForm" action="check_add"
-			namespace="/check360" onsubmit="return validator(this);" method="post"
-			theme="simple">
-			<table class="ilisttable" width="100%">
-				<tr>
-					<td width="25%" align="right">角色ID:</td>
-					<td>${user.uuid}<s:hidden name="index.user_id" value="%{user.uuid }" />
-				</tr>
-				<tr>
-					<td align="right">用户名:</td>
-					<td>${user.title}<s:hidden id="user.title" name="user.title" /></td>
-				</tr>
-				<tr>
-					<td align="right">kpi:</td>
-					<td>
-					<s:textfield id="e_active_ship_cloud" name="index.kpi" cssClass="validate[required]"></s:textfield>		
-					</td>
-				</tr>
-				<tr>
-					<td align="right">周期:</td>
-					<td>
-					<s:hidden name="index.uuid" id="e_active_ship_no"></s:hidden>
-					<s:textfield id="e_active_ship_type" name="index.cyc" cssClass="validate[required]"></s:textfield>	
-					</td>
-				</tr>
-				
-				<tr>
-					<td align="right">权重:</td>
-					<td>
-					<s:textfield id="e_active_ship_weight" name="index.weight" cssClass="validate[required]"></s:textfield>	
-					</td>
-				</tr>
-				
-				<tr>
-					<td align="right">计分方式:</td>
-					<td><s:textfield id="e_active_ship_date"  name="index.count_way" cssClass="validate[required]"/></td>
-				</tr>
-				<tr>
-					<td align="right">指标定义:</td>
-					<td><s:textarea id="e_active_ship_phone" name="index.definition"
-							cssClass="validate[required]" /></td>
-				</tr>
-				<tr>
-					<td align="right">指标标准:</td>
-					<td><s:textarea id="e_active_ship_status" name="index.correctly"
-							cssClass="validate[required]" /></td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-					<td class="buttonarea"><s:submit id="addcheck" value="添加" action="check_add360"/> 
-					
-					<s:submit id="mdycheck" value="修改" action="check_save360" />
-					<input
-						type="button" value="返回" onclick="closemDiv();" /></td>
-				</tr>
-			</table>
-		</s:form>
 	</div>
 	
 	<div id="changeCheckUser" style="display: none;" title="添加考核人">
@@ -219,9 +111,11 @@ cursor: pointer;
 					</td>
 				</tr>
 				<tr>
-					<td align="right">权重:</td>
+					<td align="right">类别:</td>
 					<s:hidden name="indexCheck.uuid" id="check_no"></s:hidden>
-					<td><s:textfield id="checkwith"  name="indexCheck.weight" cssClass="validate[required]"/></td>
+					<td>
+					<s:select id="checkwith" name="indexCheck.checkType_id" list="types" listKey="uuid" listValue="title" cssClass="validate[required]" />
+					</td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -242,14 +136,6 @@ cursor: pointer;
 		src="<s:url value="/js/optiontransferselect.js" />"></script>
 	<script type="text/javascript">
 		$(function() {
-			$("#changePWDdiv").dialog({
-				autoOpen : false,
-				width : 420,
-				height : 320,
-				modal : true
-			});
-			addTransferSelect("aroles", "uroles");
-			
 			$("#changeCheckUser").dialog({
 				autoOpen : false,
 				width : 420,
@@ -260,20 +146,6 @@ cursor: pointer;
 			SimpleLoadUser(ajax_url, $.noop);
 		});
 
-		$("#addkpi").click(function(){
-			$("#addcheck").show();
-			$("#mdycheck").hide();
-			$("#e_active_uuid").val(null);
-			$("#e_active_ship_phone").val(null);
-			$("#e_active_ship_type").val(null);
-			$("#e_active_ship_no").val(null);
-			$("#e_active_ship_cloud").val(null);
-			$("#e_active_ship_date").val(null);
-			$("#e_active_ship_status").val(null);
-			$("#e_active_remark").text(null);
-			$("#changePWDdiv").dialog("open");
-		});
-		
 		$("#addkpiUser").click(function(){
 			$("#addcheckUser").show();
 			$("#mdycheckUser").hide();
@@ -290,35 +162,11 @@ cursor: pointer;
 			$('message').innerHTML = str;
 		}
 		
-		if($(".ship_info").length>0) {
-			$(".ship_info").bind("click",function(){
-				setShipVal($(this).attr("data"));
-				$("#changePWDdiv").dialog("open");
-			});
-		}
-		
 		if($(".ship_info2").length>0) {
 			$(".ship_info2").bind("click",function(){
 				setShipVal2($(this).attr("data"));
 				$("#changeCheckUser").dialog("open");
 			});
-		}
-		
-		
-		function setShipVal(p_uuid) {
-			
-			$("#addcheck").hide();
-			$("#mdycheck").show();
-			$("#e_active_uuid").val(p_uuid);
-			$("#e_active_ship_phone").val($("#ship_phone_"+p_uuid).text());
-			$("#e_active_ship_type").val($("#ship_type_"+p_uuid).text());
-			$("#e_active_ship_no").val($("#ship_no_"+p_uuid).text());
-			$("#e_active_ship_cloud").val($("#ship_cloud_"+p_uuid).text());
-			$("#e_active_ship_date").val($("#ship_date_"+p_uuid).text());
-			$("#e_active_ship_status").val($("#ship_status_"+p_uuid).text());
-			$("#e_active_remark").text($("#active_remark_"+p_uuid).text());
-			$("#e_active_ship_weight").text($("#ship_w_"+p_uuid).text());
-			
 		}
 		
 		function setShipVal2(p_uuid) {

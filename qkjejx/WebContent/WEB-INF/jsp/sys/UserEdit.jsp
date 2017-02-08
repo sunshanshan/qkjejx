@@ -183,50 +183,6 @@
 	</s:if>
 	</fieldset>
 	
-			<!-- <div class="label_hang">
-		       <div class="label_ltit">职务:</div>
-		       <div class="label_rwbenx"><s:select name="user.position" list="positions" listKey="uuid" listValue="position_name" headerKey="" headerValue="--请选择--" cssClass="validate[required]"/></div>
-			</div>
-			
-			<div class="label_hang">
-		       <div class="label_ltit">部门:</div>
-		       <div class="label_rwben2">
-		       		<span class="label_rwb">
-					<s:textfield title="部门名称" id="userdept_nameid" name="user.dept_cname" readonly="true" />
-					<s:hidden title="部门代码" id="userdept_codeid" name="user.dept_code" readonly="true" />
-					</span>
-					<span class="lb nw">
-					<img class="detail vatop" src='<s:url value="/images/open2.gif" />' onclick="selectDept('userdept_codeid','userdept_nameid',true);" />
-					</span>
-		       </div>
-			</div>
-			<div class="label_hang clear">
-		       <div class="label_ltit">用户角色:</div>
-		       <div class="label_rwbenx">
-		       		<s:optiontransferselect            
-				     label="用户角色"
-				     name="aroles" 
-				     leftTitle="未赋予的角色"
-				     rightTitle="已经赋予的角色"
-				     list="roles" 
-				     multiple="true"
-				     listKey="uuid"
-				     listValue="role_name"
-				     headerKey=""
-				     headerValue="-- 请选择 --"
-				     doubleName="uroles"
-				     doubleList="userRoles" 
-				     doubleListKey="uuid"
-				     doubleListValue="role_name"
-				     doubleHeaderKey=""
-				     doubleHeaderValue="-- 请选择 --" 
-				     doubleMultiple="true"
-				     allowUpDownOnLeft="false"
-				     allowUpDownOnRight="false"
-				     allowAddAllToRight="false"
-				     allowSelectAll="false" />
-		       </div>
-			</div> -->
 			<div class="label_hang clear">
 		       <div class="label_ltit">其他描述:</div>
 		       <div class="label_rwben"><s:textarea title="其他描述" id="user.descriptions" name="user.descriptions"  cssClass="label_hang_linput"/></div>
@@ -309,7 +265,7 @@
 </div>
 <s:action name="ref_foot" namespace="/manager" executeResult="true" />
 <script type="text/javascript" src="<s:url value="/js/div.js" />"></script>
-<script type="text/javascript" src="<s:url value="/js/optiontransferselect.js" />"></script>
+
 <script type="text/javascript">
 $(function(){
 	$("#changePWDdiv").dialog({
@@ -318,7 +274,7 @@ $(function(){
 	      height: 220,
 	      modal: true
 	});
-	addTransferSelect("aroles","uroles");
+	
 });
 
 function changePWD() {	

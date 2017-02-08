@@ -1,64 +1,42 @@
 package com.qkj.check360.domain;
 
 public class Index {
-	private int uuid;
-	private String user_id;// 人id
-	private String kpi;
-	private String cyc;// 周期
-	private String count_way;// 计分方式
-	private String definition;// 定义
-	private String correctly;// 标准
-	private Double weight;
+	private Integer uuid;
+	private Integer factors_id;// 因素id
+	private String manifestation;
+	private String detail;
 	
-	public Double getWeight() {
-		return weight;
-	}
-	public void setWeight(Double weight) {
-		this.weight = weight;
-	}
-	public int getUuid() {
+	private String ftitle;
+	
+	public Integer getUuid() {
 		return uuid;
 	}
-	public void setUuid(int uuid) {
+	public void setUuid(Integer uuid) {
 		this.uuid = uuid;
 	}
-	public String getUser_id() {
-		return user_id;
+	public Integer getFactors_id() {
+		return factors_id;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setFactors_id(Integer factors_id) {
+		this.factors_id = factors_id;
 	}
-	public String getKpi() {
-		return kpi;
+	public String getManifestation() {
+		return manifestation;
 	}
-	public void setKpi(String kpi) {
-		this.kpi = kpi;
+	public void setManifestation(String manifestation) {
+		this.manifestation = manifestation;
 	}
-	public String getCyc() {
-		return cyc;
+	public String getDetail() {
+		return detail;
 	}
-	public void setCyc(String cyc) {
-		this.cyc = cyc;
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
-	public String getCount_way() {
-		return count_way;
+	public String getFtitle() {
+		return ftitle;
 	}
-	public void setCount_way(String count_way) {
-		this.count_way = count_way;
+	public void setFtitle(String ftitle) {
+		this.ftitle = ftitle;
 	}
-	public String getDefinition() {
-		return definition;
-	}
-	public void setDefinition(String definition) {
-		this.definition = definition;
-	}
-	public String getCorrectly() {
-		return correctly;
-	}
-	public void setCorrectly(String correctly) {
-		this.correctly = correctly;
-	}
-	
-	
 	
 }

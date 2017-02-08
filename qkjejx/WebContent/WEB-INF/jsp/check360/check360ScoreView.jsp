@@ -25,43 +25,69 @@ text-align: left !important;
 		<div class="dq_step">
 			${path}
 		</div>
+		<s:form id="serachForm" name="serachForm" action="check_360ScoreView" method="get" namespace="/check360" theme="simple">
+			<div class="label_con">
+				<div class="label_main">
+					<div class='label_hang'>
+						<div class='label_ltit'>被考核人:</div>
+						<div class='label_rwben'>
+							${user.user_name }
+							<input name="score.user_id" value="${user.uuid}" type="hidden">
+						</div>
+					</div>
+					<div class="label_hang">
+						<div class="label_ltit">考核年度:</div>
+						<div class="label_rwben">
+							<select name="score.check_ym">
+							<s:iterator value="index360s" status="sta">
+							<option value="${uuid }" 
+							<s:if test="%{score.check_ym==uuid }">selected="selected"</s:if>
+							>${ym }${typeTitle}</option>
+							</s:iterator>
+    						</select>
+						</div>
+					</div>
+					<div>${message}</div>
+					<div class="label_hang tac">
+						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
+						<label for="search_mcondition"></label>更多条件
+						<s:submit value="搜索" />
+						<s:reset value="重置" />
+					</div>
+				</div>
+			</div>
+		</s:form>
 		<div class="tab_warp">
+		<fieldset class="clear">
+			<legend>考核人</legend>
 			<table id="oneTable">
 				<tr id="coltr">
-					<!-- <th class="td1">考核人</th>
-					<th class="td1">总评分</th>
-					<th class="td1">总得分</th> -->
-					<th class="td1">kpi</th>
-					<th class="td1">评分</th>
+					<th class="td1">考核人</th>
 					<th class="td1">得分</th>
-					<!-- <th class="td3">备注</th> -->
+					<th class="td1">等级</th>
+					<th class="td2">考核时间</th>
+					<th class="td1">操作</th>
 					<th class="td0">查看</th>
 				</tr>
 				 <tbody id="aa">
-				<s:iterator value="sonScores" status="sta">
+				<s:iterator value="scores" status="sta">
 					<tr id="showtr${uuid}">
-						<%-- <td class="td1 nw">${check_username}</td>
-						<td class="td1 nw">${total}</td>
-						<td class="td1 nw">${check_gold}</td> --%>
-						<td class="td1 nw" >${kpi}</td>
+						<td class="td1 nw">${check_user_name}</td>
 						<td class="td1 nw">${check_score}</td>
-						<td class="td1 nw">${goal}</td>
-						<%-- <td class="td3 nw">${remark}</td> --%>
-						<td class="td0 op-area"><a href="javascript:;" onClick="showDetail('showtr${uuid}');" class="input-nostyle">查看</a>
-						
-						<span class="ship_hidden_info" style="display:none;">
-						<span id="uuid${sta.index+1}">${uuid}</span>
-						<span id="check_username${sta.index+1}">${check_username}</span>
-						<span id="check_user${sta.index+1}">${check_user}</span>
-						<span id="total${sta.index+1}">${total}</span>
-						<span id="check_gold${sta.index+1}">${check_gold}</span>
-						<span id="remark${sta.index+1}">${remark}</span>
-						</span>
+						<td class="td1 nw">${cttitle}</td>
+						<td class="td2 nw">${it:formatDate(check_date,'yyyy-MM-dd hh:mm:ss')}</td>
+						<td class="td4 op-area">
+						<input type="hidden" id="acu${sta.index}" value="${acheck_user_name}">
+						<a href="javascript:;" onclick="openCustomerView(${check_user},${acheck_user },${check_ym });">查看</a>
 						</td>
+						<td class="td0 op-area"><a href="javascript:;" onClick="showDetail('showtr${uuid}');" class="input-nostyle">查看</a>
+						</td>
+						
 					</tr>
 				</s:iterator>
 				</tbody>
 			</table>
+		</fieldset>
 		</div>
 		
 	</div>
@@ -71,47 +97,27 @@ text-align: left !important;
 <script type="text/javascript" src="<s:url value="/js/DatePicker.js" />"></script>
 <script type="text/javascript">
 $(function(){
-    getRelust();
-})
+	createCustomerView();
+	$("#acheck_u").text($("#acu0").val());
+});
 
-function getRelust(){
-	$("#oneTable").find("tr").each(function(i){
-		 if(i>0){
-			var uuid=$("#uuid"+i).text();
-			var cname=$("#check_username"+i).text();
-			var cuuid=$("#check_user"+i).text();
-			var total=$("#total"+i).text();
-			var check_gold=$("#check_gold"+i).text();
-			var remark=$("#remark"+i).text();
-			
-			var lastuuid=$("#check_user"+(i-1)).text();
-				var pruuid=$("#check_user"+(i-1)).text();
-				var nuuid=$("#check_user"+(i+1)).text();
-				if(pruuid==cuuid && nuuid!=cuuid){
-					//$("table tr:eq("+(i)+")").after('<tr class="fo"><td  colspan="8">考核人：'+cname+'&nbsp;&nbsp;&nbsp;总评分：'+total+'&nbsp;&nbsp;&nbsp;总得分：'+check_gold+'&nbsp;&nbsp;&nbsp;备注：'+remark+'</td></tr>');
-					$("#showtr"+uuid).after('<tr class="fo"><td  colspan="8">考核人：'+cname+'&nbsp;&nbsp;&nbsp;总评分：'+total+'&nbsp;&nbsp;&nbsp;总得分：'+check_gold+'&nbsp;&nbsp;&nbsp;备注：'+remark+'</td></tr>');
-				}
-		 }
-		
-    });
-}
- 
-function add_user(uuid){
-	 $.ajax({
-	     type:'POST',
-	     url: '/check360/send_email',
-	     data: "params="+uuid,
-	     success: function(data){
-	    	 if(data=="0"){
-	    		 alert("成功.");
-	 		}else if(data=="2"){
-	 			 alert("没有考核人.");
-	 		}   	 
-	    	 else {
-	 			alert("失败");
-	 		}
-	    }			    
-	  });
+var openCustomerView = function(icuuid,inuuid,critid) {
+	var iframeId = sobj02.getConid() + "iframe";
+	$("#"+iframeId).attr("src","/check360/check_sonView?sonScore.check_user=" + icuuid+"&sonScore.user_id="+inuuid+"&sonScore.check_ym="+critid);
+	sobj02.open();
+};
+var sobj02;
+var createCustomerView = function() {
+	var w_width = $(window).width();
+	var w_height = $(window).height();
+	sobj02 = new DialogIFrame({
+		src:'',
+		title:"查看",
+		width:w_width*0.85,
+		height:w_height*0.85
+	});
+	sobj02.selfAction = function(val1,val2) {};
+	sobj02.create();
 }
 </script>
 </body>

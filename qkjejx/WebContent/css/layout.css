@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+/*共通样式*/
+/*单个滚动效果--文本*/
+.effect {
+    width: 1350px;
+    text-align: left;
+    
+    margin: 0 auto;
+}
+
+.effect .slideTxtBox {
+    border: 0px solid #ddd;
+    text-align: left;
+}
+
+ .effect .slideTxtBox .hd {
+    height: 30px;
+    line-height: 30px;
+    background: #f4f4f4;
+    padding-top:0px;
+    position: relative;
+}
+ .effect .slideTxtBox .hd ul {
+    float: left;
+    position: absolute;
+    left: 20px;
+    height: 32px;
+}
+ .effect .slideTxtBox .hd ul li {
+    float: left;
+    padding: 0 15px;
+}
+ .effect .slideTxtBox .hd ul li.on {
+    height: 30px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-bottom: 0px solid #fff;
+    cursor: pointer;
+}
+ 
+
+

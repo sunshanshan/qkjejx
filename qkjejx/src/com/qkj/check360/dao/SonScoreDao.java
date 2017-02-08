@@ -33,6 +33,29 @@ public class SonScoreDao extends AbstractDAO {
 	public void del(Object parameters) {
 		super.save("qkjmanager_delSonScore", parameters);
 	}
+	
+	
+	public int addremark(Object parameters) {
+		return (int) super.add("qkjmanager_addSonRemark", parameters);
+	}
+
+	public List listremark(Map<String, Object> map) {
+		return super.list("qkjmanager_getSonRemarks", map);
+	}
+	
+	public Object getremark(Object uuid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("uuid", uuid);
+		return super.get("qkjmanager_getSonRemarks", map);
+	}
+
+	public void saveremark(Object parameters) {
+		super.save("qkjmanager_mdySonRemarks", parameters);
+	}
+	
+	public void delremark(Object parameters) {
+		super.save("qkjmanager_delSonRemark", parameters);
+	}
 
 	public int getResultCount() {
 		return super.getResultCount();

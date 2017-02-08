@@ -1,9 +1,12 @@
 package com.qkj.check360.action;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,9 +14,12 @@ import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.qkj.basics.domain.Check;
 import com.qkj.check360.dao.CheckDao;
+import com.qkj.check360.dao.IndexCheckDAO;
+import com.qkj.check360.dao.IndexDAO;
+import com.qkj.check360.domain.Capacity;
 import com.qkj.check360.domain.Index360;
+import com.qkj.check360.domain.IndexCheck;
 
 public class CheckAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
@@ -21,14 +27,31 @@ public class CheckAction extends ActionSupport {
 	private Map<String, Object> map = new HashMap<String, Object>();
 	private CheckDao dao = new CheckDao();
 	private Index360 check;
-	private List<Check> checks;
+	private List<Index360> checks;
+	private List<Index360> crits;
+	private List<IndexCheck> ics;
 	private String message;
 	private String viewFlag;
 	private int recCount;
 	private int pageSize;
 	private int currPage;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;考核管理";
+	
+	public List<IndexCheck> getIcs() {
+		return ics;
+	}
 
+	public void setIcs(List<IndexCheck> ics) {
+		this.ics = ics;
+	}
+
+	public List<Index360> getCrits() {
+		return crits;
+	}
+
+	public void setCrits(List<Index360> crits) {
+		this.crits = crits;
+	}
 
 	public String getPath() {
 		return path;
@@ -46,11 +69,11 @@ public class CheckAction extends ActionSupport {
 		this.check = check;
 	}
 
-	public List<Check> getChecks() {
+	public List<Index360> getChecks() {
 		return checks;
 	}
 
-	public void setChecks(List<Check> checks) {
+	public void setChecks(List<Index360> checks) {
 		this.checks = checks;
 	}
 
@@ -126,9 +149,39 @@ public class CheckAction extends ActionSupport {
 				setMessage("你没有选择任何操作!");
 			} else if ("add".equals(viewFlag)) {
 				this.setCheck(null);
+				this.setCrits(dao.listCrit(null));
 			} else if ("mdy".equals(viewFlag)) {
 				if (!(check == null || check.getUuid() == null)) {
 					this.setCheck((Index360) dao.get(check.getUuid()));
+					this.setCrits(dao.listCrit(null));
+					//查询类别相同的考题
+					List<Capacity> cas=new ArrayList<Capacity>();
+					map.clear();
+					map.put("crit_id", check.getCrit_id());
+					IndexDAO idd=new IndexDAO();
+					cas=idd.listCapabyUser(map);
+					List<String> cs = new ArrayList<>();
+					if(cas.size()>0){
+						Set<String> setcs = new HashSet<>();
+						for(Capacity c:cas){
+							String[] userid=c.getUser_id().split(",");
+							if(userid.length>0){
+								for(int i=0;i<userid.length;i++){
+									setcs.add(userid[i]);
+								}
+							}
+						}
+						cs.addAll(setcs);
+					}
+					//查询未完成考核的人
+					IndexCheckDAO icd=new IndexCheckDAO();
+					map.clear();
+					map.put("checkym_id", check.getUuid());
+					map.put("crit_user", cs);
+					if(cs.size()>0){
+						this.setIcs(icd.listst(map));
+					}
+					
 				} else {
 					this.setCheck(null);
 				}
@@ -151,7 +204,6 @@ public class CheckAction extends ActionSupport {
 			check.setLm_user(ContextHelper.getUserLoginUuid());
 			check.setLm_time(new Date());
 			dao.add(check);
-			//addProcess("CLOSEORDER_ADD", "新增结案提货单", ContextHelper.getUserLoginUuid());
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!add 数据添加失败:", e);
 			throw new Exception(this.getClass().getName() + "!add 数据添加失败:", e);

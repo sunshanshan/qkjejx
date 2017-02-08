@@ -12,10 +12,23 @@ public class CheckDao extends AbstractDAO {
 	public int add(Object parameters) {
 		return (int) super.add("user_id_addIndex360", parameters);
 	}
+	
+	public int addremark(Object parameters) {
+		return (int) super.add("user_id_addremark360", parameters);
+	}
 
 	public List list(Map<String, Object> map) {
 		//setCountMapid("basics_getCheckCounts");
 		return super.list("index_getIndex360", map);
+	}
+	
+	public List listCrit(Map<String, Object> map) {
+		return super.list("index_getIndexCrit360", map);
+	}
+	
+	public List listremark(Map<String, Object> map) {
+		//setCountMapid("basics_getCheckCounts");
+		return super.list("index_getremark360", map);
 	}
 	
 
@@ -41,6 +54,10 @@ public class CheckDao extends AbstractDAO {
 	 */
 	public void del(Object parameters) {
 		super.save("index_delIndex360", parameters);
+	}
+	
+	public void delremark(Object parameters) {
+		super.save("index_delremark360", parameters);
 	}
 
 

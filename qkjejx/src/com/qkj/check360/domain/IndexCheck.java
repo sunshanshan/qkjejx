@@ -7,9 +7,12 @@ public class IndexCheck {
 	private String check_user;
 	private String check_user_email;
 	private Double weight;// 周期
+	private Integer checkType_id;
 
 	private String check_user_name;
 	private String cuname;
+	private String title;
+	private Integer ctuuid;
 
 	public int getUuid() {
 		return uuid;
@@ -65,6 +68,30 @@ public class IndexCheck {
 
 	public void setCuname(String cuname) {
 		this.cuname = cuname;
+	}
+
+	public Integer getCheckType_id() {
+		return checkType_id;
+	}
+
+	public void setCheckType_id(Integer checkType_id) {
+		this.checkType_id = checkType_id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Integer getCtuuid() {
+		return ctuuid;
+	}
+
+	public void setCtuuid(Integer ctuuid) {
+		this.ctuuid = ctuuid;
 	}
 
 }

@@ -31,14 +31,17 @@ public class DBHelper {
 
 	static {
 		String rootPath = (String) CacheFactory.getCacheInstance().get(SysCacheLogic.CACHE_SYS_PREFIX + "WebAbsolutePath");
+		System.out.println(rootPath);
 		sqlMaps = new SqlMapClient[configs.length];
 		dbs = new DBHelper[configs.length];
 		for (int i = 0; i < configs.length; i++) {
 			try {
 				InputStream is = new FileInputStream(new File(rootPath + configs[i]));
 				sqlMaps[i] = SqlMapClientBuilder.buildSqlMapClient(is);
+				System.out.println(sqlMaps[i]);
 				is.close();
 				log.info("SqlMap配置文件[" + rootPath + configs[i] + "]加载成功!");
+				System.out.println(sqlMaps[targetDB]);
 			} catch (Exception e) {
 				// sqlMaps[targetDB] = null;
 				log.fatal("SqlMap配置文件加载失败,系统将可能正常运行!", e);

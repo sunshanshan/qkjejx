@@ -8,37 +8,155 @@
 		<action name="check_list360" class="com.qkj.check360.action.IndexAction" method="list">
 			<result>/WEB-INF/jsp/check360/checkList.jsp</result>
 		</action>
+		<action name="check_listCapa360" class="com.qkj.check360.action.IndexAction" method="listCapa">
+			<result>/WEB-INF/jsp/check360/capaList.jsp</result>
+		</action>
 		
 		<action name="check_load360" class="com.qkj.check360.action.IndexAction" method="load">
 			<result>/WEB-INF/jsp/check360/checkEdit.jsp</result>
 		</action>
 		
+		<action name="check_loadCapa360" class="com.qkj.check360.action.IndexAction" method="loadCapa">
+			<result>/WEB-INF/jsp/check360/capaEdit.jsp</result>
+		</action>
+		
+		
+		<action name="check_saveCapa360" class="com.qkj.check360.action.IndexAction" method="saveCapa">
+			<result type="redirectAction">
+				<param name="actionName">check_loadCapa360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="capa.user_id">${capa.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_addCapa360" class="com.qkj.check360.action.IndexAction" method="addCapa">
+			<result type="redirectAction">
+				<param name="actionName">check_loadCapa360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="capa.user_id">${capa.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="check_delCapa360" class="com.qkj.check360.action.IndexAction" method="delCapa">
+			<result type="redirectAction">
+				<param name="actionName">check_loadCapa360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="capa.user_id">${capa.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_delCapaUser" class="com.qkj.check360.action.IndexAction" method="delCapaUser">
+			<result type="redirectAction">
+				<param name="actionName">check_listCapa360</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_saveFact360" class="com.qkj.check360.action.IndexAction" method="saveFact">
+			<result type="redirectAction">
+				<param name="actionName">check_loadCapa360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="capa.user_id">${capa.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_addFact360" class="com.qkj.check360.action.IndexAction" method="addFact">
+			<result type="redirectAction">
+				<param name="actionName">check_loadCapa360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="capa.user_id">${capa.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_delFact360" class="com.qkj.check360.action.IndexAction" method="delFact">
+			<result type="redirectAction">
+				<param name="actionName">check_loadCapa360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="capa.user_id">${capa.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
 		<action name="check_save360" class="com.qkj.check360.action.IndexAction" method="save">
 			<result type="redirectAction">
-				<param name="actionName">check_load360</param>
+				<param name="actionName">check_loadCapa360</param>
 				<param name="viewFlag">mdy</param>
-				<param name="user.uuid">${index.user_id}</param>
+				<param name="capa.user_id">${capa.user_id}</param>
 				<param name="message">${message}</param>
 			</result>
 		</action>
 		
 		<action name="check_add360" class="com.qkj.check360.action.IndexAction" method="add">
 			<result type="redirectAction">
-				<param name="actionName">check_load360</param>
+				<param name="actionName">check_loadCapa360</param>
 				<param name="viewFlag">mdy</param>
-				<param name="user.uuid">${index.user_id}</param>
+				<param name="capa.user_id">${capa.user_id}</param>
 				<param name="message">${message}</param>
 			</result>
 		</action>
 		<action name="check_del360" class="com.qkj.check360.action.IndexAction" method="del">
 			<result type="redirectAction">
-				<param name="actionName">check_load360</param>
+				<param name="actionName">check_loadCapa360</param>
 				<param name="viewFlag">mdy</param>
-				<param name="user.uuid">${user.uuid}</param>
+				<param name="capa.user_id">${capa.user_id}</param>
 				<param name="message">${message}</param>
 			</result>
 		</action>
 		
+		<action name="check_remarkadd360" class="com.qkj.check360.action.IndexAction" method="addremark">
+			<result type="redirectAction">
+				<param name="actionName">check_loadCapa360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="capa.user_id">${remark360.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_remarkdel360" class="com.qkj.check360.action.IndexAction" method="delremark">
+			<result type="redirectAction">
+				<param name="actionName">check_loadCapa360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="capa.user_id">${remark360.user_id}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_listAss" class="com.qkj.check360.action.AssessAction" method="list">
+			<result>/WEB-INF/jsp/check360/assList.jsp</result>
+		</action>
+		
+		<action name="check_loadAss" class="com.qkj.check360.action.AssessAction" method="load">
+			<result>/WEB-INF/jsp/check360/assEdit.jsp</result>
+		</action>
+		
+		
+		<action name="check_saveAss" class="com.qkj.check360.action.AssessAction" method="save">
+			<result type="redirectAction">
+				<param name="actionName">check_loadAss</param>
+				<param name="viewFlag">mdy</param>
+				<param name="ass.uuid">${ass.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_addAss" class="com.qkj.check360.action.AssessAction" method="add">
+			<result type="redirectAction">
+				<param name="actionName">check_loadAss</param>
+				<param name="viewFlag">mdy</param>
+				<param name="ass.uuid">${ass.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="check_delAss" class="com.qkj.check360.action.AssessAction" method="del">
+			<result type="redirectAction">
+				<param name="actionName">check_listAss</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
 	<!-- qkj_r_check end -->
 	
 	<action name="check_Checklist" class="com.qkj.check360.action.IndexAction" method="list">
@@ -76,6 +194,16 @@
 		</action>
 		
 		<action name="send_email" class="com.qkj.check360.action.IndexAction" method="send_email">
+		</action>
+		
+		<action name="pro_send_email" class="com.qkj.check360.action.IndexAction" method="pro_send_email">
+		</action>
+		
+		<action name="ori_send_email" class="com.qkj.check360.action.IndexAction" method="ori_send_email">
+			<result type="redirectAction">
+				<param name="actionName">check_360list</param>
+				<param name="message">${message}</param>
+			</result>
 		</action>
 		
 		
@@ -128,6 +256,56 @@
 		<action name="check_360ScoreSave" class="com.qkj.check360.action.ScoreAction" method="save">
 		</action>
 		
+		
+		<!-- 考核领域 -->
+		
+		<action name="check_listType360" class="com.qkj.check360.action.CheckTypeAction" method="list">
+			<result>/WEB-INF/jsp/check360/checkTypeList.jsp</result>
+		</action>
+		
+		<action name="check_loadType360" class="com.qkj.check360.action.CheckTypeAction" method="load">
+			<result>/WEB-INF/jsp/check360/checkTypeEdit.jsp</result>
+		</action>
+		
+		<action name="check_saveType360" class="com.qkj.check360.action.CheckTypeAction" method="save">
+			<result type="redirectAction">
+				<param name="actionName">check_loadType360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="type.uuid">${type.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="check_addType360" class="com.qkj.check360.action.CheckTypeAction" method="add">
+			<result type="redirectAction">
+				<param name="actionName">check_loadType360</param>
+				<param name="viewFlag">mdy</param>
+				<param name="type.uuid">${type.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="check_delType360" class="com.qkj.check360.action.CheckTypeAction" method="del">
+			<result type="redirectAction">
+				<param name="actionName">check_listType360</param>
+			</result>
+		</action>
 	
+	<!-- 汇总 -->
+		<action name="check_sonView" class="com.qkj.check360.action.CollectAction" method="loadSonView">
+				<result>/WEB-INF/jsp/check360/collect/sonView.jsp</result>
+		</action>
+		<action name="check_loadDetail" class="com.qkj.check360.action.CollectAction" method="loadDetail">
+			<result>/WEB-INF/jsp/check360/collect/detailView.jsp</result>
+		</action>
+		<action name="check_loadIndexDetail" class="com.qkj.check360.action.CollectAction" method="loadIndexDetail">
+				<result>/WEB-INF/jsp/check360/collect/detailIndexView.jsp</result>
+		</action>
+		
+		<action name="check_360loadAbst" class="com.qkj.check360.action.CollectAction" method="loadAbst">
+				<result>/WEB-INF/jsp/check360/collect/detailIndexAbst.jsp</result>
+		</action>
+		<action name="check_loadDetailExcel" class="com.qkj.check360.action.ReportAction" method="exportExcel">
+		</action>
+		
 	</package>
 </struts>

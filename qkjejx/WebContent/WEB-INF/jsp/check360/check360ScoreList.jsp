@@ -31,20 +31,17 @@ cursor: pointer;
 							<s:textfield name='score.user_name'  />
 						</div>
 					</div>
-					<%-- <div class='label_hang'>
-						<div class='label_ltit'>结案时间:</div>
-						<div class='label_rwben'>
-							<s:textfield name='closeOrder.close_time' cssClass=' datepicker validate[custom[date],]' />
-						</div>
-					</div> --%>
-					
 					<div class="label_hang">
 						<div class="label_ltit">考核年度:</div>
 						<div class="label_rwben">
-							<select class="ss" name="score.ym">
-							<option></option>
+							<select name="score.check_ym">
+							<option value="">---请选择---</option>
+							<s:iterator value="index360s" status="sta">
+							<option value="${uuid }" 
+							<s:if test="%{score.check_ym==uuid }">selected="selected"</s:if>
+							>${ym }${typeTitle}</option>
+							</s:iterator>
     						</select>
-							
 						</div>
 					</div>
 							
@@ -62,21 +59,19 @@ cursor: pointer;
 				<tr id="coltr">
 					<th class="td1">主键</th>
 					<th class="td1">考核年月</th>
-					<th class="td3">得分</th>
 					<th class="td4">操作</th>
 					<th class="td0">查看</th>
 				</tr>
 				<s:iterator value="scores" status="sta">
 					<tr id="showtr${user_id}">
 						<td class="td1 nw">${user_name}</td>
-						<td class="td1 nw">${ym}</td>
-						<td class="td3 nw">
-						${sumscore }
-						</td>
+						<td class="td1 nw">编号${check_ym}考核年${ym}类别${cttitle}</td>
 						<td class="td4 op-area">
-								<a class="input-blue" href="<s:url namespace="/check360" action="check_360ScoreView"><s:param name="score.user_id" value="user_id"></s:param><s:param name="score.user_id" value="user_id"></s:param></s:url>">详情</a>
-								<%-- <a class="input-red" href="<s:url namespace="/check360" action="check_360del"><s:param name="check.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a> --%>
-							</td>
+								<a class="input-blue" href="<s:url namespace="/check360" action="check_360ScoreView"><s:param name="score.user_id" value="user_id"></s:param><s:param name="score.check_ym" value="check_ym"></s:param></s:url>">详情</a>
+								<a class="input-blue" href="<s:url namespace="/check360" action="check_loadDetail"><s:param name="score.user_id" value="user_id"></s:param><s:param name="score.check_ym" value="check_ym"></s:param></s:url>">详细报告</a>		
+								<%-- <a class="input-blue" href="/collect/detailView.jsp?score.user_id=${user_id }&score.check_ym=${check_ym}">详细报告2</a> --%>
+								<a class="input-blue" href="<s:url namespace="/check360" action="check_360loadAbst"><s:param name="score.user_id" value="user_id"></s:param><s:param name="score.check_ym" value="check_ym"></s:param></s:url>">摘要报告</a>
+						</td>
 						<td class="td0 op-area"><a href="javascript:;" onClick="showDetail('showtr${uuid}');" class="input-nostyle">查看</a></td>
 					</tr>
 				</s:iterator>

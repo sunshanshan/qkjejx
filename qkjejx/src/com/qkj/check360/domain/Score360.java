@@ -17,13 +17,21 @@ public class Score360 {
 	
 	//查询
 	private String acheck_user_name;
+	private String acheck_user;
 	private String check_email;
 	private String check_user_name;
+	private String check_user;
 	private String user_id;
 	private String user_name;
 	private String ym;
-	private Double sumscore;
+	private String cttitle;
 	
+	public String getAcheck_user() {
+		return acheck_user;
+	}
+	public void setAcheck_user(String acheck_user) {
+		this.acheck_user = acheck_user;
+	}
 	public Integer getUuid() {
 		return uuid;
 	}
@@ -126,11 +134,18 @@ public class Score360 {
 	public void setYm(String ym) {
 		this.ym = ym;
 	}
-	public Double getSumscore() {
-		return sumscore;
+	
+	public String getCttitle() {
+		return cttitle;
 	}
-	public void setSumscore(Double sumscore) {
-		this.sumscore = sumscore;
+	public void setCttitle(String cttitle) {
+		this.cttitle = cttitle;
+	}
+	public String getCheck_user() {
+		return check_user;
+	}
+	public void setCheck_user(String check_user) {
+		this.check_user = check_user;
 	}
 
 	

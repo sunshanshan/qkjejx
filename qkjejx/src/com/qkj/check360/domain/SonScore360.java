@@ -1,8 +1,5 @@
 package com.qkj.check360.domain;
 
-import java.util.Date;
-
-
 public class SonScore360 {
 	private Integer uuid;// (int)系统编号
 	private Integer score_id;// 主表id
@@ -13,17 +10,15 @@ public class SonScore360 {
 	private Double weight;
 	
 	
-	private Double total;// 评分分 （横向/纵）
-	private Double check_gold=0.0;//得分
-	private Date check_date;// 考核人考核时间
-	private String check_username;
-	private String remark;
+	private Integer index_id;
+	private String title;
+	private String detail;
+	private String ititle;
+	private String idetail;
 	
-	private String cyc;// 周期
-	private String count_way;// 计分方式
-	private String definition;// 定义
-	private String correctly;// 标准
 	private String check_user;
+	private String user_id;
+	private Integer check_ym;
 	
 	public Integer getUuid() {
 		return uuid;
@@ -49,41 +44,17 @@ public class SonScore360 {
 	public void setCheck_score(Double check_score) {
 		this.check_score = check_score;
 	}
-	public String getKpi() {
-		return kpi;
-	}
-	public void setKpi(String kpi) {
-		this.kpi = kpi;
-	}
-	public Double getTotal() {
-		return total;
-	}
-	public void setTotal(Double total) {
-		this.total = total;
-	}
-	public Double getCheck_gold() {
-		return check_gold;
-	}
-	public void setCheck_gold(Double check_gold) {
-		this.check_gold = check_gold;
-	}
-	public Date getCheck_date() {
-		return check_date;
-	}
-	public void setCheck_date(Date check_date) {
-		this.check_date = check_date;
-	}
-	public String getCheck_username() {
-		return check_username;
-	}
-	public void setCheck_username(String check_username) {
-		this.check_username = check_username;
-	}
 	public Double getGoal() {
 		return goal;
 	}
 	public void setGoal(Double goal) {
 		this.goal = goal;
+	}
+	public String getKpi() {
+		return kpi;
+	}
+	public void setKpi(String kpi) {
+		this.kpi = kpi;
 	}
 	public Double getWeight() {
 		return weight;
@@ -91,35 +62,35 @@ public class SonScore360 {
 	public void setWeight(Double weight) {
 		this.weight = weight;
 	}
-	public String getRemark() {
-		return remark;
+	public Integer getIndex_id() {
+		return index_id;
 	}
-	public void setRemark(String remark) {
-		this.remark = remark;
+	public void setIndex_id(Integer index_id) {
+		this.index_id = index_id;
 	}
-	public String getCyc() {
-		return cyc;
+	public String getTitle() {
+		return title;
 	}
-	public void setCyc(String cyc) {
-		this.cyc = cyc;
+	public void setTitle(String title) {
+		this.title = title;
 	}
-	public String getCount_way() {
-		return count_way;
+	public String getDetail() {
+		return detail;
 	}
-	public void setCount_way(String count_way) {
-		this.count_way = count_way;
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
-	public String getDefinition() {
-		return definition;
+	public String getItitle() {
+		return ititle;
 	}
-	public void setDefinition(String definition) {
-		this.definition = definition;
+	public void setItitle(String ititle) {
+		this.ititle = ititle;
 	}
-	public String getCorrectly() {
-		return correctly;
+	public String getIdetail() {
+		return idetail;
 	}
-	public void setCorrectly(String correctly) {
-		this.correctly = correctly;
+	public void setIdetail(String idetail) {
+		this.idetail = idetail;
 	}
 	public String getCheck_user() {
 		return check_user;
@@ -127,7 +98,18 @@ public class SonScore360 {
 	public void setCheck_user(String check_user) {
 		this.check_user = check_user;
 	}
-	
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	public Integer getCheck_ym() {
+		return check_ym;
+	}
+	public void setCheck_ym(Integer check_ym) {
+		this.check_ym = check_ym;
+	}
 	
 	
 }

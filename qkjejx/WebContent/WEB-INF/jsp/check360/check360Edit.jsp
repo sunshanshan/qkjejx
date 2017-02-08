@@ -66,7 +66,7 @@ s
 								<div class="label_ltit">考核年:</div>
 								<div class="label_rwben2">
 									<span class="label_rwb nw"> <%-- <input id="begintime" name="check.ym" type="text" onclick="setmonth(this)" readonly="readonly" value="${check.ym}"/> --%>
-									<select class="ss" name="check.ym"">
+									<select class="ss" name="check.ym">
     								</select>
 									</span>
 									
@@ -77,6 +77,13 @@ s
 								<div class="label_ltit">状态:</div>
 								<div class="label_rwben label_rwb">
 									<s:select  name="check.state" cssClass="selectKick" list="#{0:'打开',1:'关闭',2:'已审核'}" headerKey=""/>
+								</div>
+						</div>
+						
+						<div class="label_hang">
+								<div class="label_ltit">类别:</div>
+								<div class="label_rwben label_rwb">
+								<s:select name="check.crit_id" list="crits" listKey="typeUUID" listValue="typeTitle" cssClass="validate[required]" />
 								</div>
 						</div>
 					</div>
@@ -96,6 +103,18 @@ s
 							</div>
 						</div>
 					</div>
+					
+					
+					<fieldset class="clear">
+						<legend>未考核人</legend>
+							<s:iterator value="ics" status="sta">
+								${cuname }&nbsp;&nbsp;&nbsp;
+								<input type="hidden" name="check_user" value="${check_user }">
+							</s:iterator>
+							<s:if test="'mdy' == viewFlag">
+							<a href="javascript:;" onclick="add_user(${check.uuid},${check.crit_id});" >催收</a>
+							</s:if>
+					</fieldset>
 					</div>
 			</s:form>
 
@@ -117,22 +136,48 @@ s
 		});
 	});
 </script>
-<script type="text/javascript" src="<s:url value="/include/jQuery/jquery.ui.datepicker-zh.js" />"></script>
-<script type="text/javascript" src="<s:url value="/js/DatePicker.js" />"></script>
-
-
 <script type="text/javascript">
 $(function(){
     function sYear(){
         var d = new Date();
         var vYear = d.getFullYear();
+        var a=${check.ym};
         for(var i=0;i<=5;i++){
-            var html='<option value="'+(vYear+i)+'">'+(vYear+i)+'</option>';
+        	var y=vYear+i;
+            var html="";
+            if(a!=null && a==y){
+            	 html='<option value="'+(vYear+i)+'" selected="selected" >'+(vYear+i)+'</option>';
+            }else{
+            	html='<option value="'+(vYear+i)+'">'+(vYear+i)+'</option>';
+            }
             $(".ss").append(html);
         }
     }
     sYear();
 })
+
+function add_user(uuid,typeid){
+	var chu="";
+	$("input[name='check_user']").each(
+			function() {
+				chu+=$(this).val()+",";
+			});
+	 $.ajax({
+	     type:'POST',
+	     url: '/check360/pro_send_email',
+	     data: "params="+uuid+"&type="+typeid+"&check_user="+chu,
+	     success: function(data){
+	    	 if(data=="0"){
+	    		 alert("成功.");
+	 		}else if(data=="2"){
+	 			 alert("没有考核人.");
+	 		}   	 
+	    	 else {
+	 			alert("失败");
+	 		}
+	    }			    
+	  });
+}
 </script>
 
 

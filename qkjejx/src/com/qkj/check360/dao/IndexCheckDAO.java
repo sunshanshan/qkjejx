@@ -12,6 +12,10 @@ public class IndexCheckDAO extends AbstractDAO {
 		return super.list("index_getIndexCheck", map);
 	}
 	
+	public List listst(Map<String, Object> map) {
+		return super.list("index_getIndexCheckSt", map);
+	}
+	
 	public Object get(Object uuid) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("uuid", uuid);
