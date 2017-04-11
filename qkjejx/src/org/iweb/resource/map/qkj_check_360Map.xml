@@ -20,21 +20,20 @@
 	
 	<select id="qkjmanager_getSumScores" resultClass="score360" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select ic.user_id user_id,u.USER_NAME user_name,s.check_ym,ch.ym ym,SUM(s.check_gold) sumscore,ct.title cttitle from qkj_r_360score s 
+			select ic.user_id user_id,u.USER_NAME user_name,s.check_ym,ch.title title,SUM(s.check_score) sumscore from qkj_r_360score s 
 			join qkj_t_360indexCheck ic on (s.check_user_id=ic.uuid)
 			join s_sys_user u on (ic.user_id=u.uuid)
 			join qkj_r_check360 ch on (ch.uuid=s.check_ym)
-			join qkj_r_critType360 ct on (ch.crit_id=ct.uuid)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ s.uuid=#uuid# ]]></isNotNull>
 			<isNotNull prepend="AND" property="check_user_id"><![CDATA[ s.check_user_id=#check_user_id# ]]></isNotNull>
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[ s.check_ym=#check_ym# ]]></isNotNull>
-			<isNotNull prepend="AND" property="ym"><![CDATA[ch.ym=#ym# ]]></isNotNull>
 			<isNotNull prepend="AND" property="user_id"><![CDATA[ ic.user_id=#user_id# ]]></isNotNull>
+			<isNotNull prepend="AND" property="title"><![CDATA[ ch.title like '%'+#title# +'%' ]]></isNotNull>
 			<isNotNull prepend="AND" property="user_name"><![CDATA[ u.user_name like '%'+#user_name# +'%' ]]></isNotNull>
 		</dynamic>
-		<![CDATA[ group by ic.user_id,s.check_ym,u.USER_NAME,ch.ym,ct.title ORDER BY ch.ym desc]]>
+		<![CDATA[  group by ic.user_id,s.check_ym,u.USER_NAME,ch.title ]]>
 	</select>
 	
 	<insert id="qkjmanager_addScore" parameterClass="score360">
@@ -80,9 +79,10 @@
 	
 	<select id="qkjmanager_getSonScoresView" resultClass="sonScore360" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select ic.cuname check_username,ic.check_user,s.check_score total,s.check_date,ss.* from qkj_r_360sonscore ss 
+			select a.title,a.detail,ic.cuname check_username,ic.check_user,s.check_score total,s.check_date,ss.* from qkj_r_360sonscore ss 
 			join qkj_r_360score s on (s.uuid=ss.score_id)
 			join qkj_t_360indexCheck ic on (ic.uuid=s.check_user_id)
+			join qkj_t_assess360 a on (a.uuid=ss.check_index)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ s.uuid=#uuid# ]]></isNotNull>
@@ -200,29 +200,32 @@ join qkj_t_360indexCheck ic on (ic.uuid=s.check_user_id)
 	<typeAlias alias="index360" type="com.qkj.check360.domain.Index360" />
 	<select id="index_getIndex360" resultClass="index360" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select i.*,t.title typeTitle,t.uuid typeUUID from qkj_r_check360 i
-join qkj_r_critType360 t on (i.crit_id=t.uuid)
+			select i.* from qkj_r_check360 i
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
-			<isNotNull prepend="AND" property="ym"><![CDATA[ i.ym=#ym# ]]></isNotNull>
+			<isNotNull prepend="AND" property="title"><![CDATA[ i.title like #title# + '%']]></isNotNull>
 			<isNotNull prepend="AND" property="state"><![CDATA[ i.state=#state# ]]></isNotNull>
 		</dynamic>
 	</select>
 	
 	<select id="index_getIndexCrit360" resultClass="index360" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select i.uuid typeUUID,i.title typeTitle from qkj_r_critType360 i
+			select i.uuid typeUUID,i.title typeTitle,i.uid uid from qkj_r_critType360 i
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="uids">
+			<![CDATA[ i.uid In ]]>
+			<iterate property="uids" open="(" close=")" conjunction=" , "> #uids[]#</iterate>
+		</isNotNull>
 		</dynamic>
 	</select>
 	
 	<insert id="user_id_addIndex360" parameterClass="index360">
 		<![CDATA[ 
-			insert into qkj_r_check360(ym,state,add_user,add_time,lm_user,lm_time,crit_id)
-			VALUES(#ym#,#state#,#add_user#,#add_time#,#lm_user#,#lm_time#,#crit_id#);
+			insert into qkj_r_check360(title,state,add_user,add_time,lm_user,lm_time,crit_id,main_id)
+			VALUES(#title#,#state#,#add_user#,#add_time#,#lm_user#,#lm_time#,#crit_id#,#main_id#);
 		]]>
 		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
        	 	select @@IDENTITY as value     
@@ -231,11 +234,12 @@ join qkj_r_critType360 t on (i.crit_id=t.uuid)
 	<update id="user_id_mdyIndex360" parameterClass="index360">
 		<![CDATA[
 			Update qkj_r_check360
-			Set ym=#ym#,
+			Set title=#title#,
 				state=#state#,
 				lm_time=#lm_time#,
 				lm_user=#lm_user#,
-				crit_id=#crit_id#
+				crit_id=#crit_id#,
+				main_id=#main_id#
 			Where uuid=#uuid#
 		]]>
 	</update>
@@ -247,6 +251,47 @@ join qkj_r_critType360 t on (i.crit_id=t.uuid)
 	
 	<!-- 三级管理维度设置 -->
 	<!-- 第一级能力管理 -->
+	<typeAlias alias="mainca" type="com.qkj.check360.domain.MainCa" />
+	<select id="index_getmainca" resultClass="mainca" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select i.* from qkj_t_360mainCa i
+			
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="title"><![CDATA[ i.title=#title# ]]></isNotNull>
+		</dynamic>
+		
+		<![CDATA[ 
+			order by uuid desc
+		]]>
+	</select>
+	
+	<insert id="index_addmainca" parameterClass="mainca">
+		<![CDATA[ 
+			insert into qkj_t_360mainCa(title)
+			VALUES(#title#);
+		]]>
+		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
+       	 	select @@IDENTITY as value     
+    	 </selectKey>   
+	</insert>
+	
+	<update id="index_mdymainca" parameterClass="mainca">
+		<![CDATA[
+			Update qkj_t_360mainCa
+			Set title=#title#
+			
+			Where uuid=#uuid#
+		]]>
+	</update>
+	
+	<delete id="index_delmainca" parameterClass="mainca">
+		<![CDATA[
+			Delete From qkj_t_360mainCa where uuid=#uuid#
+		]]>
+	</delete>
+	
 	<typeAlias alias="capacity" type="com.qkj.check360.domain.Capacity" />
 	<select id="index_getCapacitys" resultClass="capacity" parameterClass="java.util.Map">
 		<![CDATA[ 
@@ -255,29 +300,15 @@ join qkj_r_critType360 t on (i.crit_id=t.uuid)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
-			<isNotNull prepend="AND" property="user_id"><![CDATA[ i.user_id=#user_id# ]]></isNotNull>
+			<isNotNull prepend="AND" property="title"><![CDATA[ i.title=#title# ]]></isNotNull>
+			<isNotNull prepend="AND" property="main_id"><![CDATA[ i.main_id=#main_id# ]]></isNotNull>
 		</dynamic>
-	</select>
-	
-	<select id="index_getCapacitysbyUserid" resultClass="capacity" parameterClass="java.util.Map">
-		<![CDATA[ 
-			select i.user_id,i.user_name from qkj_t_360capacity i 
-			
-		]]>
-		<dynamic prepend="WHERE">
-			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
-			<isNotNull prepend="AND" property="user_id"><![CDATA[ i.user_id=#user_id# ]]></isNotNull>
-			<isNotNull prepend="AND" property="crit_id"><![CDATA[ i.crit_id=#crit_id# ]]></isNotNull>
-		</dynamic>
-		<![CDATA[ 
-		GROUP BY i.user_id,i.user_name
-		]]>
 	</select>
 	
 	<insert id="index_addCapacity" parameterClass="capacity">
 		<![CDATA[ 
-			insert into qkj_t_360capacity(add_user,title,add_time,user_name,user_id,crit_id)
-			VALUES(#add_user#,#title#,#add_time#,#user_name#,#user_id#,#crit_id#);
+			insert into qkj_t_360capacity(add_user,title,add_time,main_id)
+			VALUES(#add_user#,#title#,#add_time#,#main_id#);
 		]]>
 		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
        	 	select @@IDENTITY as value     
@@ -296,12 +327,6 @@ join qkj_r_critType360 t on (i.crit_id=t.uuid)
 	<delete id="index_delCapacity" parameterClass="capacity">
 		<![CDATA[
 			Delete From qkj_t_360capacity where uuid=#uuid#
-		]]>
-	</delete>
-	
-	<delete id="index_delCapacityByUser" parameterClass="capacity">
-		<![CDATA[
-			Delete From qkj_t_360capacity where user_id=#user_id#
 		]]>
 	</delete>
 	
@@ -416,28 +441,26 @@ join qkj_r_critType360 t on (i.crit_id=t.uuid)
 	<typeAlias alias="assess" type="com.qkj.check360.domain.Assess" />
 	<select id="index_getAssess" resultClass="assess" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select a.*,i.manifestation ititle,f.title ftitle,c.title ctitle,c.user_name cuser_name from qkj_t_assess360 a
+			select a.*,i.manifestation ititle,f.title ftitle,c.title ctitle,ca.title catitle from qkj_t_assess360 a
 			join qkj_t_360index i on (a.index_id=i.uuid)
 			join qkj_t_360factors f on (a.fact_id=f.uuid)
 			join qkj_t_360capacity c on (a.capa_id=c.uuid)
+			join qkj_t_360mainCa ca on (c.main_id=ca.uuid)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ a.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="main_id"><![CDATA[ c.main_id=#main_id# ]]></isNotNull>
 			<isNotNull prepend="AND" property="index_id">
 			<![CDATA[  a.index_id In ]]>
 			<iterate property="index_id" open="(" close=")" conjunction=" , "> #index_id[]#</iterate>
-			</isNotNull>
-			<isNotNull prepend="AND" property="crit_id"><![CDATA[ c.crit_id=#crit_id# ]]></isNotNull>
-			<isNotNull prepend="AND" property="user_id">
-			<![CDATA[  c.user_id like #user_id# +',%' or c.user_id like '%,'+#user_id# or c.user_id like '%,'+#user_id# +',%']]>
 			</isNotNull>
 		</dynamic>
 	</select>
 	
 	<insert id="index_addAssess" parameterClass="assess">
 		<![CDATA[ 
-			insert into qkj_t_assess360(index_id,title,detail,capa_id,fact_id)
-			VALUES(#index_id#,#title#,#detail#,#capa_id#,#fact_id#);
+			insert into qkj_t_assess360(index_id,title,detail,capa_id,fact_id,main_id)
+			VALUES(#index_id#,#title#,#detail#,#capa_id#,#fact_id#,#main_id#);
 		]]>
 		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
        	 	select @@IDENTITY as value     
@@ -451,7 +474,8 @@ join qkj_r_critType360 t on (i.crit_id=t.uuid)
 				title=#title#,
 				detail=#detail#,
 				fact_id=#fact_id#,
-				capa_id=#capa_id#
+				capa_id=#capa_id#,
+				main_id=#main_id#
 			Where uuid=#uuid#
 		]]>
 	</update>
@@ -472,16 +496,15 @@ join qkj_r_critType360 t on (i.crit_id=t.uuid)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
-			<isNotNull prepend="AND" property="user_id">
-			<![CDATA[  i.user_id like #user_id# +',%' or i.user_id like '%,'+#user_id# or i.user_id like '%,'+#user_id# +',%']]>
-			
+			<isNotNull prepend="AND" property="main_id">
+			<![CDATA[ i.main_id=#main_id# ]]>
 			</isNotNull>
 		</dynamic>
 	</select>
 	<insert id="user_id_addremark360" parameterClass="remark360">
 		<![CDATA[ 
-			insert into qkj_r_remark360(title,user_id,detail)
-			VALUES(#title#,#user_id#,#detail#);
+			insert into qkj_r_remark360(title,main_id,detail)
+			VALUES(#title#,#main_id#,#detail#);
 		]]>
 		 <selectKey resultClass="int" type="post" keyProperty="uuid" >     
        	 	select @@IDENTITY as value     
@@ -497,9 +520,10 @@ join qkj_r_critType360 t on (i.crit_id=t.uuid)
 	<typeAlias alias="indexCheck" type="com.qkj.check360.domain.IndexCheck" />
 	<select id="index_getIndexCheck" resultClass="indexCheck" parameterClass="java.util.Map">
 		<![CDATA[ 
-		select i.*,u.USER_NAME check_user_name,ct.title,ct.uuid ctuuid from qkj_t_360indexCheck i
+		select i.*,u.USER_NAME check_user_name,ct.title,ct.uuid ctuuid,chu.USER_NAME checkuser_name from qkj_t_360indexCheck i
 			join s_sys_user u on (i.user_id=u.uuid)
 			join qkj_r_checkType360 ct on (i.checkType_id=ct.uuid)
+			join s_sys_user chu on (i.check_user=chu.UUID)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
@@ -508,6 +532,11 @@ join qkj_r_critType360 t on (i.crit_id=t.uuid)
 			<isNotNull prepend="AND" property="users">
 			<![CDATA[  i.check_user In ]]>
 			<iterate property="users" open="(" close=")" conjunction=" , "> #users[]#</iterate>
+			</isNotNull>
+			
+			<isNotNull prepend="AND" property="ausers">
+			<![CDATA[  i.user_id In ]]>
+			<iterate property="ausers" open="(" close=")" conjunction=" , "> #ausers[]#</iterate>
 			</isNotNull>
 		</dynamic>
 	</select>
@@ -535,6 +564,26 @@ join qkj_r_critType360 t on (i.crit_id=t.uuid)
        	 	select @@IDENTITY as value     
     	 </selectKey>   
 	</insert>
+	
+	<insert id="add_acheckUser" parameterClass="indexCheck">
+		<![CDATA[ 
+			insert into qkj_r_critType360 (uid,title)
+			select DISTINCT i.user_id uid,u.USER_NAME title from qkj_t_360indexCheck i
+			join s_sys_user u on (i.user_id=u.uuid)
+			where not EXISTS (select 1 from qkj_r_critType360 ct where ct.uid=i.user_id)
+		]]>
+	</insert>
+	
+	<insert id="del_acheckUser" parameterClass="indexCheck">
+		<![CDATA[ 
+			DELETE from qkj_r_critType360 
+			where uid not in  (
+			select u.UUID from qkj_t_360indexCheck i
+						join s_sys_user u on (i.user_id=u.uuid) 
+			) and uid>10
+		]]>
+	</insert>
+	
 	<update id="user_id_mdyIndexChek" parameterClass="indexCheck">
 		<![CDATA[
 			Update qkj_t_360indexCheck

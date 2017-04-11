@@ -25,6 +25,14 @@ public class IndexCheckDAO extends AbstractDAO {
 	public Object add(Object parameters) {
 		return super.add("user_id_addIndexChek", parameters);
 	}
+	
+	public Object addAcheckUser(Object parameters) {
+		return super.add("add_acheckUser", parameters);
+	}
+	
+	public int delacheckUser(Object parameters) {
+		return super.delete("del_acheckUser", parameters);
+	}
 
 	public int save(Object parameters) {
 		return super.save("user_id_mdyIndexChek", parameters);

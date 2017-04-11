@@ -103,6 +103,17 @@
 		         </div>
 		         </div>
 	       	</div>
+	       	
+	       	<div class="label_hang">
+		         <div class="label_ltit">是否考核子部门:</div>
+		         <div class="label_rwben2">
+		         <div class="label_rwb">
+		         <input type="checkbox" name="userDept.ischeckSondept" value="1"  class="checkbox"
+		         <s:if test="%{userDept.ischeckSondept==1}">checked="checked"</s:if>
+		         />
+		         </div>
+		         </div>
+	       	</div>
 			<div class="label_hang clear">
 		       <div class="label_ltit">用户角色:</div>
 		       <div class="label_rwbenx">

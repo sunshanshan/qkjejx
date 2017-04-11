@@ -112,18 +112,10 @@
 	<select id="qkjmanager_getVarticsBG" resultClass="dept" parameterClass="java.util.Map">
 		<![CDATA[ 
 			select d.dept_code,d.dept_cname,d.parent_dept
-			from s_sys_department d 
-			
-			where ((d.parent_dept in 
-			(
-			select ud.dept_code from s_sys_userdept ud 
-			join s_cfg_position p on (ud.[position]=p.uuid) where  p.groupT=1
-			) 
-			and LEN(d.dept_code)>3) or d.dept_code in
-			(
-			select ud.dept_code from s_sys_userdept ud 
-			left join s_cfg_position p on (ud.[position]=p.uuid) where  ud.roles like '%2016072516956868%'
-			)) order by d.parent_dept
+			from s_sys_department d
+			where d.type=0
+		    and LEN(d.dept_code)>2
+			order by d.parent_dept,d.dept_code
 		]]>
 		
 	</select>

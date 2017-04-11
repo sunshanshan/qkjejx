@@ -32,16 +32,9 @@ cursor: pointer;
 						</div>
 					</div>
 					<div class="label_hang">
-						<div class="label_ltit">考核年度:</div>
+						<div class="label_ltit">考核活动主题:</div>
 						<div class="label_rwben">
-							<select name="score.check_ym">
-							<option value="">---请选择---</option>
-							<s:iterator value="index360s" status="sta">
-							<option value="${uuid }" 
-							<s:if test="%{score.check_ym==uuid }">selected="selected"</s:if>
-							>${ym }${typeTitle}</option>
-							</s:iterator>
-    						</select>
+						<s:textfield name='score.title'/>
 						</div>
 					</div>
 							
@@ -57,15 +50,17 @@ cursor: pointer;
 		<div class="tab_warp">
 			<table>
 				<tr id="coltr">
-					<th class="td1">主键</th>
-					<th class="td1">考核年月</th>
+					<th class="td1">被考核人</th>
+					<th class="td1">活动主题</th>
+					<th class="td1">总分</th>
 					<th class="td4">操作</th>
 					<th class="td0">查看</th>
 				</tr>
 				<s:iterator value="scores" status="sta">
 					<tr id="showtr${user_id}">
 						<td class="td1 nw">${user_name}</td>
-						<td class="td1 nw">编号${check_ym}考核年${ym}类别${cttitle}</td>
+						<td class="td1 nw">${title}</td>
+						<td class="td1 nw">${sumscore}</td>
 						<td class="td4 op-area">
 								<a class="input-blue" href="<s:url namespace="/check360" action="check_360ScoreView"><s:param name="score.user_id" value="user_id"></s:param><s:param name="score.check_ym" value="check_ym"></s:param></s:url>">详情</a>
 								<a class="input-blue" href="<s:url namespace="/check360" action="check_loadDetail"><s:param name="score.user_id" value="user_id"></s:param><s:param name="score.check_ym" value="check_ym"></s:param></s:url>">详细报告</a>		

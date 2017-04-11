@@ -49,9 +49,9 @@ cursor: pointer;
 					</div> --%>
 					
 					<div class="label_hang">
-						<div class="label_ltit">考核年月:</div>
+						<div class="label_ltit">主题:</div>
 						<div class="label_rwben">
-							<input id="begintime" name="check.ym" type="text" onclick="setmonth(this)" readonly="readonly"/>
+							<s:textfield name="check.title"/>
 						</div>
 					</div>
 							
@@ -75,21 +75,19 @@ cursor: pointer;
 			<table>
 				<tr id="coltr">
 					<th class="td1">主键</th>
-					<th class="td1">类别</th>
-					<th class="td1">考核年月</th>
-					<th class="td3">状态</th>
+					<th class="td1">主题</th>
+					<th class="td1">状态</th>
 					<th class="td4">操作</th>
 					<th class="td0">查看</th>
 				</tr>
 				<s:iterator value="checks" status="sta">
 					<tr id="showtr${uuid}">
 						<td class="td1 nw">${uuid}</td>
-						<td class="td1 nw">${typeTitle}</td>
-						<td class="td1 nw">${ym}</td>
-						<td class="td3 nw">
+						<td class="td1 longnote" title="${title}">${it:subString(title,20)}</td>
+						<td class="td1 nw">
 						<s:if test="state==0">打开
-						<a href="javascript:;" onclick="add_user(${uuid},${typeUUID});" >发送本年度考核</a>
-						<a href="javascript:;" id="addCapa" onclick="addCapa(${uuid},${typeUUID});" >定向发送考核</a>
+						<%-- <a href="javascript:;" onclick="add_user(${uuid},${typeUUID});" >发送本年度考核</a>
+						<a href="javascript:;" id="addCapa" onclick="addCapa(${uuid},${typeUUID});" >定向发送考核</a> --%>
 						</s:if>
 						<s:if test="state==1">关闭</s:if>
 						<s:if test="state==2">已审核</s:if>

@@ -51,16 +51,16 @@ cursor: pointer;
 		<div class="tab_warp">
 			<table>
 				<tr id="coltr">
-					<th class="td1">被考核人</th>
+					<th class="td1">标题</th>
 					<th class="td4">操作</th>
 					<th class="td0">查看</th>
 				</tr>
-				<s:iterator value="capas" status="sta">
-					<tr id="showtr${user_id}">
-						<td class="td1 nw">${user_name}</td>
+				<s:iterator value="maincas" status="sta">
+					<tr id="showtr${uuid}">
+						<td class="td1 nw">${title}</td>
 						<td class="td4 op-area">
-								<a class="input-blue" href="<s:url namespace="/check360" action="check_loadCapa360"><s:param name="viewFlag">mdy</s:param><s:param name="capa.user_id" value="user_id"></s:param></s:url>">修改</a>
-								<a class="input-red" href="<s:url namespace="/check360" action="check_delCapaUser"><s:param name="capa.user_id" value="user_id"></s:param></s:url>" onclick="return isDel();">删除</a>
+								<a class="input-blue" href="<s:url namespace="/check360" action="check_loadCapa360"><s:param name="viewFlag">mdy</s:param><s:param name="mainca.uuid" value="uuid"></s:param></s:url>">修改</a>
+								<a class="input-red" href="<s:url namespace="/check360" action="check_delMain"><s:param name="mainca.uuid" value="uuid"></s:param></s:url>" onclick="return isDel();">删除</a>
 						</td>
 						<td class="td0 op-area"><a href="javascript:;" onClick="showDetail('showtr${uuid}');" class="input-nostyle">查看</a></td>
 					</tr>

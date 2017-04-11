@@ -54,7 +54,7 @@ margin-left: 0px;
 							<s:iterator value="index360s" status="sta">
 							<option value="${uuid }" 
 							<s:if test="%{score.check_ym==uuid }">selected="selected"</s:if>
-							>${ym }${typeTitle}</option>
+							>${title}</option>
 							</s:iterator>
     						</select>
 						</div>

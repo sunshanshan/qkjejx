@@ -51,7 +51,7 @@ cursor: pointer;
 			<table>
 				<tr><td bgcolor="white" style="text-align: left;" colspan="5">信息中心总监</td></tr>
 				<tr id="coltr">
-					<th class="td1"　w>部门编号</th>
+					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
 					<th class="td1">本月得分</th>
 					<th class="td1">本月评级</th>
@@ -430,7 +430,83 @@ cursor: pointer;
 					<th class="td2">备注</th>
 				</tr>
 				<s:iterator value="bgs" status="sta">
-					<s:if test="%{parent_dept=='103'}"><tr id="showtr${dept_code}">
+					<s:if test="%{parent_dept=='103'&&(dept_code=='10204'||dept_code=='10313'||dept_code=='10314'||dept_code=='10315')}">
+					<tr id="showtr${dept_code}">
+						<td class="td1 nw">${dept_code} 
+						<script type="text/javascript">
+							$(function(){
+									var d=${dept_code};
+									var cym=$('#begintime').val();
+									ads(d,cym);
+							});
+						</script>
+						</td>
+						<td class="td1 nw"><a href="<s:url namespace="/qkjmanager" action="report_listbgu"><s:param name="vardic.acheck_usercode" value="dept_code"></s:param><s:param name="vardic.cym">${it:formatDate(vardic.cym,'yyyy-MM')}</s:param></s:url>">${dept_cname}</a></td>
+						<td class="td1 nw" id="score${dept_code }">
+						</td>
+						<td class="td1 nw" id="p${dept_code }">
+						
+						</td>
+						<td class="td2 nw" id="x${dept_code }">
+						
+						</td>
+						<td class="td1 nw" id="z${dept_code }"></td>
+						<td class="td2 nw" id="b${dept_code }"></td>
+					</tr></s:if>
+				</s:iterator>
+				
+			</table>
+			<table>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">酿造部经理</td></tr>
+				<tr id="coltr">
+					<th class="td1">部门编号</th>
+					<th class="td1">部门</th>
+					<th class="td1">本月得分</th>
+					<th class="td1">本月评级</th>
+					<th class="td2">本月系数</th>
+					<th class="td1">本月状态</th>
+					<th class="td2">备注</th>
+				</tr>
+				<s:iterator value="bgs" status="sta">
+					<s:if test="%{parent_dept=='103'&&dept_code!='10204'&&dept_code!='10313'&&dept_code!='10314'&&dept_code!='10315'}">
+					<tr id="showtr${dept_code}">
+						<td class="td1 nw">${dept_code} 
+						<script type="text/javascript">
+							$(function(){
+									var d=${dept_code};
+									var cym=$('#begintime').val();
+									ads(d,cym);
+							});
+						</script>
+						</td>
+						<td class="td1 nw"><a href="<s:url namespace="/qkjmanager" action="report_listbgu"><s:param name="vardic.acheck_usercode" value="dept_code"></s:param><s:param name="vardic.cym">${it:formatDate(vardic.cym,'yyyy-MM')}</s:param></s:url>">${dept_cname}</a></td>
+						<td class="td1 nw" id="score${dept_code }">
+						</td>
+						<td class="td1 nw" id="p${dept_code }">
+						
+						</td>
+						<td class="td2 nw" id="x${dept_code }">
+						
+						</td>
+						<td class="td1 nw" id="z${dept_code }"></td>
+						<td class="td2 nw" id="b${dept_code }"></td>
+					</tr></s:if>
+				</s:iterator>
+				
+			</table>
+			<table>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">精裱车间总监</td></tr>
+				<tr id="coltr">
+					<th class="td1">部门编号</th>
+					<th class="td1">部门</th>
+					<th class="td1">本月得分</th>
+					<th class="td1">本月评级</th>
+					<th class="td2">本月系数</th>
+					<th class="td1">本月状态</th>
+					<th class="td2">备注</th>
+				</tr>
+				<s:iterator value="bgs" status="sta">
+					<s:if test="%{parent_dept==1}"><tr id="showtr${dept_code}">
 						<td class="td1 nw">${dept_code} 
 						<script type="text/javascript">
 							$(function(){
@@ -492,6 +568,8 @@ cursor: pointer;
 				</s:iterator>
 				
 			</table>
+			
+			
 		
 		
 	</div>

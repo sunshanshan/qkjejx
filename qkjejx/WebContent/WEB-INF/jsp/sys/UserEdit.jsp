@@ -52,7 +52,7 @@
 		       <div class="label_ltit">电子邮件:</div>
 		       <div class="label_rwbenx"><s:textfield id="user.email" title="电子邮件" name="user.email" /></div>
 			</div>
-			<s:if test="%{user.position!=null}">
+			<s:if test="%{user.position!=null&&user.position!=''}">
 			<script type="text/javascript">
 			$(function(){
 				var p=${user.position};
@@ -60,7 +60,7 @@
 			});
 			</script>
 			</s:if>
-			<s:if test="%{user.p_code!=null}">
+			<s:if test="%{user.p_code!=null&&user.p_code!=''}">
 			<script type="text/javascript">
 			$(function(){
 				var code=${user.p_code};

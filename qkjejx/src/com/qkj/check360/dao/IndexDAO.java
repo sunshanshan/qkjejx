@@ -93,12 +93,32 @@ public class IndexDAO extends AbstractDAO {
 	 * @param map
 	 * @return
 	 */
-	public List listCapa(Map<String, Object> map) {
-		return super.list("index_getCapacitys", map);
+	
+	public List listMain(Map<String, Object> map) {
+		return super.list("index_getmainca", map);
 	}
 	
-	public List listCapabyUser(Map<String, Object> map) {
-		return super.list("index_getCapacitysbyUserid", map);
+	public Object getMain(Object uuid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("uuid", uuid);
+		return super.get("index_getmainca", map);
+	}
+	
+	public Object addMain(Object parameters) {
+		return super.add("index_addmainca", parameters);
+	}
+
+	public int saveMain(Object parameters) {
+		return super.save("index_mdymainca", parameters);
+	}
+
+	public int deleteMain(Object parameters) {
+		return super.delete("index_delmainca", parameters);
+	}
+	
+	
+	public List listCapa(Map<String, Object> map) {
+		return super.list("index_getCapacitys", map);
 	}
 	
 	public Object getCapa(Object uuid) {
@@ -117,10 +137,6 @@ public class IndexDAO extends AbstractDAO {
 
 	public int deleteCapa(Object parameters) {
 		return super.delete("index_delCapacity", parameters);
-	}
-	
-	public int deleteCapaByUser(Object parameters) {
-		return super.delete("index_delCapacityByUser", parameters);
 	}
 	
 	

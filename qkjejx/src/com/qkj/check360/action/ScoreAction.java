@@ -352,14 +352,15 @@ public class ScoreAction extends ActionSupport {
 					this.setScore(null);
 				}
 				//查询考核人(ic.uuid)在本年度（index360.uuid）是否考核
+				CheckDao checkdao = new CheckDao();
+				index360=(Index360) checkdao.get(index360.getUuid());
+				
 				map.clear();
 				map.put("check_user_id", ic.getUuid());
 				map.put("check_ym", index360.getUuid());
 				this.setScores(dao.list(map));
 				if(scores.size()>0){//已考核
 					//考核状态打开时为修改否则
-					CheckDao checkdao = new CheckDao();
-					index360=(Index360) checkdao.get(index360.getUuid());
 					if(index360.getState()!=null && index360.getState()==0){
 						//查询考核人信息
 						IndexCheckDAO icd=new IndexCheckDAO();
@@ -382,8 +383,7 @@ public class ScoreAction extends ActionSupport {
 					ic=(IndexCheck) icd.get(ic.getUuid());
 					//查询类型和考核人一致的考题
 					map.clear();
-					map.put("user_id", ic.getUser_id());
-					map.put("crit_id", capa.getCrit_id());
+					map.put("main_id", index360.getMain_id());
 					this.setAsses(indexdao.listAss(map));;
 					//查询主观考评
 					CheckDao chdao=new CheckDao();
@@ -409,7 +409,7 @@ public class ScoreAction extends ActionSupport {
 			if(score.getCheck_ym()!=null&&score.getUser_id()!=null){
 				CheckDao checkdao = new CheckDao();
 				UserDAO ud=new UserDAO();
-				this.setIndex360s(checkdao.list(null));
+				this.setIndex360((Index360)checkdao.get(score.getCheck_ym()));
 				//查询被考核人
 				this.setUser((User) ud.get(score.getUser_id()));
 			}

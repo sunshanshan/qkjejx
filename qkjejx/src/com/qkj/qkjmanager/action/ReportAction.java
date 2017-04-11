@@ -333,10 +333,12 @@ public class ReportAction extends ActionSupport {
 		Set<String> dall = new HashSet<>();
 		if (uds.size() > 0) {
 			for (int s = 0; s < uds.size(); s++) {
-				if (uds.get(s).getRoles().contains("2016060815212623")&& uds.get(s).getIscheckdept()!=null && uds.get(s).getIscheckdept()==1) {
+				//有部门权限及子部门
+				if (uds.get(s).getDepsubover()!=null && uds.get(s).getDepsubover()==1 && uds.get(s).getSubover()!=null && uds.get(s).getSubover()==1) {
 					dsetall.add(uds.get(s).getDept_code());
 				}
-				if (uds.get(s).getRoles().contains("2016072516956868")) {// 部门考核权限
+				//只有部门权限
+				if (uds.get(s).getRoles().contains("2016072516956868")||(uds.get(s).getIscheckdept()!=null&&uds.get(s).getIscheckdept()==1)) {// 部门考核权限
 					dall.add(uds.get(s).getDept_code());
 				}
 			}

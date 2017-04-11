@@ -37,23 +37,11 @@ text-align: left !important;
 					</div>
 					<div class="label_hang">
 						<div class="label_ltit">考核年度:</div>
-						<div class="label_rwben">
-							<select name="score.check_ym">
-							<s:iterator value="index360s" status="sta">
-							<option value="${uuid }" 
-							<s:if test="%{score.check_ym==uuid }">selected="selected"</s:if>
-							>${ym }${typeTitle}</option>
-							</s:iterator>
-    						</select>
+						<div class="label_rwbenx">
+							${index360.title}
 						</div>
 					</div>
 					<div>${message}</div>
-					<div class="label_hang tac">
-						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
-						<label for="search_mcondition"></label>更多条件
-						<s:submit value="搜索" />
-						<s:reset value="重置" />
-					</div>
 				</div>
 			</div>
 		</s:form>

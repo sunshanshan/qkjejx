@@ -31,6 +31,7 @@ import com.qkj.check360.domain.Capacity;
 import com.qkj.check360.domain.Factors;
 import com.qkj.check360.domain.Index;
 import com.qkj.check360.domain.IndexCheck;
+import com.qkj.check360.domain.MainCa;
 import com.qkj.check360.domain.Remark360;
 import com.qkj.check360.domain.Score360;
 
@@ -44,7 +45,7 @@ public class AssessAction extends ActionSupport {
 	
 	private Capacity capa;
 	private List<Capacity> capas;// 能力
-	private List<Capacity> capausers;
+	private List<MainCa> capausers;
 	private Factors fact;
 	private List<Factors> facts;
 	private Index index;
@@ -170,11 +171,11 @@ public class AssessAction extends ActionSupport {
 		this.indexs = indexs;
 	}
 
-	public List<Capacity> getCapausers() {
+	public List<MainCa> getCapausers() {
 		return capausers;
 	}
 
-	public void setCapausers(List<Capacity> capausers) {
+	public void setCapausers(List<MainCa> capausers) {
 		this.capausers = capausers;
 	}
 
@@ -214,7 +215,7 @@ public class AssessAction extends ActionSupport {
 			} else if ("mdy".equals(viewFlag)) {
 				if (!(ass == null || ass.getUuid() == null)) {
 					this.setAss((Assess) dao.getAss(ass.getUuid()));
-					selectAss(ass.getCapa_id());
+					selectAss(ass.getMain_id());
 				} else {
 					this.setAss(null);
 				}
@@ -268,8 +269,8 @@ public class AssessAction extends ActionSupport {
 			map.clear();
 			map.put("uuid", c_id);
 		}
-		this.setCapausers(dao.listCapabyUser(map));
-		this.setCapas(dao.listCapa(map));
+		this.setCapausers(dao.listMain(map));
+		this.setCapas(dao.listCapa(null));
 		this.setFacts(dao.listFact(null));
 		this.setIndexs(dao.list(null));
 	}

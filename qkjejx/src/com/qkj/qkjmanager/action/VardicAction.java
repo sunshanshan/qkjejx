@@ -150,12 +150,9 @@ public class VardicAction extends ActionSupport {
 			//查询所有 直属下属
 			UserDAO ud=new UserDAO();
 			List<User> pus=new ArrayList();
-			map.clear();
-			map.put("parent_user", ContextHelper.getUserLoginUuid());
-			pus=ud.list(map);
-			
 			//开始查询已考核记录逻辑
 			map.clear();
+			map.put("check_user", ContextHelper.getUserLoginUuid());
 			if (vardic == null) {
 				vardic = new Vartic();
 			}
@@ -168,6 +165,14 @@ public class VardicAction extends ActionSupport {
 				map.put("check_ym", check.getUuid());
 			}
 			
+			//getManDept();//查询管理的部门
+			this.setVardics(dao.list(map));
+			this.setRecCount(dao.getResultCount());
+			
+			//需要考核的人员
+			map.clear();
+			map.put("parent_user", ContextHelper.getUserLoginUuid());
+			pus=ud.list(map);
 			//将下属放入map
 			List<String> dlistallo = new ArrayList<>();
 			Set<String> dsetallo = new HashSet<>();
@@ -180,12 +185,6 @@ public class VardicAction extends ActionSupport {
 					map.put("userid", dlistallo);//多权限可查询多个子部门
 				}
 			}
-			
-			getManDept();//查询管理的部门
-			this.setVardics(dao.list(map));
-			this.setRecCount(dao.getResultCount());
-			
-			//需要考核的人员
 			map.clear();
 			map.put("userid", dlistallo);//多权限可查询多个子部门
 			if (vardic == null) {
@@ -197,7 +196,7 @@ public class VardicAction extends ActionSupport {
 		        map.put("typea", 1);//成绩表中所有纵向向考核已经考核过的去掉
 				map.put("isdept", 1);//纵向考核
 				map.put("parent_user", ContextHelper.getUserLoginUuid());//当前登录人
-				map.put("check_user", ContextHelper.getUserLoginUuid());
+				//map.put("check_user", ContextHelper.getUserLoginUuid());
 				map.put("ex", 0);
 				if(map.containsKey("userid") && map.get("userid")!=null && map.get("userid")!="" && dlistallo.size()>0){
 					getManUser();//查询已经考核的人员放入map
@@ -216,12 +215,13 @@ public class VardicAction extends ActionSupport {
 				Set<String> dall = new HashSet<>();
 				if(uds.size()>0){
 					for(int s=0;s<uds.size();s++){
-						if(uds.get(s).getIscheckdept()!=null&& uds.get(s).getIscheckdept()!=null&&uds.get(s).getIscheckdept()==1){
+						if(uds.get(s).getIscheckdept()!=null&& uds.get(s).getIscheckSondept()!=null&&uds.get(s).getIscheckdept()==1&&uds.get(s).getIscheckSondept()==1){
 							dsetall.add(uds.get(s).getDept_code());
 						}else{
 							dsetall.add("o");
 						}
-						if(uds.get(s).getRoles().contains("2016072516956868")){//部门考核权限
+						//if(uds.get(s).getRoles().contains("2016072516956868")){//部门考核权限
+						if(uds.get(s).getRoles().contains("2016072516956868")||(uds.get(s).getIscheckdept()!=null&&uds.get(s).getIscheckdept()==1)){//部门考核权限
 							dall.add(uds.get(s).getDept_code());
 						}
 					}

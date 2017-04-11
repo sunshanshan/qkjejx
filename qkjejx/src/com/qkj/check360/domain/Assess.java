@@ -5,13 +5,14 @@ public class Assess {
 	private Integer index_id;// 因素id
 	private Integer capa_id;
 	private Integer fact_id;
+	private Integer main_id;
 	private String title;
 	private String detail;
 	
 	private String ftitle;
 	private String ititle;
 	private String ctitle;
-	private String cuser_name;
+	private String catitle;
 	
 	public Integer getUuid() {
 		return uuid;
@@ -67,11 +68,18 @@ public class Assess {
 	public void setCtitle(String ctitle) {
 		this.ctitle = ctitle;
 	}
-	public String getCuser_name() {
-		return cuser_name;
+	public String getCatitle() {
+		return catitle;
 	}
-	public void setCuser_name(String cuser_name) {
-		this.cuser_name = cuser_name;
+	public void setCatitle(String catitle) {
+		this.catitle = catitle;
 	}
+	public Integer getMain_id() {
+		return main_id;
+	}
+	public void setMain_id(Integer main_id) {
+		this.main_id = main_id;
+	}
+	
 	
 }

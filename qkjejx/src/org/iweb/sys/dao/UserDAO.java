@@ -47,6 +47,11 @@ public class UserDAO extends AbstractDAO {
 		return super.list("sys_getUser", map);
 	}
 	
+
+	public List listEmail(Map<String, Object> map) {
+		return super.list("sys_getUserEmail", map);
+	}
+	
 	public List listBypro(Map<String, Object> map) {
 		return super.list("sys_getUserByPos", map);
 	}

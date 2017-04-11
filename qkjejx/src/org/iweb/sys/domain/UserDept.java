@@ -20,6 +20,15 @@ public class UserDept {
 	private List<UserRole> user_roles_list;
 	
 	private Integer ischeckdept;//0:不审核部门1:审核部门
+	private Integer ischeckSondept;//0:不审核子部门1:审核子部门默认1
+
+	public Integer getIscheckSondept() {
+		return ischeckSondept;
+	}
+
+	public void setIscheckSondept(Integer ischeckSondept) {
+		this.ischeckSondept = ischeckSondept;
+	}
 
 	public Integer getDepsubover() {
 		return depsubover;

@@ -13,6 +13,15 @@ public class IndexCheck {
 	private String cuname;
 	private String title;
 	private Integer ctuuid;
+	private String checkuser_name;
+	
+	public String getCheckuser_name() {
+		return checkuser_name;
+	}
+
+	public void setCheckuser_name(String checkuser_name) {
+		this.checkuser_name = checkuser_name;
+	}
 
 	public int getUuid() {
 		return uuid;

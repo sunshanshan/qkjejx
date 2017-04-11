@@ -23,8 +23,9 @@ public class Score360 {
 	private String check_user;
 	private String user_id;
 	private String user_name;
-	private String ym;
+	private String title;
 	private String cttitle;
+	private Double sumscore;
 	
 	public String getAcheck_user() {
 		return acheck_user;
@@ -128,13 +129,13 @@ public class Score360 {
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
 	}
-	public String getYm() {
-		return ym;
-	}
-	public void setYm(String ym) {
-		this.ym = ym;
-	}
 	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	public String getCttitle() {
 		return cttitle;
 	}
@@ -147,6 +148,11 @@ public class Score360 {
 	public void setCheck_user(String check_user) {
 		this.check_user = check_user;
 	}
+	public Double getSumscore() {
+		return sumscore;
+	}
+	public void setSumscore(Double sumscore) {
+		this.sumscore = sumscore;
+	}
 
-	
 }

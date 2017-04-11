@@ -55,7 +55,7 @@ cursor: pointer;
 				<s:iterator value="asses" status="sta">
 					<tr id="showtr${uuid}">
 						<td class="td1 nw">${uuid}</td>
-						<td class="td1 nw">${cuser_name}-${ctitle}-${ftitle}-${ititle}</td>
+						<td class="td1 nw" title="${catitle}-${ctitle}-${ftitle}-${ititle}">${catitle}--${ititle}</td>
 						<td class="td1 nw">${title}</td>
 						<td class="td2 nw" title="${detail}">${it:subString(detail,18)}</td>
 						<td class="td4 op-area">

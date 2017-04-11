@@ -45,7 +45,7 @@ width:270% !important;
 		        </div>
 				<div class="label_hang">
 		            <div class="label_rwbenx">
-		            	<s:select id="user"  list="capausers" listKey="user_id" listValue="user_name" cssClass="validate[required]" />
+		            	<s:select id="user"  list="capausers" listKey="uuid" listValue="title" cssClass="validate[required]" />
 		            </div>
 		        </div>
 		        <div class="label_hang">
@@ -106,7 +106,7 @@ width:270% !important;
 			<s:iterator value="capas" status="sta">
 					<tr id="showtr${uuid}">
 						<td>
-						<input type="hidden" name="capauser" value="${user_id}" cuid="${uuid }" ctitle="${title }">
+						<input type="hidden" name="capauser" value="${main_id}" cuid="${uuid }" ctitle="${title }">
 						</td>
 					</tr>
 			</s:iterator>
@@ -124,6 +124,10 @@ width:270% !important;
 						</td>
 					</tr>
 			</s:iterator>
+			<s:if test="'mdy' == viewFlag">
+			<s:hidden id="ca_id" name="ass.capa_id" />
+			<s:hidden id="fa_id" name="ass.fact_id" />
+			</s:if>
 		</div>
 	</div>
 	<s:action name="ref_foot" namespace="/manager" executeResult="true" />
@@ -137,6 +141,7 @@ width:270% !important;
 	$(function() {
 		var userid=$('#user').val();
 		selectcapa(userid);
+		
 	});
 	
 	$('#user').change(function(){ 
@@ -163,7 +168,13 @@ width:270% !important;
 				capa.addOption($(this).attr("ctitle"), $(this).attr("cuid"));
 			}
 		});
-		selectfact(capa.val());	
+		var ca_id=$('#ca_id').val();
+		if(ca_id!=null && ca_id!=''){
+			capa.val(ca_id);
+			selectfact(capa.val());	
+		}else{
+			selectfact(capa.val());	
+		}
 		
 	}
 	
@@ -176,7 +187,14 @@ width:270% !important;
 				fact.addOption($(this).attr("ctitle"), $(this).attr("cuid"));
 			}
 		});
-		selectindex(fact.val());	
+		
+		var ca_id=$('#fa_id').val();
+		if(ca_id!=null && ca_id!=''){
+			fact.val(ca_id);
+			selectindex(fact.val());		
+		}else{
+			selectindex(fact.val());	
+		}
 		
 	}
 	

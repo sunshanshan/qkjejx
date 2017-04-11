@@ -12,14 +12,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iweb.sys.ContextHelper;
 import org.iweb.sys.Parameters;
+import org.iweb.sys.ToolsUtil;
+import org.iweb.sys.dao.UserDAO;
+import org.iweb.sys.domain.User;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.check360.dao.CheckDao;
 import com.qkj.check360.dao.IndexCheckDAO;
 import com.qkj.check360.dao.IndexDAO;
-import com.qkj.check360.domain.Capacity;
 import com.qkj.check360.domain.Index360;
 import com.qkj.check360.domain.IndexCheck;
+import com.qkj.check360.domain.MainCa;
 
 public class CheckAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
@@ -29,14 +32,41 @@ public class CheckAction extends ActionSupport {
 	private Index360 check;
 	private List<Index360> checks;
 	private List<Index360> crits;
+	private List<Index360> doubleCrits;
 	private List<IndexCheck> ics;
+	private List<MainCa> maincas;
 	private String message;
 	private String viewFlag;
 	private int recCount;
 	private int pageSize;
 	private int currPage;
+	private String[] uroles;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;考核管理";
 	
+	public List<Index360> getDoubleCrits() {
+		return doubleCrits;
+	}
+
+	public void setDoubleCrits(List<Index360> doubleCrits) {
+		this.doubleCrits = doubleCrits;
+	}
+
+	public List<MainCa> getMaincas() {
+		return maincas;
+	}
+
+	public void setMaincas(List<MainCa> maincas) {
+		this.maincas = maincas;
+	}
+
+	public String[] getUroles() {
+		return uroles;
+	}
+
+	public void setUroles(String[] uroles) {
+		this.uroles = uroles;
+	}
+
 	public List<IndexCheck> getIcs() {
 		return ics;
 	}
@@ -144,42 +174,91 @@ public class CheckAction extends ActionSupport {
 
 	public String load() throws Exception {
 		try {
+			IndexDAO maincad = new IndexDAO();
 			if (null == viewFlag) {
 				this.setCheck(null);
 				setMessage("你没有选择任何操作!");
 			} else if ("add".equals(viewFlag)) {
 				this.setCheck(null);
 				this.setCrits(dao.listCrit(null));
+				this.setMaincas(maincad.listMain(null));
+				this.setDoubleCrits(null);
 			} else if ("mdy".equals(viewFlag)) {
 				if (!(check == null || check.getUuid() == null)) {
 					this.setCheck((Index360) dao.get(check.getUuid()));
 					this.setCrits(dao.listCrit(null));
-					//查询类别相同的考题
-					List<Capacity> cas=new ArrayList<Capacity>();
-					map.clear();
-					map.put("crit_id", check.getCrit_id());
-					IndexDAO idd=new IndexDAO();
-					cas=idd.listCapabyUser(map);
-					List<String> cs = new ArrayList<>();
-					if(cas.size()>0){
+					this.setMaincas(maincad.listMain(null));
+
+					if (!ToolsUtil.isEmpty(check.getCrit_id())) {
+						map.clear();
+						map.put("uids", check.getCrit_id().split(","));
+						this.setDoubleCrits(dao.listCrit(map));
+					} else {
+						this.setDoubleCrits(null);
+					}
+					
+					
+					//查询未完成考核的人
+					IndexCheckDAO cdao = new IndexCheckDAO();
+					String[] uroles=check.getCrit_id().split(",");//被考核人数组
+					List<User> us=new ArrayList<User>();
+					if(uroles.length>0){
+						UserDAO userd=new UserDAO();
+						List<String> cs = new ArrayList<>();
 						Set<String> setcs = new HashSet<>();
-						for(Capacity c:cas){
-							String[] userid=c.getUser_id().split(",");
-							if(userid.length>0){
-								for(int i=0;i<userid.length;i++){
-									setcs.add(userid[i]);
-								}
+						
+						List<String> pgs = new ArrayList<>();
+						Set<String> pg = new HashSet<>();
+						
+						String grage=null;
+						for(int i=0;i<uroles.length;i++){
+							if(Integer.parseInt(uroles[i])==1){//总经理
+								pg.add(uroles[i]);
+							}else if(Integer.parseInt(uroles[i])==2){//副总经理
+								pg.add(uroles[i]);
+							}else if(Integer.parseInt(uroles[i])==3){//总监
+								pg.add(uroles[i]);
+							}else if(Integer.parseInt(uroles[i])==4){//经理
+								pg.add(uroles[i]);
+							}else if(Integer.parseInt(uroles[i])==5){//主管
+								pg.add(uroles[i]);
+							}else if(Integer.parseInt(uroles[i])==10){//副部及以上
+								grage="2";
+							}else if(Integer.parseInt(uroles[i])==9){//总监及以上
+								grage="3";
+							}else if(Integer.parseInt(uroles[i])==8){//经理及以上
+								grage="4";
+							}else if(Integer.parseInt(uroles[i])==7){//主管及以上
+								grage="5";
+							}else{//被考核人
+								setcs.add(uroles[i]);
 							}
 						}
 						cs.addAll(setcs);
-					}
-					//查询未完成考核的人
-					IndexCheckDAO icd=new IndexCheckDAO();
-					map.clear();
-					map.put("checkym_id", check.getUuid());
-					map.put("crit_user", cs);
-					if(cs.size()>0){
-						this.setIcs(icd.listst(map));
+						pgs.addAll(pg);
+						map.clear();
+						if(cs.size()>0)map.put("uuids", cs);
+						if(pgs.size()>0)map.put("pogrades", pgs);
+						if(grage!=null)map.put("grade", grage);
+						if(map.get("uuids")!=null || map.get("pogrades")!=null || map.get("grade")!=null){
+							us=userd.listEmail(map);
+						}
+						if(us.size()>0){//所有被考核人列表
+							List<IndexCheck> iss=new ArrayList<IndexCheck>();
+							List<String> users = new ArrayList<>();
+							Set<String> u = new HashSet<>();
+							for(User user:us){
+								//查询被考核人的考核人
+								u.add(user.getUuid());
+							}
+							users.addAll(u);
+							
+							IndexCheckDAO icd=new IndexCheckDAO();
+							map.clear();
+							map.put("checkym_id", check.getUuid());
+							map.put("crit_user", users);
+							this.setIcs(icd.listst(map));
+						}
 					}
 					
 				} else {
@@ -203,6 +282,7 @@ public class CheckAction extends ActionSupport {
 			check.setAdd_time(new Date());
 			check.setLm_user(ContextHelper.getUserLoginUuid());
 			check.setLm_time(new Date());
+			check.setCrit_id(ToolsUtil.Array2String(uroles == null ? new String[] {} : uroles, ","));
 			dao.add(check);
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!add 数据添加失败:", e);
@@ -216,6 +296,7 @@ public class CheckAction extends ActionSupport {
 		try {
 			check.setLm_user(ContextHelper.getUserLoginUuid());
 			check.setLm_time(new Date());
+			check.setCrit_id(ToolsUtil.Array2String(uroles == null ? new String[] {} : uroles, ","));
 			dao.save(check);
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!save 数据更新失败:", e);

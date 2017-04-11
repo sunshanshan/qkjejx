@@ -445,6 +445,81 @@ pu.USER_NAME  parent_user_name,pud.dept_cname p_dname,pud.dept_code p_code,par.d
 		</isNotNull>
 	</select>
 	
+	
+	<select id="sys_getUserEmail" resultClass="user" parameterClass="java.util.Map">
+		<![CDATA[ 
+			select u.USER_NAME,u.EMAIL,u.UUID,p.POSITION_NAME,p.POSITION_GRADE from s_sys_user u 
+			join s_cfg_position p on (u.[POSITION]=p.uuid)
+			Where 1=1 
+		]]>
+		<isNotNull prepend="AND" property="uuids" open="(" close=")">
+			<![CDATA[ u.uuid In ]]>
+			<iterate property="uuids" open="(" close=")" conjunction=" , "> #uuids[]#</iterate>
+			<isNotNull prepend="OR" property="grade"><![CDATA[ p.POSITION_GRADE<=#grade# ]]></isNotNull>
+			<isNotNull prepend="OR" property="pogrades">
+				<![CDATA[ p.POSITION_GRADE In ]]>
+				<iterate property="pogrades" open="(" close=")" conjunction=" , "> #pogrades[]#</iterate>
+			</isNotNull>
+		</isNotNull>
+		<isEmpty property="uuids">
+			<isNotNull prepend="AND" property="grade" open="(" close=")">
+			<![CDATA[ p.POSITION_GRADE<=#grade# ]]>
+			<isNotNull prepend="OR" property="pogrades">
+				<![CDATA[ p.POSITION_GRADE In ]]>
+				<iterate property="pogrades" open="(" close=")" conjunction=" , "> #pogrades[]#</iterate>
+			</isNotNull>
+			</isNotNull>
+		</isEmpty>
+		
+		<isEmpty property="pogrades">
+			<isNotNull prepend="AND" property="grade" open="(" close=")">
+			<![CDATA[ p.POSITION_GRADE<=#grade# ]]>
+			<isNotNull prepend="OR" property="uuids">
+				<![CDATA[ u.uuid In ]]>
+				<iterate property="uuids" open="(" close=")" conjunction=" , "> #uuids[]#</iterate>
+			</isNotNull>
+			</isNotNull>
+		</isEmpty>
+		<isNull property="grade">
+			<isNotNull prepend="AND" property="pogrades" open="(" close=")">
+			<![CDATA[ p.POSITION_GRADE In ]]>
+			<iterate property="pogrades" open="(" close=")" conjunction=" , "> #pogrades[]#</iterate>
+			<isNotNull prepend="OR" property="uuids">
+				<![CDATA[ u.uuid In ]]>
+				<iterate property="uuids" open="(" close=")" conjunction=" , "> #uuids[]#</iterate>
+			</isNotNull>
+			</isNotNull>
+		</isNull>
+		
+		<isEmpty property="uuids">
+			<isNull property="grade">
+			<isNotNull prepend="AND" property="pogrades">
+				<![CDATA[ p.POSITION_GRADE In ]]>
+				<iterate property="pogrades" open="(" close=")" conjunction=" , "> #pogrades[]#</iterate>
+			</isNotNull>
+			</isNull>
+		</isEmpty>
+		
+		<isEmpty property="pogrades">
+			<isNull property="grade">
+			<isNotNull prepend="AND" property="uuids">
+				<![CDATA[ u.uuid In ]]>
+				<iterate property="uuids" open="(" close=")" conjunction=" , "> #uuids[]#</iterate>
+			</isNotNull>
+			</isNull>
+		</isEmpty>
+		
+		<isEmpty property="uuids">
+			<isEmpty property="pogrades">
+			<isNotNull prepend="AND" property="grade">
+				<![CDATA[ p.POSITION_GRADE<=#grade# ]]>
+			</isNotNull>
+			</isEmpty>
+		</isEmpty>
+		
+		
+	</select>
+	
 	<select id="sys_getUserByParf" resultClass="user" parameterClass="java.util.Map">
 		<![CDATA[ 
 		select u.uuid from s_sys_user u where 1=1
@@ -721,7 +796,7 @@ left join s_sys_department d on (d.dept_code=p.dept_code)
 	
 	<insert id="sys_addUserDept" parameterClass="userDept">
 		<![CDATA[ 
-			INSERT INTO s_sys_userdept (user_id,dept_code,position,depsubover,subover,roles,prvgs,lm_time,ischeckdept) VALUES(#user_id#,#dept_code#,#position#,#depsubover#,#subover#,#roles#,#prvgs#,#lm_time#,#ischeckdept#)
+			INSERT INTO s_sys_userdept (user_id,dept_code,position,depsubover,subover,roles,prvgs,lm_time,ischeckdept,ischeckSondept) VALUES(#user_id#,#dept_code#,#position#,#depsubover#,#subover#,#roles#,#prvgs#,#lm_time#,#ischeckdept#,#ischeckSondept#)
 		]]>
 	</insert>
 	
@@ -735,7 +810,8 @@ left join s_sys_department d on (d.dept_code=p.dept_code)
 				roles = #roles#,
 				prvgs = #prvgs#,
 				lm_time = #lm_time#,
-				ischeckdept=#ischeckdept#
+				ischeckdept=#ischeckdept#,
+				ischeckSondept=#ischeckSondept#
 			Where uuid = #uuid#
 		]]>
 	</update>

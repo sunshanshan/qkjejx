@@ -4,28 +4,39 @@ import java.util.Date;
 
 public class Index360 {
 	private Integer uuid;
-	private String ym;// 人id
+	private String title;// 人id
 	private Integer state;
 	private String add_user;// (varchar)地址
 	private Date add_time;// (datetime)添加时间
 	private String lm_user;// (varchar)最后修改人
 	private Date lm_time;// (datetime)最后修改时间
-	private Integer crit_id;
+	private String crit_id;
+	private Integer main_id;
 	
 	private Integer typeUUID;
 	private String typeTitle;
+	private String uid;
 	
+	
+	
+	public String getUid() {
+		return uid;
+	}
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
 	public Integer getUuid() {
 		return uuid;
 	}
 	public void setUuid(Integer uuid) {
 		this.uuid = uuid;
 	}
-	public String getYm() {
-		return ym;
+	
+	public String getTitle() {
+		return title;
 	}
-	public void setYm(String ym) {
-		this.ym = ym;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public Integer getState() {
 		return state;
@@ -57,11 +68,18 @@ public class Index360 {
 	public void setLm_time(Date lm_time) {
 		this.lm_time = lm_time;
 	}
-	public Integer getCrit_id() {
+	
+	public String getCrit_id() {
 		return crit_id;
 	}
-	public void setCrit_id(Integer crit_id) {
+	public void setCrit_id(String crit_id) {
 		this.crit_id = crit_id;
+	}
+	public Integer getMain_id() {
+		return main_id;
+	}
+	public void setMain_id(Integer main_id) {
+		this.main_id = main_id;
 	}
 	public String getTypeTitle() {
 		return typeTitle;

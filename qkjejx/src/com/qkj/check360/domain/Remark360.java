@@ -4,7 +4,7 @@ package com.qkj.check360.domain;
 public class Remark360 {
 	private Integer uuid;
 	private String title;// 人id
-	private String user_id;
+	private Integer main_id;
 	private String detail;
 	
 	public Integer getUuid() {
@@ -19,11 +19,12 @@ public class Remark360 {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getUser_id() {
-		return user_id;
+	
+	public Integer getMain_id() {
+		return main_id;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setMain_id(Integer main_id) {
+		this.main_id = main_id;
 	}
 	public String getDetail() {
 		return detail;

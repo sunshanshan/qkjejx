@@ -26,6 +26,13 @@
 			) ]]>
 			</isNotNull>
 			
+			<isNotNull prepend="AND" property="check_user">
+			<![CDATA[  EXISTS(
+				select 1 from qkj_r_sonscore ss where ss.check_user=#check_user# and c.uuid=ss.score_id
+			) ]]>
+			
+			</isNotNull>
+			
 			<isNotNull prepend="AND" property="userid" open="(" close=")">
 				<![CDATA[ c.acheck_user In ]]>
 				<iterate property="userid" open="(" close=")" conjunction=" , "> #userid[]#</iterate>
