@@ -430,7 +430,7 @@ cursor: pointer;
 					<th class="td2">备注</th>
 				</tr>
 				<s:iterator value="bgs" status="sta">
-					<s:if test="%{parent_dept=='103'&&(dept_code=='10204'||dept_code=='10313'||dept_code=='10314'||dept_code=='10315')}">
+					<s:if test="%{parent_dept=='103'}">
 					<tr id="showtr${dept_code}">
 						<td class="td1 nw">${dept_code} 
 						<script type="text/javascript">
@@ -468,7 +468,7 @@ cursor: pointer;
 					<th class="td2">备注</th>
 				</tr>
 				<s:iterator value="bgs" status="sta">
-					<s:if test="%{parent_dept=='103'&&dept_code!='10204'&&dept_code!='10313'&&dept_code!='10314'&&dept_code!='10315'}">
+					<s:if test="%{parent_dept=='10301'}">
 					<tr id="showtr${dept_code}">
 						<td class="td1 nw">${dept_code} 
 						<script type="text/javascript">
@@ -495,7 +495,7 @@ cursor: pointer;
 				
 			</table>
 			<table>
-				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">精裱车间总监</td></tr>
+				<tr><td bgcolor="white" style="text-align: left;"  colspan="5">精裱车间</td></tr>
 				<tr id="coltr">
 					<th class="td1">部门编号</th>
 					<th class="td1">部门</th>
@@ -506,7 +506,7 @@ cursor: pointer;
 					<th class="td2">备注</th>
 				</tr>
 				<s:iterator value="bgs" status="sta">
-					<s:if test="%{parent_dept==1}"><tr id="showtr${dept_code}">
+					<s:if test="%{parent_dept==10314}"><tr id="showtr${dept_code}">
 						<td class="td1 nw">${dept_code} 
 						<script type="text/javascript">
 							$(function(){

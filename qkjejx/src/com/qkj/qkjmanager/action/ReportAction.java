@@ -485,6 +485,10 @@ public class ReportAction extends ActionSupport {
 				}
 				vardic.setAveu(totle/vardics.size());
 			}
+			//map.clear();
+			map.remove("apply_depts");
+			map.remove("apply_userDouble");
+			map.put("user_login_dept", ContextHelper.getUserLoginDept());
 			this.setVardicsbyd(dao.listD(map));
 			
 			if(vardicsbyd.size()>0){

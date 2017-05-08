@@ -28,7 +28,7 @@
 			
 			<isNotNull prepend="AND" property="check_user">
 			<![CDATA[  EXISTS(
-				select 1 from qkj_r_sonscore ss where ss.check_user=#check_user# and c.uuid=ss.score_id
+				select 1 from qkj_r_sonscore ss where ss.check_user=#check_user# and c.uuid=ss.score_id and ss.typea=1
 			) ]]>
 			
 			</isNotNull>

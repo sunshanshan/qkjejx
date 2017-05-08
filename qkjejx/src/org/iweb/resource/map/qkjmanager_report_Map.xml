@@ -187,6 +187,7 @@
 			
 			<isNotEmpty prepend="AND" property="starcym"><![CDATA[ chec.ym>=#starcym# ]]></isNotEmpty>
 			<isNotEmpty prepend="AND" property="clocym"><![CDATA[ chec.ym<=#clocym#]]></isNotEmpty>
+			<isNotEmpty prepend="AND" property="user_login_dept"><![CDATA[ c.acheck_usercode=#user_login_dept#  and ISNULL(c.acheck_user, '0')='0']]></isNotEmpty>
 			
 			<isNotEmpty prepend="AND" property="apply_depts" open="(" close=")">
 			<![CDATA[ c.acheck_usercode In ]]>
