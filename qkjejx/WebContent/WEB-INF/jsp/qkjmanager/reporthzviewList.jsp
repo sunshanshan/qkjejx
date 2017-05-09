@@ -55,6 +55,7 @@ height: 10px;
 					<td rowspan="2" >岗位</td>
 					<td rowspan="2" id="dept${sta.index+1}">部门</td>
 					<td rowspan="2">合计</td>
+					<td rowspan="2">加扣分项</td>
 					<td rowspan="2">签名</td>
 					<td rowspan="2">备注</td>
 				</tr>
@@ -92,6 +93,7 @@ height: 10px;
 					<td rowspan="2">${pname }</td>
 					<td rowspan="2" id="deptv${sta.index+1}">${deptname }</td>
 					<td rowspan="2" id="z${sta.index+1}">${check_score }</td>
+					<td rowspan="2">${bscore }</td>
 					<td rowspan="2" class="qianming"></td>
 					<td rowspan="2">${remark}</td>
 				</tr>

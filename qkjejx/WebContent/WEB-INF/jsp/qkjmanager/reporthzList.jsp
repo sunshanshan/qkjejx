@@ -55,6 +55,7 @@ cursor: pointer;
 					<th class="td1">本月得分</th>
 					<th class="td1">本月评级</th>
 					<th class="td2">本月系数</th>
+					<th class="td2">加扣分项</th>
 					<th class="td1">本月状态</th>
 					<th class="td2">备注</th>
 					<th class="td3">人员成绩汇总</th>
@@ -76,6 +77,7 @@ cursor: pointer;
 						</td>
 						<td class="td1 nw" id="p${dept_code }"></td>
 						<td class="td2 nw" id="x${dept_code }"></td>
+						<td class="td2 nw" id="bsc${dept_code }"></td>
 						<td class="td1 nw" id="z${dept_code }"></td>
 						<td class="td2 nw" id="b${dept_code }"></td>
 						<td class="td2 nw" id="leave${dept_code }"></td>
@@ -96,6 +98,7 @@ cursor: pointer;
 					<th class="td1">本月得分</th>
 					<th class="td1">本月评级</th>
 					<th class="td2">本月系数</th>
+					<th class="td2">加扣分项</th>
 					<th class="td1">本月状态</th>
 					<th class="td3">备注</th>
 				</tr>
@@ -121,6 +124,7 @@ cursor: pointer;
 						</td>
 						<td class="td1 nw" id="p${uuid }"></td>
 						<td class="td2 nw" id="x${uuid }"></td>
+						<td class="td2 nw" id="bscu${uuid }"></td>
 						<td class="td1 nw" id="z${uuid }"></td>
 						<td class="td3 nw" id="b${uuid }"></td>
 					</tr>
@@ -196,6 +200,7 @@ var ads= function(dept,cym){
 					};
 					$('#z'+dept).html("已考核");
 					$('#b'+dept).html($(data)[0].remark.substring(0,8));
+					$('#bsc'+dept).html($(data)[0].bscore);
 					$('#b'+dept).attr("title",$(data)[0].remark);
 				}else if(l<1){
 					$('#score'+dept).html(0.00);
@@ -250,6 +255,7 @@ var aus= function(u,cym){
 					};
 					$('#z'+u).html("已考核");
 					$('#b'+u).html($(data)[0].remark.substring(0,8));
+					$('#bscu'+u).html($(data)[0].bscore);
 					$('#b'+u).attr("title",$(data)[0].remark);
 				}else if(l<1){
 					$('#score'+u).html(0.00);

@@ -774,6 +774,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 				}
 				vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
 				vv.setRemark(a1.getString("备注"));
+				vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
 				vvs.add(vv);
 				
 			}
@@ -814,6 +815,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 					}
 					vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
 					vv.setRemark(a1.getString("备注"));
+					vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
 					vvs.add(vv);
 				}
 				
@@ -847,6 +849,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 						vv.setDeptname(a1.getString("部门"));
 						vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
 						vv.setRemark(a1.getString("备注"));
+						vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
 						vvs.add(vv);
 					}
 				}
@@ -871,6 +874,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 					vv.setDeptname(a1.getString("部门"));
 					vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
 					vv.setRemark(a1.getString("备注"));
+					vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
 					vvs.add(vv);
 				}
 			}
@@ -930,6 +934,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 			Label labelSt = new Label(6, 0, "评级", cellFormat1);// 第五列1 行
 			Label labelBa = new Label(7, 0, "系数", cellFormat1);// 第五列1 行
 			Label labelBa2 = new Label(8, 0, "备注", cellFormat1);// 第五列1 行
+			Label labelBa3 = new Label(9, 0, "加扣分项", cellFormat1);// 第五列1 行
 
 			ws.addCell(labelId);
 			ws.addCell(labelName);
@@ -940,6 +945,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 			ws.addCell(labelSt);
 			ws.addCell(labelBa);
 			ws.addCell(labelBa2);
+			ws.addCell(labelBa3);
 
 			for (short i = 0; i < adepts.size(); i++) {
 				// 创建一行，在页sheet上
@@ -957,6 +963,8 @@ HttpServletResponse response = ServletActionContext.getResponse();
 						.toString());
 				Label labelres_b = new Label(8, i + 2, a1.getString("备注")
 						.toString());
+				Label labelres_bb = new Label(9, i + 2, a1.getString("加扣分项")
+						.toString());
 				ws.addCell(labelres_i);
 				ws.addCell(labelres_c);
 				ws.addCell(labelres_d);
@@ -964,6 +972,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 				ws.addCell(labelres_p);
 				ws.addCell(labelres_x);
 				ws.addCell(labelres_b);
+				ws.addCell(labelres_bb);
 
 			}
 			
@@ -985,6 +994,8 @@ HttpServletResponse response = ServletActionContext.getResponse();
 						.toString());
 				Label labelres_b = new Label(8, adepts.size() + 3+i, a1.getString("备注")
 						.toString());
+				Label labelres_bb = new Label(9, i + 2, a1.getString("加扣分项")
+						.toString());
 				ws.addCell(labelres_i);
 				ws.addCell(labelres_c);
 				ws.addCell(labelres_n);
@@ -994,7 +1005,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 				ws.addCell(labelres_p);
 				ws.addCell(labelres_x);
 				ws.addCell(labelres_b);
-
+				ws.addCell(labelres_bb);
 			}
 
 			// 写进文档

@@ -98,7 +98,7 @@
 	<!-- 根据人和部门 月份查询分数 -->
 	<select id="qkjmanager_getScore" resultClass="vartic" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select s.check_score,s.remark,c.ym cym,c.state cstate from qkj_r_score s 
+			select s.check_score,s.remark,c.ym cym,c.state cstate,s.bscore from qkj_r_score s 
 			join qkj_r_check c on (s.check_ym=c.uuid)
 		]]>
 		<dynamic prepend="WHERE">
