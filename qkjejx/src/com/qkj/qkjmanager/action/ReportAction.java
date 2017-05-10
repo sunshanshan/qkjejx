@@ -774,7 +774,10 @@ HttpServletResponse response = ServletActionContext.getResponse();
 				}
 				vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
 				vv.setRemark(a1.getString("备注"));
-				vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
+				if(a1.getString("加扣分项")!=null&&!a1.getString("加扣分项").equals("")){
+					vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
+				}
+				
 				vvs.add(vv);
 				
 			}
@@ -815,7 +818,9 @@ HttpServletResponse response = ServletActionContext.getResponse();
 					}
 					vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
 					vv.setRemark(a1.getString("备注"));
+					if(a1.getString("加扣分项")!=null&&!a1.getString("加扣分项").equals("")){
 					vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
+					}
 					vvs.add(vv);
 				}
 				
@@ -849,7 +854,9 @@ HttpServletResponse response = ServletActionContext.getResponse();
 						vv.setDeptname(a1.getString("部门"));
 						vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
 						vv.setRemark(a1.getString("备注"));
+						if(a1.getString("加扣分项")!=null&&!a1.getString("加扣分项").equals("")){
 						vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
+						}
 						vvs.add(vv);
 					}
 				}
@@ -874,7 +881,9 @@ HttpServletResponse response = ServletActionContext.getResponse();
 					vv.setDeptname(a1.getString("部门"));
 					vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
 					vv.setRemark(a1.getString("备注"));
+					if(a1.getString("加扣分项")!=null&&!a1.getString("加扣分项").equals("")){
 					vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
+					}
 					vvs.add(vv);
 				}
 			}
