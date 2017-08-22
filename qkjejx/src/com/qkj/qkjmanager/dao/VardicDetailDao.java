@@ -59,6 +59,10 @@ public class VardicDetailDao extends AbstractDAO {
 	public void save(Object parameters) {
 		super.save("qkjmanager_mdyVarticDetails", parameters);
 	}
+	
+	public void savestate(String value) {
+		super.save("qkjmanager_mdyVarticDetailsBystate", value);
+	}
 
 	/**
 	 * 删除客户信息

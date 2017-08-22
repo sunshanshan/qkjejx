@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.iweb.sys.ContextHelper;
+import org.iweb.sys.Excel;
 import org.iweb.sys.Parameters;
 import org.iweb.sys.dao.DepartmentDAO;
 import org.iweb.sys.dao.UserDAO;
@@ -334,7 +335,7 @@ public class ReportAction extends ActionSupport {
 		if (uds.size() > 0) {
 			for (int s = 0; s < uds.size(); s++) {
 				//有部门权限及子部门
-				if (uds.get(s).getDepsubover()!=null && uds.get(s).getDepsubover()==1 && uds.get(s).getSubover()!=null && uds.get(s).getSubover()==1) {
+				if (ContextHelper.checkPermit("SYS_QKJMANAGER_VERTICLIST_ADD",uds.get(s).getDept_code())&&uds.get(s).getDepsubover()!=null && uds.get(s).getDepsubover()==1 && uds.get(s).getSubover()!=null && uds.get(s).getSubover()==1) {
 					dsetall.add(uds.get(s).getDept_code());
 				}
 				//只有部门权限
@@ -458,7 +459,7 @@ public class ReportAction extends ActionSupport {
 			Set<String> dall = new HashSet<>();
 			if (uds.size() > 0) {
 				for (int s = 0; s < uds.size(); s++) {
-					if (uds.get(s).getRoles().contains("2016060815212623") &&uds.get(s).getIscheckdept()!=null && uds.get(s).getIscheckdept()==1) {
+					if (uds.get(s).getRoles().contains("2016060815212623") &&uds.get(s).getIscheckSondept()!=null&&uds.get(s).getIscheckSondept()==1) {
 						dall.add(uds.get(s).getDept_code());
 					}
 					if (uds.get(s).getRoles().contains("2016072516956868")) {// 部门考核权限
@@ -486,9 +487,12 @@ public class ReportAction extends ActionSupport {
 				vardic.setAveu(totle/vardics.size());
 			}
 			//map.clear();
-			map.remove("apply_depts");
-			map.remove("apply_userDouble");
-			map.put("user_login_dept", ContextHelper.getUserLoginDept());
+			
+			if(ContextHelper.getUserLoginInfo().getPosition()!=null&& !ContextHelper.getUserLoginInfo().getPosition().equals("2016070817678694")){//职务不是车间主任
+				map.remove("apply_depts");
+				map.remove("apply_userDouble");
+				map.put("user_login_dept", ContextHelper.getUserLoginDept());
+			}
 			this.setVardicsbyd(dao.listD(map));
 			
 			if(vardicsbyd.size()>0){
@@ -827,6 +831,100 @@ HttpServletResponse response = ServletActionContext.getResponse();
 			}
 
 		}
+		return SUCCESS;
+	}
+	
+	
+	public String viewExcel() throws Exception {
+		this.setAdeptview(null);
+		this.setAuserview(null);
+		this.setAdeptview(this.getAdept());
+		this.setAuserview(this.getAuser());
+		String cym = this.getCymprint();
+		JSONArray adepts = JSONArray.fromObject(this.getAdeptview());
+		JSONArray ausers = JSONArray.fromObject(this.getAuserview());
+		List<Object> vvss=new ArrayList<Object>();
+		if (adepts.size()>0 || ausers.size()>0) {
+			for (short i = 0; i < adepts.size(); i++) {
+				// 创建一行，在页sheet上
+				JSONObject a1 = JSONObject.fromObject(adepts.get(i).toString());
+				String dept_code=a1.getString("部门编号").substring(0,a1.getString("部门编号").indexOf("$")).trim();
+				map.clear();
+				map.put("dept_code", dept_code);
+				DepartmentDAO dd=new DepartmentDAO();
+				List<Department> d=new ArrayList();
+				d=dd.list(map);
+				String parname=null;
+				if(d.size()>0&&d.get(0).getType()!=null&&d.get(0).getType()==1){
+					parname=d.get(0).getPardname();
+				}
+				VarticView vv=new VarticView();
+				vv.setD_code(dept_code);
+				if(parname!=null){
+					vv.setDeptname("("+parname+")"+a1.getString("部门"));
+				}else{
+					vv.setDeptname(a1.getString("部门"));
+				}
+				vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
+				vv.setRemark(a1.getString("备注"));
+				if(a1.getString("加扣分项")!=null&&!a1.getString("加扣分项").equals("")){
+					vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
+				}
+				
+				vvss.add(vv);
+				
+			}
+			
+			UserDAO ud=new UserDAO();
+			List<User> us=new ArrayList();
+			map.clear();
+			map.put("parent_user", ContextHelper.getUserLoginUuid());
+			us=ud.list(map);
+			String parname=null;
+			for (short i = 0; i < ausers.size(); i++) {
+				// 创建一行，在页sheet上
+				JSONObject a1 = JSONObject.fromObject(ausers.get(i).toString());
+				String uuid=a1.getString("员工编号").substring(0,a1.getString("员工编号").indexOf("$")).trim();
+				Boolean flag=false;
+				if(us.size()>0){
+					for(int j=0;j<us.size();j++){
+						if(us.get(j).getUuid()!=null && us.get(j).getUuid().equals(uuid)){
+							if(us.get(j).getDepttype()!=null&&us.get(j).getDepttype()==1){
+								parname=us.get(j).getPardname();
+							}else if(us.get(j).getDepttype()!=null&&us.get(j).getDepttype()==2){
+								parname=us.get(j).getPparname();
+							}
+							flag=true;
+							break;
+						}
+					}
+				}
+				if(flag==true){
+					VarticView vv=new VarticView();
+					vv.setU_id(uuid);
+					vv.setUsername(a1.getString("姓名"));
+					vv.setPname(a1.getString("岗位"));
+					if(parname!=null){
+						vv.setDeptname("("+parname+")"+a1.getString("部门"));
+					}else{
+						vv.setDeptname(a1.getString("部门"));
+					}
+					vv.setCheck_score(Double.parseDouble(a1.getString("本月得分")));
+					vv.setRemark(a1.getString("备注"));
+					if(a1.getString("加扣分项")!=null&&!a1.getString("加扣分项").equals("")){
+					vv.setBscore(Double.parseDouble(a1.getString("加扣分项")));
+					}
+					vvss.add(vv);
+				}
+				
+			}
+
+		}
+		
+		Excel e=new Excel();
+		String[] cols_title={"名称","岗位","部门","合计","加扣分项","备注"};
+		String[] cols_name={"pname","deptname","check_score","bscore","remark"};
+		e.getExcelFile("评分", vvss, cols_name, cols_title,3);
 		return SUCCESS;
 	}
 

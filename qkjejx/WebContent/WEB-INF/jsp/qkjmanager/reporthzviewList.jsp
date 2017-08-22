@@ -90,8 +90,8 @@ height: 10px;
 					</script>
 					</s:if>
 					</td>
-					<td rowspan="2">${pname }</td>
-					<td rowspan="2" id="deptv${sta.index+1}">${deptname }</td>
+					<td rowspan="2" width="60px;">${pname }</td>
+					<td width="60px;" rowspan="2" id="deptv${sta.index+1}">${deptname }</td>
 					<td rowspan="2" id="z${sta.index+1}">${check_score }</td>
 					<td rowspan="2">${bscore }</td>
 					<td rowspan="2" class="qianming"></td>
@@ -193,40 +193,7 @@ var aus= function(u,cym,af){
 
 
 </script>
-
-
-<script language="javascript">  
-//打印代码  
-   function Print()     
-    {      
-		var size=${vvs.size()};
-        var printStr = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'><style type='text/css'> tr td{background-color: #fff;border:solid 1px #add9c0;"
-        +" table{border:solids; border-width:1px 0px 0px 1px;} } .kss{ height: 60px;}.dkss{ height: 10px; } div{min-height: 27%;overflow:auto;max-height: 27%;overflow: auto; position: relative;}</style></head><body > ";  
-        var content = "";  
-        for(var i = 1;i <= size; i++) {
-        	if(i==1){
-        		var str = document.getElementById("pd1").innerHTML;     //获取需要打印的页面元素 ，page1元素设置样式page-break-after:always，意思是从下一行开始分割。  
-     	        content = content + str; 
-        	}else if(i%5==0){
-        		var a="pd"+i;
-            	
-        		var str = document.getElementById(a).innerHTML;     //获取需要打印的页面元素 ，page1元素设置样式page-break-after:always，意思是从下一行开始分割。  
-     	        content = content + str; 
-        	}
-        		 
-        	
-        }
-
-      
-       
-          
-        printStr = printStr+content+"</body></html>";                                                
-        var pwin=window.open("Print.htm","print"); //如果是本地测试，需要先新建Print.htm，如果是在域中使用，则不需要  
-        pwin.document.write(printStr);  
-        pwin.document.close();                   //这句很重要，没有就无法实现    
-        pwin.print();      
-    }  
-</script>  
+ 
 
 
 </html>

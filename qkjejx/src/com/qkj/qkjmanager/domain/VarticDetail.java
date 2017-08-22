@@ -20,6 +20,8 @@ public class VarticDetail {
 	private String depttype;//是否取部门分数
 	private String position_dept;//取哪个部门
 	
+	private Integer state;//0正常1关闭
+	
 	private String check_user;// 考核人
 	private String check_usercode;// 考核人部门
 	private Integer kpi_id;
@@ -260,6 +262,14 @@ public class VarticDetail {
 
 	public void setIsdept(Integer isdept) {
 		this.isdept = isdept;
+	}
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
 	}
 
 }

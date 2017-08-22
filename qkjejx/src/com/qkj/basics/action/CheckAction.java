@@ -13,6 +13,7 @@ import org.iweb.sys.Parameters;
 import com.opensymphony.xwork2.ActionSupport;
 import com.qkj.basics.dao.CheckDao;
 import com.qkj.basics.domain.Check;
+import com.qkj.qkjmanager.dao.VardicDetailDao;
 
 public class CheckAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
@@ -163,6 +164,11 @@ public class CheckAction extends ActionSupport {
 		try {
 			check.setLm_user(ContextHelper.getUserLoginUuid());
 			check.setLm_time(new Date());
+			if(check.getState()!=null&&check.getState()!=0){
+				//修改分数表状态为关闭
+				VardicDetailDao v=new VardicDetailDao();
+				v.savestate(check.getUuid().toString());
+			}
 			dao.save(check);
 		} catch (Exception e) {
 			log.error(this.getClass().getName() + "!save 数据更新失败:", e);

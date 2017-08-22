@@ -261,6 +261,7 @@ var aus= function(u,cym){
 					$('#score'+u).html(0.00);
 					$('#p'+u).html("0");
 					$('#x'+u).html("0");
+					$('#bscu'+u).html("0");
 					$('#z'+u).html("未考核");
 				};
 				

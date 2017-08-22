@@ -531,6 +531,18 @@ or ss.acheck_usercode=#par_dept#
 		]]>
 	</update>
 	
+	<update id="qkjmanager_mdyVarticDetailsBystate" parameterClass="string">
+		<![CDATA[
+			Update a set  a.state=1
+ 
+			From qkj_r_sonscore a
+			 
+			Left join qkj_r_score b on a.score_id=b.uuid
+			 
+			where b.check_ym=#value#
+		]]>
+	</update>
+	
 	<delete id="qkjmanager_delVarticDetail" parameterClass="varticdetail">
 		<![CDATA[
 			Delete From qkj_r_sonscore where uuid=#uuid#
