@@ -26,7 +26,17 @@ public class Score360 {
 	private String title;
 	private String cttitle;
 	private Double sumscore;
+	private String acheck_dept;
 	
+	
+	
+	
+	public String getAcheck_dept() {
+		return acheck_dept;
+	}
+	public void setAcheck_dept(String acheck_dept) {
+		this.acheck_dept = acheck_dept;
+	}
 	public String getAcheck_user() {
 		return acheck_user;
 	}

@@ -7,7 +7,7 @@ public class SysMail {
 	private static MailSenderInfo mail_sys;
 	static {
 		mail_sys = new MailSenderInfo();
-		mail_sys.setMailServerHost("smtp.qkj.com.cn");
+		mail_sys.setMailServerHost("smtp.mxhichina.com");
 		mail_sys.setMailServerPort("25");
 		mail_sys.setValidate(true);
 		mail_sys.setUserName("360appraisals@qkj.com.cn");

@@ -767,7 +767,8 @@ public class IndexAction extends ActionSupport {
 							HttpServletRequest request = ServletActionContext.getRequest();
 							String url2=request.getRequestURL().toString();
 			 				String uri=request.getRequestURI();
-			 				url.append(url2.substring(0, url2.indexOf(uri)));
+			 				//url.append(url2.substring(0, url2.indexOf(uri)));
+			 				url.append("http://djx.qkj.com.cn");
 							url.append("/check360/check_360ScoreLoad?");
 							url.append("ic.uuid="+ic.getUuid());//被考核人与考核人中间表
 							url.append("&index360.uuid="+ index_id);//活动id

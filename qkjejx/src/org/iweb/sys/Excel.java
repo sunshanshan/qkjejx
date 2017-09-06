@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
+import com.qkj.check360.domain.SonScore360;
+
 import jxl.Workbook;
 import jxl.write.NumberFormats;
 import jxl.write.WritableCellFormat;
@@ -240,6 +242,99 @@ public class Excel {
 					} else {
 						jxl.write.Label stringCell = new jxl.write.Label(j, i + 1, (String) tmp);
 						sheet.addCell(stringCell);
+					}
+				}
+			}
+			excel.write();
+			excel.close();
+			os.close();
+			response.flushBuffer();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void getExcelFile2(String title, List<Object> resultList,List<SonScore360> sonresultList, String[] cols_name, String[] cols_title,Integer size) {
+		try {
+			HttpServletResponse response = ServletActionContext.getResponse();
+			String fileName = ContextHelper.getUserLoginName()+"汇总表格";
+			response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+			response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+			OutputStream os = response.getOutputStream();
+			jxl.write.WritableWorkbook excel = jxl.Workbook.createWorkbook(os);
+			jxl.write.WritableSheet sheet = excel.createSheet(title, 0);
+			// 写入excel的标题
+
+			WritableCellFormat integerFormat = new WritableCellFormat(NumberFormats.INTEGER);
+			WritableCellFormat doubleFormat = new WritableCellFormat(new jxl.write.NumberFormat("#.####"));
+			WritableCellFormat dataFormat = new WritableCellFormat(new jxl.write.DateFormat("yyyy-MM-dd hh:mm:ss"));
+			// 开始写入数据
+			for (int i = 0, d = resultList.size(); i < d; i++) {
+				Map<String, Object> t_map = ToolsUtil.getMapByBean(resultList.get(i));
+				if (i == 0) { // 记录defaultCols(数据库自带的column_name),只记录一次
+					Object[] t_o_a = t_map.keySet().toArray();
+					defaultCols = new String[t_o_a.length];
+					for (int j = 0; j < t_o_a.length; j++) {
+						defaultCols[j] = t_o_a[j].toString();
+					}
+					if (cols_name == null) {
+						cols_name = defaultCols;
+					}
+					if (cols_title == null) {
+						cols_title = cols_name;
+					}
+					for (int j = 0; j < cols_title.length; j++) {
+						jxl.write.Label col_title = new jxl.write.Label(j, 0, cols_title[j]);
+						sheet.addCell(col_title);
+					}
+					
+					
+				}
+				for (int j = 0; j < cols_name.length; j++) {
+					Object tmp = t_map.get(cols_name[j]);
+					if (tmp == null) {
+						jxl.write.Label col_value = new jxl.write.Label(j, i + 1, "");
+						sheet.addCell(col_value);
+					} else if ("java.lang.Integer".equals(tmp.getClass().getName())) {
+						jxl.write.Number integerCell = new jxl.write.Number(j, i + 1, (Integer) tmp, integerFormat);
+						sheet.addCell(integerCell);
+					} else if ("java.lang.Double".equals(tmp.getClass().getName())) {
+						jxl.write.Number doubleCell = new jxl.write.Number(j, i + 1, (Double) tmp, doubleFormat);
+						sheet.addCell(doubleCell);
+					} else if ("java.util.Date".equals(tmp.getClass().getName())) {
+						jxl.write.DateTime dateCell = new jxl.write.DateTime(j, i + 1, (java.util.Date) tmp,
+								dataFormat);
+						sheet.addCell(dateCell);
+					} else {
+						jxl.write.Label stringCell = new jxl.write.Label(j, i + 1, (String) tmp);
+						sheet.addCell(stringCell);
+					}
+				}
+				
+				if(sonresultList.size()>0){
+					Object tmp = t_map.get("uuid");
+					Integer uuid=(Integer) tmp;
+					Integer sonsize=sonresultList.size()/size;
+					Integer flag=0;
+					Integer sonflag=0;
+					for (int j = 0;j < sonresultList.size(); j++) {
+							Integer score_id=sonresultList.get(j).getScore_id();
+							if(uuid==score_id||uuid.equals(score_id)){
+								System.out.println(uuid);
+								if(i==0){
+									jxl.write.Label col_title = new jxl.write.Label((cols_title.length+flag), 0, sonresultList.get(j).getTitle());
+									sheet.addCell(col_title);
+									flag=flag+1;
+								}
+								jxl.write.Label stringCell = new jxl.write.Label(cols_title.length+sonflag, i+1, sonresultList.get(j).getCheck_score().toString());
+								sheet.addCell(stringCell);
+								if(sonflag<=sonsize){
+									sonflag=sonflag+1;
+								}else{
+									sonflag=0;
+								}
+							}
+							
 					}
 				}
 			}

@@ -24,6 +24,7 @@ text-align: left !important;
  	<div class="tab_warp main" >
 		<div class="dq_step">
 			${path}
+			<span class="opb lb op-area"><a href="<s:url namespace="/check360" action="card_excel"><s:param name="score.user_id" value="user.uuid"></s:param><s:param name="score.check_ym" value="score.check_ym"></s:param></s:url>">导出</a></span>
 		</div>
 		<s:form id="serachForm" name="serachForm" action="check_360ScoreView" method="get" namespace="/check360" theme="simple">
 			<div class="label_con">

@@ -4,10 +4,11 @@
 	<typeAlias alias="score360" type="com.qkj.check360.domain.Score360" />
 	<select id="qkjmanager_getScores" resultClass="score360" parameterClass="java.util.Map">
 		<![CDATA[ 
-			select i.*,ic.user_id acheck_user,ach.USER_NAME acheck_user_name,ic.cuname check_user_name,ic.check_user,ct.title cttitle from qkj_r_360score i
+			select i.*,ic.user_id acheck_user,ach.USER_NAME acheck_user_name,d.dept_cname acheck_dept,ic.cuname check_user_name,ic.check_user,ct.title cttitle from qkj_r_360score i
 			join qkj_t_360indexCheck ic on (ic.uuid=i.check_user_id)
 			join qkj_r_checkType360 ct on (ic.checkType_id=ct.uuid)
 			join s_sys_user ach on (ach.uuid=ic.user_id)
+			join s_sys_department d on (d.dept_code=ach.DEPT_CODE)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
@@ -89,6 +90,11 @@
 			<isNotNull prepend="AND" property="check_ym"><![CDATA[ s.check_ym=#check_ym# ]]></isNotNull>
 			<isNotNull prepend="AND" property="user_id"><![CDATA[ ic.user_id=#user_id# ]]></isNotNull>
 			<isNotNull prepend="AND" property="check_user"><![CDATA[ ic.check_user=#check_user# ]]></isNotNull>
+			
+			<isNotNull prepend="AND" property="score_id" open="(" close=")">
+				<![CDATA[ ss.score_id In ]]>
+				<iterate property="score_id" open="(" close=")" conjunction=" , "> #score_id[]#</iterate>
+			</isNotNull>
 		</dynamic>
 		<![CDATA[
 		order by ss.score_id
@@ -339,6 +345,7 @@ join qkj_t_360indexCheck ic on (ic.uuid=s.check_user_id)
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="uuid"><![CDATA[ i.uuid=#uuid# ]]></isNotNull>
+			<isNotNull prepend="AND" property="main_id"><![CDATA[ c.main_id=#main_id# ]]></isNotNull>
 			<isNotNull prepend="AND" property="capacity_id">
 			<![CDATA[  i.capacity_id In ]]>
 			<iterate property="capacity_id" open="(" close=")" conjunction=" , "> #capacity_id[]#</iterate>

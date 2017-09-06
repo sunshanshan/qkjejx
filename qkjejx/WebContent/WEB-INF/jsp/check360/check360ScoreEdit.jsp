@@ -7,11 +7,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="<s:url value="/css/v0.1/style.css" />" />
-<script type="text/javascript"
-	src="<c:url value="/js/v0.1/jquery-1.9.0.min.js" />"></script>
-<script type="text/javascript"
-	src="<c:url value="/js/v0.1/jquery-migrate-1.2.1.min.js" />"></script>
+<jsp:include page="/WEB-INF/jsp/manager/ref_head.jsp" />
+
 <style type="text/css">
 .alert {
   background: #f2f2f2;
@@ -20,15 +17,12 @@
   margin: 0 0 20px 0;
   padding: 10px 35px 10px 20px;
   position: relative; }
-
 .alert strong {
   font-weight: 600; }
-
 .alert.successed {
   background: #B8F2BC;
   border-color: #90CD90;
   color: #3F963E; }
-
   .checked{width: 100%}
   .inp{width:15%;}
   
@@ -37,6 +31,7 @@
 	}
 .lb_jpin td{
 text-align: left !important;
+font-size:0.8em;
 border-bottom-style:none
 }
 
@@ -48,57 +43,84 @@ fieldset{
 <title>用户列表</title>
 </head>
 <body>
-	<div class="tab_right">
+	<div class="">
 		<div class="tab_warp main">
 			<div class="dq_step"></div>
 			<div class="checkScore">
-				<div class="label_hang">
+				<div class="label_hang" style="padding-left: 10%;padding-right: 10%">
+				<p align="center">
+				<span style="font-size:1.5em;">
+					青青稞酒360°领导力评估调查问卷
+					</span> 
+				</p>
 					<s:hidden id="icuuid" name="ic.uuid" value="%{ic.uuid }"></s:hidden>
 					<s:hidden id="checkeds" value="%{checkeds }"></s:hidden>
 					<s:hidden id="inuuid" name="index360.uuid" value="%{index360.uuid }"></s:hidden>
-					<div class="label_ltit">考核人:</div>
+					<div class="label_ltit">被评价者:</div>
 					<div class="label_rwbenx">${ic.check_user_name}&nbsp;
-					<div style="float: right" id="totle">
+					<%-- <div style="float: right" id="totle">
 					<s:if test="%{checkeds==2}">
 					&nbsp;得分：${score.check_score }
 					</s:if>
 					<s:else>
 					&nbsp;得分：无
 					</s:else>
+					</div> --%>
 					</div>
-					</div>
-					
+				<br>
+				<p>
+					<span style="font-size:0.9em;font-family:Arial;">
+					指导语：360度测评是一种用于评估个人领导和管理技巧的工具。此评估问卷由一系列行为描述所组成，是青青稞酒管理人员都需要展现的重要行为。我们将行为按照一定的结构组合在一起，称之为领导力素质。请根据被您/评估者的实际情况，对以下每一项的陈述进行评分。问卷的填写是保密和匿名的，您的评分和建议将会与其他评估者的反馈综合在一起呈现在报告中。您坦率、客观的评分与反馈将有助于您/被评估者清楚地了解自己的领导力现状，并为其提供有针对性的发展建议。非常感谢您的配合！
+					</span> 
+				</p>
+				<p>
+				<br>
+				<span style="font-size:0.9em;font-family:Arial;">测评内容：
+				<br>•管理维度
+				<br>•项目
+				</span>
+				</p>
+				<br>
+				<p>
+				<span style="font-size:0.9em;font-family:Arial;">其中，管理维度分别为
+				</span>
+				</p>
+				<ul>
+				<s:iterator value="factors" status="sta">
+				<li>${title}</li>
+				</s:iterator>
+				</ul>
 				</div>
 
 				<div class="label_main">
 						<table id="oneTable"  width="100%" cellpadding="0" cellspacing="0" border="0"
-							class="lb_jpin">
+							class="lb_jpin" >
 							<s:if test="checkeds==0">
 							<s:iterator value="asses" status="sta">
 								<tr>
-									<td>${(sta.index+1)}、${title}</td>
+									<td   style="padding-left: 10%;padding-right: 10%">${(sta.index+1)}、${title}</td>
 								</tr>
 								<s:if test="detail!=null">
 								<tr>
-									<td>
+									<td   style="padding-left: 10%;padding-right: 10%">
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${detail}
 									</td>
 								</tr>
 								</s:if>
 								<tr id="showtr${uuid}">
-									<td>
+									<td   style="padding-left: 10%;padding-right: 10%">
 									<span class="ship_hidden_info" style="display:none;">
 									<span id="index_id${sta.index+1}">${index_id}</span>
 									<span id="ititle${sta.index+1}">${ititle}</span>
 									<span id="uuid${sta.index+1}">${uuid}</span>
 									</span>
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目前熟练度：
-									<input type="radio" name="score${sta.index }" value="1">1
-									<input type="radio" name="score${sta.index }" value="2">2
-									<input type="radio" name="score${sta.index }" value="3">3
-									<input type="radio" name="score${sta.index }" value="4">4
-									<input type="radio" name="score${sta.index }" value="5">5
-									<input type="radio" name="score${sta.index }" value="0">N
+									<input type="radio" name="score${sta.index }" value="1">1=非常不符合
+									<input type="radio" name="score${sta.index }" value="2">2=比较不符合
+									<input type="radio" name="score${sta.index }" value="3">3=一般
+									<input type="radio" name="score${sta.index }" value="4">4=比较符合
+									<input type="radio" name="score${sta.index }" value="5">5=非常符合
+									<input type="radio" name="score${sta.index }" value="0">N=不了解/不适用
 									<input type="hidden" name="raname" value="${sta.index }">
 									<input type="hidden" name="kpiid" value="${uuid }">
 									<hr style=" height:2px;border:none;border-top:2px dotted #185598;" />
@@ -108,19 +130,25 @@ fieldset{
 							</s:iterator>
 							</s:if>
 							<s:elseif test="checkeds==2"><!-- 修改 -->
-							<s:iterator value="sonScores" status="sta">
+							
+							<p align="center">
+							<span style="font-size:1em;">
+								<font color="red;">已完成考核</font>
+								</span> 
+							</p>
+							<%-- <s:iterator value="sonScores" status="sta">
 								<tr>
-									<td>${(sta.index+1)}、${title}</td>
+									<td  style="padding-left: 10%;padding-right: 10%">${(sta.index+1)}、${title}</td>
 								</tr>
 								<s:if test="detail!=null">
 								<tr>
-									<td>
+									<td  style="padding-left: 10%;padding-right: 10%">
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${detail}
 									</td>
 								</tr>
 								</s:if>
 								<tr id="showtr${uuid}">
-									<td>
+									<td style="padding-left: 10%;padding-right: 10%">
 									<span class="ship_hidden_info" style="display:none;">
 									<span id="index_id${sta.index+1}">${index_id}</span>
 									<span id="ititle${sta.index+1}">${ititle}</span>
@@ -129,37 +157,37 @@ fieldset{
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目前熟练度：
 									<input type="radio" name="score${sta.index }" value="1" 
 									<s:if test="%{check_score==1}"> checked="checked" </s:if>
-									>1
+									>1=非常不符合
 									<input type="radio" name="score${sta.index }" value="2"
 									<s:if test="%{check_score==2}"> checked="checked" </s:if>
-									>2
+									>2=比较不符合
 									<input type="radio" name="score${sta.index }" value="3"
 									<s:if test="%{check_score==3}"> checked="checked" </s:if>
-									>3
+									>3=一般
 									<input type="radio" name="score${sta.index }" value="4"
 									<s:if test="%{check_score==4}"> checked="checked" </s:if>
-									>4
+									>4=比较符合
 									<input type="radio" name="score${sta.index }" value="5"
 									<s:if test="%{check_score==5}"> checked="checked" </s:if>
-									>5
+									>5=非常符合
 									<input type="radio" name="score${sta.index }" value="0"
 									<s:if test="%{check_score==0}"> checked="checked" </s:if>
-									>N
+									>N=不了解/不适用
 									<input type="hidden" name="raname" value="${sta.index }">
 									<input type="hidden" name="kpiid" value="${uuid }">
-									<hr style=" height:2px;border:none;border-top:2px dotted #185598;" />
+									<hr style="height:2px;border:none;border-top:2px dotted #185598;" />
 									</td>
 									
 								</tr>
 								
-							</s:iterator>
+							</s:iterator> --%>
 							</s:elseif>
 						</table>
 					</div>
 				
 				
 				<fieldset class="clear">
-					<legend>自由回答</legend>
+					<legend></legend>
 					<!--<span class="shaddress">--------------------收货地址--------------------</span>-->
 					<div class="label_main">
 						<table width="100%" cellpadding="0" cellspacing="0" border="0"
@@ -180,7 +208,7 @@ fieldset{
 								</tr>
 							</s:iterator>
 							</s:if>
-							<s:elseif test="checkeds==2"><!-- 修改 -->
+							<%-- <s:elseif test="checkeds==2"><!-- 修改 -->
 							<s:iterator value="sonremarks" status="sta">
 								<tr>
 									<td>${title}
@@ -195,17 +223,17 @@ fieldset{
 									</td>
 								</tr>
 							</s:iterator>
-							</s:elseif>
+							</s:elseif> --%>
 							
 							<tr>
 								<td colspan="6">
 								<s:if test="checkeds==0">
 									<button id="submit" type="button">保存</button>
 								</s:if>
-								<s:elseif test="checkeds==2"><!-- 修改 -->
+								<%-- <s:elseif test="checkeds==2"><!-- 修改 -->
 								<s:hidden id="score_id" value="%{score.uuid }"></s:hidden>
 									<button id="mdy" type="button">保存</button>
-								</s:elseif>
+								</s:elseif> --%>
 
 								</td>
 							</tr>
@@ -318,7 +346,10 @@ fieldset{
 				            	  	if(data==0){
 				            	  		window.location.reload();
 				            	  		alert("谢谢您的提交！");
-				            	  	}else{
+				            	  	}else if(data==3){
+				            	  		alert("请检查是否有未选择项目！");
+				            	  	}
+				            	  	else{
 				            	  		alert("失败请联系管理员。");
 				            	  	}
 				                    

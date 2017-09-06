@@ -267,6 +267,9 @@
 			<result>/WEB-INF/jsp/check360/check360ScoreView.jsp</result>
 		</action>
 		
+		<action name="card_excel" class="com.qkj.check360.action.ScoreAction" method="card_print">
+		</action>
+		
 		<action name="check_360ScoreAdd" class="com.qkj.check360.action.ScoreAction" method="add">
 		</action>
 		<action name="check_360ScoreSave" class="com.qkj.check360.action.ScoreAction" method="save">
