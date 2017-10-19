@@ -8,12 +8,20 @@ public class Assess {
 	private Integer main_id;
 	private String title;
 	private String detail;
+	private Integer index_uuid;
 	
 	private String ftitle;
 	private String ititle;
 	private String ctitle;
 	private String catitle;
 	
+	
+	public Integer getIndex_uuid() {
+		return index_uuid;
+	}
+	public void setIndex_uuid(Integer index_uuid) {
+		this.index_uuid = index_uuid;
+	}
 	public Integer getUuid() {
 		return uuid;
 	}

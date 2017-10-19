@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="qkjmanager_talk" extends="default" namespace="/qkjmanager">
+	<!-- qkj_r_score Start -->
+		<action name="talk_list" class="com.qkj.qkjmanager.action.TalkAction" method="list">
+			<result>/WEB-INF/jsp/qkjmanager/talkList.jsp</result>
+		</action>
+		
+		<action name="talk_load" class="com.qkj.qkjmanager.action.TalkAction" method="load">
+			<result>/WEB-INF/jsp/qkjmanager/talkEdit.jsp</result>
+		</action>
+		
+		<action name="talk_saveLeader" class="com.qkj.qkjmanager.action.TalkAction" method="saveLeader">
+			<result type="redirectAction">
+				<param name="actionName">talk_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="talk.uuid">${talk.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="saveEmp" class="com.qkj.qkjmanager.action.TalkAction" method="saveEmp">
+			<result type="redirectAction">
+				<param name="actionName">talk_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="talk.uuid">${talk.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+		<action name="talk_add" class="com.qkj.qkjmanager.action.TalkAction" method="add">
+			<result type="redirectAction">
+				<param name="actionName">talk_load</param>
+				<param name="viewFlag">mdy</param>
+				<param name="talk.uuid">${talk.uuid}</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		<action name="talk_del" class="com.qkj.qkjmanager.action.VardicAction" method="del">
+			<result type="redirectAction">
+				<param name="actionName">talk_list</param>
+				<param name="message">${message}</param>
+			</result>
+		</action>
+		
+	</package>
+</struts>

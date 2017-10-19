@@ -75,6 +75,14 @@
 								<div class="label_rwben label_rwb">
 								<s:select name="check.main_id" list="maincas" listKey="uuid" listValue="title" cssClass="validate[required]" />
 						</div>
+						
+						<div class="label_hang">
+				            <div class="label_ltit">结束时间:</div>
+				            <div class="label_rwben2">
+				            	<span class="label_rwb"><input id="leave_leave_end" type="text"  class="validate[required,custom[date]]" name="check.close_date" title="结束日期" value="${check.close_date }" dataType="date" controlName="结束日期" /></span>
+								<span class="label_rwb_s"><s:textfield id="leave_leave_end_time" name="check.close_time" title="结束时间" dataLength="0,15" controlName="结束时间" cssClass="time_input" /></span>
+				            </div>
+						</div>
 					
 					</div>
 					
@@ -145,12 +153,18 @@
 	<s:action name="ref_foot" namespace="/manager" executeResult="true" />
 	<script type="text/javascript" src="<s:url value="/include/jQuery/jquery.ui.datepicker-zh.js" />"></script>
 	<script type="text/javascript" src="<s:url value="/js/optiontransferselect.js" />"></script>
+	<script type="text/javascript" src="<s:url value="/include/jQuery/jquery-ui-timepicker-addon.js" />"></script>
 </body>
 
 <script type="text/javascript">
 $(function(){
 	addTransferSelect("aroles","uroles");
-})
+	var ajax_url_action = '<s:url value="/common_ajax/json_ajax" />';
+	var curr_dept = '${leave.leave_dept}';
+	$('#leave_leave_end').datepicker("destroy").datetimepicker({<s:if test="leave.leave_type!=4">stepMinute: 15,</s:if>altField: "#leave_leave_end_time"});
+	$('#leave_leave_start').datepicker("destroy").datetimepicker({<s:if test="leave.leave_type!=4">stepMinute: 15,</s:if>altField: "#leave_leave_start_time"});
+});
+
 
 function add_user(uuid,typeid){
 	var chu="";

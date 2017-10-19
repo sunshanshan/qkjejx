@@ -322,8 +322,14 @@ public class Excel {
 							if(uuid==score_id||uuid.equals(score_id)){
 								System.out.println(uuid);
 								if(i==0){
-									jxl.write.Label col_title = new jxl.write.Label((cols_title.length+flag), 0, sonresultList.get(j).getTitle());
-									sheet.addCell(col_title);
+									if(sonresultList.get(j).getIndex_uuid()!=null){
+										jxl.write.Label col_title = new jxl.write.Label((cols_title.length+flag), 0, "Q"+sonresultList.get(j).getIndex_uuid().toString());
+										sheet.addCell(col_title);
+									}else{
+										jxl.write.Label col_title = new jxl.write.Label((cols_title.length+flag), 0, "");
+										sheet.addCell(col_title);
+									}
+									
 									flag=flag+1;
 								}
 								jxl.write.Label stringCell = new jxl.write.Label(cols_title.length+sonflag, i+1, sonresultList.get(j).getCheck_score().toString());

@@ -13,12 +13,25 @@ public class Index360 {
 	private String crit_id;
 	private Integer main_id;
 	
+	private String close_date;//截止日期
+	private String close_time;//截止时间
+	
 	private Integer typeUUID;
 	private String typeTitle;
 	private String uid;
 	
-	
-	
+	public String getClose_date() {
+		return close_date;
+	}
+	public void setClose_date(String close_date) {
+		this.close_date = close_date;
+	}
+	public String getClose_time() {
+		return close_time;
+	}
+	public void setClose_time(String close_time) {
+		this.close_time = close_time;
+	}
 	public String getUid() {
 		return uid;
 	}

@@ -7,7 +7,14 @@ public class Index {
 	private String detail;
 	
 	private String ftitle;
+	private String ctitle;
 	
+	public String getCtitle() {
+		return ctitle;
+	}
+	public void setCtitle(String ctitle) {
+		this.ctitle = ctitle;
+	}
 	public Integer getUuid() {
 		return uuid;
 	}

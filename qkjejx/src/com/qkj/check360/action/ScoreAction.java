@@ -1,5 +1,6 @@
 package com.qkj.check360.action;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import com.qkj.check360.dao.SonScoreDao;
 import com.qkj.check360.domain.Assess;
 import com.qkj.check360.domain.Capacity;
 import com.qkj.check360.domain.Factors;
+import com.qkj.check360.domain.Index;
 import com.qkj.check360.domain.Index360;
 import com.qkj.check360.domain.IndexCheck;
 import com.qkj.check360.domain.Remark360;
@@ -56,6 +58,7 @@ public class ScoreAction extends ActionSupport {
 	private List<Index360> index360s;
 	
 	private List<Factors> factors;
+	private List<Index> index;
 	
 	private IndexDAO id=new IndexDAO();
 	private Assess ass;
@@ -79,9 +82,35 @@ public class ScoreAction extends ActionSupport {
 	private int pageSize;
 	private int currPage;
 	private Double sumScore;
+	private Integer indexsize;
+	private Integer factsize;
 	private String path = "<a href='/manager/default'>首页</a>&nbsp;&gt;&nbsp;360成绩管理";
 	
 	
+	public Integer getIndexsize() {
+		return indexsize;
+	}
+
+	public void setIndexsize(Integer indexsize) {
+		this.indexsize = indexsize;
+	}
+
+	public Integer getFactsize() {
+		return factsize;
+	}
+
+	public void setFactsize(Integer factsize) {
+		this.factsize = factsize;
+	}
+
+	public List<Index> getIndex() {
+		return index;
+	}
+
+	public void setIndex(List<Index> index) {
+		this.index = index;
+	}
+
 	public List<Factors> getFactors() {
 		return factors;
 	}
@@ -371,10 +400,28 @@ public class ScoreAction extends ActionSupport {
 				index360=(Index360) checkdao.get(index360.getUuid());
 				
 				
+				//java 比较时间大小  
+				java.text.DateFormat sdf=new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+				String s1=index360.getClose_date()+" "+index360.getClose_time()+":00";     
+				 
+			    String s2 = sdf.format(new Date());
+				   
+				java.util.Calendar c1=java.util.Calendar.getInstance();     
+				java.util.Calendar c2=java.util.Calendar.getInstance();     
+				try    
+				{     
+				c1.setTime(sdf.parse(s1));     
+				c2.setTime(sdf.parse(s2));     
+				}catch(java.text.ParseException e){     
+				System.err.println("格式不正确");     
+				}     
+				int result=c1.compareTo(c2);     
+				
 				map.clear();
 				map.put("main_id", index360.getMain_id());
-				this.setFactors(indexdao.listFact(map));
-				
+				//this.setFactors(indexdao.listFact(map));
+				this.setIndex(indexdao.list(map));
+				this.setFactsize(index.size());
 				map.clear();
 				map.put("check_user_id", ic.getUuid());
 				map.put("check_ym", index360.getUuid());
@@ -404,11 +451,20 @@ public class ScoreAction extends ActionSupport {
 					//查询类型和考核人一致的考题
 					map.clear();
 					map.put("main_id", index360.getMain_id());
-					this.setAsses(indexdao.listAss(map));;
+					this.setAsses(indexdao.listAss(map));
+					this.setIndexsize(asses.size());
 					//查询主观考评
 					CheckDao chdao=new CheckDao();
 					this.setRemark360s(chdao.listremark(map));
+					
+					if(result<0){
+						System.out.println("c1大于c2"); 
+						this.setCheckeds(33);
+					}else{
+						
+					}
 				}
+				
 				
 			} else {
 				this.setScore(null);
@@ -456,7 +512,7 @@ public class ScoreAction extends ActionSupport {
 			Excel e=new Excel();
 			
 			String[] cols_title={"被评价者名字","被评价者层级","被评价者所在部门","评价者名字","被评价者与评价者关系","评价者答题时间"};
-			String[] cols_name={"acheck_user_name","L","acheck_dept","check_user_name","cttitle","check_date"};
+			String[] cols_name={"acheck_user_name","leavl","acheck_dept","check_user_name","cttitle","check_date"};
 			e.getExcelFile2("统计", resultList,sonresultList,cols_name, cols_title,dlist.size());
 		}
 		
@@ -533,48 +589,81 @@ public class ScoreAction extends ActionSupport {
 			//查询考核人信息
 			IndexCheckDAO icd=new IndexCheckDAO();
 			ic=(IndexCheck) icd.get(Integer.parseInt(ic_uuid));
-			//添加主表
-			score=new Score360();
-			score.setCheck_score(sum);
-			score.setCheck_date(new Date());
-			score.setCheck_user_id(Integer.parseInt(ic_uuid));
-			score.setCheck_ym(Integer.parseInt(in_uuid));
-			dao.add(score);
-			//添加子表
+			
+			//查询这个考核人是否有主表记录
+			
+			map.clear();
+			map.put("check_user_id", Integer.parseInt(ic_uuid));
+			map.put("check_ym", Integer.parseInt(in_uuid));
+			List<Score360> s3s=new ArrayList<Score360>();
+			s3s=dao.list(map);
 			Boolean fa=true;
-			if(kpied.length==scoreds.length){
-				for(int i=0;i<kpied.length;i++){
-					sonScore=new SonScore360();
-					sonScore.setScore_id(score.getUuid());
-					sonScore.setCheck_index(Integer.parseInt(kpied[i]));
-					sonScore.setCheck_score(Double.parseDouble(scoreds[i]));
-					sondao.add(sonScore);
+			if(s3s.size()<=0){
+				//添加主表
+				score=new Score360();
+				score.setCheck_score(sum);
+				score.setCheck_date(new Date());
+				score.setCheck_user_id(Integer.parseInt(ic_uuid));
+				score.setCheck_ym(Integer.parseInt(in_uuid));
+				if(kpied.length==scoreds.length){
+				dao.add(score);
+				}else{
+					fa=false;
+				}
+				//添加子表
+				if(kpied.length==scoreds.length){
+					for(int i=0;i<kpied.length;i++){
+						sonScore=new SonScore360();
+						sonScore.setScore_id(score.getUuid());
+						sonScore.setCheck_index(Integer.parseInt(kpied[i]));
+						sonScore.setCheck_score(Double.parseDouble(scoreds[i]));
+						sondao.add(sonScore);
+					}
+				}else{
+					fa=false;
+				}
+				
+				if(rem_uuid.length==rem.length&&kpied.length==scoreds.length){
+					for(int i=0;i<rem_uuid.length;i++){
+						SonRemark360 so=new SonRemark360();
+						so.setScore_id(score.getUuid());
+						if(rem!=null&&rem.length>0&&rem[i]!=null){
+							so.setRemark(rem[i]);
+						}else{
+							so.setRemark("");
+						}
+						if(rem_uuid[i]!=null&& !rem_uuid[i].equals("")&&rem_uuid[i].length()>0){
+							so.setRemark_id(Integer.parseInt(rem_uuid[i]));
+							sondao.addremark(so);
+						}
+					}
+				}else{
+					fa=false;
+				}
+				
+				if(fa==false){
+					response.getWriter().print("3");
+				}else{
+					response.getWriter().print("0");
 				}
 			}else{
-				fa=false;
-			}
-			
-			
-				for(int i=0;i<rem_uuid.length;i++){
-					SonRemark360 so=new SonRemark360();
-					so.setScore_id(score.getUuid());
-					if(rem!=null&&rem.length>0&&rem[i]!=null){
-						so.setRemark(rem[i]);
+				if(s3s.size()==1){
+					map.clear();
+					map.put("score_id", s3s.get(0).getUuid());
+					List<SonScore360> ssc=new ArrayList<SonScore360>();
+					ssc=sondao.list(map);
+					if(ssc.size()==kpied.length){
+						response.getWriter().print("0");
 					}else{
-						so.setRemark("");
+						response.getWriter().print("4");
 					}
-					if(rem_uuid[i]!=null&& !rem_uuid[i].equals("")&&rem_uuid[i].length()>0){
-						so.setRemark_id(Integer.parseInt(rem_uuid[i]));
-						sondao.addremark(so);
-					}
+				}else{
+					response.getWriter().print("4");
 				}
+			}
 			
 			dao.commitTransaction();
-			if(fa==false){
-				response.getWriter().print("3");
-			}else{
-				response.getWriter().print("0");
-			}
+			
 			
 		} catch (Exception e) {
 			response.getWriter().print("1");

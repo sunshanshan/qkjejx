@@ -88,6 +88,17 @@ width:270% !important;
 		        </div>
 		        
 		        <div class="label_main">
+		        <div class="label_hang">
+		            <div class="label_ltit">标题显示序号:</div>
+		            <div class="label_hang">
+		        	<div class="label_rwbenx">
+		            	<s:textfield name="ass.index_uuid" cssClass="validate[required,custom[number],maxSize[11]]"></s:textfield>
+		            </div>
+		        </div>
+		        </div>
+		        </div>
+		        
+		        <div class="label_main">
 						<div class="label_hang">
 							<div class="label_ltit">相关操作:</div>
 							<div class="label_rwbenx">

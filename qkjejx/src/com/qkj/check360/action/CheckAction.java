@@ -212,23 +212,23 @@ public class CheckAction extends ActionSupport {
 						
 						String grage=null;
 						for(int i=0;i<uroles.length;i++){
-							if(Integer.parseInt(uroles[i])==1){//总经理
+							if(uroles[i].equals("1")){//总经理
 								pg.add(uroles[i]);
-							}else if(Integer.parseInt(uroles[i])==2){//副总经理
+							}else if(uroles[i].equals("2")){//副总经理
 								pg.add(uroles[i]);
-							}else if(Integer.parseInt(uroles[i])==3){//总监
+							}else if(uroles[i].equals("3")){//总监
 								pg.add(uroles[i]);
-							}else if(Integer.parseInt(uroles[i])==4){//经理
+							}else if(uroles[i].equals("4")){//经理
 								pg.add(uroles[i]);
-							}else if(Integer.parseInt(uroles[i])==5){//主管
+							}else if(uroles[i].equals("5")){//主管
 								pg.add(uroles[i]);
-							}else if(Integer.parseInt(uroles[i])==10){//副部及以上
+							}else if(uroles[i].equals("10")){//副部及以上
 								grage="2";
-							}else if(Integer.parseInt(uroles[i])==9){//总监及以上
+							}else if(uroles[i].equals("9")){//总监及以上
 								grage="3";
-							}else if(Integer.parseInt(uroles[i])==8){//经理及以上
+							}else if(uroles[i].equals("8")){//经理及以上
 								grage="4";
-							}else if(Integer.parseInt(uroles[i])==7){//主管及以上
+							}else if(uroles[i].equals("7")){//主管及以上
 								grage="5";
 							}else{//被考核人
 								setcs.add(uroles[i]);

@@ -27,10 +27,14 @@ public class Score360 {
 	private String cttitle;
 	private Double sumscore;
 	private String acheck_dept;
+	private String leavl;
 	
-	
-	
-	
+	public String getLeavl() {
+		return leavl;
+	}
+	public void setLeavl(String leavl) {
+		this.leavl = leavl;
+	}
 	public String getAcheck_dept() {
 		return acheck_dept;
 	}

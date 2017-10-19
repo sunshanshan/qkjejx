@@ -8,6 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <jsp:include page="/WEB-INF/jsp/manager/ref_head.jsp" />
+<link rel="stylesheet" type="text/css" href="../css/demo.css">
 
 <style type="text/css">
 .alert {
@@ -35,38 +36,45 @@ font-size:0.8em;
 border-bottom-style:none
 }
 
+.new_top{position:relative;width:100%;height:45px;background:#2695d0;}
+.new_lTit{position:absolute;line-height: 49px;bottom:0;left:40%;margin-left:-100px;color: #fff;font-size: 18px;font-weight: normal;}
+
+
+.listyle2{
+border-bottom:solid 1px #E8E8E8;
+font-size: 16px;
+}
+.div{
+border-radius:  0 0 3px 3px;
+}
 fieldset{
     border: 0;
 }
 
+body{  
+   background-color:#f7f7f7;                
+}
 </style>
 <title>用户列表</title>
 </head>
 <body>
+
+<header>
+<div class="new_top">
+	<div class="new_lTit">青青稞酒360°领导力评估调查问卷</div>
+</div>
+</header>
 	<div class="">
 		<div class="tab_warp main">
 			<div class="dq_step"></div>
 			<div class="checkScore">
 				<div class="label_hang" style="padding-left: 10%;padding-right: 10%">
-				<p align="center">
-				<span style="font-size:1.5em;">
-					青青稞酒360°领导力评估调查问卷
-					</span> 
-				</p>
 					<s:hidden id="icuuid" name="ic.uuid" value="%{ic.uuid }"></s:hidden>
 					<s:hidden id="checkeds" value="%{checkeds }"></s:hidden>
 					<s:hidden id="inuuid" name="index360.uuid" value="%{index360.uuid }"></s:hidden>
-					<div class="label_ltit">被评价者:</div>
-					<div class="label_rwbenx">${ic.check_user_name}&nbsp;
-					<%-- <div style="float: right" id="totle">
-					<s:if test="%{checkeds==2}">
-					&nbsp;得分：${score.check_score }
-					</s:if>
-					<s:else>
-					&nbsp;得分：无
-					</s:else>
-					</div> --%>
-					</div>
+					<font style="font-weight:bold;">被评价者:</font>
+					${ic.check_user_name}&nbsp;
+				
 				<br>
 				<p>
 					<span style="font-size:0.9em;font-family:Arial;">
@@ -76,20 +84,29 @@ fieldset{
 				<p>
 				<br>
 				<span style="font-size:0.9em;font-family:Arial;">测评内容：
-				<br>•管理维度
-				<br>•项目
+				<br>•${factsize}管理维度
+				<br>•${Indexsize}项目
 				</span>
 				</p>
 				<br>
 				<p>
-				<span style="font-size:0.9em;font-family:Arial;">其中，管理维度分别为
+				<span style="font-size:0.9em;font-family:Arial;">其中，${factsize}管理维度分别为
 				</span>
 				</p>
 				<ul>
-				<s:iterator value="factors" status="sta">
-				<li>${title}</li>
+				<s:iterator value="index" status="sta">
+				<li>•&nbsp;${manifestation}</li>
 				</s:iterator>
 				</ul>
+				<br>
+				<p>
+					<span style="font-size:1em;font-family:Arial;">
+					请回顾自己/被评估者在日常工作中的表现，评价其平时的行为是否符合以下的描述：
+					<br>
+					1 = 非常不符合 &nbsp;&nbsp;&nbsp;&nbsp; 2 = 比较不符合  &nbsp;&nbsp;&nbsp;&nbsp;   3 = 一般  
+					&nbsp;&nbsp;&nbsp;&nbsp;   4 = 比较符合  &nbsp;&nbsp;&nbsp;&nbsp;   5 = 非常符合      &nbsp;&nbsp;&nbsp;&nbsp; N = 不了解/不适用（不了解被评价者的情况/题目对被评价者不适用）
+					</span> 
+				</p>
 				</div>
 
 				<div class="label_main">
@@ -98,7 +115,9 @@ fieldset{
 							<s:if test="checkeds==0">
 							<s:iterator value="asses" status="sta">
 								<tr>
-									<td   style="padding-left: 10%;padding-right: 10%">${(sta.index+1)}、${title}</td>
+									<td   style="padding-left: 10%;padding-right: 10%;font-weight: bold;" >
+									 <span id="ts${sta.index }" style="display:none;"><font color="red">*</font></span>
+									${(sta.index+1)}、${title}</td>
 								</tr>
 								<s:if test="detail!=null">
 								<tr>
@@ -108,22 +127,27 @@ fieldset{
 								</tr>
 								</s:if>
 								<tr id="showtr${uuid}">
-									<td   style="padding-left: 10%;padding-right: 10%">
+									<td   style="padding-left: 10%;padding-right: 10%;">
 									<span class="ship_hidden_info" style="display:none;">
 									<span id="index_id${sta.index+1}">${index_id}</span>
 									<span id="ititle${sta.index+1}">${ititle}</span>
 									<span id="uuid${sta.index+1}">${uuid}</span>
 									</span>
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目前熟练度：
-									<input type="radio" name="score${sta.index }" value="1">1=非常不符合
-									<input type="radio" name="score${sta.index }" value="2">2=比较不符合
-									<input type="radio" name="score${sta.index }" value="3">3=一般
-									<input type="radio" name="score${sta.index }" value="4">4=比较符合
-									<input type="radio" name="score${sta.index }" value="5">5=非常符合
-									<input type="radio" name="score${sta.index }" value="0">N=不了解/不适用
+									<div style="border:2px solid #b5b5b6;border-radius:5px;background-color: white;">
+									<ul>
+									<li style="border-bottom:solid 1px #E8E8E8;font-size: 16px;"><input style="width:20px;height:20px;" type="radio" name="score${sta.index }" value="1">1</li>
+									<li class="listyle2"><input style="width:20px;height:20px;" type="radio" name="score${sta.index }" value="2">2</li>
+									<li class="listyle2"><input style="width:20px;height:20px;" type="radio" name="score${sta.index }" value="3">3</li>
+									<li class="listyle2"><input style="width:20px;height:20px;" type="radio" name="score${sta.index }" value="4">4</li>
+									<li class="listyle2"><input style="width:20px;height:20px;" type="radio" name="score${sta.index }" value="5">5</li>
+									<li style="border-top:solid 1px #F8F7F7;font-size: 16px;"><input style="width:20px;height:20px;" type="radio" name="score${sta.index }" value="0">N</li>
+									</ul>
+									</div>
+									<br>
+									
 									<input type="hidden" name="raname" value="${sta.index }">
 									<input type="hidden" name="kpiid" value="${uuid }">
-									<hr style=" height:2px;border:none;border-top:2px dotted #185598;" />
+									<!-- <hr style=" height:2px;border:none;border-top:2px dotted #185598;" /> -->
 									</td>
 								</tr>
 								
@@ -136,51 +160,14 @@ fieldset{
 								<font color="red;">已完成考核</font>
 								</span> 
 							</p>
-							<%-- <s:iterator value="sonScores" status="sta">
-								<tr>
-									<td  style="padding-left: 10%;padding-right: 10%">${(sta.index+1)}、${title}</td>
-								</tr>
-								<s:if test="detail!=null">
-								<tr>
-									<td  style="padding-left: 10%;padding-right: 10%">
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${detail}
-									</td>
-								</tr>
-								</s:if>
-								<tr id="showtr${uuid}">
-									<td style="padding-left: 10%;padding-right: 10%">
-									<span class="ship_hidden_info" style="display:none;">
-									<span id="index_id${sta.index+1}">${index_id}</span>
-									<span id="ititle${sta.index+1}">${ititle}</span>
-									<span id="uuid${sta.index+1}">${uuid}</span>
-									</span>
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目前熟练度：
-									<input type="radio" name="score${sta.index }" value="1" 
-									<s:if test="%{check_score==1}"> checked="checked" </s:if>
-									>1=非常不符合
-									<input type="radio" name="score${sta.index }" value="2"
-									<s:if test="%{check_score==2}"> checked="checked" </s:if>
-									>2=比较不符合
-									<input type="radio" name="score${sta.index }" value="3"
-									<s:if test="%{check_score==3}"> checked="checked" </s:if>
-									>3=一般
-									<input type="radio" name="score${sta.index }" value="4"
-									<s:if test="%{check_score==4}"> checked="checked" </s:if>
-									>4=比较符合
-									<input type="radio" name="score${sta.index }" value="5"
-									<s:if test="%{check_score==5}"> checked="checked" </s:if>
-									>5=非常符合
-									<input type="radio" name="score${sta.index }" value="0"
-									<s:if test="%{check_score==0}"> checked="checked" </s:if>
-									>N=不了解/不适用
-									<input type="hidden" name="raname" value="${sta.index }">
-									<input type="hidden" name="kpiid" value="${uuid }">
-									<hr style="height:2px;border:none;border-top:2px dotted #185598;" />
-									</td>
-									
-								</tr>
-								
-							</s:iterator> --%>
+							</s:elseif>
+							<s:elseif test="checkeds==33">
+							
+							<p align="center">
+							<span style="font-size:1em;">
+								<font color="red;">您已超过考核时间,不能再进行考核</font>
+								</span> 
+							</p>
 							</s:elseif>
 						</table>
 					</div>
@@ -195,40 +182,24 @@ fieldset{
 							<s:if test="checkeds==0">
 							<s:iterator value="remark360s" status="sta">
 								<tr>
-									<td>${title}
+									<td   style="padding-left: 10%;padding-right: 10%">${title}
 									<s:hidden name="remark_title" value="%{title}"></s:hidden>
 									<s:hidden name="remark_uuid" value="%{uuid}"></s:hidden>
 									</td>
 									
 								</tr>
 								<tr>
-								<td>
-									<s:textarea name="ic_remark" cssClass="label_hang_linput inputNote validate[maxSize[65535]]" />
+								<td   style="padding-left: 10%;padding-right: 10%">
+									<s:textarea name="ic_remark" cssClass="label_hang_linput inputNote validate[required,maxSize[65535]]" />
 									</td>
 								</tr>
 							</s:iterator>
 							</s:if>
-							<%-- <s:elseif test="checkeds==2"><!-- 修改 -->
-							<s:iterator value="sonremarks" status="sta">
-								<tr>
-									<td>${title}
-									<s:hidden name="remark_uuid" value="%{uuid}"></s:hidden>
-									</td>
-									<td title="${detail}">${it:subString(detail,18)}</td>
-									
-								</tr>
-								<tr>
-								<td>
-									<s:textarea name="ic_remark" cssClass="label_hang_linput inputNote validate[maxSize[65535]]" value="%{remark }"/>
-									</td>
-								</tr>
-							</s:iterator>
-							</s:elseif> --%>
 							
 							<tr>
-								<td colspan="6">
+								<td colspan="6" style="padding-left: 10%;padding-right: 10%">
 								<s:if test="checkeds==0">
-									<button id="submit" type="button">保存</button>
+									<button id="submit" type="button">提交</button>
 								</s:if>
 								<%-- <s:elseif test="checkeds==2"><!-- 修改 -->
 								<s:hidden id="score_id" value="%{score.uuid }"></s:hidden>
@@ -252,26 +223,6 @@ fieldset{
 	<script type="text/javascript"
 		src="<s:url value="/js/optiontransferselect.js" />"></script>
 	<script type="text/javascript">
-	/* $(function(){
-	    getRelust();
-	});
-	
-	function getRelust(){
-		$("#oneTable").find("tr").each(function(i){
-			 if(i>0){
-				var index_id=$("#index_id"+i).text();
-				var cname=$("#ititle"+i).text();
-				var uuid=$("#uuid"+i).text();
-				
-				var lastindex_id=$("#index_id"+(i-1)).text();
-				var nindex_id=$("#index_id"+(i+1)).text();
-				if(lastindex_id==index_id && nindex_id!=index_id){
-					$("#showtr"+uuid).after('<tr class="fo"><td  colspan="8">'+cname+'</td></tr>');
-				}
-			 }
-			
-	    });
-	} */
 	
 	jQuery(document).ready(function ($) {
 			 var checkeds=$('#checkeds').val();
@@ -291,27 +242,25 @@ fieldset{
 		        			var v=document.getElementsByName(name);
 		        			var j=0
 			        		for (var i=0;i<v.length;i++){
-			        		 if(v.item(i).checked){
+			        		 if(v.item(i).checked==true){
 			        			 j=1;
 			        			 if(i==5){//选中的是第五个N成绩为0
 			        				 score+=0+",";
 			        			 }else{
 			        				 score+=(i+1)+",";
 			        			 }
-			        			 
+			        			 resualt=true;
 			        			 break;
+			        		 }else{
+			        			 resualt=false;
 			        		 }
 			        		}
-		        			if(j>0){//本组中已选中
-		        				resualt=true;
-		        			}else{
-		        				resualt=false;
-		        			}
+		        			
 		        		}
 		        		
 		        	});
 		        	
-		        if(resualt==true){
+		        if(1==1){
 						var kpiid="";//题目编号
 						var icuuid=$('#icuuid').val();//考核人
 						var inuuid=$('#inuuid').val();//考核年月
@@ -347,7 +296,32 @@ fieldset{
 				            	  		window.location.reload();
 				            	  		alert("谢谢您的提交！");
 				            	  	}else if(data==3){
-				            	  		alert("请检查是否有未选择项目！");
+				            	  		alert("请检查是否有未选择项目！(注：未选项目已用*标识)");
+				            	  		var r=false;
+				            	  		$("input[name='raname']").each(function() {
+				    		        		var name="score"+$(this).val();
+				    		        		if(name!=null && name!=""){
+				    		        			var v=document.getElementsByName(name);
+				    			        		for (var i=0;i<v.length;i++){
+				    			        		 if(v.item(i).checked==true){
+				    			        			 r=true;
+				    			        			 break;
+				    			        		 }else{
+				    			        			 r=false;
+				    			        		 }
+				    			        		}
+				    			        		if(r==false){//本组未选中
+				    			        			$("#ts"+$(this).val()).show();
+				    			        		}else{
+				    			        			$("#ts"+$(this).val()).hide();
+				    			        		}
+				    		        			
+				    		        		}
+				    		        		
+				    		        	});
+				            	  		
+				            	  	}else if(data==4){
+				            	  		alert("您已考核过一次,如有问题请联系管理员。");
 				            	  	}
 				            	  	else{
 				            	  		alert("失败请联系管理员。");

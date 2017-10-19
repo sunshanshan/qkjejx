@@ -19,6 +19,7 @@ public class SonScore360 {
 	private String check_user;
 	private String user_id;
 	private Integer check_ym;
+	private Integer index_uuid;
 	
 	public Integer getUuid() {
 		return uuid;
@@ -109,6 +110,12 @@ public class SonScore360 {
 	}
 	public void setCheck_ym(Integer check_ym) {
 		this.check_ym = check_ym;
+	}
+	public Integer getIndex_uuid() {
+		return index_uuid;
+	}
+	public void setIndex_uuid(Integer index_uuid) {
+		this.index_uuid = index_uuid;
 	}
 	
 	

@@ -14,6 +14,8 @@ public class Position {
 	private String dept_code;// 所属部门
 	
 	private String dept_cname;
+	
+	private String is_sub_dept;
 
 	public String getPosition_senior() {
 		return position_senior;
@@ -93,6 +95,14 @@ public class Position {
 
 	public void setDept_cname(String dept_cname) {
 		this.dept_cname = dept_cname;
+	}
+
+	public String getIs_sub_dept() {
+		return is_sub_dept;
+	}
+
+	public void setIs_sub_dept(String is_sub_dept) {
+		this.is_sub_dept = is_sub_dept;
 	}
 
 }

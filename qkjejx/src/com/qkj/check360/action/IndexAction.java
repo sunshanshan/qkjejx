@@ -1,6 +1,7 @@
 package com.qkj.check360.action;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -699,23 +700,23 @@ public class IndexAction extends ActionSupport {
 				
 				String grage=null;
 				for(int i=0;i<uroles.length;i++){
-					if(Integer.parseInt(uroles[i])==1){//总经理
+					if(uroles[i].equals("1")){//总经理
 						pg.add(uroles[i]);
-					}else if(Integer.parseInt(uroles[i])==2){//副总经理
+					}else if(uroles[i].equals("2")){//副总经理
 						pg.add(uroles[i]);
-					}else if(Integer.parseInt(uroles[i])==3){//总监
+					}else if(uroles[i].equals("3")){//总监
 						pg.add(uroles[i]);
-					}else if(Integer.parseInt(uroles[i])==4){//经理
+					}else if(uroles[i].equals("4")){//经理
 						pg.add(uroles[i]);
-					}else if(Integer.parseInt(uroles[i])==5){//主管
+					}else if(uroles[i].equals("5")){//主管
 						pg.add(uroles[i]);
-					}else if(Integer.parseInt(uroles[i])==10){//副部及以上
+					}else if(uroles[i].equals("10")){//副部及以上
 						grage="2";
-					}else if(Integer.parseInt(uroles[i])==9){//总监及以上
+					}else if(uroles[i].equals("9")){//总监及以上
 						grage="3";
-					}else if(Integer.parseInt(uroles[i])==8){//经理及以上
+					}else if(uroles[i].equals("8")){//经理及以上
 						grage="4";
-					}else if(Integer.parseInt(uroles[i])==7){//主管及以上
+					}else if(uroles[i].equals("7")){//主管及以上
 						grage="5";
 					}else{//被考核人
 						setcs.add(uroles[i]);
@@ -762,7 +763,8 @@ public class IndexAction extends ActionSupport {
 							}else{
 								toa.add(ic.getCheck_user_email());
 							}
-							String sub = ic.getCheck_user_name() + "考核";
+							//String sub = ic.getCheck_user_name() + "考核";
+							String sub = "青青稞酒360°领导力评估调查";
 							StringBuffer url = new StringBuffer();
 							HttpServletRequest request = ServletActionContext.getRequest();
 							String url2=request.getRequestURL().toString();
@@ -774,24 +776,39 @@ public class IndexAction extends ActionSupport {
 							url.append("&index360.uuid="+ index_id);//活动id
 							url.append("&viewFlag=mdy");
 							
+							Index360 cc=new Index360 ();
+							cc=(Index360) checkdao.get(index_id);
+							SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy年MM月dd日 " );
+						    String str = sdf.format(new Date());
+						        
 							StringBuffer content = new StringBuffer();
 							content.append("<div><div style='margin-left:4%;'>");
-							content.append("<p style='color:red;'>");
+							content.append("<p>");
+							content.append("尊敬的"+ic.getCheckuser_name()+"：</p>");
+							content.append("<p>");
 							content.append("您好：</p>");
-							content.append("<p style='text-indent: 2em;'>您正在使用360考核功能，请点击下面的链接完成考核。</p>");
-							content.append("<p style='text-indent: 2em;display: block;word-break: break-all;'>");
-							content.append("链接地址：<a style='text-decoration: none;' href='"
+							content.append("<p>");
+							content.append("&nbsp;&nbsp;&nbsp;&nbsp我们非常诚挚地邀请您配合完成此次360°领导力评估问卷调查，该调查将帮助公司管理人员真实、准确地了解个人领导力的优势和发展需要。请您于<font style='font-weight: bold;'>"+cc.getClose_date()+" "+cc.getClose_time()+"前</font>完成此次调查问卷的全部填写工作。</p>");
+							content.append("<p style='text-indent: 2em;'>1.本次360°领导力评估问卷调查的内容，将以“青青稞酒领导力素质模型”为标准，具体内容请查阅附件。</p>");
+							content.append("<p style='text-indent: 2em;'>2.除被评估者的上级反馈外，系统将确保所有其他人的反馈<font style='font-weight: bold;'>绝对保持匿名，</font>你的反馈将与其他人的反馈一起通过系统进行平均。</p>");
+							content.append("<p style='text-indent: 2em;'>3.您坦率、客观的评分与反馈将有助于被评估者清楚地了解自己的领导力现状，并为其提供有针对性的发展建议。</p>");
+							content.append("<p style='text-indent: 2em;'>4.填写问卷时，请考虑被评估者<font style='font-weight: bold;'>在过去6个月的整体工作和能力表现，</font>其中包括会议、合作项目、日常工作和达成目标中表现出来的所有行为，而非仅仅关注在过去的某个单独事件。</p>");
+							
+							content.append("<p style='text-indent: 2em;'>请点击链接填写问卷：</p>");
+							content.append("<table  cellpadding='0' cellspacing='0' border='1'><tr><td>被评价对象</td><td align='center'>问卷链接</td></tr><tr><td>"+ic.getCheck_user_name()+"</td><td>链接地址：<a style='text-decoration: none;' href='"
 									+ url.toString()
 									+ "'>"
 									+ url.toString()
-									+ "</a></p>");
+									+ "</a></td></tr></table>");
 							content.append("</div>");
-							content.append("<ul style='color: rgb(169, 169, 189);font-size: 18px;'>");
-							/*content.append("<li>为了保障您帐号的安全，该链接有效期为12小时。</li>");
-							content.append("<li>该链接只能使用一次，请周知。</li>");*/
-							content.append("<li>如果该链接无法点击，请直接复制以上网址到浏览器地址栏中访问。</li>");
-							content.append("<li>请您妥善保管，此邮件无需回复。</li>");
-							content.append("</ul>");
+							content.append("<P style='font-weight: bold;'>注意事项：</P>");
+							content.append("<P>•如果在邮件中直接点击链接无法打开，请完整拷贝链接粘贴到浏览器地址栏中。</P>");
+							content.append("<P>•请尽量一次性完整填写问卷并提交，提交后填答信息不可再更改。</P>");
+							content.append("<P>•如中途不小心退出了系统，可点击链接重新作答。</P>");
+							
+							content.append("<P>如在问卷调查过程中有任何问题，请及时与<font style='font-weight: bold;'>人力资源中心包正梅（7713264）</font>联系，我们会尽快为您提供有效的服务和支持。衷心感谢您对此项工作的支持与配合！</P>");
+							content.append("<p  align='right'>人力资源中心</p>");
+							content.append("<p  align='right'>"+str+"</p>");
 							content.append("</div>");
 							if(toa.size()>0){
 								SysMail.sendHtml(toa, sub, content.toString());
