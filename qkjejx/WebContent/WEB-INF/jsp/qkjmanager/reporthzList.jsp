@@ -39,7 +39,7 @@ cursor: pointer;
 						</div>
 					</div>
 							
-					<div class="label_hang tac">
+					<div class="label_hang label_button tac">
 						<s:submit value="搜索" />
 						<s:reset value="重置" />
 					</div>
@@ -126,7 +126,7 @@ cursor: pointer;
 						<td class="td2 nw" id="x${uuid }"></td>
 						<td class="td2 nw" id="bscu${uuid }"></td>
 						<td class="td1 nw" id="z${uuid }"></td>
-						<td class="td3 nw" id="b${uuid }"></td>
+						<td id="b${uuid }"  style="word-break:break-all" width="120px;" align="left"></td>
 					</tr>
 				</s:iterator>
 				
@@ -199,7 +199,7 @@ var ads= function(dept,cym){
 						$('#x'+dept).html("0.8");
 					};
 					$('#z'+dept).html("已考核");
-					$('#b'+dept).html($(data)[0].remark.substring(0,8));
+					$('#b'+dept).html($(data)[0].remark);
 					$('#bsc'+dept).html($(data)[0].bscore);
 					$('#b'+dept).attr("title",$(data)[0].remark);
 				}else if(l<1){
@@ -254,7 +254,7 @@ var aus= function(u,cym){
 						$('#x'+u).html("0.8");
 					};
 					$('#z'+u).html("已考核");
-					$('#b'+u).html($(data)[0].remark.substring(0,8));
+					$('#b'+u).html($(data)[0].remark);
 					$('#bscu'+u).html($(data)[0].bscore);
 					$('#b'+u).attr("title",$(data)[0].remark);
 				}else if(l<1){

@@ -35,9 +35,7 @@ cursor: pointer;
 						</div>
 					</div>
 							
-					<div class="label_hang tac">
-						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
-						<label for="search_mcondition"></label>更多条件
+					<div class="label_hang label_button tac">
 						<s:submit value="搜索" />
 						<s:reset value="重置" />
 						<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_CHECKSURE',null)==true}">

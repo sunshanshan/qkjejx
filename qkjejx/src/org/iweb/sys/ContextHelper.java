@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -653,6 +654,24 @@ public class ContextHelper {
 
 	public static Map<String, Object> getSearchMap(String s) {
 		return getSerachSession().get(s);
+	}
+	
+	public static String getTokenString(){ 
+		String token=new Long(System.currentTimeMillis()).toString();
+		getRequest().getSession().setAttribute("rand-token-17", token);
+		log.info("生成的："+token+":"+getRequest().getSession().getAttribute("rand-token-17"));
+	       return token ;  
+	} 
+	
+	
+	public static boolean flagToken(String token){
+		boolean flag=true;
+		if(token!=null&&!token.equals(getRequest().getSession().getAttribute("rand-token-17"))){
+			flag=false;
+			log.info("重复提交："+token+":"+getRequest().getSession().getAttribute("rand-token-17"));
+		}
+		log.info("提交aaaaaaaaaa："+token+":"+getRequest().getSession().getAttribute("rand-token-17"));
+		return flag;
 	}
 
 	public static void SimpleSearchMap(String s, Map<String, Object> smap, Object bean, String viewFlag) {

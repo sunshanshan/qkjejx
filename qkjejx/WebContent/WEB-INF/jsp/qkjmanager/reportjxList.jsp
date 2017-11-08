@@ -34,17 +34,12 @@ cursor: pointer;
 					
 					<div class="label_hang">
 						<div class="label_ltit">时间段</div>
-						<div class="label_rwben">
-							<input name="vardic.starcym" value="${it:formatDate(vardic.starcym,'yyyy-MM')}" type="text" onclick="setmonth(this)" readonly="readonly"/>
-						</div>
-						至
-						<div class="label_rwben">
+						<div class="label_rwbenx">
+							<input name="vardic.starcym" value="${it:formatDate(vardic.starcym,'yyyy-MM')}" type="text" onclick="setmonth(this)" readonly="readonly"/>至
 							<input  name="vardic.clocym" value="${it:formatDate(vardic.clocym,'yyyy-MM')}" type="text" onclick="setmonth(this)" readonly="readonly"/>
 						</div>
 					</div>
-					<div class="label_hang tac">
-						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
-						<label for="search_mcondition"></label>更多条件
+					<div class="label_hang label_button tac">
 						<s:submit value="搜索" />
 						<s:reset value="重置" />
 					</div>
@@ -80,7 +75,7 @@ cursor: pointer;
 						<s:elseif test="cstate==1">关闭</s:elseif>
 						<s:elseif test="cstate==2">已审核</s:elseif>
 						</td>
-						<td class="td1 nw">
+						<td class="op-area">
 						<s:if test="%{acheck_username==null}">
 							<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_loadDept"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">查看</a>
 							</s:if>
@@ -115,7 +110,7 @@ cursor: pointer;
 						<s:elseif test="cstate==1">关闭</s:elseif>
 						<s:elseif test="cstate==2">已审核</s:elseif>
 						</td>
-						<td class="td1 nw">
+						<td class="op-area">
 						<s:if test="%{acheck_username==null}">
 							<a class="input-blue" href="<s:url namespace="/qkjmanager" action="varticDetail_loadDept"><s:param name="viewFlag">mdy</s:param><s:param name="vardic.uuid" value="uuid"></s:param></s:url>">查看</a>
 							</s:if>

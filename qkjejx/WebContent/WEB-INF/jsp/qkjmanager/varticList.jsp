@@ -31,10 +31,7 @@ cursor: pointer;
 							<s:textfield name='vardic.uuid' cssClass=' validate[maxSize[10],custom[integer],]' />
 						</div>
 					</div>
-							
-					<div class="label_hang tac">
-						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
-						<label for="search_mcondition"></label>更多条件
+					<div class="label_hang label_button tac">
 						<s:submit value="搜索" />
 						<s:reset value="重置" />
 					</div>
@@ -54,7 +51,7 @@ cursor: pointer;
 						<tr>
 							<td class="td1 nw">${acheck_username}</td>
 							<td class="td1 nw">(${df_name})${acheck_deptname}</td>
-							<td class="td1 nw">
+							<td class="td1 op-area">
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
 									<a class="input-blue" href="/qkjmanager/varticDetail_list?vardic.u_id=${u_id }&vardic.u_code=${u_code}&viewFlag=add">考核</a>
 								</c:if> 
@@ -65,7 +62,7 @@ cursor: pointer;
 						<tr>
 							<td class="td1 nw">${acheck_deptname}</td>
 							<td class="td1 nw"></td>
-							<td class="td1 nw">
+							<td class="td1 op-area">
 								<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
 									<a class="input-blue" href="/qkjmanager/varticDeptDetail_list?vardic.u_code=${d_code}&viewFlag=add">考核</a>
 								</c:if> 

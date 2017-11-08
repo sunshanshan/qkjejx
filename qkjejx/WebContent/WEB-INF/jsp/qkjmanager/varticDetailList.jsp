@@ -14,7 +14,10 @@
 .ship_info {
 	cursor: pointer;
 }
-a:hover{cursor:pointer}
+
+a:hover {
+	cursor: pointer
+}
 </style>
 <body>
 	<!-- 顶部和左侧菜单导航 -->
@@ -25,10 +28,9 @@ a:hover{cursor:pointer}
 				${path} <span class="opb lb op-area"><a
 					href="JavaScript:history.go(-1)">返回</a></span>
 			</div>
-			<s:form id="editForm" name="editForm" cssClass="validForm"
-				action="varticDetail_add" namespace="/qkjmanager" method="post"
+			<s:form id="editForm" name="editForm" cssClass="validForm" method="post"
 				theme="simple">
-
+				<s:hidden id="stoken" name="token" value="%{token}"></s:hidden>
 				<div class="label_main">
 
 					<s:if test="'mdy' == viewFlag">
@@ -149,8 +151,8 @@ a:hover{cursor:pointer}
 											<td class="nw" width="100px;"><input id="s${uuid }"
 												type="text" onblur="kpi('${uuid}');"
 												class="validate[required]" /></td>
-											<td class="nw" width="100px;"><input id="g${uuid }" name="gpr"
-												type="text" readonly="readonly" class="validate[required]" /></td>
+											<td class="nw" width="100px;"><input id="g${uuid }"
+												name="gpr" type="text" readonly="readonly" /></td>
 										</s:if>
 										<s:else>
 											<s:if test="type==2">
@@ -158,8 +160,8 @@ a:hover{cursor:pointer}
 													type="text" readonly="readonly"> <input
 													id="pdept${uuid }" type="hidden" value="${position_dept}">
 												</td>
-												<td class="nw"><input id="g${uuid }" type="text" name="gpr"
-													readonly="readonly"></td>
+												<td class="nw"><input id="g${uuid }" type="text"
+													name="gpr" readonly="readonly"></td>
 												<script type="text/javascript">
 													$(function(){
 														var uuid=${uuid };
@@ -188,8 +190,8 @@ a:hover{cursor:pointer}
 											<s:elseif test="type==3">
 												<td class="nw" title="取班组分数："><input id="s${uuid }"
 													type="text" readonly="readonly"></td>
-												<td class="nw" width="100px;"><input id="g${uuid }" name="gpr"
-													type="text" readonly="readonly"></td>
+												<td class="nw" width="100px;"><input id="g${uuid }"
+													name="gpr" type="text" readonly="readonly"></td>
 												<s:if test="%{user.uuid!=null}">
 													<script type="text/javascript">
 															$(function(){
@@ -283,7 +285,7 @@ a:hover{cursor:pointer}
 
 								<c:if
 									test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-									<button id="btnzhuce" class="input-blue" onclick="add();">提交</button>
+									<button id="btnzhuce" class="input-blue" onclick="add();" type="button">提交</button>
 								</c:if>
 							</div>
 						</div>
@@ -313,32 +315,25 @@ a:hover{cursor:pointer}
 								<!-- lading.promotions -->
 								<s:iterator value="vds" status="sta">
 									<tr id="showtr${uuid}">
-										<td class="nw">${uuid }
-										</td>
-										<td class="nw">
-										<s:if test="%{check_index==0}">取部门分数</s:if>
-										<s:else>
+										<td class="nw">${uuid }</td>
+										<td class="nw"><s:if test="%{check_index==0}">取部门分数</s:if>
+											<s:else>
 										${kpi }
-										</s:else>
-										</td>
-										<td class="nw">
-										<s:if test="%{check_index==0}">1</s:if>
-										<s:else>
+										</s:else></td>
+										<td class="nw"><s:if test="%{check_index==0}">1</s:if> <s:else>
 										${weight }
-										</s:else>
-										<input id="w${uuid }"
-											name="weight" type="hidden" value="${weight }"></td>
+										</s:else> <input id="w${uuid }" name="weight" type="hidden"
+											value="${weight }"></td>
 										<td class="nw" width="100px;"><input id="s${uuid }"
 											type="text" onblur="kpi('${uuid}');"
 											class="validate[required]" value="${check_score }" /></td>
-										<td class="nw" width="100px;"><input id="g${uuid }" name="gpr"
-											type="text" readonly="readonly" class="validate[required]"
-											value="${check_goal }" /></td>
+										<td class="nw" width="100px;"><input id="g${uuid }"
+											name="gpr" type="text" readonly="readonly"
+											class="validate[required]" value="${check_goal }" /></td>
 										<td class="nw">${cyc }</td>
 										<td class="longnote" title="${definition}">${it:subString(definition,18)}</td>
 										<td class="longnote" title="${correctly}">${it:subString(correctly,18)}</td>
-
-										<td><s:if test="%{typea==1&&dtype==1}">
+										<td class="op-area"><s:if test="%{typea==1&&dtype==1}">
 												<c:if
 													test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_MDY',null)==true}">
 													<c:if test="${it:checkb(uuid)==true}">
@@ -383,7 +378,7 @@ a:hover{cursor:pointer}
 							action="varticD_save" cssClass="input-blue" />
 					</c:if>
 				</s:if>
-
+				
 			</s:form>
 		</div>
 	</div>
@@ -451,7 +446,8 @@ function add(){
 		    			}
 		    			tableInfo += sp+",";
 	    				}else{
-	    					continue;
+	    					flag=false;
+		    				break;
 	    				};
 	    			
 	    		}else if(j==4){
@@ -465,7 +461,8 @@ function add(){
 	 	    				break;
 	 	    			}
 	    			}else{
-    					continue;
+	    				flag=false;
+	    				break;
     				};
 	    			
 	    		}
@@ -481,20 +478,24 @@ function add(){
 	   
 	  }
 	  
-	   if (!checkSubmitFlg) {
-		// 第一次提交
-		  checkSubmitFlg = true;
-		  if(flag==true){
-			  $('#btnzhuce').hide();
-			  document.getElementById("editForm").action="/qkjmanager/varticDeail_add?aArray="+obj;
-		  }else{
-			  alert("所评分数不能为空！");
-		  }
-		 } else {
-		//重复提交
-		  return false;
-		 }
-	  
+	  $.ajax({
+		     type:'POST',
+		     url: '/qkjmanager/getToken',
+		     data: "token="+$("#stoken").val(),
+		     success: function(data){
+		    	 if(data=="false"){
+		 			alert("不可重复提交");
+		 		} else {
+		 			if(flag==false){
+		 				alert("有评分项为空请检查！");
+		 			}else{
+		 				document.editForm.action="/qkjmanager/varticDeail_add?aArray="+obj;
+			 			editForm.submit();
+		 			}
+		 			
+		 		}
+		    }			    
+		  });
 }
 
 

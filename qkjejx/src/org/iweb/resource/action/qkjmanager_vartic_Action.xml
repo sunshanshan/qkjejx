@@ -122,6 +122,8 @@
 		
 	<!-- qkj_r_sonscore end -->
 	
+		<action name="getToken" class="com.qkj.qkjmanager.action.VardicDetailAction" method="get_Token">
+		</action>
 	
 	</package>
 </struts>

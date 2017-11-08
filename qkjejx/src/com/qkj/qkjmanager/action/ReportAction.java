@@ -1002,7 +1002,7 @@ HttpServletResponse response = ServletActionContext.getResponse();
 		JSONArray ausers = JSONArray.fromObject(this.getAuser());
 		map.clear();
 		String fileName = ContextHelper.getUserLoginName()+"汇总表格";
-		if (adepts.size()>0 || adepts.size()>0) {
+		if (adepts.size()>0 || ausers.size()>0) {
 			WritableWorkbook wwb = null;
 			// 设这输出的类型和文件格式
 			response.setContentType("application/vnd.ms-excel;charset=UTF-8");

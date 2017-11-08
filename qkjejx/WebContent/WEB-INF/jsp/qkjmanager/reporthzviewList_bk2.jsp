@@ -25,9 +25,10 @@ height: 10px;
  
  @media print{
  
- div{min-height: 25%;overflow:auto;max-height: 25%;overflow: auto;
+ div{min-height: 30%;overflow:auto;max-height: 30%;overflow: auto;
     position: relative;}
- .qianming{width: 50px;}
+ .kd{height: 50px;}
+ .qianming{width: 9.9%;}
  }
 </style>
 <body>
@@ -36,36 +37,20 @@ height: 10px;
 	<div class="tab_right">
 		<div class="tab_warp main">
 			<div class="dq_step noprint">
-				<a href="javascript:;" onclick="window.focus();window.print();">打印本页</a>
+				<a href="javascript:;" onclick="window.print();">打印本页</a>
 				<!-- <a href="javascript:;" onclick="Print();">打印本页</a> -->
-				<input id="begintime" type="hidden" value="${cymprint}">
 			</div>
+			<input id="begintime" type="hidden" value="${cymprint}">
 			<font size="3px;" style="margin:0 0 0 70%;">考核日期:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${cymprint }</font>
 			<s:iterator value="vvs" status="sta">
 			<div id="pd${sta.index+1 }" 
 			<s:if test="(#sta.index+1)%5==0">style="page-break-after: always;"</s:if>
-			 >
+			>
 			<table id="adept${sta.index+1 }"
 					>
-				<tr id="rone" height="20px;">
-					<td rowspan="2" >名称
-					</td>
-					<td rowspan="2" >岗位</td>
-					<td rowspan="2" id="dept${sta.index+1}">部门</td>
-					<td rowspan="2">合计</td>
-					<td rowspan="2">加扣分项</td>
-					<td rowspan="2">签名</td>
-				</tr>
-				<s:if test="%{d_code!=null}">
-				<tr id="rtwo${d_code }">
-				</tr>
-				</s:if>
-				<s:else>
-				<tr id="rtwo${u_id }">
-				</tr>
-				</s:else>
-				<tr id="rthree">
-					<td rowspan="2">
+					
+					<tr id="rone">
+					<td  >名称:
 					<s:if test="%{u_id!=null}">${username }
 					<script type="text/javascript">
 							$(function(){
@@ -87,24 +72,54 @@ height: 10px;
 					</script>
 					</s:if>
 					</td>
-					<td rowspan="2">${pname }</td>
-					<td rowspan="2" id="deptv${sta.index+1}">${deptname }</td>
-					<td rowspan="2" id="z${sta.index+1}">${check_score }</td>
-					<td rowspan="2">${bscore }</td>
-					<td rowspan="2" class="qianming"></td>
+					<td  >岗位:${pname }</td>
+					<td  id="dept${sta.index+1}" colspan="2">部门:${deptname }</td>
+				</tr>
+				
+				
+				<tr>
+				<td colspan="4">
+				<table  border="1" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
+				<tr id="kpi_${sta.index+1}"></tr>
+				<tr id="weight_${sta.index+1}"></tr>
+				<tr id="p_${sta.index+1}"></tr>
+				<tr id="d_${sta.index+1}"></tr>
+				</table>
+				</td>
+				</tr>
+				
+				<tr id="rone">
+					<td >合计:${check_score }</td>
+					<td >加扣分项:${bscore }</td>
+					<td >签名</td>
+					<td >备注:${remark}</td>
 				</tr>
 				<s:if test="%{d_code!=null}">
 				<tr id="rthfour${d_code }">
 				</tr>
+				<script type="text/javascript">
+							$(function(){
+									var d=${sta.index+1};
+									var dept=${d_code};
+									if(d%5==0){
+										$("#rthfour"+dept).after("<tr id='fy' class='kd'></tr></div>");
+									}
+							});
+				</script>
 				</s:if>
 				<s:else>
 				<tr id="rthfour${u_id }">
 				</tr>
+					<script type="text/javascript">
+							$(function(){
+									var d=${sta.index+1};
+									var dept=${u_id };
+									if(d%5==0){
+										$("#rthfour"+dept).after("<tr id='fy' class='kd'></tr></div>");
+									}
+							});
+				</script>
 				</s:else>
-				<tr>
-					<td>备注</td>
-					<td colspan="30">${remark}</td>
-				</tr>
 				<tr id="fy" class="dkss"></tr>
 				</table>
 				</div>
@@ -126,10 +141,15 @@ var ads= function(dept,cym,af){
 		var l = $(data).length;
 		if(l>0){
 			$.each(data, function(i, n){
-				$("#dept"+af).after("<td>"+n.kpi+"</td>");
+			/* 	$("#dept"+af).after("<td>"+n.kpi+"</td>");
 				$("#rtwo"+dept).append("<td>"+n.weight+"</td>");
 				$("#deptv"+af).after("<td>"+n.score+"</td>");
 				$("#rthfour"+dept).append("<td>"+n.gold+"</td>");
+				 */
+					$("#kpi_"+af).after("<td>"+n.kpi+"</td>");
+					$("#weight_"+af).append("<td>"+n.weight+"</td>");
+					$("#p_"+af).after("<td>"+n.score+"</td>");
+					$("#d_"+af).append("<td>"+n.gold+"</td>");
 			});
 		}else{
 			$("#z"+af).html("未考核");
@@ -149,21 +169,36 @@ var aus= function(u,cym,af){
 		if(l>0){
 			$.each(data, function(i, n){
 				if(n.kpi==null||n.kpi==""){
-					$("#dept"+af).after("<td>"+"取部门分数"+"</td>");
-					$("#rtwo"+u).append("<td>"+1+"</td>");
+					/* $("#dept"+af).after("<td>"+"取部门分数"+"</td>");
+					$("#rtwo"+u).append("<td>"+1+"</td>"); */
+					$("#kpi_"+af).after("<td>"+"取部门分数"+"</td>");
+					$("#weight_"+af).append("<td>"+1+"</td>");
 				}else{
-					$("#dept"+af).after("<td>"+n.kpi+"</td>");
-					$("#rtwo"+u).append("<td>"+n.weight+"</td>");
+					/* $("#dept"+af).after("<td>"+n.kpi+"</td>");
+					$("#rtwo"+u).append("<td>"+n.weight+"</td>"); */
+					
+					$("#kpi_"+af).after("<td>"+n.kpi+"</td>");
+					$("#weight_"+af).append("<td>"+n.weight+"</td>");
 				}
 				
-				$("#deptv"+af).after("<td>"+n.score+"</td>");
-				$("#rthfour"+u).append("<td>"+n.gold+"</td>");
+			/* 	$("#deptv"+af).after("<td>"+n.score+"</td>");
+				$("#rthfour"+u).append("<td>"+n.gold+"</td>"); */
+				
+				
+				$("#p_"+af).after("<td>"+n.score+"</td>");
+				$("#d_"+af).append("<td>"+n.gold+"</td>");
 			});
 		}else{
-			$("#dept"+af).after("<td>"+"0"+"</td>");
+		/* 	$("#dept"+af).after("<td>"+"0"+"</td>");
 			$("#rtwo"+u).append("<td>"+0+"</td>");
 			$("#dept"+af).after("<td>"+0+"</td>");
-			$("#rtwo"+u).append("<td>"+0+"</td>");
+			$("#rtwo"+u).append("<td>"+0+"</td>"); */
+			
+			
+			$("#kpi_"+af).after("<td>"+"0"+"</td>");
+			$("#weight_"+af).append("<td>"+0+"</td>");
+			$("#p_"+af).after("<td>"+0+"</td>");
+			$("#d_"+af).append("<td>"+0+"</td>");
 			$("#z"+af).html("未考核");
 		};		
 	};

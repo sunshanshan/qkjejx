@@ -25,7 +25,7 @@ a:hover{cursor:pointer}
 				<span class="opb lb op-area"><a href="JavaScript:history.go(-1)">返回</a></span>
 		</div>
 	<s:form id="editForm" name="editForm" cssClass="validForm" action="varticDetail_add" namespace="/qkjmanager" method="post" theme="simple">
-		<div class="label_main">
+		<div class="label_main"><s:hidden id="stoken" name="token" value="%{token}"></s:hidden>
 			<s:if test="'mdy' == viewFlag"><s:hidden name="vardic.uuid" value="%{vardic.uuid}"></s:hidden>
 			<div class="label_hang">
 				<div class="label_ltit">考核年月:</div>
@@ -203,7 +203,7 @@ a:hover{cursor:pointer}
 								<font color="red"><span id="messages"></span></font>
 								
 									<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-										<button id="btnzhuce" class="input-blue" onclick="add();">提交</button>
+										<button id="btnzhuce" class="input-blue" onclick="add();" type="button">提交</button>
 									</c:if>
 							</div>
 						</div>
@@ -304,7 +304,7 @@ a:hover{cursor:pointer}
 		</c:if>
 		</s:if>
 		
-		
+		<s:hidden id="aArray" name="aArray"></s:hidden>
 		</s:form>
 	</div>
 </div>
@@ -366,7 +366,8 @@ function add(){
 	    			if(document.getElementById(sid)!=undefined && document.getElementById(sid).value!=''){
 	    				sp=document.getElementById(sid).value;
 	    				}else{
-	    					continue;
+	    					flag=false;
+		    				break;
 	    				}
 	    			
 	    			if(sp==null||sp==""){
@@ -380,7 +381,8 @@ function add(){
 	    			if(document.getElementById(gid)!=undefined && document.getElementById(gid).value!=''){
 	    				 gp=document.getElementById(gid).value;
 	    			}else{
-    					continue;
+	    				flag=false;
+	    				break;
     				}
 	    			tableInfo += gp+",";
 	    			if(gp==null||gp==""){
@@ -395,7 +397,8 @@ function add(){
 	    			if(document.getElementById(gid)!=undefined && document.getElementById(gid).value!=''){
 	    				cp=document.getElementById(gid).value;
 	    			}else{
-    					continue;
+	    				flag=false;
+	    				break;
     				}
 	    			tableInfo += cp+",";
 	    			if(cp==null||cp==""){
@@ -413,20 +416,24 @@ function add(){
 	   obj[i]=tableInfo;
 	   
 	  }
-	   if (!checkSubmitFlg) {
-		// 第一次提交
-		  checkSubmitFlg = true;
-		  if(flag==true){
-			  $('#btnzhuce').hide();
-			  document.getElementById("editForm").action="/qkjmanager/varticDeail_addDept?aArray="+obj;
-		  }else{
-			  alert("所评分数不能为空！");
-			  $('#btnzhuce').show();
-		  }
-		 } else {
-		//重复提交
-		  return false;
-		 }
+	   
+	   $.ajax({
+		     type:'POST',
+		     url: '/qkjmanager/getToken',
+		     data: "token="+$("#stoken").val(),
+		     success: function(data){
+		    	 if(data=="false"){
+		 			alert("不可重复提交");
+		 		} else {
+		 			if(flag==false){
+		 				alert("有评分项为空请检查！");
+		 			}else{
+		 				document.editForm.action="/qkjmanager/varticDeail_addDept?aArray="+obj;
+			 			editForm.submit();
+		 			}
+		 		}
+		    }			    
+		  });
 }
 
 

@@ -56,8 +56,6 @@ cursor: pointer;
 					</div>
 					
 					<div class="label_hang tac">
-						<s:checkbox id="search_mcondition" name="search_mcondition" fieldValue="true" value="true" cssClass="regular-checkbox" />
-						<label for="search_mcondition"></label>更多条件
 						<s:submit value="搜索" />
 						<s:reset value="重置" />
 					</div>
