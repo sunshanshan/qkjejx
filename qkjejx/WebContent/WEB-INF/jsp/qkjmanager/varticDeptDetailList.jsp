@@ -92,14 +92,14 @@ a:hover{cursor:pointer}
 								<td class="nw">${weight }<input id="w${uuid }" name="weight" type="hidden"  value="${weight }"></td>
 								<s:if test="isdept==1&&type==1">
 									<!-- kpi 横向的部门职务对上 -->
-									<td class="nw" width="100px;"><input id="s${uuid }"  type="text" onblur="kpi('${uuid}');" class="validate[required]" value="${check_score }"/></td>
-									<td class="nw" width="100px;"><input id="g${uuid }" name="gpr" type="text" readonly="readonly" class="validate[required]" value="${check_goal }"/></td>
+									<td class="nw" width="100px;"><input id="s${uuid }" class="my_score"  type="text" onblur="kpi('${uuid}');" value="${check_score }"/></td>
+									<td class="nw" width="100px;"><input id="g${uuid }" class="my_score"name="gpr" type="text" readonly="readonly" value="${check_goal }"/></td>
 								</s:if>
 								<s:else>
 											<s:if test="type==2">
 												<td class="nw" title="取部门分数"><input id="s${uuid }"
-													type="text" readonly="readonly"></td>
-												<td class="nw"><input id="g${uuid }" type="text" name="gpr"
+													type="text" class="my_score" readonly="readonly"></td>
+												<td class="nw"><input id="g${uuid }" type="text" name="gpr" class="my_score"
 													readonly="readonly"></td>
 												<script type="text/javascript">
 													$(function(){
@@ -203,7 +203,7 @@ a:hover{cursor:pointer}
 								<font color="red"><span id="messages"></span></font>
 								
 									<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-										<button id="btnzhuce" class="input-blue" onclick="add();" type="button">提交</button>
+										<input id="btnzhuce" type="button" value="提交" class="input-blue" onclick="add();" />
 									</c:if>
 							</div>
 						</div>
@@ -354,6 +354,16 @@ function add(){
 	var obj=new Array();
 	 var flag=true;
 	  var tableObj = document.getElementById("t");
+	  
+		var inputObjs = $(".my_score");
+		for (var i = 0; i < inputObjs.length; i++) {
+			if ($(inputObjs[i]).val() == "") {
+				alert('有评分项为空请检查！');
+				return;
+			}
+		}
+	  
+	  
 	  for (var i = 1; i < tableObj.rows.length; i++) {  //遍历Table的所有Row
 		  var tableInfo = "";
 	    for (var j = 0; j < tableObj.rows[i].cells.length; j++) {  //遍历Row中的每一列
@@ -425,12 +435,8 @@ function add(){
 		    	 if(data=="false"){
 		 			alert("不可重复提交");
 		 		} else {
-		 			if(flag==false){
-		 				alert("有评分项为空请检查！");
-		 			}else{
 		 				document.editForm.action="/qkjmanager/varticDeail_addDept?aArray="+obj;
 			 			editForm.submit();
-		 			}
 		 		}
 		    }			    
 		  });

@@ -291,11 +291,11 @@ public class VardicDetailAction extends ActionSupport {
 	}
 
 	public String add() throws Exception {
+		// 重复提交session更新
+		this.setToken(ContextHelper.getTokenString());
 		ContextHelper.isPermit("SYS_QKJMANAGER_VERTICLIST_ADD");
 		try {
 			dao.startTransaction();
-			// 判断是否重复提交
-			this.setToken(ContextHelper.getTokenString());
 			/**
 			 * 填加主表
 			 */

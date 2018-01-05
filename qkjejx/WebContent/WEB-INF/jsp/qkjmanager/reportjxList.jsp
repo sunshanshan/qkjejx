@@ -35,7 +35,7 @@ cursor: pointer;
 					<div class="label_hang">
 						<div class="label_ltit">时间段</div>
 						<div class="label_rwbenx">
-							<input name="vardic.starcym" value="${it:formatDate(vardic.starcym,'yyyy-MM')}" type="text" onclick="setmonth(this)" readonly="readonly"/>至
+							<input name="vardic.starcym" value="${it:formatDate(vardic.starcym,'yyyy-MM')}" type="text" onclick="setmonth(this)" readonly="readonly"/>&nbsp;至
 							<input  name="vardic.clocym" value="${it:formatDate(vardic.clocym,'yyyy-MM')}" type="text" onclick="setmonth(this)" readonly="readonly"/>
 						</div>
 					</div>

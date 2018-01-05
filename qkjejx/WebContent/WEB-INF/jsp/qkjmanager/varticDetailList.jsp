@@ -148,19 +148,18 @@ a:hover {
 										<td class="nw">${weight }<input id="w${uuid }"
 											name="weight" type="hidden" value="${weight }"></td>
 										<s:if test="isdept==1&&type==1">
-											<td class="nw" width="100px;"><input id="s${uuid }"
-												type="text" onblur="kpi('${uuid}');"
-												class="validate[required]" /></td>
-											<td class="nw" width="100px;"><input id="g${uuid }"
+											<td class="nw" width="100px;"><input class="my_score" id="s${uuid }"
+												type="text" onblur="kpi('${uuid}');"/></td>
+											<td class="nw" width="100px;"><input class="my_score" id="g${uuid }"
 												name="gpr" type="text" readonly="readonly" /></td>
 										</s:if>
 										<s:else>
 											<s:if test="type==2">
-												<td class="nw" title="取部门分数"><input id="s${uuid }"
+												<td class="nw" title="取部门分数"><input class="my_score" id="s${uuid }"
 													type="text" readonly="readonly"> <input
 													id="pdept${uuid }" type="hidden" value="${position_dept}">
 												</td>
-												<td class="nw"><input id="g${uuid }" type="text"
+												<td class="nw"><input class="my_score" id="g${uuid }" type="text"
 													name="gpr" readonly="readonly"></td>
 												<script type="text/javascript">
 													$(function(){
@@ -188,9 +187,9 @@ a:hover {
 											</s:if>
 
 											<s:elseif test="type==3">
-												<td class="nw" title="取班组分数："><input id="s${uuid }"
+												<td class="nw" title="取班组分数："><input class="my_score" id="s${uuid }"
 													type="text" readonly="readonly"></td>
-												<td class="nw" width="100px;"><input id="g${uuid }"
+												<td class="nw" width="100px;"><input class="my_score" id="g${uuid }"
 													name="gpr" type="text" readonly="readonly"></td>
 												<s:if test="%{user.uuid!=null}">
 													<script type="text/javascript">
@@ -285,7 +284,7 @@ a:hover {
 
 								<c:if
 									test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_ADD',null)==true}">
-									<button id="btnzhuce" class="input-blue" onclick="add();" type="button">提交</button>
+									<input id="btnzhuce" type="button" value="提交" class="input-blue" onclick="add();" />
 								</c:if>
 							</div>
 						</div>
@@ -324,10 +323,10 @@ a:hover {
 										${weight }
 										</s:else> <input id="w${uuid }" name="weight" type="hidden"
 											value="${weight }"></td>
-										<td class="nw" width="100px;"><input id="s${uuid }"
+										<td class="nw" width="100px;"><input class="my_score" id="s${uuid }"
 											type="text" onblur="kpi('${uuid}');"
 											class="validate[required]" value="${check_score }" /></td>
-										<td class="nw" width="100px;"><input id="g${uuid }"
+										<td class="nw" width="100px;"><input class="my_score" id="g${uuid }"
 											name="gpr" type="text" readonly="readonly"
 											class="validate[required]" value="${check_goal }" /></td>
 										<td class="nw">${cyc }</td>
@@ -427,8 +426,15 @@ function kpi(uuid){
 
 function add(){
 	var obj=new Array();
-	 var flag=true;
-	  var tableObj = document.getElementById("t");
+	var flag=true;
+	var tableObj = document.getElementById("t");
+	var inputObjs = $(".my_score");
+	for (var i = 0; i < inputObjs.length; i++) {
+		if ($(inputObjs[i]).val() == "") {
+			alert('有评分项为空请检查！');
+			return;
+		}
+	}
 	  for (var i = 1; i < tableObj.rows.length; i++) {  //遍历Table的所有Row
 		  var tableInfo = "";
 	    for (var j = 0; j < tableObj.rows[i].cells.length; j++) {  //遍历Row中的每一列
@@ -440,15 +446,8 @@ function add(){
 	    			var sp="";
 	    			if(document.getElementById(sid)!=undefined && document.getElementById(sid).value!=''){
 	    				sp=document.getElementById(sid).value;
-	    				if((sp==null||sp=="")&&sp!=undefined){
-		    				flag=false;
-		    				break;
-		    			}
 		    			tableInfo += sp+",";
-	    				}else{
-	    					flag=false;
-		    				break;
-	    				};
+	    			}
 	    			
 	    		}else if(j==4){
 	    			var gid="g"+tableObj.rows[i].cells[0].innerText;
@@ -456,15 +455,7 @@ function add(){
 	    			if(document.getElementById(gid)!=undefined && document.getElementById(gid).value!=''){
 	    				 gp=document.getElementById(gid).value;
 	    				 tableInfo += gp+",";
-	 	    			if((gp==null||gp=="")&&gp!='undefined'){
-	 	    				flag=false;
-	 	    				break;
-	 	    			}
-	    			}else{
-	    				flag=false;
-	    				break;
-    				};
-	    			
+	    			}
 	    		}
 	    		else{
 	    			tableInfo = tableObj.rows[i].cells[j].innerText;  //uuid
@@ -486,13 +477,8 @@ function add(){
 		    	 if(data=="false"){
 		 			alert("不可重复提交");
 		 		} else {
-		 			if(flag==false){
-		 				alert("有评分项为空请检查！");
-		 			}else{
-		 				document.editForm.action="/qkjmanager/varticDeail_add?aArray="+obj;
-			 			editForm.submit();
-		 			}
-		 			
+		 			document.editForm.action="/qkjmanager/varticDeail_add?aArray="+obj;
+		 			editForm.submit();
 		 		}
 		    }			    
 		  });

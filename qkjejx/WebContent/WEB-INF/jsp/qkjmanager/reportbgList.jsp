@@ -42,7 +42,7 @@ cursor: pointer;
 						<s:submit value="搜索" />
 						<s:reset value="重置" />
 						<c:if test="${it:checkPermit('SYS_QKJMANAGER_VERTICLIST_CHECKSURE',null)==true}">
-						<span class="opb lb op-area"><a href="<s:url namespace="/qkjmanager" action="check_sure"></s:url>">审核考核成绩</a></span>
+						<input type="button" value="审核成绩" onclick="location.href='<s:url namespace="/qkjmanager" action="check_sure"></s:url>';"/>
 						</c:if>
 					</div>
 				</div>
